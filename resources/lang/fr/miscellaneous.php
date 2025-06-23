@@ -266,6 +266,10 @@ return [
     'currency' => 'Choisir devise',
     'usd' => 'Dollar américain',
     'cdf' => 'Franc congolais',
+    'cart' => 'Panier',
+    'checkout' => 'Payer',
+    'items' => '{0} Aucun article|{1} Un article|[2,*] :count articles',
+    'recently_added_items' => '{1} Article récemment ajouté.|[2,*] Articles récemment ajoutés.',
 
     // ===== NAVIGATION MENU
     'menu' => [
@@ -280,27 +284,51 @@ return [
         'account' => [
             'title' => 'Mon compte',
             'cart' => 'Mon panier',
-            'works' => 'Mes ouvrages',
+            'project' => [
+                'title' => 'Mes projets',
+                'add' => 'Ajouter un projet'
+            ],
+            'product' => [
+                'title' => 'Mes produits',
+                'add' => 'Ajouter un produit'
+            ],
+            'service' => [
+                'title' => 'Mes services',
+                'add' => 'Ajouter un service'
+            ],
+            'post' => [
+                'news' => 'Actualité',
+                'complaints' => 'Plainte'
+            ],
         ],
-        'messages' => 'Messages',
+        'discussions' => 'Forum',
         'notifications' => 'Notifications',
         'admin' => [
-            'role' => 'Rôle',
-            'group' => [
-                'title' => 'Groupe',
-                'type' => 'Type',
-                'status' => 'Etat',
-                'category' => 'Catégorie'
+            'role' => [
+                'title' => 'Rôle',
+                'admins' => 'Administrateurs',
+                'membres' => 'Membres'
             ],
-            'subscription' => 'Abonnement',
-            'work' => 'Œuvre',
-            'users' => 'Utilisateurs',
+            'categories' => [
+                'title' => 'Catégories',
+                'projects' => 'Projets',
+                'products' => 'Produits',
+                'services' => 'Services'
+            ],
+            'complaints' => 'Plaintes',
         ],
         'public' => [
-            'books' => 'Ouvrages',
-            'mag_newspapers' => 'Revues & journaux',
-            'mapping' => 'Cartographie',
-            'medias' => 'Médias',
+            'products' => [
+                'title' => 'Produits',
+                'projects' => 'Projets',
+                'products' => 'Produits',
+                'services' => 'Services'
+            ],
+            'investors' => [
+                'title' => 'Investisseurs',
+                'ask' => 'Demande d\'investissement',
+            ],
+            'crowdfunding' => 'Crowdfunding',
         ],
     ],
 

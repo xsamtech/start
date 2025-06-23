@@ -266,6 +266,10 @@ return [
     'currency' => 'Choose currency',
     'usd' => 'American dollar',
     'cdf' => 'Congolese franc',
+    'cart' => 'Cart',
+    'checkout' => 'Checkout',
+    'items' => '{0} No item|{1} One item|[2,*] :count items',
+    'recently_added_items' => '{1} Recently added item.|[2,*] Recently added items.',
 
     // ===== NAVIGATION MENU
     'menu' => [
@@ -280,27 +284,51 @@ return [
         'account' => [
             'title' => 'My account',
             'cart' => 'My cart',
-            'works' => 'My books',
+            'project' => [
+                'title' => 'My projects',
+                'add' => 'Add a project'
+            ],
+            'product' => [
+                'title' => 'My products',
+                'add' => 'Add un produit'
+            ],
+            'service' => [
+                'title' => 'My services',
+                'add' => 'Add a service'
+            ],
+            'post' => [
+                'news' => 'News',
+                'complaints' => 'Complaints'
+            ],
         ],
-        'messages' => 'Messages',
+        'discussions' => 'Forum',
         'notifications' => 'Notifications',
         'admin' => [
-            'role' => 'Role',
-            'group' => [
-                'title' => 'Group',
-                'type' => 'Type',
-                'status' => 'Status',
-                'category' => 'Category'
+            'role' => [
+                'title' => 'Role',
+                'admins' => 'Administrators',
+                'membres' => 'Members'
             ],
-            'subscription' => 'Subscription',
-            'work' => 'Work',
-            'users' => 'Users',
+            'categories' => [
+                'title' => 'Categories',
+                'projects' => 'Projects',
+                'products' => 'Products',
+                'services' => 'Services'
+            ],
+            'complaints' => 'Complaints',
         ],
         'public' => [
-            'books' => 'Books',
-            'mag_newspapers' => 'Magazines & newspapers',
-            'mapping' => 'Mapping',
-            'medias' => 'Medias',
+            'products' => [
+                'title' => 'Products',
+                'projects' => 'Projects',
+                'products' => 'Products',
+                'services' => 'Services'
+            ],
+            'investors' => [
+                'title' => 'Investors',
+                'ask' => 'Investment request',
+            ],
+            'crowdfunding' => 'Crowdfunding',
         ],
     ],
 
