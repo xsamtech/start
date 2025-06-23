@@ -11,10 +11,11 @@ return [
     | Miscellaneous Language Lines
     |--------------------------------------------------------------------------
     |
-     */
-    'welcome_title' => 'Welcome on Boongo',
-    'welcome_description' => 'Read or order books, magazines and newspapers. View geographic maps.',
-    'keywords' => 'read, order, book, newspaper, magazine, mapping',
+    */
+    'start' => 'Agricultural Processing and Technical Resources Company',
+    'welcome_title' => 'Welcome :user',
+    'welcome_description' => 'Advertise or order agricultural products or services. Crowdfund your agricultural project. Invest and get invested. Share your experiences in the forum.',
+    'keywords' => 'agricultural product, agriculture, agricultural service',
     'all_right_reserved' => 'All right reserved',
     'follow_us' => 'Follow us:',
     'call_us' => 'Call us:',

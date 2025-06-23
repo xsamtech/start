@@ -7,10 +7,10 @@
 // Common variables
 const navigator = window.navigator;
 const currentLanguage = $('html').attr('lang');
-const currentUser = $('[name="jeb-visitor"]').attr('content');
-const currentHost = $('[name="jeb-url"]').attr('content');
-const apiHost = $('[name="jeb-api-url"]').attr('content');
-const headers = { 'Authorization': 'Bearer ' + $('[name="jeb-ref"]').attr('content'), 'Accept': $('.mime-type').val(), 'X-localization': navigator.language };
+const currentUser = $('[name="strt-visitor"]').attr('content');
+const currentHost = $('[name="strt-url"]').attr('content');
+const apiHost = $('[name="strt-api-url"]').attr('content');
+const headers = { 'Authorization': 'Bearer ' + $('[name="strt-ref"]').attr('content'), 'Accept': $('.mime-type').val(), 'X-localization': navigator.language };
 // Modals
 const modalUser = $('#cropModalUser');
 // Preview images

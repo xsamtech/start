@@ -12,9 +12,10 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'welcome_title' => 'Bienvenue sur Boongo',
-    'welcome_description' => 'Lire ou commander des livres, revues et journaux. Consulter des cartes geographiques.',
-    'keywords' => 'lire, commander, livre, journal, revue, cartographie',
+    'start' => 'Société de Transformation Agricole et Ressources Techniques',
+    'welcome_title' => 'Bienvenue :user',
+    'welcome_description' => 'Publiez ou commandez des produits ou des services agricoles. Faites du crowdfunding sur votre projet agricole. Investissez et faites investir. Echangez dans le forum.',
+    'keywords' => 'produit agricole, agriculture, service agricole',
     'all_right_reserved' => 'Tous droits réservés',
     'follow_us' => 'Suivez-nous :',
     'call_us' => 'Appelez-nous :',
