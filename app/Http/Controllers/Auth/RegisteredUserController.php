@@ -44,12 +44,12 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
-            'firstname.required' => 'Le prénom est requis.',
-            'email.required' => 'L\'email est requis.',
-            'email.email' => 'Le format de l\'email est invalide.',
-            'email.unique' => 'Cet email est déjà utilisé.',
-            'password.required' => 'Le mot de passe est requis.',
-            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+            'firstname.required' => __('validation.required'),
+            'email.required' => __('validation.required'),
+            'email.email' => __('validation.custom.email.incorrect'),
+            'email.unique' => __('validation.custom.email.exists'),
+            'password.required' => __('validation.required'),
+            'password.confirmed' => __('validation.confirmed'),
         ]);
 
         // Register user

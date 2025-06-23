@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
@@ -38,24 +37,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/crowdfunding/{id}', [PublicController::class, 'updateCrowdfunding'])->whereNumber('id');
     Route::post('/crowdfunding/finance/{id}', [PublicController::class, 'financeCrowdfunding'])->whereNumber('id')->name('crowdfunding.finance');
     // Dashboard
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard.home');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.home');
     // Role
     Route::get('/dashboard/role', [AdminController::class, 'role'])->name('dashboard.role.home');
     Route::post('/dashboard/role', [AdminController::class, 'addRole']);
     Route::get('/dashboard/role/{id}', [AdminController::class, 'roleDatas'])->whereNumber('id')->name('dashboard.role.datas');
     Route::post('/dashboard/role/{id}', [AdminController::class, 'updateRole'])->whereNumber('id');
-    Route::get('/dashboard/role/{entity}', [AdminController::class, 'roleEntity'])->name('dashboard.role.home.entity');
+    Route::get('/dashboard/role/{entity}', [AdminController::class, 'roleEntity'])->name('dashboard.role.entity.home');
     Route::post('/dashboard/role/{entity}', [AdminController::class, 'addRoleEntity']);
-    Route::get('/dashboard/role/{entity}/{id}', [AdminController::class, 'roleEntityDatas'])->whereNumber('id')->name('dashboard.role.datas');
+    Route::get('/dashboard/role/{entity}/{id}', [AdminController::class, 'roleEntityDatas'])->whereNumber('id')->name('dashboard.role.entity.datas');
     Route::post('/dashboard/role/{entity}/{id}', [AdminController::class, 'updateRoleEntity'])->whereNumber('id');
     // Category
     Route::get('/dashboard/category', [AdminController::class, 'category'])->name('dashboard.category.home');
     Route::post('/dashboard/category', [AdminController::class, 'addCategory']);
     Route::get('/dashboard/category/{id}', [AdminController::class, 'categoryDatas'])->whereNumber('id')->name('dashboard.category.datas');
     Route::post('/dashboard/category/{id}', [AdminController::class, 'updateCategory'])->whereNumber('id');
-    Route::get('/dashboard/category/{entity}', [AdminController::class, 'categoryEntity'])->name('dashboard.category.home.entity');
+    Route::get('/dashboard/category/{entity}', [AdminController::class, 'categoryEntity'])->name('dashboard.category.entity.home');
     Route::post('/dashboard/category/{entity}', [AdminController::class, 'addCategoryEntity']);
-    Route::get('/dashboard/category/{entity}/{id}', [AdminController::class, 'categoryEntityDatas'])->whereNumber('id')->name('dashboard.category.datas');
+    Route::get('/dashboard/category/{entity}/{id}', [AdminController::class, 'categoryEntityDatas'])->whereNumber('id')->name('dashboard.category.entity.datas');
     Route::post('/dashboard/category/{entity}/{id}', [AdminController::class, 'updateCategoryEntity'])->whereNumber('id');
     // Complaints
     Route::get('/dashboard/complaints', [AdminController::class, 'complaints'])->name('dashboard.complaints.home');
