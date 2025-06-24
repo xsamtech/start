@@ -52,7 +52,9 @@
         <script src="js/respond.min.js"></script>
         <![endif]-->
 
-        <style id="custom-style"></style>
+        <style id="custom-style">
+            
+        </style>
 
         <title>
 @if (!empty($page_title))

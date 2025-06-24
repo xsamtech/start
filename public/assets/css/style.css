@@ -1,0 +1,221 @@
+/*
+    Custom styles
+
+    Author : Xanders Samoth | https://teams.xsamtech.com/xanderssamoth
+*/
+
+/* typography */
+pre {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    white-space: pre-wrap;
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
+}
+
+a {
+    color: var(--bs-primary);
+}
+
+textarea {
+    resize: none;
+}
+
+/********** Custom colors **********/
+/* background */
+.strt-bg-chocolate-1 {
+    background-color: #e3106f !important;
+}
+
+.strt-bg-chocolate-1-transparent {
+    background-color: rgba(227, 16, 111, 0.5) !important;
+}
+
+.strt-bg-blue {
+    background-color: #0f9cd8 !important;
+}
+
+.strt-bg-blue-transparent {
+    background-color: rgba(15, 156, 116, 0.5) !important;
+}
+
+a.strt-bg-blue-transparent:hover {
+    transition: .3s;
+    background-color: rgba(15, 156, 116, 0.7) !important;
+}
+
+.strt-bg-yellow {
+    background-color: #f7b233 !important;
+}
+
+.strt-bg-yellow-transparent {
+    background-color: rgba(247, 178, 51, 0.5) !important;
+}
+
+.strt-bg-green {
+    background-color: #96bd1f !important;
+}
+
+.strt-bg-green-transparent {
+    background-color: rgba(150, 189, 31, 0.5) !important;
+}
+
+.strt-bg-gray {
+    background-color: #878787 !important;
+}
+
+.strt-bg-gray-transparent {
+    background-color: rgba(135, 135, 135, 0.5) !important;
+}
+
+/* button */
+.strt-btn-pink {
+    background-color: #e3106f !important;
+    color: #fff !important;
+    border-color: #da0e6a !important;
+}
+
+.strt-btn-pink:hover {
+    background-color: #fff !important;
+    color: #000 !important;
+    border-color: #fff !important;
+}
+
+.strt-btn-blue {
+    background-color: #0f9cd8 !important;
+    color: #fff !important;
+    border-color: #0d94ce !important;
+}
+
+.strt-btn-blue:hover {
+    background-color: #878787 !important;
+    border-color: #878787 !important;
+}
+
+.strt-btn-yellow {
+    background-color: #f7b233 !important;
+    color: #000 !important;
+    border-color: #f7b233 !important;
+}
+
+.strt-btn-yellow:hover {
+    background-color: #878787 !important;
+    color: #fff !important;
+    border-color: #878787 !important;
+}
+
+.strt-btn-green {
+    background-color: #96bd1f !important;
+    color: #000 !important;
+    border-color: #96bd1f !important;
+}
+
+.strt-btn-green:hover {
+    background-color: #878787 !important;
+    color: #fff !important;
+    border-color: #878787 !important;
+}
+
+.strt-btn-gray {
+    background-color: #cfcfcf !important;
+    color: #000 !important;
+    border-color: #cfcfcf !important;
+}
+
+.strt-btn-gray:hover {
+    background-color: #878787 !important;
+    border-color: #878787 !important;
+}
+
+/* text */
+.strt-text-pink {
+    color: #e3106f !important;
+}
+a:hover.strt-text-pink {
+    color: #d30f67 !important;
+}
+
+.strt-text-blue {
+    color: #0f9cd8 !important;
+}
+
+a:hover.strt-text-blue {
+    color: #108bc0 !important;
+}
+
+.strt-text-yellow {
+    color: #f7b233 !important;
+}
+
+a:hover.strt-text-yellow {
+    color: #dd9819 !important;
+}
+
+.strt-text-green {
+    color: #96bd1f !important;
+}
+
+a:hover.strt-text-green {
+    color: #7fa314 !important;
+}
+
+.strt-text-gray {
+    color: #757575 !important;
+}
+
+a:hover.strt-text-gray {
+    color: #636363 !important;
+}
+
+/* paragraph */
+.strt-line-height-1 {
+    line-height: 1;
+}
+
+.strt-line-height-1_4 {
+    line-height: 1.4;
+}
+
+.strt-line-height-1_45 {
+    line-height: 1.45;
+}
+
+.strt-line-height-1_5 {
+    line-height: 1.5;
+}
+
+/********** Custom bootstrap components **********/
+/* button */
+.btn {
+    font-size: 11pt;
+}
+
+/* stretched link */
+.card-body+.stretched-link::after {
+    background-color: rgba(70, 100, 150, 0.2) !important;
+    opacity: 0;
+    transition: .3s;
+}
+
+.card-body+.stretched-link.changed::after {
+    opacity: 1;
+}
+
+
+/* A modal over another modal */
+.modal:nth-of-type(even) {
+    z-index: 1052 !important;
+}
+
+.modal-backdrop.show:nth-of-type(even) {
+    z-index: 1051 !important;
+}
+
+/********** Miscellaneous **********/
