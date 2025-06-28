@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @author Xanders
- * @see https://www.linkedin.com/in/xanders-samoth-b2770737/
+ * @see https://team.xsamtech.com/xanderssamoth
  */
 class Notification extends JsonResource
 {
@@ -14,20 +15,24 @@ class Notification extends JsonResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'notification_url' => $this->notification_url,
-            'notification_content' => $this->notification_content,
-            'icon' => $this->icon,
-            'color' => $this->color,
-            'status' => Status::make($this->status),
-            'created_at' => timeAgo($this->created_at->format('Y-m-d H:i:s')),
+            'type' => $this->type,
+            'from' => User::make($this->from_user),
+            'is_read' => $this->is_read,
+            'product' => Product::make($this->product),
+            'crowdfunding' => Crowdfunding::make($this->crowdfunding),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
-            'user_id' => $this->user_id
+            'created_at_explicit' => $this->created_at->format('Y') == date('Y') ? explicitDayMonth($this->created_at->format('Y-m-d H:i:s')) : explicitDate($this->created_at->format('Y-m-d H:i:s')),
+            'updated_at_explicit' => $this->updated_at->format('Y') == date('Y') ? explicitDayMonth($this->updated_at->format('Y-m-d H:i:s')) : explicitDate($this->updated_at->format('Y-m-d H:i:s')),
+            'created_at_ago' => timeAgo($this->created_at->format('Y-m-d H:i:s')),
+            'updated_at_ago' => timeAgo($this->updated_at->format('Y-m-d H:i:s')),
+            'to_user_id' => $this->to_user_id
         ];
     }
 }

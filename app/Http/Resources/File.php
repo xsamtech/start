@@ -26,7 +26,7 @@ class File extends JsonResource
             'file_type' => $this->file_type,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
-            'panel_id' => $this->panel_id
+            'product_id' => $this->product_id
         ];
     }
 }

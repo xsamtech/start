@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @author Xanders
- * @see https://www.linkedin.com/in/xanders-samoth-b2770737/
+ * @see https://team.xsamtech.com/xanderssamoth
  */
 class Payment extends JsonResource
 {
@@ -28,13 +28,12 @@ class Payment extends JsonResource
             'phone' => $this->phone,
             'currency' => $this->currency,
             'channel' => $this->channel,
-            'type' => Type::make($this->type),
+            'type' => $this->type,
+            'status' => $this->status,
             'cart' => Cart::make($this->cart),
-            'status' => Status::make($this->status),
-            'donation' => Donation::make($this->donation),
             'created_at' => timeAgo($this->created_at->format('Y-m-d H:i:s')),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
-            'user_id' => $this->user_id
+            'cart_id' => $this->cart_id
         ];
     }
 }
