@@ -36,6 +36,16 @@ class PublicController extends Controller
     }
 
     /**
+     * GET: Home page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index()
+    {
+        return view('home');
+    }
+
+    /**
      * GET: Create symbolic link
      *
      * @return \Illuminate\View\View
