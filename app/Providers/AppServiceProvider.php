@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +28,13 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         view()->composer('*', function ($view) {
+            $products = Product::where('type', 'product')->orderByDesc('created_at')->limit(5)->get();
+            $services = Product::where('type', 'service')->orderByDesc('created_at')->limit(5)->get();
+            $projects = Product::where('type', 'project')->orderByDesc('created_at')->limit(5)->get();
+
+            $view->with('products', $products);
+            $view->with('services', $services);
+            $view->with('projects', $projects);
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));
         });

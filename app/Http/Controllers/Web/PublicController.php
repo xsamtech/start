@@ -24,7 +24,7 @@ class PublicController extends Controller
     /**
      * GET: Change language
      *
-     * @param  $locale
+     * @param  string  $locale
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeLanguage($locale)
@@ -36,16 +36,6 @@ class PublicController extends Controller
     }
 
     /**
-     * GET: Home page
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
-    {
-        return view('home');
-    }
-
-    /**
      * GET: Create symbolic link
      *
      * @return \Illuminate\View\View
@@ -53,6 +43,33 @@ class PublicController extends Controller
     public function symlink()
     {
         return view('symlink');
+    }
+
+    /**
+     * GET: Products page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function products()
+    {
+        return view('products');
+    }
+
+    /**
+     * GET: Home page
+     *
+     * @param  string  $entity
+     * @return \Illuminate\View\View
+     */
+    public function productEntity($entity)
+    {
+        $entity_title = null;
+
+        if ($entity == 'project') {
+            $entity_title = __('miscellaneous.menu.public.products.projects');
+        }
+
+        return view('products');
     }
 
 }
