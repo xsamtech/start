@@ -23,9 +23,10 @@
         <link rel="manifest" href="{{ asset('assets/img/favicon/site.webmanifest') }}">
 
         <!-- Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
+        {{-- <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> --}}
+        <link href='//fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic%7CPT+Gudea:400,700,400italic%7CPT+Oswald:400,700,300' rel='stylesheet' id="googlefont">
 
         <!-- Font Icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -34,7 +35,6 @@
 
         <!-- Stylesheet -->
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/venedor/font-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/prettyPhoto.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/revslider.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/owl.carousel.css') }}">
@@ -83,11 +83,11 @@
                                         <div class="btn-group dropdown-money">
                                             <button type="button" class="btn btn-custom dropdown-toggle"
                                                 data-toggle="dropdown">
-                                                <span class="hide-for-xs">US Dollar</span><span class="hide-for-lg">$</span>
+                                                <span class="hide-for-xs">US Dollar</span><span class="hide-for-lg">USD</span>
                                             </button>
                                             <ul class="dropdown-menu pull-right" role="menu">
-                                                <li><a href="#" id="USD"><span class="hide-for-xs">US Dollar</span><span class="hide-for-lg"> (USD)</span></a></li>
-                                                <li><a href="#" id="CDF"><span class="hide-for-xs">Franc congolais</span><span class="hide-for-lg"> (CDF)</span></a></li>
+                                                <li><a href="#" id="USD"><span class="hide-for-xs">US Dollar</span><span class="hide-for-lg">USD</span></a></li>
+                                                <li><a href="#" id="CDF"><span class="hide-for-xs">Franc congolais</span><span class="hide-for-lg">CDF</span></a></li>
                                             </ul>
                                         </div><!-- End .btn-group -->
                                         <div class="btn-group dropdown-language">
@@ -122,7 +122,7 @@
                                     </div><!-- End .header-top-dropdowns -->
 
                                     <div class="header-text-container pull-right">
-                                        <p class="header-text">@lang('miscellaneous.welcome_title', ['user' => 'Xanders Samoth'])!</p>
+                                        <p class="header-text">@lang('miscellaneous.welcome_title', ['user' => 'Xanders Samoth'])</p>
                                     </div><!-- End .pull-right -->
                                 </div><!-- End .header-top-right -->
                             </div><!-- End .col-md-12 -->
@@ -137,15 +137,15 @@
                                 <h1 class="logo clearfix">
                                     <span>@lang('miscellaneous.start')</span>
                                     <a href="{{ route('home') }}" title="@lang('miscellaneous.start')">
-                                        <img src="{{ asset('assets/img/brand.png') }}" alt="START" width="238" height="75">
+                                        <img src="{{ asset('assets/img/brand.png') }}" alt="START" width="250" height="79">
                                     </a>
                                 </h1>
                             </div><!-- End .col-md-5 -->
                             <div class="col-md-7 col-sm-7 col-xs-12 header-inner-right">
                                 <div class="header-box contact-infos pull-right">
-                                    <ul>
-                                        <li><i class="bi bi-envelope"></i>contact@start.com</li>
-                                    </ul>
+    								<ul>
+    									<li><span class="header-box-icon header-box-icon-email"></span><a href="mailto:contact@start.com">contact@start.com</a></li>
+    								</ul>
                                 </div><!-- End .contact-infos -->
 
                                 <div class="header-box contact-phones pull-right clearfix">

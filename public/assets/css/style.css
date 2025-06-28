@@ -31,147 +31,151 @@ textarea {
 /********** Custom colors **********/
 /* background */
 .strt-bg-chocolate-1 {
-    background-color: #e3106f !important;
+    background-color: #dfac3d !important;
 }
 
 .strt-bg-chocolate-1-transparent {
-    background-color: rgba(227, 16, 111, 0.5) !important;
+    background-color: rgba(223, 172, 61, 0.5) !important;
 }
 
-.strt-bg-blue {
-    background-color: #0f9cd8 !important;
+.strt-bg-chocolate-2 {
+    background-color: #b67915 !important;
 }
 
-.strt-bg-blue-transparent {
-    background-color: rgba(15, 156, 116, 0.5) !important;
+.strt-bg-chocolate-2-transparent {
+    background-color: rgba(182, 121, 21, 0.5) !important;
 }
 
-a.strt-bg-blue-transparent:hover {
+a.strt-bg-chocolate-2-transparent:hover {
     transition: .3s;
-    background-color: rgba(15, 156, 116, 0.7) !important;
+    background-color: rgba(182, 121, 21, 0.7) !important;
 }
 
-.strt-bg-yellow {
-    background-color: #f7b233 !important;
+.strt-bg-chocolate-3 {
+    background-color: #732f0b !important;
 }
 
-.strt-bg-yellow-transparent {
-    background-color: rgba(247, 178, 51, 0.5) !important;
+.strt-bg-chocolate-3-transparent {
+    background-color: rgba(115, 47, 11, 0.5) !important;
+}
+
+a.strt-bg-chocolate-3-transparent:hover {
+    transition: .3s;
+    background-color: rgba(115, 47, 11, 0.7) !important;
 }
 
 .strt-bg-green {
-    background-color: #96bd1f !important;
+    background-color: #04471a !important;
 }
 
 .strt-bg-green-transparent {
-    background-color: rgba(150, 189, 31, 0.5) !important;
+    background-color: rgba(4, 71, 26, 0.5) !important;
 }
 
-.strt-bg-gray {
-    background-color: #878787 !important;
+a.strt-bg-green-transparent:hover {
+    transition: .3s;
+    background-color: rgba(4, 71, 26, 0.7) !important;
 }
 
-.strt-bg-gray-transparent {
-    background-color: rgba(135, 135, 135, 0.5) !important;
+.strt-bg-black {
+    background-color: #000 !important;
+}
+
+.strt-bg-black-transparent {
+    background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
 /* button */
-.strt-btn-pink {
-    background-color: #e3106f !important;
+.strt-btn-chocolate-1 {
+    background-color: #dfac3d !important;
     color: #fff !important;
-    border-color: #da0e6a !important;
+    border-color: #cf9f38 !important;
 }
 
-.strt-btn-pink:hover {
-    background-color: #fff !important;
+.strt-btn-chocolate-1:hover {
+    background-color: #000 !important;
     color: #000 !important;
-    border-color: #fff !important;
+    border-color: #000 !important;
 }
 
-.strt-btn-blue {
-    background-color: #0f9cd8 !important;
+.strt-btn-chocolate-2 {
+    background-color: #b67915 !important;
     color: #fff !important;
-    border-color: #0d94ce !important;
+    border-color: #a76e13 !important;
 }
 
-.strt-btn-blue:hover {
-    background-color: #878787 !important;
-    border-color: #878787 !important;
+.strt-btn-chocolate-2:hover {
+    background-color: #000 !important;
+    border-color: #000 !important;
 }
 
-.strt-btn-yellow {
-    background-color: #f7b233 !important;
+.strt-btn-chocolate-3 {
+    background-color: #732f0b !important;
     color: #000 !important;
-    border-color: #f7b233 !important;
+    border-color: #662a0a !important;
 }
 
-.strt-btn-yellow:hover {
-    background-color: #878787 !important;
+.strt-btn-chocolate-3:hover {
+    background-color: #000 !important;
     color: #fff !important;
-    border-color: #878787 !important;
+    border-color: #000 !important;
 }
 
 .strt-btn-green {
-    background-color: #96bd1f !important;
+    background-color: #04471a !important;
     color: #000 !important;
-    border-color: #96bd1f !important;
+    border-color: #033b16 !important;
 }
 
 .strt-btn-green:hover {
-    background-color: #878787 !important;
+    background-color: #000 !important;
     color: #fff !important;
-    border-color: #878787 !important;
+    border-color: #000 !important;
 }
 
-.strt-btn-gray {
-    background-color: #cfcfcf !important;
-    color: #000 !important;
-    border-color: #cfcfcf !important;
+.strt-btn-black {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #000 !important;
 }
 
-.strt-btn-gray:hover {
-    background-color: #878787 !important;
-    border-color: #878787 !important;
+.strt-btn-black:hover {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-color: #000 !important;
 }
 
 /* text */
-.strt-text-pink {
-    color: #e3106f !important;
-}
-a:hover.strt-text-pink {
-    color: #d30f67 !important;
+.strt-text-chocolate-1 {
+    color: #dfac3d !important;
 }
 
-.strt-text-blue {
-    color: #0f9cd8 !important;
+a:hover.strt-text-chocolate-1 {
+    color: #cf9f38 !important;
 }
 
-a:hover.strt-text-blue {
-    color: #108bc0 !important;
+.strt-text-chocolate-2 {
+    color: #b67915 !important;
 }
 
-.strt-text-yellow {
-    color: #f7b233 !important;
+a:hover.strt-text-chocolate-2 {
+    color: #a76e13 !important;
 }
 
-a:hover.strt-text-yellow {
-    color: #dd9819 !important;
+.strt-text-chocolate-3 {
+    color: #732f0b !important;
+}
+
+a:hover.strt-text-chocolate-3 {
+    color: #662a0a !important;
 }
 
 .strt-text-green {
-    color: #96bd1f !important;
+    color: #04471a !important;
 }
 
 a:hover.strt-text-green {
-    color: #7fa314 !important;
-}
-
-.strt-text-gray {
-    color: #757575 !important;
-}
-
-a:hover.strt-text-gray {
-    color: #636363 !important;
+    color: #033b16 !important;
 }
 
 /* paragraph */

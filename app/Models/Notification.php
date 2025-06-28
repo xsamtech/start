@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @author Xanders
- * @see https://www.linkedin.com/in/xanders-samoth-b2770737/
+ * @see https://team.xsamtech.com/xanderssamoth
  */
 class Notification extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory;
+
+    protected $table = 'notifications';
 
     /**
      * The attributes that are mass assignable.
@@ -22,25 +24,46 @@ class Notification extends Model
     protected $guarded = [];
 
     /**
-     * Translatable properties.
-     */
-    protected $translatable = ['notification_content'];
-
-    /**
      * ONE-TO-MANY
-     * One status for several notifications
+     * One from_user for several notifications
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function status()
+    public function from_user(): BelongsTo
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(User::class, 'from_user_id');
     }
 
     /**
      * ONE-TO-MANY
-     * One user for several notifications
+     * One to_user for several notifications
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function to_user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'to_user_id');
+    }
+
+    /**
+     * ONE-TO-MANY
+     * One product for several notifications
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    /**
+     * ONE-TO-MANY
+     * One crowdfunding for several notifications
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function crowdfunding(): BelongsTo
+    {
+        return $this->belongsTo(Crowdfunding::class, 'crowdfunding_id');
     }
 }

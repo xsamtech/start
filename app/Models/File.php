@@ -25,10 +25,10 @@ class File extends Model
 
     /**
      * ONE-TO-MANY
-     * One panel for several files
+     * One product for several files
      */
-    public function panel(): BelongsTo
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(Panel::class);
+        return $this->belongsTo(Product::class);
     }
 }

@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @author Xanders
- * @see https://www.linkedin.com/in/xanders-samoth-b2770737/
+ * @see https://team.xsamtech.com/xanderssamoth
  */
 class Session extends Model
 {
     use HasFactory;
 
+    protected $table = 'sessions';
 	protected $primaryKey = 'id';
 	public $incrementing = false;
 	protected $keyType = 'string';
@@ -25,19 +27,10 @@ class Session extends Model
     protected $guarded = [];
 
     /**
-     * MANY-TO-MANY
-     * Several medias for several sessions
-     */
-    public function medias()
-    {
-        return $this->belongsToMany(Media::class)->orderByPivot('created_at', 'desc')->withTimestamps()->withPivot('is_viewed');
-    }
-
-    /**
      * ONE-TO-MANY
      * One user for several sessions
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

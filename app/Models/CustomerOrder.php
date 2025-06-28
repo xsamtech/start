@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @author Xanders
@@ -35,28 +34,10 @@ class CustomerOrder extends Model
 
     /**
      * ONE-TO-MANY
-     * One panel for several customer_orders
+     * One product for several customer_orders
      */
-    public function panel(): BelongsTo
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(Panel::class);
-    }
-
-    /**
-     * ONE-TO-MANY
-     * One user for several customer_orders
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * MANY-TO-ONE
-     * Several expenses for a panel
-     */
-    public function expenses(): HasMany
-    {
-        return $this->hasMany(Expense::class);
+        return $this->belongsTo(Product::class);
     }
 }

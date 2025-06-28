@@ -45,19 +45,20 @@
 -----------------------------------------------------
 ====================================================*/
 
-/* @import url(http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic|Gudea:400,700,400italic|Oswald:400,700,300); */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic|Gudea:400,700,400italic|Oswald:400,700,300);
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); */
 
 /* =============================================
 -------------------  1.General ---------------
 ==============================================*/
 
 body {
-	font-family: "Montserrat", sans-serif;
+	/* font-family: "Montserrat", sans-serif;
 	font-optical-sizing: auto;
 	font-weight: 500;
-	font-style: normal;
-	color: #7c807e;
+	font-style: normal; */
+	font: 15px/1.5 Arial, sans-serif;
+	color: #3c3d3d;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background-color: #dcdcdc;
@@ -65,123 +66,123 @@ body {
 
 /* Pattern backgrounds for boxed version */
 .pattern1 {
-	background: url('../images/patterns/pattern1.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern1.png') repeat;
 }
 
 .pattern2 {
-	background: url('../images/patterns/pattern2.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern2.png') repeat;
 }
 
 .pattern3 {
-	background: url('../images/patterns/pattern3.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern3.png') repeat;
 }
 
 .pattern4 {
-	background: url('../images/patterns/pattern4.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern4.png') repeat;
 }
 
 .pattern5 {
-	background: url('../images/patterns/pattern5.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern5.png') repeat;
 }
 
 .pattern6 {
-	background: url('../images/patterns/pattern6.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern6.png') repeat;
 }
 
 .pattern7 {
-	background: url('../images/patterns/pattern7.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern7.png') repeat;
 }
 
 .pattern8 {
-	background: url('../images/patterns/pattern8.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern8.png') repeat;
 }
 
 .pattern9 {
-	background: url('../images/patterns/pattern9.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern9.png') repeat;
 }
 
 .pattern10 {
-	background: url('../images/patterns/pattern10.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern10.png') repeat;
 }
 
 .pattern11 {
-	background: url('../images/patterns/pattern11.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern11.png') repeat;
 }
 
 .pattern12 {
-	background: url('../images/patterns/pattern12.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern12.png') repeat;
 }
 
 .pattern13 {
-	background: url('../images/patterns/pattern13.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern13.png') repeat;
 }
 
 .pattern14 {
-	background: url('../images/patterns/pattern14.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern14.png') repeat;
 }
 
 .pattern15 {
-	background: url('../images/patterns/pattern15.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern15.png') repeat;
 }
 
 .pattern16 {
-	background: url('../images/patterns/pattern16.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern16.png') repeat;
 }
 
 .pattern17 {
-	background: url('../images/patterns/pattern17.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern17.png') repeat;
 }
 
 .pattern18 {
-	background: url('../images/patterns/pattern18.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern18.png') repeat;
 }
 
 .pattern19 {
-	background: url('../images/patterns/pattern19.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern19.png') repeat;
 }
 
 .pattern20 {
-	background: url('../images/patterns/pattern20.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern20.png') repeat;
 }
 
 .pattern21 {
-	background: url('../images/patterns/pattern21.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern21.png') repeat;
 }
 
 .pattern22 {
-	background: url('../images/patterns/pattern22.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern22.png') repeat;
 }
 
 .pattern23 {
-	background: url('../images/patterns/pattern23.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern23.png') repeat;
 }
 
 .pattern24 {
-	background: url('../images/patterns/pattern24.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern24.png') repeat;
 }
 
 .pattern25 {
-	background: url('../images/patterns/pattern25.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern25.png') repeat;
 }
 
 .pattern26 {
-	background: url('../images/patterns/pattern26.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern26.png') repeat;
 }
 
 .pattern27 {
-	background: url('../images/patterns/pattern27.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern27.png') repeat;
 }
 
 .pattern28 {
-	background: url('../images/patterns/pattern28.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern28.png') repeat;
 }
 
 .pattern29 {
-	background: url('../images/patterns/pattern29.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern29.png') repeat;
 }
 
 .pattern30 {
-	background: url('../images/patterns/pattern30.png') repeat;
+	background: url('../../../template/public/images/patterns/pattern30.png') repeat;
 }
 
 #wrapper {
@@ -375,7 +376,7 @@ blockquote:before {
 	top: 11px;
 	width: 32px;
 	height: 26px;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-repeat: no-repeat;
 	background-position: 0 -150px;
 }
@@ -1580,7 +1581,7 @@ select.input-lg {
 	width: 30px;
 	height: 30px;
 	background-color: #fafafa;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-position: -146px -290px;
 	background-repeat: no-repeat;
 	border: 1px solid #dcdcdc;
@@ -2023,7 +2024,7 @@ select.input-lg {
 	position: absolute;
 	left: 0;
 	top: 0;
-	background: url(../images/sprites/sprite.png) no-repeat;
+	background: url(../../../template/public/images/sprites/sprite.png) no-repeat;
 }
 
 .top-icon.top-icon-pencil {
@@ -2484,7 +2485,7 @@ select.input-lg {
 	position: absolute;
 	left: 0;
 	top: 1px;
-	background: url(../images/sprites/sprite.png) no-repeat;
+	background: url(../../../template/public/images/sprites/sprite.png) no-repeat;
 	width: 22px;
 	height: 18px;
 }
@@ -2545,7 +2546,7 @@ select.input-lg {
 	display: block;
 	width: 100%;
 	height: 12px;
-	background: url('../images/header6-shadow.png') no-repeat center center;
+	background: url('../../../template/public/images/header6-shadow.png') no-repeat center center;
 	position: absolute;
 	left: 0;
 	top: 100%;
@@ -2774,7 +2775,7 @@ select.input-lg {
 
 #main-nav-container #main-nav .menu li .mega-menu .mega-menu-list li {
 	text-transform: capitalize;
-	background-image: url(../images/sprites/menu-list-type.png);
+	background-image: url(../../../template/public/images/sprites/menu-list-type.png);
 	background-repeat: no-repeat;
 	background-position: left center;
 	padding: 8px 0 8px 16px;
@@ -2958,7 +2959,7 @@ select.input-lg {
 	font: 400 15px/21px Arial, sans-serif;
 	text-transform: capitalize;
 	padding: 0 0 0 15px;
-	background-image: url(../images/sprites/menu-list-type.png);
+	background-image: url(../../../template/public/images/sprites/menu-list-type.png);
 	background-repeat: no-repeat;
 	background-position: left center;
 	width: 100%;
@@ -2992,7 +2993,7 @@ select.input-lg {
 	font-weight: 400;
 	z-index: 1000;
 	top: 0;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-repeat: no-repeat;
 
 }
@@ -3059,7 +3060,7 @@ select.input-lg {
 	width: 35px;
 	height: 35px;
 	background-color: #444645;
-	background-image: url(../images/sprites/responsive-menu-icon.png);
+	background-image: url(../../../template/public/images/sprites/responsive-menu-icon.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 	vertical-align: top;
@@ -3170,7 +3171,7 @@ select.input-lg {
 #quick-search {
 	width: 35px;
 	height: 35px;
-	background-image: url(../images/sprites/sprite.png);
+	background-image: url(../../../template/public/images/sprites/sprite.png);
 	background-position: 0 -116px;
 	border: none;
 }
@@ -3438,7 +3439,7 @@ select.input-lg {
 	position: absolute;
 	left: 3px;
 	top: 0;
-	background-image: url(../images/sprites/sprite.png);
+	background-image: url(../../../template/public/images/sprites/sprite.png);
 	background-position: -35px -116px;
 	border: none;
 }
@@ -4161,13 +4162,13 @@ parent's font-size:0
 	width: 94px;
 	height: 16px;
 	display: inline-block;
-	background: url(../images/sprites/ratings.png) no-repeat;
+	background: url(../../../template/public/images/sprites/ratings.png) no-repeat;
 	background-position: 0 0;
 }
 
 .ratings .ratings-result {
 	height: 16px;
-	background: url(../images/sprites/ratings.png) no-repeat;
+	background: url(../../../template/public/images/sprites/ratings.png) no-repeat;
 	background-position: 0 -16px;
 }
 
@@ -4246,7 +4247,7 @@ parent's font-size:0
 }
 
 .item-add-btn.icon-cart {
-	background-image: url(../images/sprites/cart.png);
+	background-image: url(../../../template/public/images/sprites/cart.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 }
@@ -4562,7 +4563,7 @@ Bootstrap Breadcrumb style overwrite
 	-webkit-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.45);
 	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.45);
 	background-color: #04471a;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-repeat: no-repeat;
 	position: absolute;
 	top: 50%;
@@ -4752,7 +4753,7 @@ Bootstrap Breadcrumb style overwrite
 	width: 51px;
 	height: 37px;
 	background-color: #fafafa;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-repeat: no-repeat;
 	border: 1px solid #e0e0e0;
 	-webkit-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
@@ -4864,7 +4865,7 @@ Bootstrap Breadcrumb style overwrite
 	margin-top: -20px;
 	width: 100%;
 	height: 37px;
-	background-image: url('../images/category-shadow.png');
+	background-image: url('../../../template/public/images/category-shadow.png');
 	background-repeat: no-repeat;
 	background-size: 100%;
 	z-index: 1;
@@ -5148,7 +5149,7 @@ Bootstrap Breadcrumb style overwrite
 	background-color: #f2f2f2;
 	border-color: #e0e0e0;
 	margin: 0;
-	background-image: url(../images/sprites/category-icons.png);
+	background-image: url(../../../template/public/images/sprites/category-icons.png);
 	background-repeat: no-repeat;
 
 }
@@ -5167,7 +5168,7 @@ Bootstrap Breadcrumb style overwrite
 .category-toolbar .icon-button.active {
 	background-color: #84bb26;
 	border-color: #84bb26;
-	background-image: url(../images/sprites/category-icons-active.png);
+	background-image: url(../../../template/public/images/sprites/category-icons-active.png);
 }
 
 .category-toolbar .icon-button.active {
@@ -5938,7 +5939,7 @@ noUi-target,
 .footerslider .flex-direction-nav a {
 	display: block;
 	background-color: #fafafa;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-repeat: no-repeat;
 	border: 1px solid #e0e0e0;
 	width: 31px;
@@ -6005,7 +6006,7 @@ noUi-target,
 	top: 22px;
 	width: 32px;
 	height: 26px;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-repeat: no-repeat;
 	background-position: 0 -150px;
 }
@@ -6019,7 +6020,7 @@ noUi-target,
 	margin-top: -1px;
 	width: 36px;
 	height: 21px;
-	background: url(../images/testimonial-arrow.png) no-repeat center center;
+	background: url(../../../template/public/images/testimonial-arrow.png) no-repeat center center;
 }
 
 .sidebar .widget .testimonials-list li figure img {
@@ -6299,7 +6300,7 @@ noUi-target,
 	text-indent: -9999px;
 	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5);
 	-webkit-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5);
-	background-image: url(../images/sprites/product-nav.png);
+	background-image: url(../../../template/public/images/sprites/product-nav.png);
 	background-position: -1px 0;
 }
 
@@ -6453,7 +6454,7 @@ noUi-target,
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
 	font-size: 16px;
 	border-radius: 2px;
-	background-image: url(../images/sprites/item-icons.png);
+	background-image: url(../../../template/public/images/sprites/item-icons.png);
 	background-repeat: no-repeat;
 	transition: all 0.4s;
 	-webkit-transition: all 0.4s;
@@ -6716,7 +6717,7 @@ noUi-target,
 	margin-left: 18px;
 	border: 1px solid #dcdcdc;
 	background-color: #fafafa;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-repeat: no-repeat;
 	background-position: 0 -290px;
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
@@ -7007,7 +7008,7 @@ noUi-target,
 	height: 36px;
 	background-color: #a8bf00;
 	background-repeat: no-repeat;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	border: 1px solid #a8bf00;
 	border-radius: 2px;
 	text-align: center;
@@ -7047,7 +7048,7 @@ noUi-target,
 	height: 24px;
 	background-color: transparent;
 	background-repeat: no-repeat;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	margin-right: 5px;
 	vertical-align: middle;
 }
@@ -7183,12 +7184,12 @@ noUi-target,
 
 .footerslider .ratings {
 	width: 86px;
-	background: url(../images/sprites/ratings-small.png) no-repeat;
+	background: url(../../../template/public/images/sprites/ratings-small.png) no-repeat;
 	background-position: 0 0;
 }
 
 .footerslider .ratings .ratings-result {
-	background: url(../images/sprites/ratings-small.png) no-repeat;
+	background: url(../../../template/public/images/sprites/ratings-small.png) no-repeat;
 	background-position: 0 -16px;
 }
 
@@ -7282,7 +7283,7 @@ noUi-target,
 	width: 35px;
 	height: 25px;
 	margin-top: -12.5px;
-	background-image: url('../images/sprites/twitterfeednav.png');
+	background-image: url('../../../template/public/images/sprites/twitterfeednav.png');
 	margin-left: 2px;
 	border-radius: 3px;
 	padding: 0;
@@ -7383,7 +7384,7 @@ noUi-target,
 
 #footer .links li {
 	padding-left: 16px;
-	background-image: url(../images/sprites/footer-menu-list-type.png);
+	background-image: url(../../../template/public/images/sprites/footer-menu-list-type.png);
 	background-repeat: no-repeat;
 	background-position: left center;
 	line-height: 35px;
@@ -7483,7 +7484,7 @@ noUi-target,
 	display: block;
 	width: 36px;
 	height: 36px;
-	background-image: url(../images/sprites/sprite.png);
+	background-image: url(../../../template/public/images/sprites/sprite.png);
 	background-color: #626664;
 	background-repeat: no-repeat;
 	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
@@ -7769,7 +7770,7 @@ html[xmlns] .slides {
 	-ms-transition: background-color .3s ease;
 	-o-transition: background-color .3s ease;
 	background-color: #fafafa;
-	background-image: url('../images/sprites/sprite.png');
+	background-image: url('../../../template/public/images/sprites/sprite.png');
 	background-repeat: no-repeat;
 	border: 1px solid #e0e0e0;
 	margin-top: -22.5px;
@@ -7883,7 +7884,7 @@ html[xmlns] .slides {
 #page-header {
 	background-size: cover;
 	-webkit-background-size: cover;
-	background-image: url('../images/aboutus-hedaerbg.jpg');
+	background-image: url('../../../template/public/images/aboutus-hedaerbg.jpg');
 	background-repeat: no-repeat;
 	background-position: top center;
 	text-align: center;
@@ -7997,7 +7998,7 @@ html[xmlns] .slides {
 	display: block;
 	width: 124px;
 	height: 124px;
-	background-image: url('../images/sprites/aboutus-icons.png');
+	background-image: url('../../../template/public/images/sprites/aboutus-icons.png');
 	background-repeat: no-repeat;
 	margin: 0 auto;
 	margin-bottom: 20px;
@@ -8044,7 +8045,7 @@ html[xmlns] .slides {
 #testimonials-section {
 	background-size: cover;
 	-webkit-background-size: cover;
-	background-image: url('../images/testimonialsbg.jpg');
+	background-image: url('../../../template/public/images/testimonialsbg.jpg');
 	background-repeat: no-repeat;
 	background-position: top center;
 	text-align: center;
@@ -8192,7 +8193,7 @@ html[xmlns] .slides {
 
 
 #content.no-content {
-	background-image: url('../images/404.jpg');
+	background-image: url('../../../template/public/images/404.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
 	-webkit-background-size: cover;
@@ -8208,7 +8209,7 @@ html[xmlns] .slides {
 	left: 50%;
 	margin-left: -360px;
 	top: 40px;
-	background-image: url('../images/404-comment.png');
+	background-image: url('../../../template/public/images/404-comment.png');
 	background-repeat: no-repeat;
 	text-align: center;
 	padding-top: 50px;

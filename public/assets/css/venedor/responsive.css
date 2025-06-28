@@ -1456,7 +1456,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 
 	.service-icon {
-		background-image: url('../images/sprites/aboutus-icons@2x.png');
+		background-image: url('../../../template/public/images/sprites/aboutus-icons@2x.png');
 		background-size: 496px 248px;
 		-webkit-background-size: 496px 248px;
 	}
@@ -1479,20 +1479,20 @@ only screen and (min-device-pixel-ratio: 1.5) {
 	.input-icon,
 	.social-icon,
 	.flex-direction-nav a {
-		background-image:url('../images/sprites/sprite@2x.png');
+		background-image:url('../../../template/public/images/sprites/sprite@2x.png');
 		background-size: 400px 409px;
 		-webkit-background-size: 400px 409px;
 	}
 
 	.twitter_feed .flex-direction-nav a  { 
-		background-image: url('../images/sprites/twitterfeednav@2x.png');
+		background-image: url('../../../template/public/images/sprites/twitterfeednav@2x.png');
 		background-size: 70px 50px;
 		-webkit-background-size: 70px 50px;
 	}
 
 	#responsive-nav-button #responsive-nav-button-icon {
 		background-color:#444645;
-		background-image:url(../images/sprites/responsive-menu-icon@2x.png);
+		background-image:url(../../../template/public/images/sprites/responsive-menu-icon@2x.png);
 		background-repeat:no-repeat;
 		background-position:center center;
 		background-size: 21px 21px;
@@ -1500,31 +1500,31 @@ only screen and (min-device-pixel-ratio: 1.5) {
 	}
 
 	.ratings {
-		background-image: url(../images/sprites/ratings@2x.png);
+		background-image: url(../../../template/public/images/sprites/ratings@2x.png);
 		background-size: 94px 32px;
 		-webkit-background-size: 94px 32px;
 	}
 
 	.ratings .ratings-result {
-		background-image: url(../images/sprites/ratings@2x.png);
+		background-image: url(../../../template/public/images/sprites/ratings@2x.png);
 		background-size: 94px 32px;
 		-webkit-background-size: 94px 32px;
 	}
 
 	.footerslider .ratings {
-		background-image: url(../images/sprites/ratings-small@2x.png);
+		background-image: url(../../../template/public/images/sprites/ratings-small@2x.png);
 		background-size: 86px 32px;
 		-webkit-background-size: 86px 32px;
 	}
 
 	.footerslider .ratings .ratings-result {
-		background-image: url(../images/sprites/ratings-small@2x.png);
+		background-image: url(../../../template/public/images/sprites/ratings-small@2x.png);
 		background-size: 86px 32px;
 		-webkit-background-size: 86px 32px;
 	}
 
 	.item-add-btn.icon-cart {
-		background-image: url(../images/sprites/cart@2x.png);
+		background-image: url(../../../template/public/images/sprites/cart@2x.png);
 		background-size:22px 18px;
 		-webkit-background-size:22px 18px;
 		background-repeat:no-repeat;
@@ -1532,7 +1532,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 	}
 
 	.category-toolbar .icon-button {
-		background-image: url(../images/sprites/category-icons@2x.png);
+		background-image: url(../../../template/public/images/sprites/category-icons@2x.png);
 		background-size:70px 30px;
 		-webkit-background-size:70px 30px;
 	}
@@ -1541,46 +1541,46 @@ only screen and (min-device-pixel-ratio: 1.5) {
 	.category-toolbar .icon-button:focus,
 	.category-toolbar .icon-button:active,
 	.category-toolbar .icon-button.active {
-		background-image: url(../images/sprites/category-icons-active@2x.png);
+		background-image: url(../../../template/public/images/sprites/category-icons-active@2x.png);
 		background-size:70px 30px;
 		-webkit-background-size:70px 30px;
 	}
 
 
 	.elastislide-wrapper nav span {
-		background-image: url(../images/sprites/product-nav@2x.png);
+		background-image: url(../../../template/public/images/sprites/product-nav@2x.png);
 		background-size: 60px 50px;
 		-webkit-background-size: 60px 50px;
 	}
 
 	.icon-button {
-		background-image: url(../images/sprites/item-icons@2x.png);
+		background-image: url(../../../template/public/images/sprites/item-icons@2x.png);
 		background-size:70px 35px;
 		-webkit-background-size:70px 35px;
 	}
 	
 	#main-nav-container #main-nav .menu li .mega-menu .mega-menu-list li,
 	#main-nav-container #main-nav #responsive-nav ul li .mega-menu .mega-menu-list li {
-		background-image:url(../images/sprites/menu-list-type@2x.png);
+		background-image:url(../../../template/public/images/sprites/menu-list-type@2x.png);
 		background-size:6px 6px;
 		-webkit-background-size:6px 6px;
 	}
 	
 	#footer .links li {
-		background-image:url(../images/sprites/footer-menu-list-type@2x.png);
+		background-image:url(../../../template/public/images/sprites/footer-menu-list-type@2x.png);
 		background-size:6px 6px;
 		-webkit-background-size:6px 6px;
 	}
 
 	/* Custom selectbox retina*/
 	.sbToggle {
-		background-image: url(../images/sprites/selectbox@2x.png);
+		background-image: url(../../../template/public/images/sprites/selectbox@2x.png);
 		background-size:76px 38px;
 		-webkit-background-size:76px 38px;
 	}
 
 	.large-selectbox .sbToggle  { 
-		background-image: url(../images/sprites/selectbox-large@2x.png);
+		background-image: url(../../../template/public/images/sprites/selectbox-large@2x.png);
 		background-size:94px 47px;
 		-webkit-background-size:94px 47px;
 	}

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @author Xanders
- * @see https://www.linkedin.com/in/xanders-samoth-b2770737/
+ * @see https://team.xsamtech.com/xanderssamoth
  */
 class Payment extends Model
 {
@@ -22,46 +22,10 @@ class Payment extends Model
 
     /**
      * ONE-TO-MANY
-     * One type for several payments
-     */
-    public function type()
-    {
-        return $this->belongsTo(Type::class);
-    }
-
-    /**
-     * ONE-TO-MANY
-     * One status for several payments
-     */
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
-    }
-
-    /**
-     * ONE-TO-MANY
      * One cart for several payments
      */
     public function cart()
     {
         return $this->belongsTo(Cart::class);
-    }
-
-    /**
-     * ONE-TO-MANY
-     * One donation for several payments
-     */
-    public function donation()
-    {
-        return $this->belongsTo(Donation::class);
-    }
-
-    /**
-     * ONE-TO-MANY
-     * One user for several payments
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }
