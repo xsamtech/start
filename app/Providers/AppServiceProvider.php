@@ -28,9 +28,9 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         view()->composer('*', function ($view) {
-            $products = Product::where('type', 'product')->orderByDesc('created_at')->limit(5)->get();
-            $services = Product::where('type', 'service')->orderByDesc('created_at')->limit(5)->get();
-            $projects = Product::where('type', 'project')->orderByDesc('created_at')->limit(5)->get();
+            $products = Product::where('type', 'product')->limit(5)->orderBy('price', 'desc')->get();
+            $services = Product::where('type', 'service')->limit(5)->orderBy('price', 'desc')->get();
+            $projects = Product::where('type', 'project')->limit(5)->orderBy('price', 'desc')->get();
 
             $view->with('products', $products);
             $view->with('services', $services);
