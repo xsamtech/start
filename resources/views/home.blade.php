@@ -137,8 +137,8 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item6.jpg" alt="item1" class="item-image">
-                                                                <img src="images/products/item6-hover.jpg" alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item6.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
