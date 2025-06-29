@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * @author Xanders
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
 
     protected $table = 'categories';
 
@@ -22,6 +23,13 @@ class Category extends Model
      * @var array<int, string>
      */
     protected $guarded = [];
+
+    /**
+     * Translatable attributes.
+     *
+     * @var array<int, string>
+     */
+    protected $translatable = ['category_name', 'category_description'];
 
     /**
      * MANY-TO-ONE

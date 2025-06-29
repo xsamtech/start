@@ -1,274 +1,7 @@
-<!DOCTYPE html>
-<!--[if IE 8]> <html class="ie8"> <![endif]-->
-<!--[if IE 9]> <html class="ie9"> <![endif]-->
-<!--[if !IE]><!-->
-<html>
-<!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <!--[if IE]> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <![endif]-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="@lang('miscellaneous.description')">
-        <meta name="keywords" content="@lang('miscellaneous.keywords')">
-        <meta name="strt-url" content="{{ getWebURL() }}">
-        <meta name="strt-api-url" content="{{ getApiURL() }}">
-        <meta name="strt-visitor" content="{{ !empty($current_user) ? $current_user->id : null }}">
-        <meta name="strt-ref" content="{{ !empty($current_user) ? $current_user->api_token : null }}">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.app', ['page_title' => __('miscellaneous.menu.home')])
 
-        <!-- Favicon -->
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/favicon/apple-touch-icon.png') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicon/favicon-32x32.png') }}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicon/favicon-16x16.png') }}">
-        <link rel="manifest" href="{{ asset('assets/img/favicon/site.webmanifest') }}">
+@section('app-content')
 
-        <!-- Google Fonts -->
-        {{-- <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> --}}
-        <link href='//fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic%7CPT+Gudea:400,700,400italic%7CPT+Oswald:400,700,300' rel='stylesheet' id="googlefont">
-
-        <!-- Font Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css">
-
-        <!-- Stylesheet -->
-        <link rel="stylesheet" href="{{ asset('assets/css/venedor/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/venedor/prettyPhoto.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/venedor/revslider.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/venedor/owl.carousel.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/venedor/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/venedor/responsive.css') }}">
-
-        <!--- jQuery -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script>
-            window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')
-        </script>
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-
-        <style id="custom-style">
-            
-        </style>
-
-        <title>
-@if (!empty($page_title))
-            {{ $page_title }}
-@else
-            START
-@endif
-        </title>
-    </head>
-
-    <body>
-        <div id="wrapper">
-            <header id="header">
-                <div id="header-top">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="header-top-left">
-                                    <ul id="top-links" class="clearfix">
-                                        <li><a href="{{ route('account.home') }}" title="@lang('miscellaneous.menu.account.title')"><i class="bi bi-person" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.title')</span></a></li>
-                                        <li><a href="{{ route('account.entity', ['entity' => 'cart']) }}" title="@lang('miscellaneous.menu.account.cart')"><i class="bi bi-cart3" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.cart')</span></a></li>
-                                    </ul>
-                                </div><!-- End .header-top-left -->
-                                <div class="header-top-right">
-                                    <div class="header-top-dropdowns pull-right">
-                                        <div class="btn-group dropdown-money">
-                                            <button type="button" class="btn btn-custom dropdown-toggle"
-                                                data-toggle="dropdown">
-                                                <span class="hide-for-xs">US Dollar</span><span class="hide-for-lg">USD</span>
-                                            </button>
-                                            <ul class="dropdown-menu pull-right" role="menu">
-                                                <li><a href="#" id="USD"><span class="hide-for-xs">US Dollar</span><span class="hide-for-lg">USD</span></a></li>
-                                                <li><a href="#" id="CDF"><span class="hide-for-xs">Franc congolais</span><span class="hide-for-lg">CDF</span></a></li>
-                                            </ul>
-                                        </div><!-- End .btn-group -->
-                                        <div class="btn-group dropdown-language">
-                                            <button type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
-@if ($current_locale == 'fr')
-                                                <span class="flag-container"><i class="fi fi-fr"></i></span>
-                                                <span class="hide-for-xs">Français</span>
-@else
-                                                <span class="flag-container"><i class="fi fi-us"></i></span>
-                                                <span class="hide-for-xs">English</span>
-@endif
-                                            </button>
-                                            <ul class="dropdown-menu pull-right" role="menu">
-                                                <li>
-                                                    <a href="{{ route('change_language', ['locale' => 'en']) }}">
-                                                        <span class="flag-container">
-                                                            <i class="fi fi-us"></i>
-                                                        </span>
-                                                        <span class="hide-for-xs">English</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('change_language', ['locale' => 'fr']) }}">
-                                                        <span class="flag-container">
-                                                            <i class="fi fi-fr"></i>
-                                                        </span>
-                                                        <span class="hide-for-xs">Français</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div><!-- End .btn-group -->
-                                    </div><!-- End .header-top-dropdowns -->
-
-                                    <div class="header-text-container pull-right">
-                                        <p class="header-text">@lang('miscellaneous.welcome_title', ['user' => 'Xanders Samoth'])</p>
-                                    </div><!-- End .pull-right -->
-                                </div><!-- End .header-top-right -->
-                            </div><!-- End .col-md-12 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .container -->
-                </div><!-- End #header-top -->
-
-                <div id="inner-header">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-5 col-sm-5 col-xs-12 logo-container">
-                                <h1 class="logo clearfix">
-                                    <span>@lang('miscellaneous.start')</span>
-                                    <a href="{{ route('home') }}" title="@lang('miscellaneous.start')">
-                                        <img src="{{ asset('assets/img/brand.png') }}" alt="START" width="250" height="79">
-                                    </a>
-                                </h1>
-                            </div><!-- End .col-md-5 -->
-                            <div class="col-md-7 col-sm-7 col-xs-12 header-inner-right">
-                                <div class="header-box contact-infos pull-right">
-    								<ul>
-    									<li><span class="header-box-icon header-box-icon-email"></span><a href="mailto:contact@start.com">contact@start.com</a></li>
-    								</ul>
-                                </div><!-- End .contact-infos -->
-
-                                <div class="header-box contact-phones pull-right clearfix">
-                                    <span class="header-box-icon header-box-icon-earphones"></span>
-                                    <ul class="pull-left">
-                                        <li>+(243) 581 000 815</li>
-                                    </ul>
-                                </div><!-- End .contact-phones -->
-
-                            </div><!-- End .col-md-7 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .container -->
-
-                    <div id="main-nav-container">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12 clearfix">
-                                    <!-- Mani menu -->
-                                    <nav id="main-nav">
-                                        <div id="responsive-nav">
-                                            <div id="responsive-nav-button">
-                                                Menu <span id="responsive-nav-button-icon"></span>
-                                            </div><!-- responsive-nav-button -->
-                                        </div>
-                                        <ul class="menu clearfix">
-                                            <li><a href="{{ route('home') }}">@lang('miscellaneous.menu.home')</a></li>
-                                            <li>
-                                                <a href="#">@lang('miscellaneous.menu.public.products.title')</a>
-                                                <ul>
-                                                    <li><a href="{{ route('product.entity', ['entity' => 'project']) }}">@lang('miscellaneous.menu.public.products.projects')</a></li>
-                                                    <li><a href="{{ route('product.entity', ['entity' => 'product']) }}">@lang('miscellaneous.menu.public.products.products')</a></li>
-                                                    <li><a href="{{ route('product.entity', ['entity' => 'service']) }}">@lang('miscellaneous.menu.public.products.services')</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="{{ route('discussion.home') }}">@lang('miscellaneous.menu.discussions')</a></li>
-                                            <li><a href="{{ route('investor.home') }}">@lang('miscellaneous.menu.public.investors.title')</a></li>
-                                            <li><a href="{{ route('crowdfunding.home') }}">@lang('miscellaneous.menu.public.crowdfunding')</a></li>
-                                        </ul>
-                                    </nav>
-
-                                    <div id="quick-access">
-                                        <div class="dropdown-cart-menu-container pull-right">
-                                            <div class="btn-group dropdown-cart">
-                                                <button type="button" class="btn btn-custom dropdown-toggle"
-                                                    data-toggle="dropdown">
-                                                    <span class="cart-menu-icon"></span>
-                                                    {{ trans_choice('miscellaneous.items', 0, ['count' => 0]) }} <span class="drop-price">- $0.00</span>
-                                                </button>
-
-                                                <div class="dropdown-menu dropdown-cart-menu pull-right clearfix" role="menu">
-                                                    <p class="dropdown-cart-description">{{ trans_choice('miscellaneous.recently_added_items', 1) }}</p>
-                                                    <ul class="dropdown-cart-product-list">
-                                                        <li class="item clearfix">
-                                                            <a href="#" title="Delete item" class="delete-item">
-                                                                <i class="fa fa-times"></i>
-                                                            </a>
-                                                            <a href="#" title="Edit item" class="edit-item">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                            <figure>
-                                                                <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 1]) }}">
-                                                                    <img src="{{ getWebURL() . '/template/public/images/products/thumbnails/item12.jpg' }}" alt="phone 4">
-                                                                </a>
-                                                            </figure>
-                                                            <div class="dropdown-cart-details">
-                                                                <p class="item-name">
-                                                                    <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 1]) }}">Cam Optia AF Webcam </a>
-                                                                </p>
-                                                                <p>
-                                                                    1x <span class="item-price">$499</span>
-                                                                </p>
-                                                            </div><!-- End .dropdown-cart-details -->
-                                                        </li>
-                                                        <li class="item clearfix">
-                                                            <a href="#" title="Delete item" class="delete-item">
-                                                                <i class="fa fa-times"></i>
-                                                            </a>
-                                                            <a href="#" title="Edit item" class="edit-item">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                            <figure>
-                                                                <a href="product.html">
-                                                                    <img src="{{ getWebURL() . '/template/public/images/products/thumbnails/item13.jpg' }}" alt="phone 2">
-                                                                </a>
-                                                            </figure>
-                                                            <div class="dropdown-cart-details">
-                                                                <p class="item-name">
-                                                                    <a href="product.html">Iphone Case Cover Original</a>
-                                                                </p>
-                                                                <p>
-                                                                    1x <span class="item-price">$499<span class="sub-price">.99</span></span>
-                                                                </p>
-                                                            </div><!-- End .dropdown-cart-details -->
-                                                        </li>
-                                                    </ul>
-                                                    <ul class="dropdown-cart-total">
-                                                        <li><span class="dropdown-cart-total-title">Total:</span>${{ formatIntegerNumber(1005) }}<span class="sub-price">.99</span></li>
-                                                    </ul><!-- .dropdown-cart-total -->
-                                                    <div class="dropdown-cart-action">
-                                                        <p>
-                                                            <a href="{{ route('account.entity', ['entity' => 'cart']) }}" class="btn btn-custom-2 btn-block">@lang('miscellaneous.cart')</a>
-                                                        </p>
-                                                        <p><a href="{{ route('account.entity', ['entity' => 'cart']) }}" class="btn btn-custom btn-block">@lang('miscellaneous.checkout')</a></p>
-                                                    </div><!-- End .dropdown-cart-action -->
-                                                </div><!-- End .dropdown-cart -->
-                                            </div><!-- End .btn-group -->
-                                        </div><!-- End .dropdown-cart-menu-container -->
-
-
-                                        <form class="form-inline quick-search-form" role="form" action="#">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Search here">
-                                            </div><!-- End .form-inline -->
-                                            <button type="submit" id="quick-search" class="btn btn-custom"></button>
-                                        </form>
-                                    </div><!-- End #quick-access -->
-                                </div><!-- End .col-md-12 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .container -->
-
-                    </div><!-- End #nav -->
-                </div><!-- End #inner-header -->
-            </header><!-- End #header -->
 
             <section id="content">
                 <div id="slider-rev-container">
@@ -282,84 +15,60 @@
                                 <div class="tp-caption lfr ltr" data-x="695" data-y="332" data-speed="1600" data-start="900" data-endspeed="800">
                                     <a href="#" class="btn btn-custom-2">@lang('miscellaneous.see_more')</a>
                                 </div>
-                                <div class="tp-caption lfl ltl" data-x="center" data-y="bottom" data-hoffset="-230"
-                                    data-speed="2000" data-start="500" data-endspeed="800">
-                                    <img src="{{ getWebURL() . 'images/homeslider/slide1_1.png' }}" alt="Slide 1_1">
+                                <div class="tp-caption lfl ltl" data-x="center" data-y="bottom" data-hoffset="-230" data-speed="2000" data-start="500" data-endspeed="800">
+                                    <img src="{{ getWebURL() . '/template/public/images/homeslider/slide1_1.png' }}" alt="Slide 1_1">
                                 </div>
                             </li>
                             <li data-transition="fade" data-slotamount="5" data-masterspeed="600" data-saveperformance="on" data-title="Learn More">
-                                <img src="images/revslider/dummy.png" alt="slidebg2"
-                                    data-lazyload="images/homeslider/slide2.jpg" data-bgposition="center center"
-                                    data-bgfit="cover" data-bgrepeat="no-repeat">
-                                <div class="tp-caption rev-title lfr ltr" data-x="755" data-y="238"
-                                    data-speed="1600" data-start="750" data-endspeed="300">The Next Big thing...</div>
-                                <div class="tp-caption rev-text2 lfr ltr" data-x="755" data-y="290"
-                                    data-speed="1600" data-start="1050" data-endspeed="550">Take, view and share photos
-                                    with <br> the 13MP camera and stunning 5" display.</div>
+                                <img src="{{ getWebURL() . '/template/public/images/revslider/dummy.png' }}" alt="slidebg2" data-lazyload="{{ getWebURL() . '/template/public/images/homeslider/slide2.jpg' }}" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat">
+                                <div class="tp-caption rev-title lfr ltr" data-x="755" data-y="238" data-speed="1600" data-start="750" data-endspeed="300" style="z-index: 9999">The Next Big thing...</div>
+                                <div class="tp-caption rev-text2 lfr ltr" data-x="755" data-y="290" data-speed="1600" data-start="1050" data-endspeed="550" style="z-index: 9999">Take, view and share photos with <br> the 13MP camera and stunning 5" display.</div>
 
-                                <div class="tp-caption lfr ltr" data-x="755" data-y="360" data-speed="1600"
-                                    data-start="1350" data-endspeed="800">
-                                    <a href="#" class="btn btn-custom-2">Learn More</a>
+                                <div class="tp-caption lfr ltr" data-x="755" data-y="360" data-speed="1600" data-start="1350" data-endspeed="800">
+                                    <a href="#" class="btn btn-custom-2" style="z-index: 9999">Learn More</a>
                                 </div>
 
-                                <div class="tp-caption rev-price randomrotate randomrotateout" data-x="360"
-                                    data-y="55" data-speed="1200" data-start="2000" data-endspeed="400">
+                                <div class="tp-caption rev-price randomrotate randomrotateout" data-x="360" data-y="55" data-speed="1200" data-start="2000" data-endspeed="400">
                                     $1150
                                 </div>
 
-                                <div class="tp-caption lfl ltl" data-x="center" data-y="center" data-hoffset="-204"
-                                    data-speed="1750" data-start="400" data-endspeed="800">
-                                    <img src="images/homeslider/slide2_2.png" alt="Slide 2_2">
+                                <div class="tp-caption lfl ltl" data-x="center" data-y="center" data-hoffset="-204" data-speed="1750" data-start="400" data-endspeed="800">
+                                    <img src="{{ getWebURL() . '/template/public/images/homeslider/slide2_2.png' }}" alt="Slide 2_2">
                                 </div>
 
-                                <div class="tp-caption lfr ltr" data-x="380" data-y="50" data-speed="1800"
-                                    data-start="250" data-endspeed="800">
-                                    <img src="images/homeslider/slide2_1.png" alt="Slide 2_1">
+                                <div class="tp-caption lfr ltr" data-x="380" data-y="50" data-speed="1800" data-start="250" data-endspeed="800">
+                                    <img src="{{ getWebURL() . '/template/public/images/homeslider/slide2_1.png' }}" alt="Slide 2_1">
                                 </div>
-
                             </li>
-                            <li data-transition="fade" data-slotamount="4" data-masterspeed="600"
-                                data-saveperformance="on" data-title="More Features">
-                                <img src="images/revslider/dummy.png" alt="slidebg3"
-                                    data-lazyload="images/homeslider/slide3.jpg" data-bgposition="center center"
-                                    data-bgfit="cover" data-bgrepeat="no-repeat">
 
-                                <div class="tp-caption sfr str" data-x="24" data-y="bottom" data-speed="900"
-                                    data-start="500" data-endspeed="300">
-                                    <img src="images/homeslider/slide3_1.png" alt="Slide 3_1">
+                            <li data-transition="fade" data-slotamount="4" data-masterspeed="600" data-saveperformance="on" data-title="More Features">
+                                <img src="{{ getWebURL() . '/template/public/images/revslider/dummy.png' }}" alt="slidebg3" data-lazyload="{{ getWebURL() . '/template/public/images/homeslider/slide3.jpg' }}" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat">
+                                <div class="tp-caption sfr str" data-x="24" data-y="bottom" data-speed="900" data-start="500" data-endspeed="300">
+                                    <img src="{{ getWebURL() . '/template/public/images/homeslider/slide3_1.png' }}" alt="Slide 3_1">
                                 </div>
 
-                                <div class="tp-caption sfl stl" data-x="788" data-y="95" data-speed="1000"
-                                    data-start="1200" data-endspeed="540">
-                                    <img src="images/homeslider/slide3_3.png" alt="Slide 3_3">
+                                <div class="tp-caption sfl stl" data-x="788" data-y="95" data-speed="1000" data-start="1200" data-endspeed="540">
+                                    <img src="{{ getWebURL() . '/template/public/images/homeslider/slide3_3.png' }}" alt="Slide 3_3">
                                 </div>
 
-                                <div class="tp-caption sfl stl" data-x="700" data-y="260" data-speed="800"
-                                    data-start="800" data-endspeed="420">
-                                    <img src="images/homeslider/slide3_2.png" alt="Slide 3_2">
+                                <div class="tp-caption sfl stl" data-x="700" data-y="260" data-speed="800" data-start="800" data-endspeed="420">
+                                    <img src="{{ getWebURL() . '/template/public/images/homeslider/slide3_2.png' }}" alt="Slide 3_2">
                                 </div>
 
-                                <div class="tp-caption sfl stl" data-x="613" data-y="325" data-speed="600"
-                                    data-start="400" data-endspeed="300">
-                                    <img src="images/homeslider/slide3_4.png" alt="Slide 3_4">
+                                <div class="tp-caption sfl stl" data-x="613" data-y="325" data-speed="600" data-start="400" data-endspeed="300">
+                                    <img src="{{ getWebURL() . '/template/public/images/homeslider/slide3_4.png' }}" alt="Slide 3_4">
                                 </div>
 
-                                <div class="tp-caption rev-title sfr str" data-x="20" data-y="56" data-speed="600"
-                                    data-start="1400" data-endspeed="200">CONTROL. NAVIGATE. BE RECOGNIZED.</div>
-                                <div class="tp-caption rev-text long sfr str" data-x="20" data-y="110"
-                                    data-speed="600" data-start="1650" data-endspeed="300">Smart Interaction lets you
-                                    interact <br> with your TV as never before.</div>
+                                <div class="tp-caption rev-title sfr str" data-x="20" data-y="56" data-speed="600" data-start="1400" data-endspeed="200">CONTROL. NAVIGATE. BE RECOGNIZED.</div>
+                                <div class="tp-caption rev-text long sfr str" data-x="20" data-y="110" data-speed="600" data-start="1650" data-endspeed="300">Smart Interaction lets you interact <br> with your TV as never before.</div>
 
-                                <div class="tp-caption sfr str" data-x="20" data-y="190" data-speed="600"
-                                    data-start="1900" data-endspeed="400">
+                                <div class="tp-caption sfr str" data-x="20" data-y="190" data-speed="600" data-start="1900" data-endspeed="400">
                                     <a href="#" class="btn btn-custom-2">Learn More</a>
                                 </div>
-
                             </li>
                         </ul>
                     </div><!-- End #slider-rev -->
                 </div><!-- End #slider-rev-container -->
-
 
                 <div class="md-margin2x"></div><!-- Space -->
                 <div class="container">
@@ -370,17 +79,16 @@
 
                                 <div class="col-md-9 col-sm-8 col-xs-12 main-content">
                                     <header class="content-title">
-                                        <h2 class="title">Our Products</h2>
-                                        <p class="title-desc">Save your money and time with our store. Here's the best part
-                                            of our impressive assortment.</p>
+                                        <h2 class="title">@lang('miscellaneous.public.popular_products.title')</h2>
+                                        <p class="title-desc">@lang('miscellaneous.public.popular_products.description')</p>
                                     </header>
-                                    <ul id="products-tabs-list" class="tab-style-1 clearfix">
+                                    {{-- <ul id="products-tabs-list" class="tab-style-1 clearfix">
                                         <li class="active"><a href="#all" data-toggle="tab">All</a></li>
                                         <li><a href="#latest" data-toggle="tab">Latest</a></li>
                                         <li><a href="#featured" data-toggle="tab">Featured</a></li>
                                         <li><a href="#bestsellers" data-toggle="tab">Bestsellers</a></li>
                                         <li><a href="#special" data-toggle="tab">Special</a></li>
-                                    </ul>
+                                    </ul> --}}
 
                                     <div id="products-tabs-content" class="row tab-content">
                                         <div class="tab-pane active" id="all">
@@ -389,17 +97,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item5.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item5-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$210<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$160<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$210<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                         <span class="discount-rect">-15%</span>
@@ -413,8 +117,7 @@
                                                                 5 Reviews
                                                             </span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -434,10 +137,8 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item6.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item6-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="images/products/item6.jpg" alt="item1" class="item-image">
+                                                                <img src="images/products/item6-hover.jpg" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
@@ -450,21 +151,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="74"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                9 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">9 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -475,17 +171,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item7.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item7-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item7.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item7-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$120<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$99<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$120<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$99<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-25%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -494,21 +186,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="90"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                4 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">4 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -519,32 +206,26 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item10.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item10-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item10.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item10-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$180<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$180<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
                                                         <div class="ratings-container">
 
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -555,17 +236,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item8.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item8-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item8.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item8-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$99<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$84<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$99<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$84<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-20%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -574,21 +251,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="70"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                6 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">6 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -599,15 +271,12 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item9.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item9-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item8.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item8-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$49<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$49<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -616,21 +285,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="60"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                2 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">2 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -644,15 +308,12 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item2.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item2-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item8.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item8-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$160<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -661,21 +322,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="80"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                5 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">5 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -686,10 +342,8 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item3.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item3-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item3.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item3-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
@@ -702,21 +356,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="74"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                9 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">9 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -727,17 +376,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item5.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item5-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$120<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$99<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$120<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$99<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -746,12 +391,9 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="96"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                5 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">5 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -771,32 +413,26 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item3.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item3-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item3.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item3-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$99<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$99<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
                                                         <div class="ratings-container">
 
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -807,17 +443,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item7.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item7-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item7.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item7-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$99<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$84<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$99<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$84<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-30%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -826,12 +458,9 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="70"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                6 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">6 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -851,15 +480,12 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item5.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item5-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$49<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$49<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
@@ -867,21 +493,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="60"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                2 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">2 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -895,17 +516,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item1.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item1-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item1.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item1-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$210<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$140<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$210<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$140<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                         <span class="discount-rect">-25%</span>
@@ -915,21 +532,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="50"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                3 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">3 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -940,10 +552,8 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item4.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item4-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item4.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item4-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
@@ -956,21 +566,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="100"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                7 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">7 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -981,17 +586,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item8.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item8-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item8.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item8-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$120<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$89<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$120<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$89<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-35%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1000,12 +601,9 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="50"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                2 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">2 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -1025,32 +623,26 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item10.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item10-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item10.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item10-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$180<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$180<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
                                                         <div class="ratings-container">
 
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1061,17 +653,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item6.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item6-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item6.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$99<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$84<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$99<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$84<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-20%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1080,12 +668,9 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="70"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                6 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">6 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -1105,15 +690,12 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item5.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item5-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$49<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$49<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1122,21 +704,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="60"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                2 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">2 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1150,17 +727,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item3.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item3-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item3.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item3-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$210<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$160<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$210<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                         <span class="discount-rect">-15%</span>
@@ -1170,21 +743,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="80"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                5 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">5 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1195,10 +763,8 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item4.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item4-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item4.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item4-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
@@ -1211,12 +777,9 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="74"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                9 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">9 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -1236,17 +799,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item2.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item2-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item2.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item2-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$180<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$99<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$180<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$99<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-50%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1255,12 +814,9 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="90"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                4 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">4 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -1280,23 +836,19 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item9.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item9-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item9.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item9-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$180<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$180<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
                                                         <div class="ratings-container">
 
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -1316,17 +868,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item5.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item5-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item5-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$99<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$84<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$99<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$84<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-20%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1335,21 +883,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="70"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                6 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">6 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1360,15 +903,12 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item3.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item3-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item3.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item3-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$99<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$99<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1377,12 +917,9 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="60"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                2 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">2 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
@@ -1405,17 +942,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item2.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item2-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item2.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item2-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$210<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$160<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$210<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                         <span class="discount-rect">-15%</span>
@@ -1425,21 +958,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="80"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                5 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">5 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1450,10 +978,8 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item1.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item1-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item1.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item1-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
@@ -1466,21 +992,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="74"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                9 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">9 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1491,17 +1012,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item4.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item4-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item4.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item4-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$120<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$99<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$120<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$99<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-25%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1510,21 +1027,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="90"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                4 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">4 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1535,32 +1047,26 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item10.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item10-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item10.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item10-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$180<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$180<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
                                                         <div class="ratings-container">
 
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1571,17 +1077,13 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item6.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item6-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item6.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="old-price">$99<span
-                                                                    class="sub-price">.99</span></span>
-                                                            <span class="item-price">$84<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="old-price">$99<span class="sub-price">.99</span></span>
+                                                            <span class="item-price">$84<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="discount-rect">-20%</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1590,21 +1092,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="70"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                6 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">6 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1615,15 +1112,12 @@
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="product.html">
-                                                                <img src="images/products/item9.jpg" alt="item1"
-                                                                    class="item-image">
-                                                                <img src="images/products/item9-hover.jpg"
-                                                                    alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item9.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ getWebURL() . '/template/public/images/products/item9-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$49<span
-                                                                    class="sub-price">.99</span></span>
+                                                            <span class="item-price">$49<span class="sub-price">.99</span></span>
                                                         </div><!-- End .item-price-container -->
                                                         <span class="new-rect">New</span>
                                                     </div><!-- End .item-image-wrapper -->
@@ -1632,21 +1126,16 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-result" data-result="60"></div>
                                                             </div><!-- End .ratings -->
-                                                            <span class="ratings-amount">
-                                                                2 Reviews
-                                                            </span>
+                                                            <span class="ratings-amount">2 Reviews</span>
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="product.html">Phasellus
-                                                                consequat</a></h3>
+                                                        <h3 class="item-name"><a href="product.html">Phasellus consequat</a></h3>
                                                         <div class="item-action">
                                                             <a href="#" class="item-add-btn">
                                                                 <span class="icon-cart-text">Add to Cart</span>
                                                             </a>
                                                             <div class="item-action-inner">
-                                                                <a href="#"
-                                                                    class="icon-button icon-like">Favourite</a>
-                                                                <a href="#"
-                                                                    class="icon-button icon-compare">Checkout</a>
+                                                                <a href="#" class="icon-button icon-like">Favourite</a>
+                                                                <a href="#" class="icon-button icon-compare">Checkout</a>
                                                             </div><!-- End .item-action-inner -->
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
@@ -1658,24 +1147,15 @@
 
                                     <div class="sm-margin"></div><!-- Space -->
                                     <div class="row">
-                                        <div class="col-md-7 col-sm-7 col-xs-12">
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
                                             <header class="content-title">
-                                                <h2 class="title">Welcome to Venedor</h2>
+                                                <h2 class="title">@lang('miscellaneous.welcome')</h2>
                                             </header>
-                                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Venedor is a fully responsive Magento theme
-                                                with advanced admin module. Based on Bootstrap’s 12 column 1200px responsive
-                                                grid Theme. Great looks on desktops, tablets and mobiles.
-                                                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Venedor is extremely customizable, easy to
-                                                use and fully responsive. Suitable for every type of store. Great as a
-                                                starting point for your custom projects. This theme includes several
-                                                extensions including ajax price slider that will help you improve your
-                                                sales. We supply a full help with our products and after purchase support to
-                                                all our customers. <a href="#">Buy Venedor Theme!</a></p>
+                                            <p class="lead">La portée du projet inclut l’ensemble des acteurs de la chaîne de valeur agricole en RDC. La plateforme doit couvrir toutes les étapes, de la production agricole jusqu'à la commercialisation des produits finis.</p>
                                         </div><!-- End .col-md-7 -->
-                                        <div class="col-md-5 col-sm-5 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
                                             <div class="sm-margin visible-xs"></div><!-- space -->
-                                            <img src="images/showcase.png" alt="Showcase Venedor"
-                                                class="img-responsive">
+                                            <img src="{{ asset('assets/img/logo-text.png') }}" alt="Showcase Venedor" class="img-fluid">
                                         </div><!-- End .col-md-5 -->
                                     </div><!-- End .row -->
                                     <div class="xlg-margin"></div><!-- Space -->
@@ -1683,17 +1163,15 @@
                                     <div class="hot-items carousel-wrapper">
                                         <header class="content-title">
                                             <div class="title-bg">
-                                                <h2 class="title">On Sale</h2>
+                                                <h2 class="title">@lang('miscellaneous.public.latest_investor.title')</h2>
                                             </div><!-- End .title-bg -->
-                                            <p class="title-desc">Only with us you can get a new model with a discount.
-                                            </p>
+                                            <p class="title-desc">@lang('miscellaneous.public.latest_investor.description')</p>
                                         </header>
 
                                         <div class="carousel-controls">
                                             <div id="hot-items-slider-prev" class="carousel-btn carousel-btn-prev">
                                             </div><!-- End .carousel-prev -->
-                                            <div id="hot-items-slider-next"
-                                                class="carousel-btn carousel-btn-next carousel-space">
+                                            <div id="hot-items-slider-next" class="carousel-btn carousel-btn-next carousel-space">
                                             </div><!-- End .carousel-next -->
                                         </div><!-- End .carousel-controls -->
                                         <div class="hot-items-slider owl-carousel">
@@ -1701,30 +1179,24 @@
                                                 <div class="item-image-wrapper">
                                                     <figure class="item-image-container">
                                                         <a href="product.html">
-                                                            <img src="images/products/item2.jpg" alt="item1"
-                                                                class="item-image">
-                                                            <img src="images/products/item2-hover.jpg"
-                                                                alt="item1  Hover" class="item-image-hover">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item2.jpg' }}" alt="item1" class="item-image">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item2-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                         </a>
                                                     </figure>
-                                                    <div class="item-price-container">
-                                                        <span class="item-price">$160<span
-                                                                class="sub-price">.99</span></span>
+                                                    {{-- <div class="item-price-container">
+                                                        <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                     </div><!-- End .item-price-container -->
-                                                    <span class="new-rect">New</span>
+                                                    <span class="new-rect">New</span> --}}
                                                 </div><!-- End .item-image-wrapper -->
                                                 <div class="item-meta-container">
                                                     <div class="ratings-container">
                                                         <div class="ratings">
                                                             <div class="ratings-result" data-result="80"></div>
                                                         </div><!-- End .ratings -->
-                                                        <span class="ratings-amount">
-                                                            5 Reviews
-                                                        </span>
+                                                        <span class="ratings-amount">Daniel Craig</span>
                                                     </div><!-- End .rating-container -->
-                                                    <h3 class="item-name"><a href="product.html">Phasellus consequat</a>
-                                                    </h3>
-                                                    <div class="item-action">
+                                                    <h3 class="item-name"><a href="{{ route('investor.datas', ['id' => 1]) }}">@lang('miscellaneous.details')</a></h3>
+                                                    {{-- <div class="item-action">
                                                         <a href="#" class="item-add-btn">
                                                             <span class="icon-cart-text">Add to Cart</span>
                                                         </a>
@@ -1734,7 +1206,7 @@
                                                             <a href="#"
                                                                 class="icon-button icon-compare">Checkout</a>
                                                         </div><!-- End .item-action-inner -->
-                                                    </div><!-- End .item-action -->
+                                                    </div><!-- End .item-action --> --}}
                                                 </div><!-- End .item-meta-container -->
                                             </div><!-- End .item -->
 
@@ -1742,29 +1214,24 @@
                                                 <div class="item-image-wrapper">
                                                     <figure class="item-image-container">
                                                         <a href="product.html">
-                                                            <img src="images/products/item3.jpg" alt="item1"
-                                                                class="item-image">
-                                                            <img src="images/products/item3-hover.jpg"
-                                                                alt="item1  Hover" class="item-image-hover">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item3.jpg' }}" alt="item1" class="item-image">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item3-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                         </a>
                                                     </figure>
-                                                    <div class="item-price-container">
-                                                        <span class="item-price">$100</span>
+                                                    {{-- <div class="item-price-container">
+                                                        <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                     </div><!-- End .item-price-container -->
-                                                    <span class="new-rect">New</span>
+                                                    <span class="new-rect">New</span> --}}
                                                 </div><!-- End .item-image-wrapper -->
                                                 <div class="item-meta-container">
                                                     <div class="ratings-container">
                                                         <div class="ratings">
-                                                            <div class="ratings-result" data-result="99"></div>
+                                                            <div class="ratings-result" data-result="80"></div>
                                                         </div><!-- End .ratings -->
-                                                        <span class="ratings-amount">
-                                                            4 Reviews
-                                                        </span>
+                                                        <span class="ratings-amount">Daniel Craig</span>
                                                     </div><!-- End .rating-container -->
-                                                    <h3 class="item-name"><a href="product.html">Phasellus consequat</a>
-                                                    </h3>
-                                                    <div class="item-action">
+                                                    <h3 class="item-name"><a href="{{ route('investor.datas', ['id' => 1]) }}">@lang('miscellaneous.details')</a></h3>
+                                                    {{-- <div class="item-action">
                                                         <a href="#" class="item-add-btn">
                                                             <span class="icon-cart-text">Add to Cart</span>
                                                         </a>
@@ -1774,7 +1241,7 @@
                                                             <a href="#"
                                                                 class="icon-button icon-compare">Checkout</a>
                                                         </div><!-- End .item-action-inner -->
-                                                    </div><!-- End .item-action -->
+                                                    </div><!-- End .item-action --> --}}
                                                 </div><!-- End .item-meta-container -->
                                             </div><!-- End .item -->
 
@@ -1782,30 +1249,24 @@
                                                 <div class="item-image-wrapper">
                                                     <figure class="item-image-container">
                                                         <a href="product.html">
-                                                            <img src="images/products/item8.jpg" alt="item1"
-                                                                class="item-image">
-                                                            <img src="images/products/item8-hover.jpg"
-                                                                alt="item1  Hover" class="item-image-hover">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item8.jpg' }}" alt="item1" class="item-image">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item8-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                         </a>
                                                     </figure>
-                                                    <div class="item-price-container">
-                                                        <span class="old-price">$100</span>
-                                                        <span class="item-price">$80</span>
+                                                    {{-- <div class="item-price-container">
+                                                        <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                     </div><!-- End .item-price-container -->
-                                                    <span class="discount-rect">-20%</span>
+                                                    <span class="new-rect">New</span> --}}
                                                 </div><!-- End .item-image-wrapper -->
                                                 <div class="item-meta-container">
                                                     <div class="ratings-container">
                                                         <div class="ratings">
-                                                            <div class="ratings-result" data-result="75"></div>
+                                                            <div class="ratings-result" data-result="80"></div>
                                                         </div><!-- End .ratings -->
-                                                        <span class="ratings-amount">
-                                                            2 Reviews
-                                                        </span>
+                                                        <span class="ratings-amount">Daniel Craig</span>
                                                     </div><!-- End .rating-container -->
-                                                    <h3 class="item-name"><a href="product.html">Phasellus consequat</a>
-                                                    </h3>
-                                                    <div class="item-action">
+                                                    <h3 class="item-name"><a href="{{ route('investor.datas', ['id' => 1]) }}">@lang('miscellaneous.details')</a></h3>
+                                                    {{-- <div class="item-action">
                                                         <a href="#" class="item-add-btn">
                                                             <span class="icon-cart-text">Add to Cart</span>
                                                         </a>
@@ -1815,7 +1276,7 @@
                                                             <a href="#"
                                                                 class="icon-button icon-compare">Checkout</a>
                                                         </div><!-- End .item-action-inner -->
-                                                    </div><!-- End .item-action -->
+                                                    </div><!-- End .item-action --> --}}
                                                 </div><!-- End .item-meta-container -->
                                             </div><!-- End .item -->
 
@@ -1823,29 +1284,24 @@
                                                 <div class="item-image-wrapper">
                                                     <figure class="item-image-container">
                                                         <a href="product.html">
-                                                            <img src="images/products/item5.jpg" alt="item1"
-                                                                class="item-image">
-                                                            <img src="images/products/item5-hover.jpg"
-                                                                alt="item1  Hover" class="item-image-hover">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item-5.jpg' }}" alt="item1" class="item-image">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item-5-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                         </a>
                                                     </figure>
-                                                    <div class="item-price-container">
-                                                        <span class="item-price">$99</span>
+                                                    {{-- <div class="item-price-container">
+                                                        <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                     </div><!-- End .item-price-container -->
-                                                    <span class="new-rect">New</span>
+                                                    <span class="new-rect">New</span> --}}
                                                 </div><!-- End .item-image-wrapper -->
                                                 <div class="item-meta-container">
                                                     <div class="ratings-container">
                                                         <div class="ratings">
-                                                            <div class="ratings-result" data-result="40"></div>
+                                                            <div class="ratings-result" data-result="80"></div>
                                                         </div><!-- End .ratings -->
-                                                        <span class="ratings-amount">
-                                                            3 Reviews
-                                                        </span>
+                                                        <span class="ratings-amount">Daniel Craig</span>
                                                     </div><!-- End .rating-container -->
-                                                    <h3 class="item-name"><a href="product.html">Phasellus consequat</a>
-                                                    </h3>
-                                                    <div class="item-action">
+                                                    <h3 class="item-name"><a href="{{ route('investor.datas', ['id' => 1]) }}">@lang('miscellaneous.details')</a></h3>
+                                                    {{-- <div class="item-action">
                                                         <a href="#" class="item-add-btn">
                                                             <span class="icon-cart-text">Add to Cart</span>
                                                         </a>
@@ -1855,7 +1311,7 @@
                                                             <a href="#"
                                                                 class="icon-button icon-compare">Checkout</a>
                                                         </div><!-- End .item-action-inner -->
-                                                    </div><!-- End .item-action -->
+                                                    </div><!-- End .item-action --> --}}
                                                 </div><!-- End .item-meta-container -->
                                             </div><!-- End .item -->
 
@@ -1863,22 +1319,24 @@
                                                 <div class="item-image-wrapper">
                                                     <figure class="item-image-container">
                                                         <a href="product.html">
-                                                            <img src="images/products/item7.jpg" alt="item1"
-                                                                class="item-image">
-                                                            <img src="images/products/item7-hover.jpg"
-                                                                alt="item1  Hover" class="item-image-hover">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item7.jpg' }}" alt="item1" class="item-image">
+                                                            <img src="{{ getWebURL() . '/template/public/images/products/item7-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                         </a>
                                                     </figure>
-                                                    <div class="item-price-container">
-                                                        <span class="item-price">$280</span>
+                                                    {{-- <div class="item-price-container">
+                                                        <span class="item-price">$160<span class="sub-price">.99</span></span>
                                                     </div><!-- End .item-price-container -->
+                                                    <span class="new-rect">New</span> --}}
                                                 </div><!-- End .item-image-wrapper -->
                                                 <div class="item-meta-container">
                                                     <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-result" data-result="80"></div>
+                                                        </div><!-- End .ratings -->
+                                                        <span class="ratings-amount">Daniel Craig</span>
                                                     </div><!-- End .rating-container -->
-                                                    <h3 class="item-name"><a href="product.html">Phasellus consequat</a>
-                                                    </h3>
-                                                    <div class="item-action">
+                                                    <h3 class="item-name"><a href="{{ route('investor.datas', ['id' => 1]) }}">@lang('miscellaneous.details')</a></h3>
+                                                    {{-- <div class="item-action">
                                                         <a href="#" class="item-add-btn">
                                                             <span class="icon-cart-text">Add to Cart</span>
                                                         </a>
@@ -1888,7 +1346,7 @@
                                                             <a href="#"
                                                                 class="icon-button icon-compare">Checkout</a>
                                                         </div><!-- End .item-action-inner -->
-                                                    </div><!-- End .item-action -->
+                                                    </div><!-- End .item-action --> --}}
                                                 </div><!-- End .item-meta-container -->
                                             </div><!-- End .item -->
                                         </div><!--hot-items-slider -->
@@ -1898,32 +1356,20 @@
                                 </div><!-- End .col-md-9 -->
 
                                 <div class="col-md-3 col-sm-4 col-xs-12 sidebar">
-                                    <div class="widget subscribe">
-                                        <h3>BE THE FIRST TO KNOW</h3>
-                                        <p> Get all the latest information on Events, Sales and Offers. Sign up for the
-                                            Venedor store newsletter today.</p>
-                                        <form action="#" id="subscribe-form">
-                                            <div class="form-group">
-                                                <input type="email" class="form-control" id="subscribe-email"
-                                                    placeholder="Enter your email address">
-                                            </div>
-                                            <input type="submit" value="SUBMIT" class="btn btn-custom">
-                                        </form>
-                                    </div>
                                     <div class="widget testimonials">
-                                        <h3>Testimonials</h3>
+                                        <h3 class="text-uppercase">@lang('miscellaneous.menu.discussions')</h3>
 
                                         <div class="testimonials-slider flexslider sidebarslider">
                                             <ul class="testimonials-list clearfix">
                                                 <li>
                                                     <div class="testimonial-details">
-                                                        <header>Best Service!</header>
+                                                        {{-- <header>Best Service!</header> --}}
                                                         Maecenas semper aliquam massa. Praesent pharetra sem vitae nisi
                                                         eleifend molestie. Aliquam molestie scelerisque ultricies.
                                                         Suspendisse potenti.
                                                     </div><!-- End .testimonial-details -->
                                                     <figure class="clearfix">
-                                                        <img src="images/testimonials/anna.jpg" alt="Computer Ceo">
+                                                        <img src="{{ getWebURL() . '/template/public/images/testimonials/anna.jpg' }}" alt="Computer Ceo">
                                                         <figcaption>
                                                             <a href="#">Anna Retallic</a>
                                                             <span>12.05.2013</span>
@@ -1932,13 +1378,13 @@
                                                 </li>
                                                 <li>
                                                     <div class="testimonial-details">
-                                                        <header>Cool Style!</header>
+                                                        {{-- <header>Cool Style!</header> --}}
                                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt iure
                                                         quisquam necessitatibus fugit! Nisi tempora reiciendis omnis error
                                                         sapiente ipsam maiores dolorem maxime.
                                                     </div><!-- End .testimonial-details -->
                                                     <figure class="clearfix">
-                                                        <img src="images/testimonials/jake.jpg" alt="Computer Ceo">
+                                                        <img src="{{ getWebURL() . '/template/public/images/testimonials/jake.jpg' }}" alt="Computer Ceo">
                                                         <figcaption>
                                                             <a href="#">Jake Suasoo</a>
                                                             <span>17.05.2013</span>
@@ -1951,15 +1397,14 @@
 
 
                                     <div class="widget latest-posts">
-                                        <h3>Latest News</h3>
+                                        <h3>@lang('miscellaneous.public.latest_news.title')</h3>
 
                                         <div class="latest-posts-slider flexslider sidebarslider">
                                             <ul class="latest-posts-list clearfix">
                                                 <li>
                                                     <a href="single.html">
                                                         <figure class="latest-posts-media-container">
-                                                            <img class="img-responsive"
-                                                                src="images/blog/post1-small.jpg" alt="lats post">
+                                                            <img class="img-responsive" src="{{ getWebURL() . '/template/public/images/blog/post1-small.jpg' }}" alt="lats post">
                                                         </figure>
                                                     </a>
                                                     <h4><a href="single.html">35% Discount on second purchase!</a></h4>
@@ -1978,8 +1423,7 @@
                                                 <li>
                                                     <a href="single.html">
                                                         <figure class="latest-posts-media-container">
-                                                            <img class="img-responsive"
-                                                                src="images/blog/post2-small.jpg" alt="lats post">
+                                                            <img class="img-responsive" src="{{ getWebURL() . '/template/public/images/blog/post2-small.jpg' }}" alt="lats post">
                                                         </figure>
                                                     </a>
                                                     <h4><a href="single.html">Free shipping for regular customers.</a>
@@ -1999,8 +1443,7 @@
                                                 <li>
                                                     <a href="single.html">
                                                         <figure class="latest-posts-media-container">
-                                                            <img class="img-responsive"
-                                                                src="images/blog/post3-small.jpg" alt="lats post">
+                                                            <img class="img-responsive" src="{{ getWebURL() . '/template/public/images/blog/post3-small.jpg' }}" alt="lats post">
                                                         </figure>
                                                     </a>
                                                     <h4><a href="#">New jeans on sales!</a></h4>
@@ -2023,12 +1466,9 @@
                                     <div class="widget banner-slider-container">
                                         <div class="banner-slider flexslider">
                                             <ul class="banner-slider-list clearfix">
-                                                <li><a href="#"><img src="images/banner1.jpg"
-                                                            alt="Banner 1"></a></li>
-                                                <li><a href="#"><img src="images/banner2.jpg"
-                                                            alt="Banner 2"></a></li>
-                                                <li><a href="#"><img src="images/banner3.jpg"
-                                                            alt="Banner 3"></a></li>
+                                                <li><a href="#"><img src="{{ getWebURL() . '/template/public/images/banner1.jpg' }}" alt="Banner 1"></a></li>
+                                                <li><a href="#"><img src="{{ getWebURL() . '/template/public/images/banner2.jpg' }}" alt="Banner 2"></a></li>
+                                                <li><a href="#"><img src="{{ getWebURL() . '/template/public/images/banner3.jpg' }}" alt="Banner 3"></a></li>
                                             </ul>
                                         </div>
                                     </div><!-- End .widget -->
@@ -2051,36 +1491,21 @@
                                 <div class="sm-margin"></div><!-- space -->
                                 <div class="row">
                                     <div class="brand-slider owl-carousel">
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 1"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 2"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 3"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 4"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 5"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 6"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 7"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 8"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 9"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 10"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 11"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 12"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 13"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 14"></a>
-                                        <a href="#"><img src="images/brands/brand-logo.png"
-                                                alt="Brand Logo 15"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 1"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 2"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 3"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 4"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 5"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 6"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 7"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 8"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 9"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 10"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 11"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 12"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 13"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 14"></a>
+                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 15"></a>
                                     </div><!-- End .brand-slider -->
                                 </div><!-- End .row -->
                             </div><!-- End #brand-slider-container -->
@@ -2091,162 +1516,5 @@
 
             </section><!-- End #content -->
 
-            <footer id="footer">
-                <div id="twitterfeed-container">
-                    <div class="container">
-                        <div class="row">
 
-                            <div class="twitterfeed col-md-12">
-                                <div class="twitter-icon"><i class="fa fa-twitter"></i></div><!-- End .twitter-icon -->
-                                <div class="row">
-                                    <div
-                                        class="col-md-10 col-sm-10 col-xs-10 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
-                                        <div class="twitter_feed flexslider"></div>
-                                    </div>
-                                </div>
-
-                            </div><!-- End .twiitterfeed .col-md-12 -->
-
-                        </div><!-- End .row -->
-                    </div><!-- End .container -->
-                </div><!-- End #twitterfeed-container -->
-                <div id="inner-footer">
-
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-3 col-sm-4 col-xs-12 widget">
-                                <h3>MY ACCOUNT</h3>
-                                <ul class="links">
-                                    <li><a href="#">My account</a></li>
-                                    <li><a href="#">Personal information</a></li>
-                                    <li><a href="#">Addresses</a></li>
-                                    <li><a href="#">Discount</a></li>
-                                    <li><a href="#">Order History</a></li>
-                                    <li><a href="#">Your Vouchers</a></li>
-                                </ul>
-                            </div><!-- End .widget -->
-
-                            <div class="col-md-3 col-sm-4 col-xs-12 widget">
-                                <h3>INFORMATION</h3>
-                                <ul class="links">
-                                    <li><a href="#">New products</a></li>
-                                    <li><a href="#">Top sellers</a></li>
-                                    <li><a href="#">Specials</a></li>
-                                    <li><a href="#">Manufacturers</a></li>
-                                    <li><a href="#">Suppliers</a></li>
-                                    <li><a href="#">Our stores</a></li>
-                                </ul>
-                            </div><!-- End .widget -->
-
-                            <div class="col-md-3 col-sm-4 col-xs-12 widget">
-                                <h3>MY ACCOUNT</h3>
-
-                                <ul class="contact-list">
-                                    <li><strong>Venedor Ltd</strong></li>
-                                    <li>United Kingdom</li>
-                                    <li>Greater London</li>
-                                    <li>London 02587</li>
-                                    <li>Oxford Street 48/188</li>
-                                    <li>Working Days: Mon. - Sun.</li>
-                                    <li>Working Hours: 9.00AM - 8.00PM</li>
-                                </ul>
-                            </div><!-- End .widget -->
-
-                            <div class="clearfix visible-sm"></div>
-
-                            <div class="col-md-3 col-sm-12 col-xs-12 widget">
-                                <h3>FACEBOOK LIKE BOX</h3>
-
-                                <div class="facebook-likebox">
-                                    <iframe
-                                        src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fenvato&amp;colorscheme=dark&amp;show_faces=true&amp;header=false&amp;stream=false&amp;show_border=false"></iframe>
-                                </div>
-
-
-                            </div><!-- End .widget -->
-                        </div><!-- End .row -->
-                    </div><!-- End .container -->
-
-                </div><!-- End #inner-footer -->
-
-                <div id="footer-bottom">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-7 col-sm-7 col-xs-12 footer-social-links-container">
-                                <ul class="social-links clearfix">
-                                    <li><a href="#" class="social-icon icon-facebook"></a></li>
-                                    <li><a href="#" class="social-icon icon-twitter"></a></li>
-                                    <li><a href="#" class="social-icon icon-rss"></a></li>
-                                    <li><a href="#" class="social-icon icon-delicious"></a></li>
-                                    <li><a href="#" class="social-icon icon-linkedin"></a></li>
-                                    <li><a href="#" class="social-icon icon-flickr"></a></li>
-                                    <li><a href="#" class="social-icon icon-skype"></a></li>
-                                    <li><a href="#" class="social-icon icon-email"></a></li>
-                                </ul>
-                            </div><!-- End .col-md-7 -->
-
-                            <div class="col-md-5 col-sm-5 col-xs-12 footer-text-container">
-                                <p>&copy; 2014 Powered by Company&trade;. All Rights Reserved.</p>
-                            </div><!-- End .col-md-5 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .container -->
-                </div><!-- End #footer-bottom -->
-
-            </footer><!-- End #footer -->
-        </div><!-- End #wrapper -->
-
-        <a href="#" id="scroll-top" title="Scroll to Top"><i
-                class="fa fa-angle-up"></i></a><!-- End #scroll-top -->
-
-        <!-- END -->
-        <script src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/smoothscroll.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.debouncedresize.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/retina.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.placeholder.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.hoverIntent.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/twitter/jquery.tweet.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.flexslider-min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/owl.carousel.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jflickrfeed.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.prettyPhoto.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.themepunch.tools.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.themepunch.revolution.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/main.js') }}"></script>
-
-        <script>
-            $(function() {
-                // Slider Revolution
-                jQuery('#slider-rev').revolution({
-                    delay: 8000,
-                    startwidth: 1170,
-                    startheight: 600,
-                    onHoverStop: "true",
-                    hideThumbs: 250,
-                    navigationHAlign: "center",
-                    navigationVAlign: "bottom",
-                    navigationHOffset: 0,
-                    navigationVOffset: 20,
-                    soloArrowLeftHalign: "left",
-                    soloArrowLeftValign: "center",
-                    soloArrowLeftHOffset: 0,
-                    soloArrowLeftVOffset: 0,
-                    soloArrowRightHalign: "right",
-                    soloArrowRightValign: "center",
-                    soloArrowRightHOffset: 0,
-                    soloArrowRightVOffset: 0,
-                    touchenabled: "on",
-                    stopAtSlide: -1,
-                    stopAfterLoops: -1,
-                    dottedOverlay: "none",
-                    fullWidth: "on",
-                    spinned: "spinner5",
-                    shadow: 0,
-                    hideTimerBar: "on",
-                    // navigationStyle:"preview4"
-                });
-
-            });
-        </script>
-    </body>
-</html>
+@endsection

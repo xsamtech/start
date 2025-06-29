@@ -13,8 +13,13 @@ return [
     |
     */
     'start' => 'Société de Transformation Agricole et Ressources Techniques',
+    'welcome' => 'Bienvenue sur START',
     'welcome_title' => 'Bienvenue :user',
     'welcome_description' => 'Publiez ou commandez des produits ou des services agricoles. Faites du crowdfunding sur votre projet agricole. Investissez et faites investir. Echangez dans le forum.',
+    'welcome_about' => [
+        'title' => 'A propos de START',
+        'content' => 'Ce projet a pour objectif de créer une marketplace intégrée qui doit connecter tous les acteurs de la chaîne de valeur agricole. En s\'appuyant sur une plateforme numérique centralisée, cette initiative doit faciliter les interactions entre les différents intervenants du secteur, améliorer l’accès aux ressources et optimiser les processus de transaction et de logistique.'
+    ],
     'keywords' => 'produit agricole, agriculture, service agricole',
     'all_right_reserved' => 'Tous droits réservés',
     'follow_us' => 'Suivez-nous :',
@@ -532,7 +537,22 @@ return [
 
     // ===== PUBLIC PAGES
     'public' => [
-        'your_subscriptions' => 'Vos abonnements',
+        'latest_news' => [
+            'title' => 'Infos',
+            'description' => '',
+        ],
+        'popular_products' => [
+            'title' => 'Produits populaires',
+            'description' => 'Vous pouvez voir les produits et les services qui ont le plus été commandés cette année.',
+        ],
+        'latest_publications' => [
+            'title' => 'Produits récents',
+            'description' => '',
+        ],
+        'latest_investor' => [
+            'title' => 'Investisseurs récents',
+            'description' => 'Trouver un investisseur pour votre projet ou produit.',
+        ],
         'your_cart' => 'Votre panier',
         'add_to_cart' => 'Ajouter au panier',
         'withdraw_from_cart' => 'Retirer du panier',

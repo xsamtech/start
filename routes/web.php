@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/symlink', [PublicController::class, 'symlink'])->name('symlink');
+Route::post('/search', [PublicController::class, 'search'])->name('search');
 Route::get('/change-lang/{locale}', [PublicController::class, 'changeLanguage'])->name('change_language');
 // Products
 Route::get('/products', [PublicController::class, 'products'])->name('product.home');

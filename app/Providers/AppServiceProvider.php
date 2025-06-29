@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Http\Resources\User as ResourcesUser;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -28,10 +31,17 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         view()->composer('*', function ($view) {
+            $current_user = null;
+
+            if (Auth::check()) {
+                $current_user = new ResourcesUser(Auth::user());
+            }
+
             $products = Product::where('type', 'product')->limit(5)->orderBy('price', 'desc')->get();
             $services = Product::where('type', 'service')->limit(5)->orderBy('price', 'desc')->get();
             $projects = Product::where('type', 'project')->limit(5)->orderBy('price', 'desc')->get();
 
+            $view->with('current_user', $current_user);
             $view->with('products', $products);
             $view->with('services', $services);
             $view->with('projects', $projects);

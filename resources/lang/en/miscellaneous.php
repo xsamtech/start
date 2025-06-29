@@ -13,8 +13,13 @@ return [
     |
     */
     'start' => 'Agricultural Processing and Technical Resources Company',
+    'welcome' => 'Welcome on START',
     'welcome_title' => 'Welcome :user',
     'welcome_description' => 'Advertise or order agricultural products or services. Crowdfund your agricultural project. Invest and get invested. Share your experiences in the forum.',
+    'welcome_about' => [
+        'title' => 'A propos de START',
+        'content' => 'Ce projet a pour objectif de créer une marketplace intégrée qui doit connecter tous les acteurs de la chaîne de valeur agricole. En s\'appuyant sur une plateforme numérique centralisée, cette initiative doit faciliter les interactions entre les différents intervenants du secteur, améliorer l’accès aux ressources et optimiser les processus de transaction et de logistique.'
+    ],
     'keywords' => 'agricultural product, agriculture, agricultural service',
     'all_right_reserved' => 'All right reserved',
     'follow_us' => 'Follow us:',
@@ -532,7 +537,22 @@ return [
 
     // ===== PUBLIC PAGES
     'public' => [
-        'your_subscriptions' => 'Your subscriptions',
+        'latest_news' => [
+            'title' => 'News',
+            'description' => '',
+        ],
+        'popular_products' => [
+            'title' => 'Popular products',
+            'description' => 'You can see which products and services were ordered the most this year.',
+        ],
+        'latest_publications' => [
+            'title' => 'Recent products',
+            'description' => '',
+        ],
+        'latest_investor' => [
+            'title' => 'Recent investors',
+            'description' => 'Trouver un investisseur pour votre projet ou produit.',
+        ],
         'your_cart' => 'Your cart',
         'add_to_cart' => 'Add to cart',
         'withdraw_from_cart' => 'Withdraw from cart',
