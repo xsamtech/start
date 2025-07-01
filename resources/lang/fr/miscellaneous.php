@@ -18,7 +18,11 @@ return [
     'welcome_description' => 'Publiez ou commandez des produits ou des services agricoles. Faites du crowdfunding sur votre projet agricole. Investissez et faites investir. Echangez dans le forum.',
     'welcome_about' => [
         'title' => 'A propos de START',
-        'content' => 'Ce projet a pour objectif de créer une marketplace intégrée qui doit connecter tous les acteurs de la chaîne de valeur agricole. En s\'appuyant sur une plateforme numérique centralisée, cette initiative doit faciliter les interactions entre les différents intervenants du secteur, améliorer l’accès aux ressources et optimiser les processus de transaction et de logistique.'
+        'content' => 'L\'initiative START (Science Technology and Agricultural Resource Transformation) est une plateforme en ligne permettant la commercialisation nationale et internationale des produits agricoles de la République démocratique du Congo. Cette plateforme permettra de mettre en relation les petits, moyens et grands exploitants agricoles avec les commerçants et les entreprises, tout en facilitant les négociations et les échanges financiers.',
+        'mission' => [
+            'title' => 'Notre mission',
+            'content' => 'Nous connectons les agriculteurs au marché et les consommateurs à la ferme. Nous formons, conseillons, achetons et vendons.',
+        ],
     ],
     'keywords' => 'produit agricole, agriculture, service agricole',
     'all_right_reserved' => 'Tous droits réservés',
@@ -326,8 +330,11 @@ return [
             'products' => [
                 'title' => 'Produits',
                 'projects' => 'Projets',
+                'about_project' => 'A propos du projet',
                 'products' => 'Produits',
-                'services' => 'Services'
+                'about_product' => 'A propos du produit',
+                'services' => 'Services',
+                'about_service' => 'A propos du service'
             ],
             'investors' => [
                 'title' => 'Investisseurs',
@@ -554,6 +561,7 @@ return [
             'description' => 'Trouver un investisseur pour votre projet ou produit.',
         ],
         'your_cart' => 'Votre panier',
+        'rate' => 'Evaluer',
         'add_to_cart' => 'Ajouter au panier',
         'withdraw_from_cart' => 'Retirer du panier',
         'subtotal' => 'SOUS-TOTAL :',
@@ -566,11 +574,27 @@ return [
             'services' => 'Services'
         ],
 
+        // Slides
+        'slides' => [
+            'slide_1' => [
+                'title' => 'Vendre ou<br>acheter en ligne',
+                'description' => 'Produits, services ou autres<br>projets sont disponibles pour acheter<br>ou vous pouvez publier les vôtres.',
+            ],
+
+            'slide_2' => [
+                'title' => 'Echanger avec<br>le public',
+                'description' => 'Vous avez un forum où vous pouvez<br>discuter avec tout le monde sur les sujets<br>du secteur agricole.',
+            ],
+
+            'slide_3' => [
+                'title' => 'Financement des projets',
+                'description' => 'START vous aide a obtenir un financement ou à<br>financer les projets agricoles partagés sur la plateforme.',
+            ],
+        ],
+
         // Home
         'home' => [
             'most_popular' => 'Les plus populaire',
-            'books' => 'Ouvrages',
-            'mags_newspapers' => 'Mags, Revues & journaux',
         ],
 
         // About

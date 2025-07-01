@@ -5,6 +5,7 @@
  */
 
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 
 // Get web URL
 if (!function_exists('getWebURL')) {
@@ -146,5 +147,33 @@ if (!function_exists('addItemsToExplodedArray')) {
         $saved = array_merge($explodes, $items);
 
         return implode($separator, $saved);
+    }
+}
+
+// Add an item to exploded array
+if (!function_exists('getExchangeRate')) {
+    function getExchangeRate($baseCurrency, $targetCurrency)
+    {
+        $apiKey = config('services.exchangerate.key');
+        // ExchangeRate API URL
+        // $url = 'https://v6.exchangerate-api.com/v6/' . $apiKey . '/pair/'. $baseCurrency . '/' . $targetCurrency;
+        $url = "https://v6.exchangerate-api.com/v6/{$apiKey}/pair/{$baseCurrency}/{$targetCurrency}";
+
+        // Create a Guzzle client
+        $client = new Client();
+
+        // Perform the GET request
+        $response = $client->get($url);
+
+        // Decode the JSON response
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        // Check if the answer is valid
+        if ($data['result'] === 'success') {
+            return $data['conversion_rate'];
+        }
+
+        // If the answer is invalid or there is an error
+        throw new \Exception('Erreur lors de la récupération du taux de change');
     }
 }

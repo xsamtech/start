@@ -59,4 +59,21 @@ class Crowdfunding extends Model
     {
         return $this->hasMany(Notification::class);
     }
+
+    /**
+     * Convert expected amount to user currency
+     */
+    public function convertExpectedAmount($userCurrency)
+    {
+        // If the crowdfunding currency and the user currency are the same, no conversion is required.
+        if ($this->currency === $userCurrency) {
+            return $this->expected_amount;
+        }
+
+        // Retrieve the conversion rate between the crowdfunding currency and the user currency
+        $conversionRate = getExchangeRate($this->currency, $userCurrency);
+
+        // Calculate the converted amount
+        return round($this->expected_amount * $conversionRate, 2);
+    }
 }

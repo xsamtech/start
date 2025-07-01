@@ -40,4 +40,21 @@ class CustomerOrder extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    /**
+     * Convert order price to user currency
+     */
+    public function convertPriceAtThatTime($userCurrency)
+    {
+        // If the order currency and the user currency are the same, no conversion is required.
+        if ($this->currency === $userCurrency) {
+            return $this->price_at_that_time;
+        }
+
+        // Retrieve the conversion rate between the order currency and the user currency
+        $conversionRate = getExchangeRate($this->currency, $userCurrency);
+
+        // Calculate the converted price
+        return round($this->price_at_that_time * $conversionRate, 2);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
@@ -15,6 +16,7 @@ Route::get('/change-lang/{locale}', [PublicController::class, 'changeLanguage'])
 // Products
 Route::get('/products', [PublicController::class, 'products'])->name('product.home');
 Route::get('/products/{entity}', [PublicController::class, 'productEntity'])->name('product.entity');
+Route::post('/products/{entity}', [PublicController::class, 'addProductEntity']);
 Route::get('/products/{entity}/{id}', [PublicController::class, 'productDatas'])->whereNumber('id')->name('product.entity.datas');
 // Discussions
 Route::get('/discussions', [PublicController::class, 'discussions'])->name('discussion.home');
@@ -69,7 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/{entity}/{id}', [PublicController::class, 'accountDatas'])->whereNumber('id')->name('account.entity.datas');
     Route::post('/account/{entity}/{id}', [PublicController::class, 'updateAccountEntity'])->whereNumber('id');
     // Delete something
-    Route::delete('/delete/{entity}/{id}', [PublicController::class, 'discussions'])->whereNumber('id')->name('data.delete');
+    Route::delete('/delete/{entity}/{id}', [PublicController::class, 'removeData'])->whereNumber('id')->name('data.delete');
 });
 
 require __DIR__ . '/auth.php';

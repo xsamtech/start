@@ -50,4 +50,21 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    /**
+     * Convert product price to user currency
+     */
+    public function convertPrice($userCurrency)
+    {
+        // If the product currency and the user currency are the same, no conversion is required.
+        if ($this->currency === $userCurrency) {
+            return $this->price;
+        }
+
+        // Retrieve the conversion rate between the product currency and the user currency
+        $conversionRate = getExchangeRate($this->currency, $userCurrency);
+
+        // Calculate the converted price
+        return round($this->price * $conversionRate, 2);
+    }
 }

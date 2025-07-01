@@ -40,9 +40,13 @@ return [
 
     // ===== ALERTS
     'no_record' => 'Il n\'y a aucun enregistrement !',
+    'find_error' => 'Elément non trouvé !',
     'create_error' => 'La création a échoué !',
     'update_error' => 'La modification a échoué !',
-    'registered_data' => 'Données enregistrées',
+    'delete_error' => 'Suppression échouée !',
+    'registered_data' => 'Données enregistrées !',
+    'updated_data' => 'Données mises à jour !',
+    'deleted_data' => 'Elément supprimé !',
     'required_fields' => 'Veuillez vérifier les champs obligatoires',
     'transaction_waiting' => 'Veuillez valider le message de votre opérateur sur votre téléphone. Ensuite appuyez sur le bouton ci-dessous.',
     'transaction_done' => 'Votre opération est terminée !',
@@ -131,7 +135,7 @@ return [
     'find_work_success' => 'Œuvre trouvée',
     'find_work_404' => 'Œuvre non trouvée',
     'create_work_success' => 'Œuvre créée',
-    'create_work_file_500' => 'Le fichier de l\'œuvre n\'a pas pu être créé',
+    'create_work_file_500' => 'Le fichier n\'a pas pu être créé',
     'create_image64_500' => 'L\'uploade de l\'image Base64 a échoué',
     'update_work_success' => 'Œuvre modifiée',
     'delete_work_success' => 'Œuvre supprimée',

@@ -40,4 +40,21 @@ class PaidFund extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Convert amount to user currency
+     */
+    public function convertAmount($userCurrency)
+    {
+        // If the fund currency and the user currency are the same, no conversion is required.
+        if ($this->currency === $userCurrency) {
+            return $this->amount;
+        }
+
+        // Retrieve the conversion rate between the fund currency and the user currency
+        $conversionRate = getExchangeRate($this->currency, $userCurrency);
+
+        // Calculate the converted amount
+        return round($this->amount * $conversionRate, 2);
+    }
 }

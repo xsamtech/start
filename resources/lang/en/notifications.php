@@ -40,9 +40,13 @@ return [
 
     // ===== ALERTS
     'no_record' => 'There is no recording!',
+    'find_error' => 'Item not found!',
     'create_error' => 'The creation failed!',
     'update_error' => 'The change failed!',
-    'registered_data' => 'Data registered',
+    'delete_error' => 'Deletion failed!',
+    'registered_data' => 'Data registered!',
+    'updated_data' => 'Data updated!',
+    'deleted_data' => 'Item deleted!',
     'required_fields' => 'Please check the required fields',
     'transaction_waiting' => 'Please confirm the message from your operator on your phone. Then press the button below.',
     'transaction_done' => 'Your transaction is complete!',
@@ -131,7 +135,7 @@ return [
     'find_work_success' => 'Work found',
     'find_work_404' => 'Work not found',
     'create_work_success' => 'Work created',
-    'create_work_file_500' => 'The work file could not be created',
+    'create_work_file_500' => 'The file could not be created',
     'create_image64_500' => 'The Base64 image upload failed',
     'update_work_success' => 'Work updated',
     'delete_work_success' => 'Work deleted',
