@@ -76,10 +76,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="header-top-left">
+@if (!empty($current_user))
                                     <ul id="top-links" class="clearfix">
                                         <li><a href="{{ route('account.home') }}" title="@lang('miscellaneous.menu.account.title')"><i class="bi bi-person" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.title')</span></a></li>
                                         <li><a href="{{ route('account.entity', ['entity' => 'cart']) }}" title="@lang('miscellaneous.menu.account.cart')"><i class="bi bi-cart3" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.cart')</span></a></li>
                                     </ul>
+@endif
                                 </div><!-- End .header-top-left -->
                                 <div class="header-top-right">
                                     <div class="header-top-dropdowns pull-right">
