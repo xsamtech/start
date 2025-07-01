@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @author Xanders
@@ -30,5 +31,46 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * MANY-TO-ONE
+     * Several files for a product
+     */
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class);
+    }
+
+    /**
+     * Get photo files
+     */
+    public function photos()
+    {
+        return $this->files()->where('file_type', 'photo');
+    }
+
+    /**
+     * Get video files
+     */
+    public function videos()
+    {
+        return $this->files()->where('file_type', 'video');
+    }
+
+    /**
+     * Get audio files
+     */
+    public function audios()
+    {
+        return $this->files()->where('file_type', 'audio');
+    }
+
+    /**
+     * Get document files
+     */
+    public function documents()
+    {
+        return $this->files()->where('file_type', 'document');
     }
 }

@@ -31,4 +31,13 @@ class File extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    /**
+     * ONE-TO-MANY
+     * One post for several files
+     */
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(Post::class);
+    }
 }

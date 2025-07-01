@@ -56,7 +56,7 @@
         <![endif]-->
 
         <style id="custom-style">
-            
+            textarea { resize: none; }
         </style>
 
         <title>
@@ -85,6 +85,7 @@
                                 </div><!-- End .header-top-left -->
                                 <div class="header-top-right">
                                     <div class="header-top-dropdowns pull-right">
+@if (!empty($current_user))
                                         <div class="btn-group dropdown-money">
                                             <button type="button" class="btn btn-custom dropdown-toggle"
                                                 data-toggle="dropdown">
@@ -95,6 +96,7 @@
                                                 <li><a href="#" id="CDF"><span class="hide-for-xs">Franc congolais</span><span class="hide-for-lg">CDF</span></a></li>
                                             </ul>
                                         </div><!-- End .btn-group -->
+@endif
                                         <div class="btn-group dropdown-language">
                                             <button type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
 @if ($current_locale == 'fr')
@@ -196,6 +198,7 @@
                                     </nav>
 
                                     <div id="quick-access">
+@if (!empty($current_user))
                                         <div class="dropdown-cart-menu-container pull-right">
                                             <div class="btn-group dropdown-cart">
                                                 <button type="button" class="btn btn-custom dropdown-toggle"
@@ -262,7 +265,7 @@
                                                 </div><!-- End .dropdown-cart -->
                                             </div><!-- End .btn-group -->
                                         </div><!-- End .dropdown-cart-menu-container -->
-
+@endif
 
                                         <form class="form-inline quick-search-form" role="form" action="{{ route('search') }}">
                                             <div class="form-group">
@@ -286,7 +289,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="twitterfeed col-md-12">
-                                <div class="twitter-icon"><i class="fa fa-twitter"></i></div><!-- End .twitter-icon -->
+                                {{-- <div class="twitter-icon"><i class="fa fa-twitter"></i></div><!-- End .twitter-icon --> --}}
                                 <div class="row">
                                     <div class="col-md-10 col-sm-10 col-xs-10 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
                                         {{-- <div class="twitter_feed flexslider"></div> --}}

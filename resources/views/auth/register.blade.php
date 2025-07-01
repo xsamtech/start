@@ -1,52 +1,80 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('layouts.app', ['page_title' => __('auth.register')])
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+@section('app-content')
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+			<section id="content">
+				<div id="breadcrumb-container">
+					<div class="container">
+						<ul class="breadcrumb">
+							<li><a href="{{ route('home') }}">@lang('miscellaneous.menu.home')</a></li>
+							<li class="active">@lang('auth.register')</li>
+						</ul>
+					</div>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<header class="content-title">
+								<h1 class="title">@lang('miscellaneous.register_title1')</h1>
+								<div class="md-margin"></div><!-- space -->
+							</header>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+							<div class="row">
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<p class="lead">@lang('miscellaneous.login_description')</p>
+									{{-- <div class="md-margin"></div><!-- space --> --}}
+									<a href="{{ route('register') }}" class="btn btn-custom-2">@lang('miscellaneous.login_title1')</a>
+									<div class="lg-margin"></div><!-- space -->
+								</div><!-- End .col-md-6 -->
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									{{-- <div class="xs-margin"></div> --}}
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+									<form id="login-form" method="POST" action="{{ route('login') }}">
+    @csrf
+                                        <div class="input-group" style="margin-bottom: 5px">
+											<span class="input-group-addon">
+                                                <span class="input-icon input-icon-email"></span>
+                                                <span class="input-text">@lang('miscellaneous.email_phone')</span>
+                                            </span>
+                                            <input type="text" name="login" required class="form-control input-lg @error('login') is-invalid @enderror" placeholder="@lang('miscellaneous.login_username')">
+										</div><!-- End .input-group -->
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+    @error('login')
+                                        <p class="text-danger text-right" style="margin-bottom: 0;">{{ $message }}</p>
+    @enderror
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+                                        <div class="xs-margin"></div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+                                        <div class="input-group xs-margin" style="margin-bottom: 5px">
+											<span class="input-group-addon">
+                                                <span class="input-icon input-icon-password"></span>
+                                                <span class="input-text">@lang('miscellaneous.password.label')&#42;</span>
+                                            </span>
+                                            <input type="password" name="password" required class="form-control input-lg @error('password') is-invalid @enderror" placeholder="@lang('miscellaneous.password.label')">
+										</div><!-- End .input-group -->
+    @error('password')
+                                        <p class="text-danger text-right" style="margin-bottom: 0;">{{ $message }}</p>
+    @enderror
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                                        <div class="xs-margin"></div>
+
+                                        <div class="d-flex justify-content-between">
+                                        </div>
+                                        <button class="btn btn-custom-2">@lang('auth.register')</button>
+                                        <span style="display: inline-block; margin-left: 20px;"><a href="{{ route('login') }}">@lang('miscellaneous.go_login') <i class="bi bi-chevron-double-right"></i></a></span>
+									</form>
+									<div class="sm-margin"></div><!-- space -->
+								</div><!-- End .col-md-6 -->
+
+							</div><!-- End.row -->
+
+						</div><!-- End .col-md-12 -->
+					</div><!-- End .row -->
+				</div><!-- End .container -->
+
+			</section><!-- End #content -->
+
+
+@endsection
