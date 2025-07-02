@@ -16,65 +16,175 @@
 					<div class="row">
 						<div class="col-md-12">
 							<header class="content-title">
-								<h1 class="title">@lang('miscellaneous.register_title1')</h1>
-								<div class="md-margin"></div><!-- space -->
+								<h1 class="title">@lang('auth.register')</h1>
+								<p class="title-desc">@lang('miscellaneous.go_login') <a href="{{ route('login') }}">@lang('auth.login')</a>.</p>
 							</header>
 
-							<div class="row">
+                            <div class="xs-margin"></div><!-- space -->
 
-								<div class="col-md-6 col-sm-6 col-xs-12">
-									<p class="lead">@lang('miscellaneous.login_description')</p>
-									{{-- <div class="md-margin"></div><!-- space --> --}}
-									<a href="{{ route('register') }}" class="btn btn-custom-2">@lang('miscellaneous.login_title1')</a>
-									<div class="lg-margin"></div><!-- space -->
-								</div><!-- End .col-md-6 -->
-								<div class="col-md-6 col-sm-6 col-xs-12">
-									{{-- <div class="xs-margin"></div> --}}
+                            <form action="{{ route('register') }}" id="register-form">
+								<div class="row">
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<fieldset>
+											<h2 class="sub-title text-uppercase">@lang('miscellaneous.account.personal_infos.title')</h2>
 
-									<form id="login-form" method="POST" action="{{ route('login') }}">
-    @csrf
-                                        <div class="input-group" style="margin-bottom: 5px">
-											<span class="input-group-addon">
-                                                <span class="input-icon input-icon-email"></span>
-                                                <span class="input-text">@lang('miscellaneous.email_phone')</span>
-                                            </span>
-                                            <input type="text" name="login" required class="form-control input-lg @error('login') is-invalid @enderror" placeholder="@lang('miscellaneous.login_username')">
-										</div><!-- End .input-group -->
-
-    @error('login')
-                                        <p class="text-danger text-right" style="margin-bottom: 0;">{{ $message }}</p>
+                                            <!-- First name -->
+                                            <div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-user"></span>
+                                                    <span class="input-text">@lang('miscellaneous.firstname') <span class="text-danger">&#42;</span></span>
+                                                </span>
+												<input type="text" name="firstname" required id="firstname" class="form-control input-lg @error('firstname') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.firstname')" autofocus>
+											</div><!-- End .input-group -->
+    @error('firstname')
+                                            <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
     @enderror
 
-                                        <div class="xs-margin"></div>
+                                            <!-- Last name -->
+                                            <div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-user"></span>
+                                                    <span class="input-text">@lang('miscellaneous.lastname')</span>
+                                                </span>
+                                                <input type="text" name="lastname" id="lastname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.lastname')">
+											</div><!-- End .input-group -->
+ 
+                                            <!-- Surname -->
+                                            <div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-user"></span>
+                                                    <span class="input-text">@lang('miscellaneous.surname')</span>
+                                                </span>
+                                                <input type="text" name="surname" id="surname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.surname')">
+											</div><!-- End .input-group -->
 
-                                        <div class="input-group xs-margin" style="margin-bottom: 5px">
-											<span class="input-group-addon">
-                                                <span class="input-icon input-icon-password"></span>
-                                                <span class="input-text">@lang('miscellaneous.password.label')&#42;</span>
-                                            </span>
-                                            <input type="password" name="password" required class="form-control input-lg @error('password') is-invalid @enderror" placeholder="@lang('miscellaneous.password.label')">
-										</div><!-- End .input-group -->
-    @error('password')
-                                        <p class="text-danger text-right" style="margin-bottom: 0;">{{ $message }}</p>
+                                            <!-- E-mail -->
+                                            <div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-email"></span>
+                                                    <span class="input-text">@lang('miscellaneous.email')</span>
+                                                </span>
+												<input type="text" name="email" class="form-control input-lg @error('email') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.email')">
+											</div><!-- End .input-group -->
+    @error('email')
+                                            <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
     @enderror
 
-                                        <div class="xs-margin"></div>
+                                            <!-- Phone -->
+                                            <div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-phone"></span>
+                                                    <span class="input-text">@lang('miscellaneous.phone') <span class="text-danger">&#42;</span></span>
+                                                </span>
+												<input type="text" name="email" class="form-control input-lg @error('phone') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.phone_number')">
+											</div><!-- End .input-group -->
+    @error('phone')
+                                            <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
+    @enderror
 
-                                        <div class="d-flex justify-content-between">
-                                        </div>
-                                        <button class="btn btn-custom-2">@lang('auth.register')</button>
-                                        <span style="display: inline-block; margin-left: 20px;"><a href="{{ route('login') }}">@lang('miscellaneous.go_login') <i class="bi bi-chevron-double-right"></i></a></span>
-									</form>
-									<div class="sm-margin"></div><!-- space -->
-								</div><!-- End .col-md-6 -->
+                                            <!-- Abour me -->
+                                            <div class="input-group textarea-container">
+                                                <span class="input-group-addon"><span class="input-icon input-icon-message"></span><span class="input-text">@lang('miscellaneous.about_user.label')</span></span>
+                                                <textarea name="about_me" id="about_me" class="form-control" cols="30" rows="6" placeholder="@lang('miscellaneous.about_user.placeholder')"></textarea>
+                                            </div><!-- End .input-group -->
+										</fieldset>
+									</div><!-- End .col-md-6 -->
 
-							</div><!-- End.row -->
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<fieldset>
+											<h2 class="sub-title text-uppercase">@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')</h2>
 
+                                            <!-- Address 1 -->
+											<div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-address"></span>
+                                                    <span class="input-text">@lang('miscellaneous.address.title') 1</span>
+                                                </span>
+												<input type="text" name="address_1" id="address_1" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')">
+											</div><!-- End .input-group -->
+
+                                            <!-- Address 2 -->
+											<div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-address"></span>
+                                                    <span class="input-text">@lang('miscellaneous.address.title') 2</span>
+                                                </span>
+												<input type="text" name="address_2" id="address_2" class="form-control input-lg" placeholder="@lang('miscellaneous.address.line2')">
+											</div><!-- End .input-group -->
+
+                                            <!-- P.O. box -->
+                                            <div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-postcode"></span>
+                                                    <span class="input-text">@lang('miscellaneous.p_o_box') <span class="text-danger">&#42;</span></span>
+                                                </span>
+												<input type="text" name="p_o_box"tidme="p_o_box" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.p_o_box')">
+											</div><!-- End .input-group -->
+
+                                            <div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon"><span class="input-icon input-icon-city"></span>
+                                                <span class="input-text">@lang('miscellaneous.address.city') <span class="text-danger">&#42;</span></span></span>
+												<input type="text" required class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')">
+											</div><!-- End .input-group -->
+
+											<div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-country"></span>
+                                                    <span class="input-text">Country</span>
+                                                </span>
+												<div class="large-selectbox clearfix">
+													<select id="country" name="country" class="selectbox">
+														<option value="United Kingdom">United Kingdom</option>
+														<option value="Brazil">Brazil</option>
+														<option value="France">France</option>
+														<option value="Italy">Italy</option>
+														<option value="Spain">Spain</option>
+													</select>
+												</div><!-- End .large-selectbox-->
+											</div><!-- End .input-group -->
+
+											<div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon"><span
+														class="input-icon input-icon-region"></span><span
+														class="input-text">Region / State <span class="text-danger">&#42;</span></span></span>
+												<div class="large-selectbox clearfix">
+													<select id="state" name="state" class="selectbox">
+														<option value="California">California</option>
+														<option value="Texas">Texas</option>
+														<option value="NewYork">NewYork</option>
+														<option value="Narnia">Narnia</option>
+														<option value="Jumanji">Jumanji</option>
+													</select>
+												</div><!-- End .large-selectbox-->
+											</div><!-- End .input-group -->
+
+										</fieldset>
+                                        
+										<fieldset>
+											<h2 class="sub-title">YOUR PASSWORD</h2>
+											<div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon"><span
+														class="input-icon input-icon-password"></span><span
+														class="input-text">Password <span class="text-danger">&#42;</span></span></span>
+												<input type="password" required class="form-control input-lg"
+													placeholder="Your Password">
+											</div><!-- End .input-group -->
+											<div class="input-group" style="margin-bottom: 5px">
+												<span class="input-group-addon"><span
+														class="input-icon input-icon-password"></span><span
+														class="input-text">Password <span class="text-danger">&#42;</span></span></span>
+												<input type="password" required class="form-control input-lg"
+													placeholder="Your Password">
+											</div><!-- End .input-group -->
+										</fieldset>
+
+									</div><!-- End .col-md-6 -->
+
+								</div><!-- End .row -->
+							</form>
 						</div><!-- End .col-md-12 -->
 					</div><!-- End .row -->
 				</div><!-- End .container -->
-
-			</section><!-- End #content -->
 
 
 @endsection

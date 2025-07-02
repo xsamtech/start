@@ -308,14 +308,14 @@ a {
 	-o-transition: color .24s ease-in-out;
 	-ms-transition: color .24s ease-in-out;
 	transition: color .24s ease-in-out;
-	color: #04471a;
+	color: #b67915;
 }
 
 a:active,
 a:hover,
 a:focus {
 	text-decoration: none;
-	color: #84bb26;
+	color: #04471a;
 }
 
 a:active,
@@ -877,8 +877,8 @@ fieldset[disabled] .btn-custom.active {
 
 .btn-custom-2 {
 	color: #fff !important;
-	background-color: #444645;
-	border-color: #444645;
+	background-color: #732f0b;
+	border-color: #732f0b;
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	text-transform: uppercase;
@@ -4365,7 +4365,7 @@ parent's font-size:0
 	margin: 0 6px;
 	display: inline-block;
 	zoom: 1;
-	*display: inline;
+	display: inline;
 }
 
 .banner-slider .flex-control-paging li a {
@@ -4659,7 +4659,7 @@ Bootstrap Breadcrumb style overwrite
 }
 
 .portfolio-item h2 a:hover {
-	color: #04471a;
+	color: #84bb26;
 }
 
 .portfolio-item p {
@@ -5453,7 +5453,7 @@ noUi-target,
 .noUi-stacking+.noUi-origin {
 	/* Fix stacking order in IE7, which incorrectly
    creates a new context for the origins. */
-	*z-index: -1;
+	z-index: -1;
 }
 
 .noUi-state-tap .noUi-origin {
@@ -5544,7 +5544,6 @@ noUi-target,
 	border-radius: 3px;
 	background: #04471a;
 	cursor: default;
-	,
 }
 
 .noUi-active {}
@@ -7819,7 +7818,7 @@ html[xmlns] .slides {
 	margin: 0 8px;
 	display: inline-block;
 	zoom: 1;
-	*display: inline;
+	display: inline;
 }
 
 .flex-control-paging li a {

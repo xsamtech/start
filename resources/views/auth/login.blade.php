@@ -24,13 +24,10 @@
 
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<p class="lead">@lang('miscellaneous.login_description')</p>
-									{{-- <div class="md-margin"></div><!-- space --> --}}
-									<a href="{{ route('register') }}" class="btn btn-custom-2">@lang('miscellaneous.register_title2')</a>
+									<a href="{{ route('register') }}" class="lead text-uppercase">@lang('miscellaneous.register_title2') <i class="bi bi-chevron-double-right"></i></a>
 									<div class="lg-margin"></div><!-- space -->
 								</div><!-- End .col-md-6 -->
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									{{-- <div class="xs-margin"></div> --}}
-
 									<form id="login-form" method="POST" action="{{ route('login') }}">
     @csrf
                                         <div class="input-group" style="margin-bottom: 5px">
@@ -40,22 +37,19 @@
                                             </span>
                                             <input type="text" name="login" required class="form-control input-lg @error('login') is-invalid @enderror" placeholder="@lang('miscellaneous.login_username')">
 										</div><!-- End .input-group -->
-
     @error('login')
-                                        <p class="text-danger text-right" style="margin-bottom: 0;">{{ $message }}</p>
+                                        <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
     @enderror
-
-                                        <div class="xs-margin"></div>
 
                                         <div class="input-group xs-margin" style="margin-bottom: 5px">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-password"></span>
-                                                <span class="input-text">@lang('miscellaneous.password.label')&#42;</span>
+                                                <span class="input-text">@lang('miscellaneous.password.label')</span>
                                             </span>
                                             <input type="password" name="password" required class="form-control input-lg @error('password') is-invalid @enderror" placeholder="@lang('miscellaneous.password.label')">
 										</div><!-- End .input-group -->
     @error('password')
-                                        <p class="text-danger text-right" style="margin-bottom: 0;">{{ $message }}</p>
+                                        <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
     @enderror
 
                                         <div class="xs-margin"></div>
