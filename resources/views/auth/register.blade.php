@@ -58,8 +58,19 @@
                                                 <input type="text" name="surname" id="surname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.surname')">
 											</div><!-- End .input-group -->
 
+                                            <div class="text-center">
+                                                <p style="margin-bottom: 0">@lang('miscellaneous.gender_title')</p>
+
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="gender" id="gender1" value="M"><span class="text-muted">@lang('miscellaneous.gender1')</span>
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="gender" id="gender2" value="F"><span class="text-muted">@lang('miscellaneous.gender2')</span>
+                                                </label>
+                                            </div>
+
                                             <!-- E-mail -->
-                                            <div class="input-group" style="margin-bottom: 5px">
+                                            <div class="input-group" style="margin: 5px 0;">
 												<span class="input-group-addon">
                                                     <span class="input-icon input-icon-email"></span>
                                                     <span class="input-text">@lang('miscellaneous.email')</span>
@@ -91,7 +102,18 @@
 									</div><!-- End .col-md-6 -->
 
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<fieldset>
+                                        <div id="profileImageWrapper" style="margin-bottom: 50px;">
+                                            <div style="display: flex; justify-content: center; align-items: center;">
+                                                <img src="{{ asset('assets/img/user.png') }}" alt="Avatar" width="200" class="other-user-image" style="border-radius: 5px;">
+                                                <label role="button" for="image_profile" class="btn btn-sm btn-custom-2 pt-2" style="margin-left: 5px;">
+                                                    <i class="bi bi-pencil-fill text-white" style="margin-right: 5px;"></i>@lang('miscellaneous.change')
+                                                    <input type="file" name="image_profile" id="image_profile" style="display: none;">
+                                                </label>
+                                            </div>
+                                            <input type="hidden" name="image_64" id="image_64">
+                                        </div>
+
+                                        <fieldset>
 											<h2 class="sub-title text-uppercase">@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')</h2>
 
                                             <!-- Address 1 -->
@@ -113,13 +135,13 @@
 											</div><!-- End .input-group -->
 
                                             <!-- P.O. box -->
-                                            <div class="input-group" style="margin-bottom: 5px">
+                                            {{-- <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
                                                     <span class="input-icon input-icon-postcode"></span>
                                                     <span class="input-text">@lang('miscellaneous.p_o_box') <span class="text-danger">&#42;</span></span>
                                                 </span>
 												<input type="text" name="p_o_box"tidme="p_o_box" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.p_o_box')">
-											</div><!-- End .input-group -->
+											</div><!-- End .input-group --> --}}
 
                                             <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
@@ -129,20 +151,21 @@
 												<input type="text" required class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')">
 											</div><!-- End .input-group -->
 
-                                            <div class="md-margin"></div><!-- space -->
-
                                             <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
                                                     <span class="input-icon input-icon-country"></span>
                                                     <span class="input-text">@lang('miscellaneous.country')</span>
                                                 </span>
 												<div class="large-selectbox clearfix">
-													<select id="country" name="country" class="selectbox form-control">
+													<select id="country" name="country" class="selectbox form-control input-lg">
 														<option class="small" disabled selected>@lang('miscellaneous.choose_country')</option>
+    @forelse ($countries as $country)
+														<option>{{ $country['name'] }}</option>
+    @empty
+    @endforelse
 													</select>
 												</div><!-- End .large-selectbox-->
 											</div><!-- End .input-group -->
-
 										</fieldset>
                                         
 										<fieldset>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html class="ie8"> <![endif]-->
-<!--[if IE 9]> <html class="ie9"> <![endif]-->
+<!--[if IE 8]> <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="ie9"> <![endif]-->
 <!--[if !IE]><!-->
-<html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <!--<![endif]-->
     <head>
         <meta charset="utf-8">
@@ -23,7 +23,7 @@
         <link rel="manifest" href="{{ asset('assets/img/favicon/site.webmanifest') }}">
 
         <!-- Google Fonts -->
-        <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic%7CPT+Gudea:400,700,400italic%7CPT+Oswald:400,700,300' rel='stylesheet' id="googlefont">
+        {{-- <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic%7CPT+Gudea:400,700,400italic%7CPT+Oswald:400,700,300' rel='stylesheet' id="googlefont"> --}}
 
         <!-- Font Icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -31,18 +31,22 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css">
 
         <!-- Stylesheet -->
+        <link rel="stylesheet" href="{{ asset('assets/addons/bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/prettyPhoto.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/revslider.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/owl.carousel.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/responsive.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/cropper/css/cropper.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/jquery/css/jquery-ui.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/jquery/datetimepicker/css/jquery.datetimepicker.min.css') }}">
 
         <!--- jQuery -->
-        {{-- <script src="{{ asset('assets/addons/jquery/js/jquery.min.js') }}"></script> --}}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="{{ asset('assets/addons/jquery/js/jquery.min.js') }}"></script>
+        {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> --}}
         <script>
-            window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')
+            window.jQuery || document.write('<script src="{{ asset('assets/addons/jquery/js/jquery.min.js') }}"><\/script>')
         </script>
 
         <!--[if lt IE 9]>
@@ -362,8 +366,41 @@
 
         <a href="#" id="scroll-top" title="Scroll to Top"><i class="fa-solid fa-angle-up"></i></a><!-- End #scroll-top -->
 
+        <!-- MODALS-->
+        <!-- ### Crop other user image ### -->
+        <div class="modal fade" id="cropModal_profile" tabindex="-1" aria-hidden="true" data-bs-backdrop="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header py-0">
+                        <button type="button" class="btn-close mt-1" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="text-center text-muted">Recadrer l'image avant de l'enregistrer</h5>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 mb-sm-0 mb-4">
+                                    <div class="bg-image">
+                                        <img src="" id="retrieved_image_profile" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary px-4 rounded-pill text-white" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" id="crop_profile" class="btn btn-primary px-4 rounded-pill" data-bs-dismiss="modal">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MODALS-->
+
         <!-- END -->
-        <script src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/addons/jquery/js/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('assets/addons/jquery/datetimepicker/js/jquery.datetimepicker.full.min.js') }}"></script>
+        <script src="{{ asset('assets/addons/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        {{-- <script src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script> --}}
         <script src="{{ asset('assets/js/venedor/smoothscroll.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/jquery.debouncedresize.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/retina.min.js') }}"></script>
@@ -377,6 +414,9 @@
         <script src="{{ asset('assets/js/venedor/jquery.themepunch.tools.min.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/jquery.themepunch.revolution.min.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/main.js') }}"></script>
+        <script src="{{ asset('assets/addons/cropper/js/cropper.min.js') }}"></script>
+        <script src="{{ asset('assets/addons/autosize/js/autosize.min.js') }}"></script>
+        <script src="{{ asset('assets/js/scripts.custom.js') }}"></script>
 
         <script>
             $(function() {

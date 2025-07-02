@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
@@ -6,6 +7,7 @@
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 // Get web URL
 if (!function_exists('getWebURL')) {
@@ -118,7 +120,7 @@ if (!function_exists('deleteExplodedArrayItem')) {
         $explodes = explode($separator, $subject);
         $clean_inventory = array();
 
-        foreach($explodes as $explode) {
+        foreach ($explodes as $explode) {
             if (!isset($clean_inventory[$explode])) {
                 $clean_inventory[$explode] = 0;
             }
@@ -175,5 +177,47 @@ if (!function_exists('getExchangeRate')) {
 
         // If the answer is invalid or there is an error
         throw new \Exception('Erreur lors de la récupération du taux de change');
+    }
+}
+
+// Add an item to exploded array
+if (!function_exists('showCountries')) {
+    function showCountries()
+    {
+        $response = Http::get('https://restcountries.com/v3.1/all?fields=cca2,idd,flags,name');
+
+        if (!$response->successful()) {
+            return [];
+        }
+
+        $countriesRaw = $response->json();
+        $phoneCodes = [];
+
+        return collect($countriesRaw)
+                ->map(function ($country) use (&$phoneCodes) {
+                    $root = $country['idd']['root'] ?? '';
+                    $suffix = $country['idd']['suffixes'][0] ?? '';
+                    $fullPhoneCode = $root . $suffix;
+
+                    if (empty($fullPhoneCode) || in_array($fullPhoneCode, $phoneCodes)) {
+                        return null;
+                    }
+
+                    $phoneCodes[] = $fullPhoneCode;
+
+                    return [
+                        'value' => $fullPhoneCode,
+                        'name' => $country['name']['common'] ?? '',
+                        'code' => $country['cca2'] ?? '',
+                        'phone' => $fullPhoneCode,
+                        'flag' => $country['flags']['png'] ?? '',
+                        'label' => ($country['name']['common'] ?? '') . ' (' . ($country['cca2'] ?? '') . ') (' . $fullPhoneCode . ')',
+                    ];
+                })
+                ->filter()
+                ->sortBy('label')
+                ->values();
+
+        return abort(500, 'Erreur lors du chargement des pays');
     }
 }

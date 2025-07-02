@@ -54,8 +54,6 @@
 
                                         <div class="xs-margin"></div>
 
-                                        <div class="d-flex justify-content-between">
-                                        </div>
                                         <button class="btn btn-custom-2">@lang('auth.login')</button>
                                         <span style="display: inline-block; margin-left: 20px;"><a href="{{ route('password.request') }}">@lang('miscellaneous.forgotten_password')</a> <i class="bi bi-chevron-double-right"></i></span>
 									</form>
