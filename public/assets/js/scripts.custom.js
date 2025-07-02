@@ -7,6 +7,7 @@
 // Common variables
 const navigator = window.navigator;
 const currentLanguage = $('html').attr('lang');
+const browserLanguage = (navigator.language || navigator.userLanguage).substring(0, 2);
 const currentUser = $('[name="strt-visitor"]').attr('content');
 const currentHost = $('[name="strt-url"]').attr('content');
 const apiHost = $('[name="strt-api-url"]').attr('content');
@@ -100,12 +101,28 @@ $(function () {
     autosize($('textarea'));
 
     /* jQuery Date picker */
+    // Ensure the localization exists
+    if ($.datepicker.regional[browserLanguage]) {
+        $.datepicker.setDefaults($.datepicker.regional[browserLanguage]);
+
+    } else {
+        // fallback to english if language is not found
+        $.datepicker.setDefaults($.datepicker.regional['fr']);
+    }
+
+    // Initialize the datepicker
     $('#birthdate, #register_birthdate, #update_birthdate').datepicker({
-        dateFormat: currentLanguage.startsWith('fr') || currentLanguage.startsWith('ln') ? 'dd/mm/yy' : 'mm/dd/yy',
         onSelect: function () {
             $(this).focus();
         }
     });
+
+    // $('#birthdate, #register_birthdate, #update_birthdate').datepicker({
+    //     dateFormat: currentLanguage.startsWith('fr') || currentLanguage.startsWith('ln') ? 'dd/mm/yy' : 'mm/dd/yy',
+    //     onSelect: function () {
+    //         $(this).focus();
+    //     }
+    // });
 
     /* jQuery DateTime picker */
     jQuery('#outflow_date').datetimepicker({
@@ -118,9 +135,13 @@ $(function () {
         var files = e.target.files;
         var done = function (url) {
             retrievedAvatar.src = url;
-            var modal = new bootstrap.Modal(document.getElementById('cropModalUser'), { keyboard: false });
+            // var modal = new bootstrap.Modal(document.getElementById('cropModalUser'), { keyboard: false });
+            // modal.show();
 
-            modal.show();
+            $('#cropModalUser').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
         };
 
         if (files && files.length > 0) {
@@ -200,9 +221,13 @@ $(function () {
         var files = e.target.files;
         var done = function (url) {
             retrievedImageProfile.src = url;
-            var modal = new bootstrap.Modal(document.getElementById('cropModal_profile'), { keyboard: false });
+            // var modal = new bootstrap.Modal(document.getElementById('cropModal_profile'), { keyboard: false });
+            // modal.show();
 
-            modal.show();
+            $('#cropModal_profile').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
         };
 
         if (files && files.length > 0) {

@@ -23,7 +23,7 @@
         <link rel="manifest" href="{{ asset('assets/img/favicon/site.webmanifest') }}">
 
         <!-- Google Fonts -->
-        {{-- <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic%7CPT+Gudea:400,700,400italic%7CPT+Oswald:400,700,300' rel='stylesheet' id="googlefont"> --}}
+        <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic%7CPT+Gudea:400,700,400italic%7CPT+Oswald:400,700,300' rel='stylesheet' id="googlefont">
 
         <!-- Font Icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -31,7 +31,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css">
 
         <!-- Stylesheet -->
-        <link rel="stylesheet" href="{{ asset('assets/addons/bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/prettyPhoto.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/revslider.css') }}">
@@ -39,14 +38,14 @@
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/responsive.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/addons/cropper/css/cropper.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/addons/jquery/css/jquery-ui.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/jquery/jquery-ui/jquery-ui.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/addons/jquery/datetimepicker/css/jquery.datetimepicker.min.css') }}">
 
         <!--- jQuery -->
-        <script src="{{ asset('assets/addons/jquery/js/jquery.min.js') }}"></script>
-        {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> --}}
+        {{-- <script src="{{ asset('assets/addons/jquery/js/jquery.min.js') }}"></script> --}}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script>
-            window.jQuery || document.write('<script src="{{ asset('assets/addons/jquery/js/jquery.min.js') }}"><\/script>')
+            window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')
         </script>
 
         <!--[if lt IE 9]>
@@ -68,6 +67,72 @@
     </head>
 
     <body>
+        <!-- MODALS-->
+        <!-- ### Crop other user image ### -->
+        <div class="modal fade" id="cropModal_profile" tabindex="-1" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 10px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body pt-0">
+                        <h4 class="text-center text-muted">@lang('miscellaneous.crop_before_save')</h4>
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="bg-image" style="max-width: 100%; overflow: hidden;">
+                                        <img src="" id="retrieved_image_profile" class="img-responsive center-block" alt="Photo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@lang('miscellaneous.cancel')</button>
+                        <button type="button" id="crop_profile" class="btn btn-custom-2" data-dismiss="modal">@lang('miscellaneous.register')</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ### Crop user image ### -->
+        <div class="modal fade" id="cropModalUser" tabindex="-1" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 10px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h4 class="text-center text-muted">@lang('miscellaneous.crop_before_save')</h4>
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="bg-image" style="max-width: 100%; overflow: hidden;">
+                                        <img src="" id="retrieved_image" class="img-responsive center-block" alt="Photo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@lang('miscellaneous.cancel')</button>
+                        <button type="button" id="crop_avatar" class="btn btn-custom-2" data-dismiss="modal">@lang('miscellaneous.register')</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MODALS-->
+
         <div id="wrapper">
             <header id="header">
                 <div id="header-top">
@@ -366,41 +431,11 @@
 
         <a href="#" id="scroll-top" title="Scroll to Top"><i class="fa-solid fa-angle-up"></i></a><!-- End #scroll-top -->
 
-        <!-- MODALS-->
-        <!-- ### Crop other user image ### -->
-        <div class="modal fade" id="cropModal_profile" tabindex="-1" aria-hidden="true" data-bs-backdrop="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header py-0">
-                        <button type="button" class="btn-close mt-1" data-bs-dismiss="modal" aria-label="Fermer"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h5 class="text-center text-muted">Recadrer l'image avant de l'enregistrer</h5>
-
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12 mb-sm-0 mb-4">
-                                    <div class="bg-image">
-                                        <img src="" id="retrieved_image_profile" class="img-fluid">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-between">
-                        <button type="button" class="btn btn-secondary px-4 rounded-pill text-white" data-bs-dismiss="modal">Annuler</button>
-                        <button type="button" id="crop_profile" class="btn btn-primary px-4 rounded-pill" data-bs-dismiss="modal">Enregistrer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- MODALS-->
-
         <!-- END -->
         <script src="{{ asset('assets/addons/jquery/js/jquery-ui.min.js') }}"></script>
+        <script rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
         <script src="{{ asset('assets/addons/jquery/datetimepicker/js/jquery.datetimepicker.full.min.js') }}"></script>
-        <script src="{{ asset('assets/addons/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        {{-- <script src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script> --}}
+        <script src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/smoothscroll.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/jquery.debouncedresize.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/retina.min.js') }}"></script>

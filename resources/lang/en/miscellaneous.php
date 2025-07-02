@@ -242,6 +242,7 @@ return [
     'birth_city' => 'Birth city',
     'birth_date' => [
         'label' => 'Birth date',
+        'label2' => 'Birth',
         'day' => 'Day',
         'month' => 'Month',
         'year' => 'Year',

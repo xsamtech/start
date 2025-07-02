@@ -58,6 +58,16 @@
                                                 <input type="text" name="surname" id="surname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.surname')">
 											</div><!-- End .input-group -->
 
+                                            <!-- Birth date -->
+                                            <div class="input-group" style="margin-bottom: 5px; z-index: 5;">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-region"></span>
+                                                    <span class="input-text">@lang('miscellaneous.birth_date.label2')</span>
+                                                </span>
+												<input type="text" name="birthdate" id="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.birth_date.label')">
+											</div><!-- End .input-group -->
+
+                                            <!-- Gender -->
                                             <div class="text-center">
                                                 <p style="margin-bottom: 0">@lang('miscellaneous.gender_title')</p>
 
@@ -94,7 +104,7 @@
     @enderror
 
                                             <!-- Abour me -->
-                                            <div class="input-group textarea-container">
+                                            <div class="input-group textarea-container" style="z-index: 3">
                                                 <span class="input-group-addon"><span class="input-icon input-icon-message"></span><span class="input-text">@lang('miscellaneous.about_user.label')</span></span>
                                                 <textarea name="about_me" id="about_me" class="form-control" cols="30" rows="6" placeholder="@lang('miscellaneous.about_user.placeholder')"></textarea>
                                             </div><!-- End .input-group -->
@@ -133,15 +143,6 @@
                                                 </span>
 												<input type="text" name="address_2" id="address_2" class="form-control input-lg" placeholder="@lang('miscellaneous.address.line2')">
 											</div><!-- End .input-group -->
-
-                                            <!-- P.O. box -->
-                                            {{-- <div class="input-group" style="margin-bottom: 5px">
-												<span class="input-group-addon">
-                                                    <span class="input-icon input-icon-postcode"></span>
-                                                    <span class="input-text">@lang('miscellaneous.p_o_box') <span class="text-danger">&#42;</span></span>
-                                                </span>
-												<input type="text" name="p_o_box"tidme="p_o_box" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.p_o_box')">
-											</div><!-- End .input-group --> --}}
 
                                             <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
