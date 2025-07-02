@@ -50,6 +50,7 @@ return [
     'no' => 'No',
     'connection' => 'Connection',
     'register' => 'Register',
+    'confirm' => 'Confirm',
     'send' => 'Send',
     'add' => 'Add',
     'validated' => 'Validated',

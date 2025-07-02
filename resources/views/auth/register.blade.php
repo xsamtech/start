@@ -122,8 +122,10 @@
 											</div><!-- End .input-group -->
 
                                             <div class="input-group" style="margin-bottom: 5px">
-												<span class="input-group-addon"><span class="input-icon input-icon-city"></span>
-                                                <span class="input-text">@lang('miscellaneous.address.city') <span class="text-danger">&#42;</span></span></span>
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-city"></span>
+                                                    <span class="input-text">@lang('miscellaneous.address.city')</span>
+                                                </span>
 												<input type="text" required class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')">
 											</div><!-- End .input-group -->
 
@@ -133,7 +135,7 @@
                                                     <span class="input-text">Country</span>
                                                 </span>
 												<div class="large-selectbox clearfix">
-													<select id="country" name="country" class="selectbox">
+													<select id="country" name="country" class="selectbox form">
 														<option value="United Kingdom">United Kingdom</option>
 														<option value="Brazil">Brazil</option>
 														<option value="France">France</option>
