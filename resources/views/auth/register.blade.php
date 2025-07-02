@@ -29,7 +29,7 @@
 											<h2 class="sub-title text-uppercase">@lang('miscellaneous.account.personal_infos.title')</h2>
 
                                             <!-- Avatar -->
-                                            <div id="profileImageWrapper" style="margin-bottom: 5px;">
+                                            <div id="profileImageWrapper" style="margin-bottom: 20px;">
                                                 <div style="display: flex; justify-content: center; align-items: center;">
                                                     <img src="{{ asset('assets/img/user.png') }}" alt="Avatar" width="200" class="other-user-image" style="border-radius: 5px;">
                                                     <label role="button" for="image_profile" class="btn btn-sm btn-default pt-2" style="margin-left: 5px;">
