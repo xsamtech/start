@@ -146,7 +146,11 @@
 @if (!empty($current_user))
                                     <ul id="top-links" class="clearfix">
                                         <li><a href="{{ route('account.home') }}" title="@lang('miscellaneous.menu.account.title')"><i class="bi bi-person" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.title')</span></a></li>
-                                        <li><a href="{{ route('account.entity', ['entity' => 'cart']) }}" title="@lang('miscellaneous.menu.account.cart')"><i class="bi bi-cart3" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.cart')</span></a></li>
+                                        <li>
+                                            <form action="{{ route('logout') }}" method="post">
+                                                <button class="btn btn-link" style="color: #777;"><i class="bi bi-power" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.logout')</span></button>
+                                            </form>
+                                        </li>
                                     </ul>
 @endif
                                 </div><!-- End .header-top-left -->
