@@ -129,33 +129,16 @@
 												<input type="text" required class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')">
 											</div><!-- End .input-group -->
 
-											<div class="input-group" style="margin-bottom: 5px">
+                                            <div class="md-margin"></div><!-- space -->
+
+                                            <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
                                                     <span class="input-icon input-icon-country"></span>
-                                                    <span class="input-text">Country</span>
+                                                    <span class="input-text">@lang('miscellaneous.country')</span>
                                                 </span>
 												<div class="large-selectbox clearfix">
-													<select id="country" name="country" class="selectbox form">
-														<option value="United Kingdom">United Kingdom</option>
-														<option value="Brazil">Brazil</option>
-														<option value="France">France</option>
-														<option value="Italy">Italy</option>
-														<option value="Spain">Spain</option>
-													</select>
-												</div><!-- End .large-selectbox-->
-											</div><!-- End .input-group -->
-
-											<div class="input-group" style="margin-bottom: 5px">
-												<span class="input-group-addon"><span
-														class="input-icon input-icon-region"></span><span
-														class="input-text">Region / State <span class="text-danger">&#42;</span></span></span>
-												<div class="large-selectbox clearfix">
-													<select id="state" name="state" class="selectbox">
-														<option value="California">California</option>
-														<option value="Texas">Texas</option>
-														<option value="NewYork">NewYork</option>
-														<option value="Narnia">Narnia</option>
-														<option value="Jumanji">Jumanji</option>
+													<select id="country" name="country" class="selectbox form-control">
+														<option class="small" disabled selected>@lang('miscellaneous.choose_country')</option>
 													</select>
 												</div><!-- End .large-selectbox-->
 											</div><!-- End .input-group -->

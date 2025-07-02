@@ -247,6 +247,7 @@ return [
         'year' => 'Année',
     ],
     'birth_city_date' => 'Lieu et date de naissance',
+    'country' => 'Pays',
     'choose_country' => 'Choisir pays',
     'phone_code' => 'Code tél.',
     'phone_number' => 'N° de téléphone',
