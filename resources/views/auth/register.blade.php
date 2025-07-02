@@ -28,6 +28,18 @@
 										<fieldset>
 											<h2 class="sub-title text-uppercase">@lang('miscellaneous.account.personal_infos.title')</h2>
 
+                                            <!-- Avatar -->
+                                            <div id="profileImageWrapper" style="margin-bottom: 5px;">
+                                                <div style="display: flex; justify-content: center; align-items: center;">
+                                                    <img src="{{ asset('assets/img/user.png') }}" alt="Avatar" width="200" class="other-user-image" style="border-radius: 5px;">
+                                                    <label role="button" for="image_profile" class="btn btn-sm btn-default pt-2" style="margin-left: 5px;">
+                                                        <i class="bi bi-pencil-fill text-white" style="margin-right: 5px;"></i>@lang('miscellaneous.change_image')
+                                                        <input type="file" name="image_profile" id="image_profile" style="display: none;">
+                                                    </label>
+                                                </div>
+                                                <input type="hidden" name="image_64" id="image_64">
+                                            </div>
+
                                             <!-- First name -->
                                             <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
@@ -102,27 +114,10 @@
     @error('phone')
                                             <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
     @enderror
-
-                                            <!-- Abour me -->
-                                            <div class="input-group textarea-container" style="z-index: 3">
-                                                <span class="input-group-addon"><span class="input-icon input-icon-message"></span><span class="input-text">@lang('miscellaneous.about_user.label')</span></span>
-                                                <textarea name="about_me" id="about_me" class="form-control" cols="30" rows="6" placeholder="@lang('miscellaneous.about_user.placeholder')"></textarea>
-                                            </div><!-- End .input-group -->
 										</fieldset>
 									</div><!-- End .col-md-6 -->
 
 									<div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div id="profileImageWrapper" style="margin-bottom: 50px;">
-                                            <div style="display: flex; justify-content: center; align-items: center;">
-                                                <img src="{{ asset('assets/img/user.png') }}" alt="Avatar" width="200" class="other-user-image" style="border-radius: 5px;">
-                                                <label role="button" for="image_profile" class="btn btn-sm btn-custom-2 pt-2" style="margin-left: 5px;">
-                                                    <i class="bi bi-pencil-fill text-white" style="margin-right: 5px;"></i>@lang('miscellaneous.change')
-                                                    <input type="file" name="image_profile" id="image_profile" style="display: none;">
-                                                </label>
-                                            </div>
-                                            <input type="hidden" name="image_64" id="image_64">
-                                        </div>
-
                                         <fieldset>
 											<h2 class="sub-title text-uppercase">@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')</h2>
 
@@ -167,33 +162,43 @@
 													</select>
 												</div><!-- End .large-selectbox-->
 											</div><!-- End .input-group -->
+
+                                            <!-- Abour me -->
+                                            <div class="input-group textarea-container" style="z-index: 3">
+                                                <span class="input-group-addon"><span class="input-icon input-icon-message"></span><span class="input-text">@lang('miscellaneous.about_user.label')</span></span>
+                                                <textarea name="about_me" id="about_me" class="form-control" cols="30" rows="4" placeholder="@lang('miscellaneous.about_user.placeholder')"></textarea>
+                                            </div><!-- End .input-group -->
 										</fieldset>
                                         
 										<fieldset>
-											<h2 class="sub-title">YOUR PASSWORD</h2>
+											<h2 class="sub-title text-uppercase">@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')</h2>
 											<div class="input-group" style="margin-bottom: 5px">
-												<span class="input-group-addon"><span
-														class="input-icon input-icon-password"></span><span
-														class="input-text">Password <span class="text-danger">&#42;</span></span></span>
-												<input type="password" required class="form-control input-lg"
-													placeholder="Your Password">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-password"></span>
+                                                    <span class="input-text">@lang('miscellaneous.password.label') <span class="text-danger">&#42;</span></span>
+                                                </span>
+												<input type="password" name="password" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')">
 											</div><!-- End .input-group -->
 											<div class="input-group" style="margin-bottom: 5px">
-												<span class="input-group-addon"><span
-														class="input-icon input-icon-password"></span><span
-														class="input-text">Password <span class="text-danger">&#42;</span></span></span>
-												<input type="password" required class="form-control input-lg"
-													placeholder="Your Password">
+												<span class="input-group-addon">
+                                                    <span class="input-icon input-icon-password"></span>
+                                                    <span class="input-text">@lang('miscellaneous.confirm') <span class="text-danger">&#42;</span></span>
+                                                </span>
+												<input type="password" name="password_confirmation" class="form-control input-lg" placeholder="@lang('auth.confirm-password')">
 											</div><!-- End .input-group -->
 										</fieldset>
 
+                                        <button class="btn btn-custom-2">@lang('auth.register')</button>
 									</div><!-- End .col-md-6 -->
 
 								</div><!-- End .row -->
 							</form>
-						</div><!-- End .col-md-12 -->
+
+                        </div><!-- End .col-md-12 -->
 					</div><!-- End .row -->
 				</div><!-- End .container -->
+
+			</section><!-- End #content -->
 
 
 @endsection
