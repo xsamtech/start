@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Resources\Product as ResourcesProduct;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Product;
 use App\Models\User;
@@ -37,14 +38,18 @@ class AppServiceProvider extends ServiceProvider
                 $current_user = new ResourcesUser(Auth::user());
             }
 
-            $products = Product::where('type', 'product')->limit(5)->orderBy('price', 'desc')->get();
-            $services = Product::where('type', 'service')->limit(5)->orderBy('price', 'desc')->get();
-            $projects = Product::where('type', 'project')->limit(5)->orderBy('price', 'desc')->get();
+            $filters = ['action' => 'sell'];
+
+            $popular_products = Product::all();
+            $recent_products = Product::searchWithFilters($filters, request()->get('per_page', 10));
+            $recent_investors = User::whereHas('roles', function ($query) {
+                                    $query->where('role_name->fr', 'Investisseur');
+                                })->orderByDesc('users.created_at')->take(10)->get();
 
             $view->with('current_user', $current_user);
-            $view->with('products', $products);
-            $view->with('services', $services);
-            $view->with('projects', $projects);
+            $view->with('popular_products', ResourcesProduct::collection($popular_products)->resolve());
+            $view->with('recent_products', ResourcesProduct::collection($recent_products)->resolve());
+            $view->with('recent_investors', ResourcesUser::collection($recent_investors)->resolve());
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));
         });

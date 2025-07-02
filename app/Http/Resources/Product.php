@@ -19,39 +19,43 @@ class Product extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $current_user = $request->user();
+
         return [
             'id' => $this->id,
             'product_name' => $this->product_name,
             'product_description' => $this->product_description,
             'quantity' => $this->quantity,
-            'price' => formatDecimalNumber($this->price),
+            'price' => formatIntegerNumber($this->price),
+            'currency' => $this->currency,
             'type' => $this->type,
             'action' => $this->action,
             'is_shared' => $this->is_shared,
             'category' => Category::make($this->category),
             'user' => User::make($this->user),
-            'photos' => collect($this->photos)->map(function ($photo) {
+            'converted_price' => $current_user ? $this->convertPrice($current_user->currency) : null,
+            'photos' => $this->photos->map(function ($photo) {
                 return [
                     'id' => $photo->id,
                     'file_name' => $photo->file_name,
                     'file_url' => $photo->file_url,
                 ];
             }),
-            'videos' => collect($this->videos)->map(function ($video) {
+            'videos' => $this->videos->map(function ($video) {
                 return [
                     'id' => $video->id,
                     'file_name' => $video->file_name,
                     'file_url' => $video->file_url,
                 ];
             }),
-            'audios' => collect($this->audios)->map(function ($audio) {
+            'audios' => $this->audios->map(function ($audio) {
                 return [
                     'id' => $audio->id,
                     'file_name' => $audio->file_name,
                     'file_url' => $audio->file_url,
                 ];
             }),
-            'documents' => collect($this->documents)->map(function ($document) {
+            'documents' => $this->documents->map(function ($document) {
                 return [
                     'id' => $document->id,
                     'file_name' => $document->file_name,

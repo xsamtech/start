@@ -82,17 +82,18 @@
 
                                     <div id="products-tabs-content" class="row tab-content">
                                         <div class="tab-pane active" id="all">
+    @forelse ($popular_products as $product)
                                             <div class="col-md-4 col-sm-6 col-xs-12">
                                                 <div class="item item-hover">
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
                                                             <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 1]) }}">
-                                                                <img src="{{ getWebURL() . '/template/public/images/products/item6.jpg' }}" alt="item1" class="item-image">
-                                                                <img src="{{ getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ count($product['photos']) > 0 ? $product['photos'][0]->file_url : getWebURL() . '/template/public/images/products/item6.jpg' }}" alt="item1" class="item-image">
+                                                                <img src="{{ count($product['photos']) > 0 ? ($product['photos'][1] ? $product['photos'][1]->file_url : product['photos'][0]->file_url) : getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">$199</span>
+                                                            <span class="item-price">{!! !empty($current_user) ? ($product['converted_price'] . '<br>' . $current_user->currency) : $product['price'] . '<br>' . $product['currency'] !!}</span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
@@ -110,6 +111,11 @@
                                                     </div><!-- End .item-meta-container -->
                                                 </div><!-- End .item -->
                                             </div><!-- End .col-md-4 -->
+    @empty
+                                            <div class="col-12">
+                                                <p class="lead text-center strt-text-chocolate-2">@lang('miscellaneous.empty_list')</p>
+                                            </div><!-- End .col-md-4 -->
+    @endforelse
                                         </div><!-- End .tab-pane -->
                                     </div><!-- End #products-tabs-content -->
 
@@ -147,7 +153,7 @@
                                                 <div class="item-image-wrapper">
                                                     <figure class="item-image-container">
                                                         <a href="{{ route('investor.datas', ['id' => 1]) }}">
-                                                            <img src="{{ getWebURL() . '/template/public/images/products/item2.jpg' }}" alt="item1" class="item-image">
+                                                            <img src="{{ asset('assets/img/user.png') }}" alt="item1" class="item-image">
                                                             <img src="{{ getWebURL() . '/template/public/images/products/item2-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                         </a>
                                                     </figure>

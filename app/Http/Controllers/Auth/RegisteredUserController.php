@@ -41,13 +41,13 @@ class RegisteredUserController extends Controller
         // Validate fields
         $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
             'firstname.required' => __('validation.required'),
-            'email.required' => __('validation.required'),
-            'email.email' => __('validation.custom.email.incorrect'),
-            'email.unique' => __('validation.custom.email.exists'),
+            // 'email.required' => __('validation.required'),
+            // 'email.email' => __('validation.custom.email.incorrect'),
+            // 'email.unique' => __('validation.custom.email.exists'),
             'password.required' => __('validation.required'),
             'password.confirmed' => __('validation.confirmed'),
         ]);
@@ -57,13 +57,19 @@ class RegisteredUserController extends Controller
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'surname' => $request->surname,
+            'about_me' => $request->about_me,
             'gender' => $request->gender,
-            'birthdate' => isset($request->birthdate) ? explode('/', $request->birthdate)[2] . '-' . explode('/', $request->birthdate)[1] . '-' . explode('/', $request->birthdate)[0] : null,
+            'birthdate' => isset($request->birthdate) ? explode('/', $request->birthdate)[2] . '-' . explode('/', $request->birthdate)[0] . '-' . explode('/', $request->birthdate)[1] : null,
+            'country' => $request->country,
+            'city' => $request->city,
             'address_1' => $request->address_1,
             'address_2' => $request->address_2,
             'p_o_box' => $request->p_o_box,
+            'currency' => !empty($request->currency) ? $request->currency : 'USD',
             'email' => $request->email,
             'phone' => $request->phone,
+            'username' => $request->username,
+            'status' => !empty($request->status) ? $request->status : 'activated',
             'password' => Hash::make($request->password),
         ]);
 
@@ -75,14 +81,43 @@ class RegisteredUserController extends Controller
             'former_password' => $request->password
         ]);
 
-        // Add "Administrateur" role (the first role)
-        $role_admin = Role::create([
-            'role_name' => 'Administrateur',
-            'role_description' => 'Gestion de toutes les données'
-        ]);
+        $role_member = null;
+        $role_admin_exists = Role::where('role_name->fr', 'Administrator')->exists();
+        $role_member_exists = Role::where('role_name->fr', 'Membre')->exists();
+
+        if (!$role_admin_exists) {
+            // Add "Administrateur" role (the first role)
+            Role::create([
+                'role_name' => [
+                    'en' => 'Administrator',
+                    'fr' => 'Administrateur',
+                ],
+                'role_description' => [
+                    'en' => 'All data management.',
+                    'fr' => 'Gestion de toutes les données.',
+                ]
+            ]);
+        }
+
+        if (!$role_member_exists) {
+            // Add "Membre" role
+            $role_member = Role::create([
+                'role_name' => [
+                    'en' => 'Member',
+                    'fr' => 'Membre',
+                ],
+                'role_description' => [
+                    'en' => 'All data management.',
+                    'fr' => 'Gestion de toutes les données.',
+                ]
+            ]);
+
+        } else {
+            $role_member = Role::where('role_name->fr', 'Membre')->first();
+        }
 
         // Register user with role
-        $user->roles()->attach([$role_admin->id]);
+        $user->roles()->attach([$role_member->id]);
 
         if (isset($request->image_64)) {
             // $extension = explode('/', explode(':', substr($request->image_64, 0, strpos($request->image_64, ';')))[1])[1];
@@ -112,6 +147,6 @@ class RegisteredUserController extends Controller
 
         auth()->login($user);
 
-        return redirect(RouteServiceProvider::HOME)->with('success_message', 'Bienvenue ' . $user->firstname . ' ' . $user->lastname . ' !');
+        return redirect(RouteServiceProvider::HOME)->with('success_message', __('miscellaneous.welcome_title', ['user' => $user->firstname . ' ' . $user->lastname]));
     }
 }

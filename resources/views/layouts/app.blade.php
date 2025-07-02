@@ -40,6 +40,7 @@
         <link rel="stylesheet" href="{{ asset('assets/addons/cropper/css/cropper.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/addons/jquery/jquery-ui/jquery-ui.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/addons/jquery/datetimepicker/css/jquery.datetimepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
         <!--- jQuery -->
         {{-- <script src="{{ asset('assets/addons/jquery/js/jquery.min.js') }}"></script> --}}
@@ -55,6 +56,8 @@
 
         <style id="custom-style">
             textarea { resize: none; }
+            .item .item-image-container { position: relative; width: 100%; padding-top: 139.91%; overflow: hidden; }
+            .item .item-image-container img { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; object-fit: cover; }
         </style>
 
         <title>

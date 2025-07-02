@@ -60,6 +60,19 @@ class PublicController extends Controller
     }
 
     /**
+     * GET: Create symbolic link
+     *
+     * @return \Illuminate\View\View
+     */
+    public function search(Request $request)
+    {
+        $filters = $request->only(['category_id', 'user_id', 'type', 'action']);
+        $products = Product::searchWithFilters($filters, $request->get('per_page', 15));
+
+        return response()->json($products);
+    }
+
+    /**
      * GET: Products page
      *
      * @return \Illuminate\View\View

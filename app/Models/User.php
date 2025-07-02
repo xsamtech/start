@@ -73,25 +73,18 @@ class User extends Authenticatable
     }
 
     /**
-     * Unpaid orders
-     */
-    public function unpaidOrders()
-    {
-        return $this->hasMany(CustomerOrder::class)->whereHas('cart', fn($q) => $q->where('is_paid', 0));
-    }
-
-    /**
      * Unpaid cart
      */
     public function unpaidCart()
     {
-        return $this->hasOneThrough(
-            Cart::class,
-            CustomerOrder::class,
-            'user_id',   // Foreign Key on "CustomerOrder"
-            'id',        // Foreign Key on "Cart"
-            'id',        // Locale key on "User"
-            'cart_id'    // Locale key on "CustomerOrder"
-        )->where('is_paid', 0);
+        return $this->hasOne(Cart::class)->where('is_paid', 0)->latest();
+    }
+
+    /**
+     * Unpaid orders
+     */
+    public function unpaidOrders()
+    {
+        return $this->unpaidCart()->with('customerOrders')->first();
     }
 }

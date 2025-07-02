@@ -44,6 +44,7 @@ class User extends JsonResource
             'api_token' => $this->api_token,
             'avatar_url' => $this->avatar_url != null ? $this->avatar_url : getWebURL() . '/assets/img/user.png',
             'status' => $this->status,
+            'unpaid_orders' => $this->unpaidOrders(),
             'roles' => Role::collection($this->roles)->sortByDesc('created_at')->toArray(),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),

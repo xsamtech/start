@@ -22,7 +22,8 @@
 
                             <div class="xs-margin"></div><!-- space -->
 
-                            <form action="{{ route('register') }}" id="register-form">
+                            <form method="POST" action="{{ route('register') }}" id="register-form">
+    @csrf
 								<div class="row">
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<fieldset>
@@ -109,7 +110,7 @@
                                                     <span class="input-icon input-icon-phone"></span>
                                                     <span class="input-text">@lang('miscellaneous.phone') <span class="text-danger">&#42;</span></span>
                                                 </span>
-												<input type="text" name="email" class="form-control input-lg @error('phone') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.phone_number')">
+												<input type="text" name="phone" class="form-control input-lg @error('phone') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.phone_number')">
 											</div><!-- End .input-group -->
     @error('phone')
                                             <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
@@ -139,14 +140,16 @@
 												<input type="text" name="address_2" id="address_2" class="form-control input-lg" placeholder="@lang('miscellaneous.address.line2')">
 											</div><!-- End .input-group -->
 
+                                            <!-- City -->
                                             <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
                                                     <span class="input-icon input-icon-city"></span>
                                                     <span class="input-text">@lang('miscellaneous.address.city')</span>
                                                 </span>
-												<input type="text" required class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')">
+												<input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')">
 											</div><!-- End .input-group -->
 
+                                            <!-- Country -->
                                             <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
                                                     <span class="input-icon input-icon-country"></span>
@@ -172,23 +175,33 @@
                                         
 										<fieldset>
 											<h2 class="sub-title text-uppercase">@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')</h2>
-											<div class="input-group" style="margin-bottom: 5px">
+
+                                            <!-- Password -->
+                                            <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
                                                     <span class="input-icon input-icon-password"></span>
                                                     <span class="input-text">@lang('miscellaneous.password.label') <span class="text-danger">&#42;</span></span>
                                                 </span>
 												<input type="password" name="password" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')">
 											</div><!-- End .input-group -->
-											<div class="input-group" style="margin-bottom: 5px">
+
+    @error('password')
+                                            <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
+    @enderror
+                                            <!-- Password confirmation -->
+                                            <div class="input-group" style="margin-bottom: 5px">
 												<span class="input-group-addon">
                                                     <span class="input-icon input-icon-password"></span>
                                                     <span class="input-text">@lang('miscellaneous.confirm') <span class="text-danger">&#42;</span></span>
                                                 </span>
 												<input type="password" name="password_confirmation" class="form-control input-lg" placeholder="@lang('auth.confirm-password')">
 											</div><!-- End .input-group -->
+    @error('password_confirmation')
+                                            <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
+    @enderror
 										</fieldset>
 
-                                        <button class="btn btn-custom-2" style="width: 300px;">@lang('auth.register')</button>
+                                        <button type="submit" class="btn btn-custom-2" style="width: 300px;">@lang('auth.register')</button>
 									</div><!-- End .col-md-6 -->
 
 								</div><!-- End .row -->
