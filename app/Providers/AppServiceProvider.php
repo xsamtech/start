@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
 
             $filters = ['action' => 'sell'];
 
-            $popular_products = Product::all();
+            $popular_products = Product::mostOrdered(10, 'monthly');
             $recent_products = Product::searchWithFilters($filters, request()->get('per_page', 10));
             $recent_investors = User::whereHas('roles', function ($query) {
                                     $query->where('role_name->fr', 'Investisseur');

@@ -82,7 +82,7 @@
 
                                     <div id="products-tabs-content" class="row tab-content">
                                         <div class="tab-pane active" id="all">
-    @forelse ($popular_products as $product)
+    @forelse ($recent_products as $product)
                                             <div class="col-md-4 col-sm-6 col-xs-12">
                                                 <div class="item item-hover">
                                                     <div class="item-image-wrapper">
