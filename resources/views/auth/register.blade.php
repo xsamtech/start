@@ -46,7 +46,7 @@
                                                     <span class="input-icon input-icon-user"></span>
                                                     <span class="input-text">@lang('miscellaneous.firstname') <span class="text-danger">&#42;</span></span>
                                                 </span>
-												<input type="text" name="firstname" required id="firstname" class="form-control input-lg @error('firstname') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.firstname')" autofocus>
+												<input type="text" name="firstname" required id="firstname" class="form-control input-lg @error('firstname') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.firstname')">
 											</div><!-- End .input-group -->
     @error('firstname')
                                             <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
