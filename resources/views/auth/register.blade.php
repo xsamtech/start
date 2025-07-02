@@ -188,7 +188,7 @@
 											</div><!-- End .input-group -->
 										</fieldset>
 
-                                        <button class="btn btn-custom-2">@lang('auth.register')</button>
+                                        <button class="btn btn-custom-2" style="width: 300px;">@lang('auth.register')</button>
 									</div><!-- End .col-md-6 -->
 
 								</div><!-- End .row -->
