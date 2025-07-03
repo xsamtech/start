@@ -240,7 +240,7 @@
 @enderror
                                                 </fieldset>
 
-                                                <button type="submit" class="btn btn-custom-2" style="width: 300px;">@lang('auth.register')</button>
+                                                <button type="submit" class="btn btn-custom-2" style="width: 300px;">@lang('miscellaneous.register')</button>
                                             </div><!-- End .col-md-6 -->
 
                                         </div><!-- End .row -->

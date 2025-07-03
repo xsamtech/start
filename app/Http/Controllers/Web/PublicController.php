@@ -241,6 +241,10 @@ class PublicController extends Controller
             $rules['surname'] = ['nullable', 'string', 'max:255'];
         }
 
+        if ($request->has('about_me')) {
+            $rules['about_me'] = ['nullable', 'string', 'max:255'];
+        }
+
         if ($request->has('gender')) {
             $rules['gender'] = ['nullable', Rule::in(['M', 'F'])];
         }
