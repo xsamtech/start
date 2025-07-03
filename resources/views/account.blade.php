@@ -6,7 +6,7 @@
         @if (!empty($selected_product))
             @include('partials.account.datas')
         @else
-            @include('partials.account.home.' . $entity)
+            @include('partials.account.' . $entity)
         @endif
     @else
         @include('partials.account.home')
