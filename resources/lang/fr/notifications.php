@@ -19,22 +19,22 @@ return [
     '400_description' => 'Vérifiez votre requête s\'il vous plait !',
     // 401
     '401_title' => 'Non autorisé',
-    '401_description' => 'Vous n\'avez pas d\'autorisation pour cette requête.',
+    '401_description' => 'Vous n\'avez pas d\'autorisation<br>pour cette requête.',
     // 403
     '403_title' => 'Espace interdit',
     '403_description' => 'Cet espace n\'est pas permis.',
     // 404
     '404_title' => 'Page non trouvée',
-    '404_description' => 'La page que vous cherchez n\'existe pas',
+    '404_description' => 'La page que vous cherchez<br>n\'existe pas',
     // 405
     '405_title' => 'Méthode non permise',
-    '405_description' => 'Votre requête est envoyée avec une mauvaise méthode.',
+    '405_description' => 'Votre requête est envoyée<br>avec une mauvaise méthode.',
     // 419
     '419_title' => 'Page expirée',
     '419_description' => 'La page a mis longtemps sans activité.',
     // 500
     '500_title' => 'Erreur interne',
-    '500_description' => 'Notre serveur rencontre un problème. Veuillez réessayez après quelques minutes s\'il vous plait !',
+    '500_description' => 'Notre serveur rencontre un problème.<br>Veuillez réessayez après quelques<br>minutes s\'il vous plait !',
     // Others
     'expects_json' => 'La requête actuelle attend probablement une réponse JSON.',
 

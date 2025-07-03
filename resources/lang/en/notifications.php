@@ -25,7 +25,7 @@ return [
     '403_description' => 'This space is not allowed',
     // 404
     '404_title' => 'Page not found',
-    '404_description' => 'The page you are looking for does not exist',
+    '404_description' => 'The page you are looking for<br>does not exist',
     // 405
     '405_title' => 'Method not allowed',
     '405_description' => 'Your request is sent with a bad method',
@@ -34,7 +34,7 @@ return [
     '419_description' => 'The page maked long time without activity',
     // 500
     '500_title' => 'Internal error',
-    '500_description' => 'Our server meets a problem. Please retry after some minutes!',
+    '500_description' => 'Our server meets a problem.<br>Please retry after some minutes!',
     // Others
     'expects_json' => 'The current request probably expects a JSON response.',
 
