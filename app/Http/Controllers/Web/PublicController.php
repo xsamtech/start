@@ -104,6 +104,38 @@ class PublicController extends Controller
     }
 
     /**
+     * GET: Account page
+     *
+     * @param  string  $entity
+     * @return \Illuminate\View\View
+     */
+    public function accountEntity($entity)
+    {
+        $entity_title = null;
+
+        if ($entity == 'cart') {
+            $entity_title = __('miscellaneous.menu.account.cart');
+        }
+
+        if ($entity == 'projects') {
+            $entity_title = __('miscellaneous.menu.account.project.title');
+        }
+
+        if ($entity == 'products') {
+            $entity_title = __('miscellaneous.menu.account.product.title');
+        }
+
+        if ($entity == 'services') {
+            $entity_title = __('miscellaneous.menu.account.service.title');
+        }
+
+        return view('account', [
+            'entity' => $entity,
+            'entity_title' => $entity_title,
+        ]);
+    }
+
+    /**
      * GET: Products page
      *
      * @return \Illuminate\View\View
