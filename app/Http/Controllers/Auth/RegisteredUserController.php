@@ -59,7 +59,7 @@ class RegisteredUserController extends Controller
             'surname' => $request->surname,
             'about_me' => $request->about_me,
             'gender' => $request->gender,
-            'birthdate' => isset($request->birthdate) ? explode('/', $request->birthdate)[2] . '-' . explode('/', $request->birthdate)[0] . '-' . explode('/', $request->birthdate)[1] : null,
+            'birthdate' => isset($request->birthdate) ? explode('/', $request->birthdate)[2] . '-' . explode('/', $request->birthdate)[1] . '-' . explode('/', $request->birthdate)[0] : null,
             'country' => $request->country,
             'city' => $request->city,
             'address_1' => $request->address_1,
