@@ -30,6 +30,11 @@
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<form id="login-form" method="POST" action="{{ route('login') }}">
     @csrf
+
+	@if (request()->has('product_id'))
+										<input type="hidden" name="product_id" value="{{ request()->get('product_id') }}">
+	@endif
+
                                         <div class="input-group" style="margin-bottom: 5px">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-email"></span>

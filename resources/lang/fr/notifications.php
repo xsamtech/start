@@ -41,9 +41,11 @@ return [
     // ===== ALERTS
     'no_record' => 'Il n\'y a aucun enregistrement !',
     'find_error' => 'Elément non trouvé !',
+    'add_error' => 'L\'ajout a échoué!',
     'create_error' => 'La création a échoué !',
     'update_error' => 'La modification a échoué !',
     'delete_error' => 'Suppression échouée !',
+    'added_data' => 'Ajout réussi !',
     'registered_data' => 'Données enregistrées !',
     'updated_data' => 'Données mises à jour !',
     'deleted_data' => 'Elément supprimé !',
@@ -168,6 +170,14 @@ return [
     'create_cart_success' => 'Panier créé',
     'update_cart_success' => 'Panier modifié',
     'delete_cart_success' => 'Panier supprimé',
+    // Product
+    'find_all_products_success' => 'Produits trouvé',
+    'find_product_success' => 'Produit trouvé',
+    'find_product_404' => 'Produit non trouvé',
+    'create_product_success' => 'Produit créé',
+    'update_product_success' => 'Produit modifié',
+    'delete_product_success' => 'Produit supprimé',
+    'insufficient_stock' => 'Stock insuffisant pour le produit « :product_name » (disponible : :quantity).',
     // Role
     'find_all_roles_success' => 'Rôles trouvés',
     'find_role_success' => 'Rôle trouvé',

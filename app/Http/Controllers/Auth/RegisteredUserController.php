@@ -93,8 +93,8 @@ class RegisteredUserController extends Controller
                     'fr' => 'Administrateur',
                 ],
                 'role_description' => [
-                    'en' => 'All data management.',
-                    'fr' => 'Gestion de toutes les données.',
+                    'en' => 'Responsible for managing the operation of the platform.',
+                    'fr' => 'Responsable de la gestion du fonctionnement de la plateforme.',
                 ]
             ]);
         }
@@ -107,8 +107,8 @@ class RegisteredUserController extends Controller
                     'fr' => 'Membre',
                 ],
                 'role_description' => [
-                    'en' => 'All data management.',
-                    'fr' => 'Gestion de toutes les données.',
+                    'en' => 'Person who orders products or services published on the platform.',
+                    'fr' => 'Personne qui commande des produits ou des services publiés sur la plateforme.',
                 ]
             ]);
 

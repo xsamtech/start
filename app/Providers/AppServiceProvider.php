@@ -38,17 +38,13 @@ class AppServiceProvider extends ServiceProvider
                 $current_user = new ResourcesUser(Auth::user());
             }
 
-            $filters = ['action' => 'sell'];
-
             $popular_products = Product::mostOrdered(10, 'monthly');
-            $recent_products = Product::searchWithFilters($filters, request()->get('per_page', 10));
             $recent_investors = User::whereHas('roles', function ($query) {
                                     $query->where('role_name->fr', 'Investisseur');
                                 })->orderByDesc('users.created_at')->take(10)->get();
 
             $view->with('current_user', $current_user);
             $view->with('popular_products', ResourcesProduct::collection($popular_products)->resolve());
-            $view->with('recent_products', ResourcesProduct::collection($recent_products)->resolve());
             $view->with('recent_investors', ResourcesUser::collection($recent_investors)->resolve());
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));

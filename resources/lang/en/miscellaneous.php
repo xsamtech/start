@@ -573,6 +573,8 @@ return [
         'rate' => 'Rate',
         'add_to_cart' => 'Add to cart',
         'withdraw_from_cart' => 'Withdraw from cart',
+        'insufficient_stock' => 'Insufficient stock',
+        'product_is_in_cart' => 'Already in your cart',
         'subtotal' => 'SUBTOTAL:',
         'view_cart' => 'View cart',
         'checkout' => 'Checkout',

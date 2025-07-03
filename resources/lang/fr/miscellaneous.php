@@ -573,6 +573,8 @@ return [
         'rate' => 'Evaluer',
         'add_to_cart' => 'Ajouter au panier',
         'withdraw_from_cart' => 'Retirer du panier',
+        'insufficient_stock' => 'Stock insuffisant',
+        'product_is_in_cart' => 'Déjà dans votre panier',
         'subtotal' => 'SOUS-TOTAL :',
         'view_cart' => 'Voir panier',
         'checkout' => 'Commander',

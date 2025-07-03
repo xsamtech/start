@@ -26,7 +26,7 @@ class Payment extends JsonResource
             'amount' => $this->amount,
             'amount_customer' => $this->amount_customer,
             'phone' => $this->phone,
-            'currency' => $this->currency,
+            'currency' => !empty($this->currency) ? ($this->currency == 'USD' ? '$' : 'FC') : null,
             'channel' => $this->channel,
             'type' => $this->type,
             'status' => $this->status,

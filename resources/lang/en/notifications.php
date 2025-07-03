@@ -41,9 +41,11 @@ return [
     // ===== ALERTS
     'no_record' => 'There is no recording!',
     'find_error' => 'Item not found!',
+    'add_error' => 'Adding failed!',
     'create_error' => 'The creation failed!',
     'update_error' => 'The change failed!',
     'delete_error' => 'Deletion failed!',
+    'added_data' => 'Addition successful!',
     'registered_data' => 'Data registered!',
     'updated_data' => 'Data updated!',
     'deleted_data' => 'Item deleted!',
@@ -168,6 +170,14 @@ return [
     'create_cart_success' => 'Cart created',
     'update_cart_success' => 'Cart updated',
     'delete_cart_success' => 'Cart deleted',
+    // Product
+    'find_all_products_success' => 'Products found',
+    'find_product_success' => 'Product found',
+    'find_product_404' => 'Product not found',
+    'create_product_success' => 'Product created',
+    'update_product_success' => 'Product updated',
+    'delete_product_success' => 'Product deleted',
+    'insufficient_stock' => 'Insufficient stock for the product “:product_name” (available: :quantity).',
     // Role
     'find_all_roles_success' => 'Roles found',
     'find_role_success' => 'Role found',

@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Product;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -66,10 +67,13 @@ class PublicController extends Controller
      */
     public function search(Request $request)
     {
+        $query = $request->get('query');
+        $per_page = $request->get('per_page', 15);
         $filters = $request->only(['category_id', 'user_id', 'type', 'action']);
-        $products = Product::searchWithFilters($filters, $request->get('per_page', 15));
+        // Request
+        $products = Product::searchWithFilters($query, $filters, $per_page);
 
-        return response()->json($products);
+        return view('search', ['products' => $products]);
     }
 
     /**
@@ -358,13 +362,19 @@ class PublicController extends Controller
                     'updated_at' => now()
                 ]);
             }
+
+            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
         }
 
         if ($entity == 'product') {
             $request->validate([
                 'product_name' => ['required', 'string', 'max:255'],
+                'price' => ['required', 'float'],
+                'quantity' => ['required', 'integer', 'min:1'],
             ], [
                 'product_name.required' => __('validation.required'),
+                'price' => __('validation.required'),
+                'quantity' => __('validation.required'),
             ]);
 
             $product = Product::create([
@@ -448,8 +458,35 @@ class PublicController extends Controller
                     ]);
                 }
             }
-        }
 
-        return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+        }
+    }
+
+    /**
+     * POST: Add a product entity
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $entity
+     * @param  int  $id
+     * @throws \Illuminate\Http\RedirectResponse
+     */
+    public function updateProductEntity(Request $request, $entity, $id)
+    {
+        if ($entity == 'add-to-cart') {
+            $request->validate([
+                'quantity'   => 'required|integer|min:1',
+            ]);
+
+            $user = User::find(Auth::id());
+
+            try {
+                $user->addProductToCart($id, $request->quantity);
+
+                return response()->json(['message' => __('notifications.added_data')]);
+            } catch (\Exception $e) {
+                return response()->json(['message' => $e->getMessage()], 422);
+            }
+        }
     }
 }

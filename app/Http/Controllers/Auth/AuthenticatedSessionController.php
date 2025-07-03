@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Product;
 // use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
@@ -57,6 +58,16 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->session()->regenerate();
+
+        if ($request->has('product_id')) {
+            $product = Product::find($request->get('product_id'));
+
+            if (!$product) {
+                return redirect()->intended(RouteServiceProvider::HOME);
+            }
+
+            return redirect()->route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

@@ -150,7 +150,7 @@ class Product extends Model
         $conversionRate = getExchangeRate($this->currency, $userCurrency);
 
         // Calculate the converted price
-        return round($this->price * $conversionRate, 0);
+        return round($this->price * $conversionRate, 2);
     }
 
     /**
@@ -219,18 +219,37 @@ class Product extends Model
      * 
      * $results = Product::searchWithFilters($filters);
      * 
-     * @param  int  $limit
+     * @param  string  $data
+     * @param  array  $filters
+     * @param  int  $perPage
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function searchWithFilters(array $filters, $perPage = 15)
+    public static function searchWithFilters($data, array $filters, $perPage = 15)
     {
         return self::query()
                     ->where('quantity', '>', 0)
+                    ->when(isset($data), fn($q) => $q->where('product_name', 'LIKE', '%' . $data))
                     ->when(isset($filters['category_id']), fn($q) => $q->where('category_id', $filters['category_id']))
                     ->when(isset($filters['user_id']), fn($q) => $q->where('user_id', $filters['user_id']))
                     ->when(isset($filters['type']), fn($q) => $q->where('type', $filters['type']))
                     ->when(isset($filters['action']), fn($q) => $q->where('action', $filters['action']))
                     ->orderBy('price', 'asc')
                     ->paginate($perPage);
+    }
+
+    /**
+     * Received feedbacks
+     */
+    public function receivedFeedbacks()
+    {
+        return $this->hasMany(CustomerFeedback::class, 'for_product_id');
+    }
+
+    /**
+     * Average feedbacks rating
+     */
+    public function averageRating()
+    {
+        return $this->receivedFeedbacks()->avg('rating');
     }
 }

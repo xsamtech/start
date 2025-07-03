@@ -58,6 +58,8 @@
             textarea { resize: none; }
             .item .item-image-container { position: relative; width: 100%; padding-top: 139.91%; overflow: hidden; }
             .item .item-image-container img { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; object-fit: cover; }
+            .item-price-container { display: flex; justify-content: center; align-items: center; width: 200px!important; height: 40px!important; border-radius: 50px!important; }
+            .item-price-container .item-price { margin-top: 0!important; }
         </style>
 
         <title>
@@ -201,7 +203,7 @@
 
                                     <div class="header-text-container pull-right">
 @if (!empty($current_user))
-                                        <p class="header-text">@lang('miscellaneous.welcome_title', ['user' => 'Xanders Samoth'])</p>
+                                        <p class="header-text">@lang('miscellaneous.welcome_title', ['user' => $current_user->firstname . ' ' . $current_user->lastname])</p>
 @else
             							<p class="header-link"><a href="{{ route('login') }}">@lang('auth.login')</a>&nbsp;or&nbsp;<a href="{{ route('register') }}">@lang('auth.register')</a></p>
 @endif
@@ -492,6 +494,28 @@
                     // navigationStyle:"preview4"
                 });
 
+                $('.item-add-btn').on('click', function () {
+                    const productId = $(this).data('id');
+
+                    $(`#icon-cart-text-${productId}`).css('opacity', 0);
+                    $(`#ajax-loading-${productId}`).show();
+
+                    $.ajax({
+                        url: `${currentHost}/products/add-to-cart/${productId}`,
+                        method: 'POST',
+                        data: {
+                            quantity: 1,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success(response) {
+                            $('[id^="product-"]').load(location.href + ' [id^="product-"] > *');
+                            console.log('Produit ajouté');
+                        },
+                        error(xhr) {
+                            alert(xhr.responseJSON.message || '{{ __('notifications.add_error') }}');
+                        }
+                    });
+                });
             });
         </script>
     </body>

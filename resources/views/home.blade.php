@@ -82,31 +82,54 @@
 
                                     <div id="products-tabs-content" class="row tab-content">
                                         <div class="tab-pane active" id="all">
-    @forelse ($recent_products as $product)
+    @forelse ($popular_products as $product)
                                             <div class="col-md-4 col-sm-6 col-xs-12">
                                                 <div class="item item-hover">
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
-                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 1]) }}">
+                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}">
                                                                 <img src="{{ count($product['photos']) > 0 ? $product['photos'][0]->file_url : getWebURL() . '/template/public/images/products/item6.jpg' }}" alt="item1" class="item-image">
-                                                                <img src="{{ count($product['photos']) > 0 ? ($product['photos'][1] ? $product['photos'][1]->file_url : product['photos'][0]->file_url) : getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
+                                                                <img src="{{ count($product['photos']) > 0 ? (!empty($product['photos'][1]) ? $product['photos'][1]->file_url : $product['photos'][0]->file_url) : getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">{!! !empty($current_user) ? ($product['converted_price'] . '<br>' . $current_user->currency) : $product['price'] . '<br>' . $product['currency'] !!}</span>
+                                                            <span class="item-price">{{ !empty($current_user) ? ($product['converted_price'] . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }}</span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
                                                         <div class="ratings-container">
                                                             <div class="ratings">
-                                                                <div class="ratings-result" data-result="50"></div>
+                                                                <div class="ratings-result" data-result="{{ $product['average_rating'] }}"></div>
                                                             </div><!-- End .ratings -->
                                                         </div><!-- End .rating-container -->
-                                                        <h3 class="item-name"><a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 1]) }}">Phasellus consequat</a></h3>
-                                                        <div class="item-action">
-                                                            <a href="#" class="item-add-btn">
+                                                        <h3 class="item-name">
+                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}">
+                                                                {{ $product['product_name'] }}
+                                                            </a>
+                                                        </h3>
+                                                        <div id="product-{{ $product['id'] }}" class="item-action">
+    @if (!empty($current_user))
+        @if ($current_user->hasProductInUnpaidCart($product['id']))
+                                                            <p class="btn btn-default disabled" style="margin: -2px;">
+                                                                <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.public.product_is_in_cart')</span>
+                                                            </p>
+        @else
+            @if ($product['quantity'] > 0)
+                                                            <button class="item-add-btn" data-id="{{ $product['id'] }}" style="position: relative;">
+                                                                <span id="icon-cart-text-{{ $product['id'] }}" class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
+                                                                <img id="ajax-loading-{{ $product['id'] }}" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="@lang('miscellaneous.loading')" width="30" height="30" style="position: absolute; top: 2px; right: 43%; display: none;">
+                                                            </button>
+            @else
+                                                            <p class="btn btn-default disabled" style="margin: -2px;">
+                                                                <span class="text-uppercase">@lang('miscellaneous.public.insufficient_stock')</span>
+                                                            </p>
+            @endif
+        @endif
+    @else
+                                                            <a href="{{ route('login', ['product_id' => $product['id']]) }}" class="item-add-btn">
                                                                 <span class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
                                                             </a>
+    @endif
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
                                                 </div><!-- End .item -->
@@ -149,12 +172,13 @@
                                             </div><!-- End .carousel-next -->
                                         </div><!-- End .carousel-controls -->
                                         <div class="hot-items-slider owl-carousel">
+    @forelse ($recent_investors as $investor)
                                             <div class="item item-hover">
                                                 <div class="item-image-wrapper">
                                                     <figure class="item-image-container">
                                                         <a href="{{ route('investor.datas', ['id' => 1]) }}">
-                                                            <img src="{{ asset('assets/img/user.png') }}" alt="item1" class="item-image">
-                                                            <img src="{{ getWebURL() . '/template/public/images/products/item2-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
+                                                            <img src="{{ $investor['avatar_url'] }}" alt="item1" class="item-image">
+                                                            <img src="{{ $investor['avatar_url'] }}" alt="item1  Hover" class="item-image-hover">
                                                         </a>
                                                     </figure>
                                                 </div><!-- End .item-image-wrapper -->
@@ -167,6 +191,10 @@
                                                     <h3 class="item-name"><a href="{{ route('investor.datas', ['id' => 1]) }}">Daniel Craig</a></h3>
                                                 </div><!-- End .item-meta-container -->
                                             </div><!-- End .item -->
+        
+    @empty
+                                            <p class="lead text-center strt-text-chocolate-2">@lang('miscellaneous.empty_list')</p>
+    @endforelse
                                         </div><!--hot-items-slider -->
 
                                         <div class="lg-margin"></div><!-- Space -->
