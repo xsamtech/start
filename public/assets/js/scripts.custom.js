@@ -190,7 +190,7 @@ $(function () {
                 formData.append('image_64', base64_data);
 
                 $.ajax({
-                    url: currentHost + '/account/settings',
+                    url: currentHost + '/account',
                     type: 'POST',
                     data: formData,
                     contentType: false, // IMPORTANT : do not specify a contentType

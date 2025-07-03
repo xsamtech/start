@@ -82,7 +82,7 @@ class RegisteredUserController extends Controller
         ]);
 
         $role_member = null;
-        $role_admin_exists = Role::where('role_name->fr', 'Administrator')->exists();
+        $role_admin_exists = Role::where('role_name->fr', 'Administrateur')->exists();
         $role_member_exists = Role::where('role_name->fr', 'Membre')->exists();
 
         if (!$role_admin_exists) {
@@ -117,7 +117,7 @@ class RegisteredUserController extends Controller
         }
 
         // Register user with role
-        $user->roles()->attach([$role_member->id]);
+        $user->roles()->attach($role_member->id, ['is_selected' => 1]);
 
         if (isset($request->image_64)) {
             // $extension = explode('/', explode(':', substr($request->image_64, 0, strpos($request->image_64, ';')))[1])[1];
@@ -147,6 +147,6 @@ class RegisteredUserController extends Controller
 
         auth()->login($user);
 
-        return redirect(RouteServiceProvider::HOME)->with('success_message', __('miscellaneous.welcome_title', ['user' => $user->firstname . ' ' . $user->lastname]));
+        return redirect('/account')->with('success_message', __('miscellaneous.welcome_title', ['user' => $user->firstname . ' ' . $user->lastname]));
     }
 }

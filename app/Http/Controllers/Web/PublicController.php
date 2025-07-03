@@ -12,9 +12,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
@@ -93,6 +91,16 @@ class PublicController extends Controller
         $products = Product::searchWithFilters($query, $filters, $per_page);
 
         return view('search', ['products' => $products]);
+    }
+
+    /**
+     * GET: Account page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function account()
+    {
+        return view('account', ['countries' => showCountries()]);
     }
 
     /**

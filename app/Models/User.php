@@ -74,6 +74,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Selected role
+     */
+    public function getSelectedRoleAttribute()
+    {
+        return $this->roles()->wherePivot('is_selected', 1)->first();
+    }
+
+    /**
      * Unpaid cart
      */
     public function unpaidCart()
