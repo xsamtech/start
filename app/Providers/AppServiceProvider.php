@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $popular_products = Product::mostOrdered(10, 'monthly');
+            // $popular_products = Product::orderByDesc('created_at')->get();
             $recent_investors = User::whereHas('roles', function ($query) {
                                     $query->where('role_name->fr', 'Investisseur');
                                 })->orderByDesc('users.created_at')->take(10)->get();

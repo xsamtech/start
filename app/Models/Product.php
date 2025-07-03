@@ -184,8 +184,8 @@ class Product extends Model
 
         return self::select('products.*')
                         ->withSum(['customer_orders as total_quantity_ordered' => function ($q) use ($startDate) {
-                            $q->join('carts', 'customer_orders.cart_id', '=', 'carts.id')
-                            ->where('carts.is_paid', 1);
+                            $q->join('carts', 'customer_orders.cart_id', '=', 'carts.id');
+                            // ->where('carts.is_paid', 1);
 
                             if ($startDate) {
                                 $q->where('customer_orders.created_at', '>=', $startDate);
