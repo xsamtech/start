@@ -160,13 +160,16 @@
                                     <div class="header-top-dropdowns pull-right">
 @if (!empty($current_user))
                                         <div class="btn-group dropdown-money">
-                                            <button type="button" class="btn btn-custom dropdown-toggle"
-                                                data-toggle="dropdown">
+                                            <button type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
+    @if ($current_user->currency == 'USD')
                                                 <span class="hide-for-xs">US Dollar</span><span class="hide-for-lg">USD</span>
+    @else
+                                                <span class="hide-for-xs">Franc congolais</span><span class="hide-for-lg">CDF</span>
+    @endif
                                             </button>
                                             <ul class="dropdown-menu pull-right" role="menu">
-                                                <li><a href="#" id="USD"><span class="hide-for-xs">US Dollar</span><span class="hide-for-lg">USD</span></a></li>
-                                                <li><a href="#" id="CDF"><span class="hide-for-xs">Franc congolais</span><span class="hide-for-lg">CDF</span></a></li>
+                                                <li><a href="{{ route('change_currency', ['currency' => 'USD']) }}" id="USD"><span class="hide-for-xs">US Dollar</span><span class="hide-for-lg">USD</span></a></li>
+                                                <li><a href="{{ route('change_currency', ['currency' => 'CDF']) }}" id="CDF"><span class="hide-for-xs">Franc congolais</span><span class="hide-for-lg">CDF</span></a></li>
                                             </ul>
                                         </div><!-- End .btn-group -->
 @endif

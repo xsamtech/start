@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
@@ -29,6 +28,8 @@ Route::get('/crowdfunding', [PublicController::class, 'crowdfunding'])->name('cr
 Route::get('/crowdfunding/{id}', [PublicController::class, 'crowdfundingDatas'])->whereNumber('id')->name('crowdfunding.datas');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/change-currency/{currency}', [PublicController::class, 'changeCurrency'])->name('change_currency');
+
     // Products
     Route::post('/products', [PublicController::class, 'addProduct']);
     Route::post('/products/{entity}/{id}', [PublicController::class, 'updateProductEntity'])->whereNumber('id');

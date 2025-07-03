@@ -41,6 +41,25 @@ class PublicController extends Controller
     }
 
     /**
+     * GET: Change language
+     *
+     * @param  string  $currency
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function changeCurrency($currency)
+    {
+        $user = User::find(Auth::id());
+
+        if (!$user) {
+            return redirect()->back();
+        }
+
+        $user->update(['currency' => $currency]);
+
+        return redirect()->back();
+    }
+
+    /**
      * GET: Home page
      *
      * @return \Illuminate\View\View
