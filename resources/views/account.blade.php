@@ -3,7 +3,7 @@
 @section('app-content')
 
     @if (!empty($entity))
-        @if ($selected_product)
+        @if (!empty($selected_product))
             @include('partials.account.datas')
         @else
             @include('partials.account.home.' . $entity)
