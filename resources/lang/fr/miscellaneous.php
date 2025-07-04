@@ -415,6 +415,42 @@ return [
             ],
         ],
 
+        // Product
+        'product' => [
+            'entity' => [
+                'project' => [
+                    'singular' => 'projet',
+                    'plural' => 'projets'
+                ],
+                'product' => [
+                    'singular' => 'produit',
+                    'plural' => 'produits'
+                ],
+                'service' => [
+                    'singular' => 'service',
+                    'plural' => 'services'
+                ],
+            ],
+            'details' => 'Détails sur le :entity',
+            'link' => 'Gérer les :entity',
+            'add' => 'Ajouter un :entity',
+            'edit' => 'Editer le :entity',
+            'search' => 'Rechercher un :entity',
+            'list' => 'Liste des :entity',
+            'data' => [
+                'product_name' => 'Nom du :entity',
+                'product_description' => 'Description',
+                'quantity' => 'Quantité',
+                'price' => 'Prix',
+                'type' => 'Type',
+                'action' => [
+                    'sell' => 'Je vends',
+                    'rent' => 'Je fais louer',
+                    'distribute' => 'Je distribue',
+                ],
+            ],
+        ],
+
         // Group
         'group' => [
             'details' => 'Détails sur le groupe',

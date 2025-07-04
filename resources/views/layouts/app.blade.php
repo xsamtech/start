@@ -60,6 +60,7 @@
             .item .item-image-container img { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; object-fit: cover; }
             .item-price-container { display: flex; justify-content: center; align-items: center; width: 200px!important; height: 40px!important; border-radius: 50px!important; }
             .item-price-container .item-price { margin-top: 0!important; }
+            .cart-table .item-name-col figure { width: 140px; }
         </style>
 
         <title>
@@ -277,60 +278,57 @@
 @if (!empty($current_user))
                                         <div class="dropdown-cart-menu-container pull-right">
                                             <div class="btn-group dropdown-cart">
-                                                <button type="button" class="btn btn-custom dropdown-toggle"
-                                                    data-toggle="dropdown">
+                                                <button type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
                                                     <span class="cart-menu-icon"></span>
-                                                    {{ trans_choice('miscellaneous.items', 0, ['count' => 0]) }} <span class="drop-price">- $0.00</span>
+                                                    {{ trans_choice('miscellaneous.items', count($user_orders), ['count' => count($user_orders)]) }} <span class="drop-price">- {{ $current_user->unpaidCartTotal() . ' ' . $current_user->readable_currency }}</span>
                                                 </button>
 
                                                 <div class="dropdown-menu dropdown-cart-menu pull-right clearfix" role="menu">
-                                                    <p class="dropdown-cart-description">{{ trans_choice('miscellaneous.recently_added_items', 1) }}</p>
+                                                    <p class="dropdown-cart-description">{{ trans_choice('miscellaneous.recently_added_items', count($user_orders)) }}</p>
+    @if (count($user_orders) > 0)
                                                     <ul class="dropdown-cart-product-list">
+        @php
+            foreach ($user_orders as $item) {
+                $item->converted_price = $item->convertPriceAtThatTime($current_user->currency);
+                $item->subtotal_price = $item->subtotalPrice($current_user->currency);
+            }
+
+            $itemsArray = $user_orders->toArray();
+        @endphp
+
+        @foreach ($itemsArray as $item)
+            @if ($loop->index < 3)
                                                         <li class="item clearfix">
                                                             <a href="#" title="Delete item" class="delete-item">
                                                                 <i class="fa fa-times"></i>
                                                             </a>
-                                                            <a href="#" title="Edit item" class="edit-item">
+                                                            <a href="{{ route('account.entity', ['entity' => 'cart']) }}" title="Edit item" class="edit-item">
                                                                 <i class="fa fa-pencil"></i>
                                                             </a>
                                                             <figure>
                                                                 <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 1]) }}">
-                                                                    <img src="{{ getWebURL() . '/template/public/images/products/thumbnails/item12.jpg' }}" alt="phone 4">
+                                                                    <img src="{{ count($item['product']['photos']) > 0 ? $item['product']['photos'][0]['file_url'] : getWebURL() . '/template/public/images/products/thumbnails/item12.jpg' }}" alt="{{ $item['product']['product_name'] }}">
                                                                 </a>
                                                             </figure>
                                                             <div class="dropdown-cart-details">
                                                                 <p class="item-name">
-                                                                    <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 1]) }}">Cam Optia AF Webcam </a>
+                                                                    <a href="{{ route('product.entity.datas', ['entity' => $item['product']['type'], 'id' => $item['product']['id']]) }}">
+                                                                        {{ $item['product']['product_name'] }}
+                                                                    </a>
                                                                 </p>
                                                                 <p>
-                                                                    1x <span class="item-price">$499</span>
+                                                                    {{ $item['quantity'] }}x <span class="item-price">{{ $item['converted_price'] . ' ' . $current_user->readable_currency }}</span>
                                                                 </p>
                                                             </div><!-- End .dropdown-cart-details -->
                                                         </li>
-                                                        <li class="item clearfix">
-                                                            <a href="#" title="Delete item" class="delete-item">
-                                                                <i class="fa fa-times"></i>
-                                                            </a>
-                                                            <a href="#" title="Edit item" class="edit-item">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                            <figure>
-                                                                <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 2]) }}">
-                                                                    <img src="{{ getWebURL() . '/template/public/images/products/thumbnails/item13.jpg' }}" alt="phone 2">
-                                                                </a>
-                                                            </figure>
-                                                            <div class="dropdown-cart-details">
-                                                                <p class="item-name">
-                                                                    <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 2]) }}">Iphone Case Cover Original</a>
-                                                                </p>
-                                                                <p>
-                                                                    1x <span class="item-price">$499<span class="sub-price">.99</span></span>
-                                                                </p>
-                                                            </div><!-- End .dropdown-cart-details -->
-                                                        </li>
+            @endif
+        @endforeach
                                                     </ul>
                                                     <ul class="dropdown-cart-total">
-                                                        <li><span class="dropdown-cart-total-title">Total:</span>${{ formatIntegerNumber(1005) }}<span class="sub-price">.99</span></li>
+                                                        <li><span class="dropdown-cart-total-title">
+                                                            {{ 'TOTAL' . __('miscellaneous.colon_after_word') }}</span>
+                                                            {{ $current_user->unpaidCartTotal() . ' ' . $current_user->readable_currency }}
+                                                        </li>
                                                     </ul><!-- .dropdown-cart-total -->
                                                     <div class="dropdown-cart-action">
                                                         <p>
@@ -338,6 +336,13 @@
                                                         </p>
                                                         <p><a href="{{ route('account.entity', ['entity' => 'cart']) }}" class="btn btn-custom btn-block">@lang('miscellaneous.checkout')</a></p>
                                                     </div><!-- End .dropdown-cart-action -->
+        
+    @else
+                                                    <div style="display: flex; justify-content: center; align-items: flex-end; height: 100px;">
+                                                        <i class="bi bi-cart3" style="font-size: 5rem"></i>
+                                                    </div>
+                                                    <h5 class="text-center">@lang('miscellaneous.empty_list')</h5>
+    @endif
                                                 </div><!-- End .dropdown-cart -->
                                             </div><!-- End .btn-group -->
                                         </div><!-- End .dropdown-cart-menu-container -->

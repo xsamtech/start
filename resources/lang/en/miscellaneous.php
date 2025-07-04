@@ -415,6 +415,42 @@ return [
             ],
         ],
 
+        // Product
+        'product' => [
+            'entity' => [
+                'project' => [
+                    'singular' => 'project',
+                    'plural' => 'projects'
+                ],
+                'product' => [
+                    'singular' => 'product',
+                    'plural' => 'products'
+                ],
+                'service' => [
+                    'singular' => 'service',
+                    'plural' => 'services'
+                ],
+            ],
+            'details' => ':entity details',
+            'link' => 'Manage :entity',
+            'add' => 'Add a :entity',
+            'edit' => 'Edit the :entity',
+            'search' => 'Search a :entity',
+            'list' => ':entity list',
+            'data' => [
+                'product_name' => ':entity name',
+                'product_description' => 'Description',
+                'quantity' => 'Quantity',
+                'price' => 'Price',
+                'type' => 'Type',
+                'action' => [
+                    'sell' => 'I sell',
+                    'rent' => 'I rent',
+                    'distribute' => 'I distribute',
+                ],
+            ],
+        ],
+
         // Group
         'group' => [
             'details' => 'Group details',

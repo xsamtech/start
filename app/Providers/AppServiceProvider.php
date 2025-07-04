@@ -36,6 +36,9 @@ class AppServiceProvider extends ServiceProvider
 
             if (Auth::check()) {
                 $current_user = new ResourcesUser(Auth::user());
+                $user_orders = $current_user->unpaidOrders();
+
+                $view->with('user_orders', $user_orders);
             }
 
             $popular_products = Product::mostOrdered(10, 'monthly');

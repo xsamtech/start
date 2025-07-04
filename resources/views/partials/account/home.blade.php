@@ -30,7 +30,7 @@
                                         <img src="{{ !empty($current_user->avatar_url) ? $current_user->avatar_url : asset('assets/img/user.png') }}" alt="{{ $current_user->firstname . ' ' . $current_user->lastname }}" class="user-image img-fluid img-thumbnail rounded-4">
                                         <form method="POST">
                                             <input type="hidden" name="user_id" id="user_id" value="{{ $current_user->id }}">
-                                            <label for="avatar" class="btn btn-custom" style="position: absolute; bottom: -0.5rem; right: -0.5rem; z-index: 999; width: 5rem; height: 5rem; padding: 1rem; border-radius: 900px" title="@lang('miscellaneous.change_image')" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <label for="avatar" class="btn btn-custom" style="position: absolute; bottom: -0.5rem; right: -0.5rem; z-index: 9; width: 5rem; height: 5rem; padding: 1rem; border-radius: 900px;" title="@lang('miscellaneous.change_image')" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                                 <span class="bi bi-pencil-fill" style="font-size: 2.1rem; color: #fff;"></span>
                                                 <input type="file" name="avatar" id="avatar" style="display: none;">
                                             </label>

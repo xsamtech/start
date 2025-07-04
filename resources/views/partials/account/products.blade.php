@@ -4,7 +4,8 @@
 					<div class="container">
 						<ul class="breadcrumb">
 							<li><a href="{{ route('home') }}">@lang('miscellaneous.menu.home')</a></li>
-							<li class="active">@lang('miscellaneous.menu.account.title')</li>
+							<li><a href="{{ route('account.home') }}">@lang('miscellaneous.menu.account.title')</a></li>
+							<li class="active">{{ $entity_title }}</li>
 						</ul>
 					</div>
 				</div>
@@ -24,7 +25,7 @@
 								<li><a href="{{ route('account.entity', ['entity' => 'services']) }}">@lang('miscellaneous.menu.account.service.title')</a></li>
 							</ul><!-- End .portfolio-filter -->
 
-							<div class="row portfolio-item-container" data-maxcolumn="2" data-layoutmode="fitRows">
+							<div class="row" data-maxcolumn="2" data-layoutmode="fitRows">
 
                             </div><!-- End.row -->
 

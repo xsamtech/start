@@ -4,7 +4,8 @@
 					<div class="container">
 						<ul class="breadcrumb">
 							<li><a href="{{ route('home') }}">@lang('miscellaneous.menu.home')</a></li>
-							<li class="active">@lang('miscellaneous.menu.account.title')</li>
+							<li><a href="{{ route('account.home') }}">@lang('miscellaneous.menu.account.title')</a></li>
+							<li class="active">{{ $entity_title }}</li>
 						</ul>
 					</div>
 				</div>
