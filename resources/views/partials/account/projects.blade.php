@@ -17,7 +17,7 @@
 									<h1 class="title" style="margin-bottom: 5px;">@lang('miscellaneous.menu.account.project.title')</h1>
 									<p class="title-desc"><i class="bi bi-person" style="font-size: 2.5rem; vertical-align: -3px"></i> {{ $current_user->firstname . ' ' . $current_user->lastname }}</p>
 								</header>
-								<button class="btn strt-btn-green pb-2" style="float: right; display: flex; align-items: center;" class="btn btn-primary" data-toggle="modal" data-target="#newProjectModal">
+								<button class="btn strt-btn-green pb-2" style="float: right; display: flex; align-items: center;" class="btn btn-primary" data-toggle="modal" data-target="#newProductModal">
 									<i class="bi bi-plus" style="font-size: 2.8rem; color: white"></i> <span class="d-xs-none" style="margin-left: 8px; color: white">@lang('miscellaneous.add')</span>
 								</button>
 							</div>

@@ -174,6 +174,14 @@ class PublicController extends Controller
             $query->whereBetween('price', [$fromPrice, $toPrice]);
 
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
+
+            // Ajouter la méthode convertPrice au résultat paginé
+            $items->getCollection()->transform(function ($item) use ($current_user) {
+                // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
+                $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
+
+                return $item;
+            });
         }
 
         if ($entity == 'products') {
@@ -226,6 +234,14 @@ class PublicController extends Controller
             $query->whereBetween('price', [$fromPrice, $toPrice]);
 
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
+
+            // Ajouter la méthode convertPrice au résultat paginé
+            $items->getCollection()->transform(function ($item) use ($current_user) {
+                // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
+                $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
+
+                return $item;
+            });
         }
 
         if ($entity == 'services') {
@@ -278,15 +294,15 @@ class PublicController extends Controller
             $query->whereBetween('price', [$fromPrice, $toPrice]);
 
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
+
+            // Ajouter la méthode convertPrice au résultat paginé
+            $items->getCollection()->transform(function ($item) use ($current_user) {
+                // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
+                $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
+
+                return $item;
+            });
         }
-
-        // Ajouter la méthode convertPrice au résultat paginé
-        $items->getCollection()->transform(function ($item) use ($current_user) {
-            // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
-            $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
-
-            return $item;
-        });
 
         return view('account', [
             'entity' => $entity,
@@ -744,7 +760,7 @@ class PublicController extends Controller
             return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
         }
 
-        if ($entity == 'product') {
+        if ($entity == 'project' OR $entity == 'product' OR $entity == 'service') {
             // $request->validate([
             //     'product_name' => ['required', 'string', 'max:255'],
             //     'price' => ['required', 'float'],

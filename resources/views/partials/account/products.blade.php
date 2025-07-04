@@ -34,7 +34,7 @@
 
                                 <div class="col-md-9 col-sm-8 col-xs-12 main-content">
                                     <div id="category-header" class="category-banner">
-                                        <img src="{{ $category->image_url }}" alt="Category banner" class="img-responsive" style="height: 300px; object-fit: cover; filter: brightness(50%);">
+                                        <img src="{{ $category->image_url ?? getWebURL() . '/template/public/images/banner.png' }}" alt="Category banner" class="img-responsive" style="height: 300px; object-fit: cover; filter: brightness(50%);">
                                         <div class="category-title">
                                             <h2>{{ $category->category_name }}</h2>
                                             <p>{{ $category->category_description }}</p>

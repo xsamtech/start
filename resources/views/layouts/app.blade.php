@@ -263,13 +263,236 @@
         </div>
     @endif
 
-    @if ($entity == 'project' || $entity == 'projects')
+    @if ($entity == 'projects')
+        <!-- ### Add project ### -->
+        <div class="modal fade" id="newProductModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 5px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body" style="padding-top: 10px 50px;">
+                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.product.add', ['entity' => __('miscellaneous.admin.product.entity.project.singular')])</h2>
+                        <hr>
+
+                        <form id="productForm" action="{{ route('product.entity', ['entity' => 'project']) }}" method="POST">
+                            <input type="hidden" name="type" value="project">
+        @csrf
+                            <div class="row">
+                                <!-- Product name -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="product_name">@lang('miscellaneous.admin.product.data.product_name', ['entity' => __('miscellaneous.admin.product.entity.project.singular')])</label>
+                                        <input type="text" class="form-control" id="product_name" name="product_name" required>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="product_description">@lang('miscellaneous.admin.product.data.product_description')</label>
+                                        <textarea class="form-control" id="product_description" name="product_description" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Price -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="price">@lang('miscellaneous.admin.product.data.price')</label>
+                                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <!-- Currency -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="currency">@lang('miscellaneous.currency')</label>
+                                        <select class="form-control" id="currency" name="currency">
+                                            <option class="small" disabled>@lang('miscellaneous.currency')</option>
+                                            <option>USD</option>
+                                            <option>CDF</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Quantity -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
+                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+                                    </div>
+                                </div>
+
+                                <!-- Action -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="action">@lang('miscellaneous.admin.product.action.title')</label>
+                                        <select class="form-control" id="action" name="action">
+                                            <option value="sell">@lang('miscellaneous.admin.product.data.action.sell')</option>
+                                            <option value="rent">@lang('miscellaneous.admin.product.data.action.rent')</option>
+                                            <option value="distribute">@lang('miscellaneous.admin.product.data.action.distribute')</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Category -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="category_id">@lang('miscellaneous.admin.product.data.category')</label>
+                                        <select class="form-control" id="category_id" name="category_id">
+        @forelse ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+        @empty
+                                            <option disabled>@lang('miscellaneous.empty_list')</option>
+        @endforelse
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Upload images -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="files_urls">@lang('miscellaneous.upload.upload_images')</label>
+                                        <input type="file" id="files_urls" name="files_urls[]" class="form-control" multiple>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-xs-12">
+                                    <div id="image-preview-container" class="mt-2"></div> <!-- Conteneur pour les vignettes -->
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
+                                    <span style="color: #fff;">@lang('miscellaneous.register')</span>
+                                </button>
+                                <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
 
-    @if ($entity == 'service' || $entity == 'services')
+    @if ($entity == 'services')
+        <!-- ### Add project ### -->
+        <div class="modal fade" id="newProductModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 5px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body" style="padding-top: 10px 50px;">
+                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.product.add', ['entity' => __('miscellaneous.admin.product.entity.service.singular')])</h2>
+                        <hr>
+
+                        <form id="projectForm" action="{{ route('product.entity', ['entity' => 'service']) }}" method="POST">
+                            <input type="hidden" name="type" value="service">
+        @csrf
+                            <div class="row">
+                                <!-- Product name -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="product_name">@lang('miscellaneous.admin.product.data.product_name', ['entity' => __('miscellaneous.admin.product.entity.service.singular')])</label>
+                                        <input type="text" class="form-control" id="product_name" name="product_name" required>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="product_description">@lang('miscellaneous.admin.product.data.product_description')</label>
+                                        <textarea class="form-control" id="product_description" name="product_description" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Price -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="price">@lang('miscellaneous.admin.product.data.price')</label>
+                                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <!-- Currency -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="currency">@lang('miscellaneous.currency')</label>
+                                        <select class="form-control" id="currency" name="currency">
+                                            <option class="small" disabled>@lang('miscellaneous.currency')</option>
+                                            <option>USD</option>
+                                            <option>CDF</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Quantity -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
+                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+                                    </div>
+                                </div>
+
+                                <!-- Action -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="action">@lang('miscellaneous.admin.product.action.title')</label>
+                                        <select class="form-control" id="action" name="action">
+                                            <option value="sell">@lang('miscellaneous.admin.product.data.action.sell')</option>
+                                            <option value="rent">@lang('miscellaneous.admin.product.data.action.rent')</option>
+                                            <option value="distribute">@lang('miscellaneous.admin.product.data.action.distribute')</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Category -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="category_id">@lang('miscellaneous.admin.product.data.category')</label>
+                                        <select class="form-control" id="category_id" name="category_id">
+        @forelse ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+        @empty
+                                            <option disabled>@lang('miscellaneous.empty_list')</option>
+        @endforelse
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Upload images -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="files_urls">@lang('miscellaneous.upload.upload_images')</label>
+                                        <input type="file" id="files_urls" name="files_urls[]" class="form-control" multiple>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-xs-12">
+                                    <div id="image-preview-container" class="mt-2"></div> <!-- Conteneur pour les vignettes -->
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
+                                    <span style="color: #fff;">@lang('miscellaneous.register')</span>
+                                </button>
+                                <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
 @endif
-
         <!-- MODALS-->
 
         <div id="wrapper">
