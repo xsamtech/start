@@ -325,7 +325,7 @@
                             <div id="brand-slider-container" class="carousel-wrapper">
                                 <header class="content-title">
                                     <div class="title-bg">
-                                        <h2 class="title">Manufacturers</h2>
+                                        <h2 class="title">@lang('miscellaneous.public.our_partners')</h2>
                                     </div><!-- End .title-bg -->
                                 </header>
                                 <div class="carousel-controls">

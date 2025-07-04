@@ -178,6 +178,7 @@ return [
     'update_product_success' => 'Product updated',
     'delete_product_success' => 'Product deleted',
     'insufficient_stock' => 'Insufficient stock for the product “:product_name” (available: :quantity).',
+    'min_max_price_error' => 'The minimum price cannot be higher than the maximum price.',
     // Role
     'find_all_roles_success' => 'Roles found',
     'find_role_success' => 'Role found',

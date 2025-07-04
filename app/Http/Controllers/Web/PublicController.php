@@ -126,7 +126,7 @@ class PublicController extends Controller
 
         if ($entity == 'projects') {
             $entity_title = __('miscellaneous.menu.account.project.title');
-            $categories = Category::where('for_service', 2)->get();
+            $categories = Category::withCount('products')->where('for_service', 2)->get();
 
             if ($categories->isEmpty()) {
                 Category::create([
@@ -139,7 +139,7 @@ class PublicController extends Controller
                         'fr' => 'Etablissement industriel qui transforme les matières premières agricoles en produits finis ou semi-finis.'
                     ],
                     'for_service' => 2,
-                    'alias' => 'manufacturing-processing',
+                    'alias' => 'processing-plant',
                 ]);
             }
 
@@ -162,12 +162,23 @@ class PublicController extends Controller
                 return $query->where('action', $request->action);
             });
 
+            // Filter by price if values ​​are passed in the query
+            $fromPrice = $request->input('from_price', 0);
+            $toPrice = $request->input('to_price', 999999);
+
+            if ($fromPrice > $toPrice) {
+                return redirect()->back()->with('error_message', __('notifications.min_max_price_error'));
+            }
+
+            // Add price filter to query
+            $query->whereBetween('price', [$fromPrice, $toPrice]);
+
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
         }
 
         if ($entity == 'products') {
             $entity_title = __('miscellaneous.menu.account.product.title');
-            $categories = Category::where('for_service', 0)->get();
+            $categories = Category::withCount('products')->where('for_service', 0)->get();
 
             if ($categories->isEmpty()) {
                 Category::create([
@@ -180,7 +191,7 @@ class PublicController extends Controller
                         'fr' => 'Café, Palmier à huile, Caoutchouc, Cacao, Riz, Thé.'
                     ],
                     'for_service' => 0,
-                    'alias' => '',
+                    'alias' => 'cash-crops',
                 ]);
             }
 
@@ -203,12 +214,23 @@ class PublicController extends Controller
                 return $query->where('action', $request->action);
             });
 
+            // Filter by price if values ​​are passed in the query
+            $fromPrice = $request->input('from_price', 0);
+            $toPrice = $request->input('to_price', 999999);
+
+            if ($fromPrice > $toPrice) {
+                return redirect()->back()->with('error_message', __('notifications.min_max_price_error'));
+            }
+
+            // Add price filter to query
+            $query->whereBetween('price', [$fromPrice, $toPrice]);
+
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
         }
 
         if ($entity == 'services') {
             $entity_title = __('miscellaneous.menu.account.service.title');
-            $categories = Category::where('for_service', 1)->get();
+            $categories = Category::withCount('products')->where('for_service', 1)->get();
 
             if ($categories->isEmpty()) {
                 Category::create([
@@ -221,7 +243,7 @@ class PublicController extends Controller
                         'fr' => 'Ensemble des opérations qui permettent de transformer les matières premières issues de l\'agriculture en produits finis ou semi-finis.'
                     ],
                     'for_service' => 1,
-                    'alias' => '',
+                    'alias' => 'manufacturing-processing',
                 ]);
             }
 
@@ -244,8 +266,27 @@ class PublicController extends Controller
                 return $query->where('action', $request->action);
             });
 
+            // Filter by price if values ​​are passed in the query
+            $fromPrice = $request->input('from_price', 0);
+            $toPrice = $request->input('to_price', 999999);
+
+            if ($fromPrice > $toPrice) {
+                return redirect()->back()->with('error_message', __('notifications.min_max_price_error'));
+            }
+
+            // Add price filter to query
+            $query->whereBetween('price', [$fromPrice, $toPrice]);
+
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
         }
+
+        // Ajouter la méthode convertPrice au résultat paginé
+        $items->getCollection()->transform(function ($item) use ($current_user) {
+            // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
+            $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
+
+            return $item;
+        });
 
         return view('account', [
             'entity' => $entity,
@@ -295,7 +336,7 @@ class PublicController extends Controller
                         'fr' => 'Etablissement industriel qui transforme les matières premières agricoles en produits finis ou semi-finis.'
                     ],
                     'for_service' => 2,
-                    'alias' => 'manufacturing-processing',
+                    'alias' => 'processing-plant',
                 ]);
             }
 
@@ -318,6 +359,17 @@ class PublicController extends Controller
                 return $query->where('action', $request->action);
             });
 
+            // Filter by price if values ​​are passed in the query
+            $fromPrice = $request->input('from_price', 0);
+            $toPrice = $request->input('to_price', 999999);
+
+            if ($fromPrice > $toPrice) {
+                return redirect()->back()->with('error_message', __('notifications.min_max_price_error'));
+            }
+
+            // Add price filter to query
+            $query->whereBetween('price', [$fromPrice, $toPrice]);
+
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
         }
 
@@ -336,7 +388,7 @@ class PublicController extends Controller
                         'fr' => 'Café, Palmier à huile, Caoutchouc, Cacao, Riz, Thé.'
                     ],
                     'for_service' => 0,
-                    'alias' => '',
+                    'alias' => 'cash-crops',
                 ]);
             }
 
@@ -359,6 +411,17 @@ class PublicController extends Controller
                 return $query->where('action', $request->action);
             });
 
+            // Filter by price if values ​​are passed in the query
+            $fromPrice = $request->input('from_price', 0);
+            $toPrice = $request->input('to_price', 999999);
+
+            if ($fromPrice > $toPrice) {
+                return redirect()->back()->with('error_message', __('notifications.min_max_price_error'));
+            }
+
+            // Add price filter to query
+            $query->whereBetween('price', [$fromPrice, $toPrice]);
+
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
         }
 
@@ -378,7 +441,7 @@ class PublicController extends Controller
                         'fr' => 'Ensemble des opérations qui permettent de transformer les matières premières issues de l\'agriculture en produits finis ou semi-finis.'
                     ],
                     'for_service' => 1,
-                    'alias' => '',
+                    'alias' => 'manufacturing-processing',
                 ]);
             }
 
@@ -400,6 +463,17 @@ class PublicController extends Controller
             $query->when($request->action, function ($query) use ($request) {
                 return $query->where('action', $request->action);
             });
+
+            // Filter by price if values ​​are passed in the query
+            $fromPrice = $request->input('from_price', 0);
+            $toPrice = $request->input('to_price', 999999);
+
+            if ($fromPrice > $toPrice) {
+                return redirect()->back()->with('error_message', __('notifications.min_max_price_error'));
+            }
+
+            // Add price filter to query
+            $query->whereBetween('price', [$fromPrice, $toPrice]);
 
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
         }
@@ -671,15 +745,15 @@ class PublicController extends Controller
         }
 
         if ($entity == 'product') {
-            $request->validate([
-                'product_name' => ['required', 'string', 'max:255'],
-                'price' => ['required', 'float'],
-                'quantity' => ['required', 'integer', 'min:1'],
-            ], [
-                'product_name.required' => __('validation.required'),
-                'price' => __('validation.required'),
-                'quantity' => __('validation.required'),
-            ]);
+            // $request->validate([
+            //     'product_name' => ['required', 'string', 'max:255'],
+            //     'price' => ['required', 'float'],
+            //     'quantity' => ['required', 'integer', 'min:1'],
+            // ], [
+            //     'product_name.required' => __('validation.required'),
+            //     'price' => __('validation.required'),
+            //     'quantity' => __('validation.required'),
+            // ]);
 
             $product = Product::create([
                 'product_name' => $request->product_name,
@@ -696,7 +770,7 @@ class PublicController extends Controller
             ]);
 
             // If image files exist
-            if ($request->hasFile('images_urls')) {
+            if ($request->hasFile('files_urls')) {
                 $files = $request->file('files_urls', []);
                 $fileNames = $request->input('files_names', []);
 

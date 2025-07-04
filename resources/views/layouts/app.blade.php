@@ -61,6 +61,16 @@
             .item-price-container { display: flex; justify-content: center; align-items: center; width: 200px!important; height: 40px!important; border-radius: 50px!important; }
             .item-price-container .item-price { margin-top: 0!important; }
             .cart-table .item-name-col figure { width: 140px; }
+            .d-xs-none { display: inline-block; }
+            @media screen and (max-width: 500px) {
+                .d-xs-none { display: none; }
+            }
+            /* Image preview to upload */
+            #image-preview-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+            .preview-thumbnail { position: relative; display: inline-block; width: 100px; height: 100px; }
+            .preview-thumbnail img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
+            .preview-thumbnail .remove-image { position: absolute; top: 0; right: 0; background-color: rgba(255, 0, 0, 0.7); color: white; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 0 5.5px; }
+            .preview-thumbnail .remove-image:hover { background-color: rgba(255, 0, 0, 0.3); }
         </style>
 
         <title>
@@ -137,6 +147,129 @@
                 </div>
             </div>
         </div>
+@if (!empty($entity))
+    @if ($entity == 'products')
+        <!-- ### Add product ### -->
+        <div class="modal fade" id="newProductModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 5px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body" style="padding-top: 10px 50px;">
+                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.product.add', ['entity' => __('miscellaneous.admin.product.entity.product.singular')])</h2>
+                        <hr>
+
+                        <form id="productForm" action="{{ route('product.entity', ['entity' => 'product']) }}" method="POST">
+                            <input type="hidden" name="type" value="product">
+        @csrf
+                            <div class="row">
+                                <!-- Product name -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="product_name">@lang('miscellaneous.admin.product.data.product_name', ['entity' => __('miscellaneous.admin.product.entity.product.singular')])</label>
+                                        <input type="text" class="form-control" id="product_name" name="product_name" required>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="product_description">@lang('miscellaneous.admin.product.data.product_description')</label>
+                                        <textarea class="form-control" id="product_description" name="product_description" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Price -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="price">@lang('miscellaneous.admin.product.data.price')</label>
+                                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <!-- Currency -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="currency">@lang('miscellaneous.currency')</label>
+                                        <select class="form-control" id="currency" name="currency">
+                                            <option class="small" disabled>@lang('miscellaneous.currency')</option>
+                                            <option>USD</option>
+                                            <option>CDF</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Quantity -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
+                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+                                    </div>
+                                </div>
+
+                                <!-- Action -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="action">@lang('miscellaneous.admin.product.action.title')</label>
+                                        <select class="form-control" id="action" name="action">
+                                            <option value="sell">@lang('miscellaneous.admin.product.data.action.sell')</option>
+                                            <option value="rent">@lang('miscellaneous.admin.product.data.action.rent')</option>
+                                            <option value="distribute">@lang('miscellaneous.admin.product.data.action.distribute')</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Category -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="category_id">@lang('miscellaneous.admin.product.data.category')</label>
+                                        <select class="form-control" id="category_id" name="category_id">
+        @forelse ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+        @empty
+                                            <option disabled>@lang('miscellaneous.empty_list')</option>
+        @endforelse
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Upload images -->
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="files_urls">@lang('miscellaneous.upload.upload_images')</label>
+                                        <input type="file" id="files_urls" name="files_urls[]" class="form-control" multiple>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-xs-12">
+                                    <div id="image-preview-container" class="mt-2"></div> <!-- Conteneur pour les vignettes -->
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
+                                    <span style="color: #fff;">@lang('miscellaneous.register')</span>
+                                </button>
+                                <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($entity == 'project' || $entity == 'projects')
+    @endif
+
+    @if ($entity == 'service' || $entity == 'services')
+    @endif
+@endif
+
         <!-- MODALS-->
 
         <div id="wrapper">
@@ -218,8 +351,40 @@
                     </div><!-- End .container -->
                 </div><!-- End #header-top -->
 
+            <div id="ajax-alert-container" style="position: relative;"></div>
+@if (\Session::has('success_message'))
+            <!-- Alert Start -->
+            <div style="position: relative;">
+                <div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                    <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>{!! \Session::get('success_message') !!}
+                    </div>
+                </div>
+            </div>
+            <!-- Alert End -->
+@endif
+@if (\Session::has('error_message'))
+            <!-- Alert Start -->
+            <div style="position: relative;">
+                <div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                    <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>{!! \Session::get('error_message') !!}
+                    </div>
+                </div>
+            </div>
+            <!-- Alert End -->
+@endif
                 <div id="inner-header">
                     <div class="container">
+                        <div class="row">
+
+                        </div><!-- End .row -->
                         <div class="row">
                             <div class="col-md-5 col-sm-5 col-xs-12 logo-container">
                                 <h1 class="logo clearfix">
@@ -450,7 +615,7 @@
 
         <!-- END -->
         <script src="{{ asset('assets/addons/jquery/js/jquery-ui.min.js') }}"></script>
-        <script rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
         <script src="{{ asset('assets/addons/jquery/datetimepicker/js/jquery.datetimepicker.full.min.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/venedor/smoothscroll.js') }}"></script>
@@ -471,6 +636,17 @@
         <script src="{{ asset('assets/js/scripts.custom.js') }}"></script>
 
         <script>
+            /**
+             * Utility to update the list of files in the input
+             */
+            function FileListItems(files) {
+                const dataTransfer = new DataTransfer();
+
+                files.forEach(file => dataTransfer.items.add(file));
+
+                return dataTransfer.files;
+            }
+
             $(function() {
                 // Slider Revolution
                 jQuery('#slider-rev').revolution({
@@ -502,6 +678,134 @@
                     // navigationStyle:"preview4"
                 });
 
+                /**
+                 * Image preview to upload
+                 */
+                $('#files_urls').on('change', function (e) {
+                    // Récupérer les fichiers
+                    const files = e.target.files;
+                    const imagePreviewContainer = $('#image-preview-container');
+
+                    // Effacer les vignettes existantes
+                    imagePreviewContainer.empty();
+
+                    // Créer une vignette pour chaque fichier sélectionné
+                    Array.from(files).forEach(file => {
+                        const reader = new FileReader();
+
+                        reader.onload = function (e) {
+
+                            const imageUrl = e.target.result;
+                            const fileName = file.name;
+
+                            // Créer l'élément de la vignette avec la croix
+                            const imageThumbnail = $(`
+                            <div class="preview-thumbnail">
+                                <img src="${imageUrl}" alt="${fileName}" />
+                                <span class="remove-image">&times;</span>
+                                </div>
+                                `);
+
+                            // Ajouter la vignette au conteneur
+                            imagePreviewContainer.append(imageThumbnail);
+
+                            // Gérer la suppression de l'image
+                            imageThumbnail.find('.remove-image').on('click', function () {
+
+                                // Supprimer le fichier de l'input
+                                const fileList = Array.from($('#files_urls')[0].files);
+                                const index = fileList.findIndex(f => f.name === fileName);
+
+                                if (index !== -1) {
+                                    fileList.splice(index, 1);
+                                }
+
+                                // Mettre à jour les fichiers de l'input
+                                $('#files_urls')[0].files = new FileListItems(fileList);
+
+                                // Supprimer la vignette de l'UI
+                                imageThumbnail.remove();
+                            });
+                        };
+
+                        reader.readAsDataURL(file);
+                    });
+                });
+
+                /**
+                 * Ajax to send
+                 */
+                $('#productForm').on('submit', function (e) {
+                    e.preventDefault();
+
+                    // Afficher l'animation de chargement
+                    $('#loading-icon').show();
+
+                    // Effacer les alertes précédentes
+                    $('#ajax-alert-container').empty();
+
+                    var formData = new FormData(this);
+
+                    // Ajouter les images à FormData (dans le cas où il y en a)
+                    var images = $('#files_urls')[0].files;
+
+                    for (var i = 0; i < images.length; i++) {
+                        formData.append('files_urls[' + i + ']', images[i]);
+                    }
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
+
+                            // Afficher une alerte de succès
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    ${response.message || 'Produit ajouté avec succès !'}
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>`);
+
+                            // Optionnellement, fermer le modal après un succès
+                            $('#newProductModal').modal('hide');
+
+                            // Réinitialiser tous les champs du formulaire
+                            $('#productForm')[0].reset();
+
+                            // Réinitialiser le champ de fichiers (images)
+                            $('#files_urls').val(null);
+
+                            location.reload();
+                        },
+                        error: function (error) {
+                             // Cacher l'animation de chargement
+                             $('#loading-icon').hide();
+
+                             // Afficher une alerte d'erreur
+                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                    <i class="bi bi-x-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.error_while_processing') }}
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>`);
+                        }
+                    });
+                });
+
+                /**
+                 * Add to cart button
+                 */
                 $('.item-add-btn').on('click', function () {
                     const productId = $(this).data('id');
 
