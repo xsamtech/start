@@ -213,6 +213,8 @@ return [
     'month_plural' => 'months',
     'year_singular' => 'year',
     'year_plural' => 'years',
+    'ton_singular' => 'ton',
+    'ton_plural' => 'tons',
 
     // ===== LOGIN PAGE
     'login_title1' => 'Log in',
@@ -448,7 +450,7 @@ return [
                 'product_name' => ':entity name',
                 'product_description' => 'Description',
                 'quantity' => 'Quantity',
-                'price' => 'Price',
+                'price' => 'Price (per ton)',
                 'type' => 'Type',
                 'action' => [
                     'title' => 'What do you do',

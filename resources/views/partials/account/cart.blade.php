@@ -73,7 +73,7 @@
 												</td>
 												<td>
 													<div class="custom-quantity-input">
-														<input type="text" name="quantity" value="{{ $item['quantity'] }}">
+														<input type="text" name="quantity" value="{{ $item['quantity'] }}" min="500">
 														<a href="#" onclick="return false;" class="quantity-btn quantity-input-up">
 															<i class="fa fa-angle-up"></i>
 														</a>
