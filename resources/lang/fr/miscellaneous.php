@@ -466,6 +466,28 @@ return [
             ],
         ],
 
+        // Post
+        'post' => [
+            'details' => 'Détails sur le post',
+            'link' => 'Gérer les posts',
+            'add' => 'Ajouter un post',
+            'edit' => 'Editer le post',
+            'search' => 'Rechercher un post',
+            'list' => 'Liste des posts',
+            'data' => [
+                'posts_title' => 'Titre du post',
+                'posts_content' => 'Contenu',
+                'event_start_at' => 'Commence à',
+                'event_end_at' => 'Termine à',
+                'type' => [
+                    'news' => 'Actualité',
+                    'event' => 'Événement',
+                    'post' => 'Sujet de forum',
+                    'message' => 'Message',
+                ],
+            ],
+        ],
+
         // Group
         'group' => [
             'details' => 'Détails sur le groupe',

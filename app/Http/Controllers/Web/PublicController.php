@@ -338,8 +338,8 @@ class PublicController extends Controller
         $items = null;
 
         if ($entity == 'project') {
-            $entity_title = __('miscellaneous.menu.public.products.projects');
-            $categories = Category::where('for_service', 2)->get();
+            $entity_title = __('miscellaneous.menu.account.project.title');
+            $categories = Category::withCount('products')->where('for_service', 2)->get();
 
             if ($categories->isEmpty()) {
                 Category::create([
@@ -387,11 +387,23 @@ class PublicController extends Controller
             $query->whereBetween('price', [$fromPrice, $toPrice]);
 
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
+
+            if (Auth::check()) {
+                $current_user = User::find(Auth::id());
+
+                // Ajouter la méthode convertPrice au résultat paginé
+                $items->getCollection()->transform(function ($item) use ($current_user) {
+                    // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
+                    $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
+
+                    return $item;
+                });
+            }
         }
 
         if ($entity == 'product') {
-            $entity_title = __('miscellaneous.menu.public.products.products');
-            $categories = Category::where('for_service', 0)->get();
+            $entity_title = __('miscellaneous.menu.account.product.title');
+            $categories = Category::withCount('products')->where('for_service', 0)->get();
 
             if ($categories->isEmpty()) {
                 Category::create([
@@ -439,12 +451,23 @@ class PublicController extends Controller
             $query->whereBetween('price', [$fromPrice, $toPrice]);
 
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
+
+            if (Auth::check()) {
+                $current_user = User::find(Auth::id());
+
+                // Ajouter la méthode convertPrice au résultat paginé
+                $items->getCollection()->transform(function ($item) use ($current_user) {
+                    // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
+                    $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
+
+                    return $item;
+                });
+            }
         }
 
         if ($entity == 'service') {
-            $entity_title = __('miscellaneous.menu.public.products.services');
             $entity_title = __('miscellaneous.menu.account.service.title');
-            $categories = Category::where('for_service', 1)->get();
+            $categories = Category::withCount('products')->where('for_service', 1)->get();
 
             if ($categories->isEmpty()) {
                 Category::create([
@@ -492,6 +515,18 @@ class PublicController extends Controller
             $query->whereBetween('price', [$fromPrice, $toPrice]);
 
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
+
+            if (Auth::check()) {
+                $current_user = User::find(Auth::id());
+
+                // Ajouter la méthode convertPrice au résultat paginé
+                $items->getCollection()->transform(function ($item) use ($current_user) {
+                    // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
+                    $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
+
+                    return $item;
+                });
+            }
         }
 
         return view('products', [
@@ -531,9 +566,19 @@ class PublicController extends Controller
         ]);
     }
 
+    /**
+     * GET: Products page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function discussions()
+    {
+        return view('discussions');
+    }
+
     // ==================================== HTTP DELETE METHODS ====================================
     /**
-     * GET: Delete product
+     * GET: Delete something
      *
      * @param  string $entity
      * @param  int $id

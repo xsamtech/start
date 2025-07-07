@@ -466,6 +466,28 @@ return [
             ],
         ],
 
+        // Post
+        'post' => [
+            'details' => 'Post details',
+            'link' => 'Manage posts',
+            'add' => 'Add a post',
+            'edit' => 'Edit the post',
+            'search' => 'Search post',
+            'list' => 'Posts list',
+            'data' => [
+                'posts_title' => 'Post title',
+                'posts_content' => 'Content',
+                'event_start_at' => 'Start at',
+                'event_end_at' => 'End at',
+                'type' => [
+                    'news' => 'News',
+                    'event' => 'Event',
+                    'post' => 'Forum topic',
+                    'message' => 'Message',
+                ],
+            ],
+        ],
+
         // Group
         'group' => [
             'details' => 'Group details',

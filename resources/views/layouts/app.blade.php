@@ -437,7 +437,7 @@
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
                                         <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
-                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1">
                                     </div>
                                 </div>
 
