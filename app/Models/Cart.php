@@ -53,14 +53,37 @@ class Cart extends Model
     }
 
     /**
-     * Total price of ordered panels
+     * Total price of ordered products
      *
      * @return float
      */
     public function totalAmount(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->customer_orders->sum('price_at_that_time')
+            get: fn () => round($this->customer_orders->sum('price_at_that_time'), 2)
+        );
+    }
+
+    /**
+     * Total price of ordered products, converted to user currency
+     *
+     * @return float
+     */
+    public function totalConvertedAmount($userCurrency): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->customer_orders->sum(function ($order) use ($userCurrency) {
+                // Si la devise de l'ordre est la même que celle de l'utilisateur
+                if ($order->currency == $userCurrency) {
+                    return round($order->price_at_that_time, 2);
+                }
+
+                // Si les devises sont différentes, on effectue la conversion
+                $conversionRate = getExchangeRate($order->currency, $userCurrency);
+
+                // Retourner le prix converti
+                return round($order->price_at_that_time * $conversionRate, 2);
+            })
         );
     }
 }

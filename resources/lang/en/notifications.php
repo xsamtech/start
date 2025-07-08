@@ -294,7 +294,7 @@ return [
     'find_all_payments_success' => 'Payments found',
     'find_payment_success' => 'Payment found',
     'find_payment_404' => 'Payment not found',
-    'processing_succeed' => 'Your transaction succeeded. You can see it at your payments list.',
+    'processing_succeed' => 'Your transaction succeeded.',
     'error_while_processing' => 'An error while processing your request',
     'process_failed' => 'Unable to process the request, please try again',
     'process_canceled' => 'You canceled your transaction',

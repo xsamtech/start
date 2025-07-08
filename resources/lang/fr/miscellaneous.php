@@ -29,7 +29,7 @@ return [
     'all_right_reserved' => 'Tous droits réservés',
     'follow_us' => 'Suivez-nous :',
     'call_us' => 'Appelez-nous :',
-    'bank_transaction_description' => 'Transaction bancaire depuis l’appli Boongo',
+    'bank_transaction_description' => 'Transaction bancaire depuis la plateforme START',
     'menu_toggle' => 'Menu',
     'description' => 'Description',
     'color' => 'Couleur',
@@ -450,7 +450,7 @@ return [
                 'product_name' => 'Nom du :entity',
                 'product_description' => 'Description',
                 'quantity' => 'Quantité',
-                'price' => 'Prix (par tonne)',
+                'price' => 'Prix (par kilo)',
                 'type' => 'Type',
                 'action' => [
                     'title' => 'Que faites-vous ?',
