@@ -654,6 +654,8 @@ return [
         'subtotal' => 'SUBTOTAL:',
         'view_cart' => 'View cart',
         'checkout' => 'Checkout',
+        'related_product' => 'Related products',
+        'add_rating' => 'Add your rating',
 
         // Footer
         'footer' => [

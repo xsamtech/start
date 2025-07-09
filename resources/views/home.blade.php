@@ -2,7 +2,6 @@
 
 @section('app-content')
 
-
             <section id="content">
                 <div id="slider-rev-container">
                     <div id="slider-rev">

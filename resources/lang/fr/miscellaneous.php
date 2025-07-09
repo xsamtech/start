@@ -654,6 +654,8 @@ return [
         'subtotal' => 'SOUS-TOTAL :',
         'view_cart' => 'Voir panier',
         'checkout' => 'Commander',
+        'related_product' => 'Produits associés',
+        'add_rating' => 'Ajouter votre note',
 
         // Footer
         'footer' => [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Product as ResourcesProduct;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\File;
@@ -109,7 +110,7 @@ class PublicController extends Controller
      */
     public function account()
     {
-        return view('account', ['countries' => showCountries()]);
+        return view('account');
     }
 
     /**
@@ -319,6 +320,7 @@ class PublicController extends Controller
             'category' => $category,
             'categories' => $categories,
             'items' => $items,
+            'countries' => showCountries()
         ]);
     }
 
@@ -557,6 +559,11 @@ class PublicController extends Controller
     public function productDatas($entity, $id)
     {
         $entity_title = null;
+        $selected_product = Product::find($id);
+
+        if (is_null($selected_product)) {
+            redirect('/')->with('error_message', __('notifications.find_product_404'));
+        }
 
         if ($entity == 'project') {
             $entity_title = __('miscellaneous.menu.public.products.about_project');
@@ -571,7 +578,9 @@ class PublicController extends Controller
         }
 
         return view('products', [
-            'entity_title' => $entity_title
+            'entity_title' => $entity_title,
+            'entity' => $entity,
+            'selected_product' => $selected_product,
         ]);
     }
 

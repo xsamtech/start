@@ -56,12 +56,16 @@
 
         <style id="custom-style">
             textarea { resize: none; }
+            /* #product-image-container, */
             .item .item-image-container { position: relative; width: 100%; padding-top: 139.91%; overflow: hidden; }
+            /* #product-image-container img, */
             .item .item-image-container img { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; object-fit: cover; }
             .item-price-container { display: flex; justify-content: center; align-items: center; width: 200px!important; height: 40px!important; border-radius: 50px!important; }
             .item-price-container .item-price { margin-top: 0!important; }
             .cart-table .item-name-col figure { width: 140px; }
             .d-xs-none { display: inline-block; }
+            #personalInfo tr { border-bottom: 1px #ccc solid; }
+            #personalInfo td { text-align: left; padding: 1rem 0.5rem; border: 0!important; }
             @media screen and (max-width: 500px) {
                 .d-xs-none { display: none; }
             }
@@ -207,7 +211,7 @@
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
                                         <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
-                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+                                        <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="1" required>
                                     </div>
                                 </div>
 
@@ -869,6 +873,19 @@
 
                 return dataTransfer.files;
             }
+
+            /**
+             * For all number fields, it is forbidden to enter a value less than 500
+             */
+            const inputs = document.querySelectorAll('.input-minimum');
+
+            inputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    if (parseInt(input.value) < 500) {
+                        input.value = 500;
+                    }
+                });
+            });
 
             $(function() {
                 // Slider Revolution
