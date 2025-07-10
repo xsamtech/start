@@ -88,13 +88,13 @@ a.strt-bg-green-transparent:hover {
 /* button */
 .strt-btn-chocolate-1 {
     background-color: #dfac3d !important;
-    color: #fff !important;
+    color: #000 !important;
     border-color: #cf9f38 !important;
 }
 
 .strt-btn-chocolate-1:hover {
     background-color: #000 !important;
-    color: #000 !important;
+    color: #fff !important;
     border-color: #000 !important;
 }
 
@@ -111,25 +111,23 @@ a.strt-bg-green-transparent:hover {
 
 .strt-btn-chocolate-3 {
     background-color: #732f0b !important;
-    color: #000 !important;
+    color: #fff !important;
     border-color: #662a0a !important;
 }
 
 .strt-btn-chocolate-3:hover {
     background-color: #000 !important;
-    color: #fff !important;
     border-color: #000 !important;
 }
 
 .strt-btn-green {
     background-color: #04471a !important;
-    color: #000 !important;
+    color: #fff !important;
     border-color: #033b16 !important;
 }
 
 .strt-btn-green:hover {
     background-color: #000 !important;
-    color: #fff !important;
     border-color: #000 !important;
 }
 
@@ -141,7 +139,6 @@ a.strt-bg-green-transparent:hover {
 
 .strt-btn-black:hover {
     background-color: #000 !important;
-    color: #fff !important;
     border-color: #000 !important;
 }
 

@@ -212,7 +212,7 @@ if (!function_exists('showCountries')) {
                         'code' => $country['cca2'] ?? '',
                         'phone' => $fullPhoneCode,
                         'flag' => $country['flags']['png'] ?? '',
-                        'label' => ($country['name']['common'] ?? '') . ' (' . ($country['cca2'] ?? '') . ') (' . $fullPhoneCode . ')',
+                        'label' => ($country['cca2'] ?? '') . ' (' . $fullPhoneCode . ')',
                     ];
                 })
                 ->filter()

@@ -124,12 +124,15 @@ class PublicController extends Controller
     {
         $current_user = User::find(Auth::id());
         $entity_title = null;
+        $cart = null;
         $category = null;
         $categories = null;
         $items = null;
 
         if ($entity == 'cart') {
             $entity_title = __('miscellaneous.menu.account.cart');
+            // Get user unpaid cart
+            $cart = $current_user->unpaidCart()->first();
             // Get user unpaid orders
             $items = $current_user->unpaidOrders();
         }
@@ -317,6 +320,7 @@ class PublicController extends Controller
         return view('account', [
             'entity' => $entity,
             'entity_title' => $entity_title,
+            'cart' => $cart,
             'category' => $category,
             'categories' => $categories,
             'items' => $items,
@@ -663,7 +667,7 @@ class PublicController extends Controller
 
         return view('transaction_message', [
             'message_content' => __('notifications.transaction_done'),
-            'status_code' => (string) $payment1->data->status->id,
+            'status_code' => (string) $payment1->data->status,
             'payment' => $payment1->data,
         ]);
     }
@@ -751,6 +755,12 @@ class PublicController extends Controller
             return redirect()->back()->with('error_message', __('notifications.transaction_type_error'));
         }
 
+        if ($inputs['transaction_type_id'] == 1) {
+            if (trim($request->other_phone_code) == null OR trim($request->other_phone_number) == null) {
+                return redirect()->back()->with('error_message', __('validation.custom.phone.incorrect'));
+            }
+        }
+
         if ($inputs['transaction_type_id'] != null) {
             if ($inputs['transaction_type_id'] == 1) {
                 if ($request->other_phone_code == null or $request->other_phone_number == null) {
@@ -771,7 +781,7 @@ class PublicController extends Controller
             }
 
             if ($inputs['transaction_type_id'] == 2) {
-                $cart = $this::$api_client_manager::call('POST', getApiURL() . '/cart/purchase/' . $inputs['user_id'], $request->api_token, $inputs);
+                $cart = $this::$api_client_manager::call('POST', getApiURL() . '/product/purchase/' . $inputs['cart_id'] . '/' . $inputs['user_id'], null, $inputs);
 
                 if ($cart->success) {
                     return redirect($cart->data->result_response->url)->with('order_number', $cart->data->result_response->order_number);

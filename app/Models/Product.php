@@ -171,7 +171,7 @@ class Product extends Model
      * @param  string  $period
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function mostOrdered($limit = 10, $period = null)
+    public static function mostOrdered($limit = 10, $type, $period = null)
     {
         $startDate = match ($period) {
             'daily'      => Carbon::now()->startOfDay(),
@@ -201,6 +201,7 @@ class Product extends Model
                             }
 
                         }], DB::raw('price_at_that_time * quantity'))
+                        ->where('products.type', $type)
                         ->orderByDesc('total_quantity_ordered')
                         ->take($limit)->get();
     }

@@ -41,14 +41,17 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('user_orders', $user_orders);
             }
 
-            $popular_products = Product::mostOrdered(10, 'monthly');
-            // $popular_products = Product::orderByDesc('created_at')->get();
+            $popular_projects = Product::mostOrdered(6, 'project', 'monthly');
+            $popular_products = Product::mostOrdered(6, 'product', 'monthly');
+            $popular_services = Product::mostOrdered(6, 'service', 'monthly');
             $recent_investors = User::whereHas('roles', function ($query) {
                                     $query->where('role_name->fr', 'Investisseur');
-                                })->orderByDesc('users.created_at')->take(10)->get();
+                                })->orderByDesc('users.created_at')->take(6)->get();
 
             $view->with('current_user', $current_user);
+            $view->with('popular_projects', ResourcesProduct::collection($popular_projects)->resolve());
             $view->with('popular_products', ResourcesProduct::collection($popular_products)->resolve());
+            $view->with('popular_services', ResourcesProduct::collection($popular_services)->resolve());
             $view->with('recent_investors', ResourcesUser::collection($recent_investors)->resolve());
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));

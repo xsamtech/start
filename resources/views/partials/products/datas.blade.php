@@ -62,54 +62,25 @@
 											<ul class="product-list">
 												<li><span>@lang('miscellaneous.admin.product.data.price')</span>@lang('miscellaneous.colon_after_word') {{ !empty($current_user) ? ($selected_product->converted_price . ' ' . $current_user->readable_currency) : $selected_product->price . ' ' . $selected_product->currency }}</li>
 												<li><span>@lang('miscellaneous.admin.product.data.quantity')</span>@lang('miscellaneous.colon_after_word') {{ $selected_product->quantity }}</li>
-												<li><span>@lang('miscellaneous.admin.product.data.product_description')</span> <br>{{ $selected_product->description }}</li>
+												<li><span>@lang('miscellaneous.admin.product.data.product_description')</span> <br>{{ $selected_product->product_description }}</li>
 											</ul>
 											<hr>
-
-											<hr>
 											<div class="product-add clearfix">
-										<div class="custom-quantity-input">
-											<input type="text" name="quantity" value="1">
-											<a href="#" onclick="return false;"
-												class="quantity-btn quantity-input-up"><i
+												<div class="custom-quantity-input">
+													<input type="text" name="quantity" value="500" class="input-minimum">
+													<a href="#" onclick="return false;"
+													class="quantity-btn quantity-input-up"><i
 													class="fa fa-angle-up"></i></a>
 											<a href="#" onclick="return false;"
 												class="quantity-btn quantity-input-down"><i
 													class="fa fa-angle-down"></i></a>
 										</div>
-										<button class="btn btn-custom-2">ADD TO CART</button>
+										<button class="btn btn-custom-2">@lang('miscellaneous.public.add_to_cart')</button>
 									</div><!-- .product-add -->
-									<div class="md-margin"></div><!-- Space -->
-									<div class="product-extra clearfix">
-										<div class="product-extra-box-container clearfix">
-											<div class="item-action-inner">
-												<a href="#" class="icon-button icon-like">Favourite</a>
-												<a href="#" class="icon-button icon-compare">Checkout</a>
-											</div><!-- End .item-action-inner -->
-										</div>
-										<div class="md-margin visible-xs"></div>
-										<div class="share-button-group">
-											<!-- AddThis Button BEGIN -->
-											<div
-												class="addthis_toolbox addthis_default_style addthis_32x32_style">
-												<a class="addthis_button_facebook"></a>
-												<a class="addthis_button_twitter"></a>
-												<a class="addthis_button_email"></a>
-												<a class="addthis_button_print"></a>
-												<a class="addthis_button_compact"></a><a
-													class="addthis_counter addthis_bubble_style"></a>
-											</div>
-											<script
-												type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-											<script type="text/javascript"
-												src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b2197865ea0183"></script>
-											<!-- AddThis Button END -->
-										</div><!-- End .share-button-group -->
-									</div>
 								</div><!-- End .col-md-6 -->
 
 							</div><!-- End .row -->
-
+{{-- 
 							<div class="lg-margin2x"></div><!-- End .space -->
 
 							<div class="purchased-items-container carousel-wrapper">
@@ -346,7 +317,7 @@
 									</div><!-- End .item -->
 
 								</div><!--purchased-items-slider -->
-							</div><!-- End .purchased-items-container -->
+							</div><!-- End .purchased-items-container --> --}}
 
 						</div><!-- End .col-md-12 -->
 

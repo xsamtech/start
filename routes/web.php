@@ -27,7 +27,8 @@ Route::get('/investors/{id}', [PublicController::class, 'investorDatas'])->where
 Route::get('/crowdfunding', [PublicController::class, 'crowdfunding'])->name('crowdfunding.home');
 Route::get('/crowdfunding/{id}', [PublicController::class, 'crowdfundingDatas'])->whereNumber('id')->name('crowdfunding.datas');
 // Payment
-Route::post('/pay', [PublicController::class, 'runPay'])->name('pay');
+Route::get('/pay', [PublicController::class, 'pay'])->name('pay');
+Route::post('/pay', [PublicController::class, 'runPay']);
 Route::get('/transaction_waiting', [PublicController::class, 'transactionWaiting'])->name('transaction.waiting');
 Route::get('/transaction_message/{orderNumber}', [PublicController::class, 'transactionMessage'])->name('transaction.message');
 Route::get('/paid/{amount}/{currency}/{code}/{cart_id}', [PublicController::class, 'paid'])->whereNumber(['amount', 'code', 'cart_id'])->name('paid');

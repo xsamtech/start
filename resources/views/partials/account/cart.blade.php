@@ -106,7 +106,7 @@
 										</tfoot>
 									</table>
 									<div class="md-margin"></div><!-- End .space -->
-									<a href="#" class="btn btn-custom text-uppercase">@lang('miscellaneous.checkout')</a>
+									<button class="btn btn-custom text-uppercase" style="width: 300px" data-toggle="modal" data-target="#payModal">@lang('miscellaneous.public.checkout_now')</button>
 								</div><!-- End .col-md-4 -->
 
                             </div><!-- End.row -->

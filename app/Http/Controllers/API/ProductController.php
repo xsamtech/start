@@ -108,7 +108,7 @@ class ProductController extends BaseController
             return $this->handleError(__('notifications.find_user_404'));
         }
 
-        $cart = Cart::where(['id', $cart_id], ['is_paid', 0], ['user_id', $user_id])->first();
+        $cart = Cart::where('id', $cart_id)->where('is_paid', 0)->where('user_id', $user_id)->first();
 
         if (is_null($cart)) {
             return $this->handleError(__('notifications.find_cart_404'));

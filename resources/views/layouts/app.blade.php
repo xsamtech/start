@@ -63,9 +63,14 @@
             .item-price-container { display: flex; justify-content: center; align-items: center; width: 200px!important; height: 40px!important; border-radius: 50px!important; }
             .item-price-container .item-price { margin-top: 0!important; }
             .cart-table .item-name-col figure { width: 140px; }
-            .d-xs-none { display: inline-block; }
             #personalInfo tr { border-bottom: 1px #ccc solid; }
             #personalInfo td { text-align: left; padding: 1rem 0.5rem; border: 0!important; }
+            .d-none { display: none; }
+            #paymentMethod, #phoneNumberForMoney { margin-bottom: 10px; }
+            @media screen and (min-width: 500px) {
+                .d-xs-none { display: inline-block; }
+                #paymentMethod { text-align: center; }
+            }
             @media screen and (max-width: 500px) {
                 .d-xs-none { display: none; }
             }
@@ -152,6 +157,79 @@
             </div>
         </div>
 @if (!empty($entity))
+    @if ($entity == 'cart')
+        <!-- ### Add product ### -->
+        <div class="modal fade" id="payModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 5px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body" style="padding-top: 10px;">
+                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.public.about.subscribe.send_money.title')</h2>
+                        <hr>
+
+                        <form action="{{ route('pay') }}" method="POST">
+                            <input type="hidden" name="app_url" value="{{ getWebURL() }}">
+                            <input type="hidden" name="user_id" value="{{ !empty($current_user) ? $current_user->id : null }}">
+                            <input type="hidden" name="amount" value="{{ $current_user->unpaidCartTotal() }}">
+                            <input type="hidden" name="currency" value="{{ $current_user->currency }}">
+                            <input type="hidden" name="cart_id" value="{{ !empty($cart) ? $cart->id : null }}">
+        @csrf
+                            <div class="card border border-default text-center" style="width: 300px; margin: 0 auto 10px auto;">
+                                <div class="card-header">
+                                    <h5 style="margin-bottom: 0;">@lang('miscellaneous.amount_to_pay')</p>
+                                </div>
+                                <div class="card-body">
+                                    <h3 style="margin-bottom: 0;"><strong>{{ formatDecimalNumber($current_user->unpaidCartTotal()) . ' ' . $current_user->readable_currency }}</strong></h3>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div id="paymentMethod">
+                                <p class="lead" style="margin-bottom: 5px;">@lang('miscellaneous.payment_method')</p>
+
+                                <label class="radio-inline" for="mobile_money">
+                                    <img src="{{ asset('assets/img/payment-mobile-money.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')" width="40" style="vertical-align: middle; margin-right: 20px;">
+                                    <input type="radio" name="transaction_type_id" id="mobile_money" value="1" style="position: relative; top: 1px;" /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')</span>
+                                </label>
+                                <label class="radio-inline" for="bank_card" style="margin: 0;">
+                                    <img src="{{ asset('assets/img/payment-credit-card.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.bank_card')" width="40" style="vertical-align: middle; margin-right: 20px;">
+                                    <input type="radio" name="transaction_type_id" id="bank_card" value="2" style="position: relative; top: 1px;" /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.bank_card')</span>
+                                </label>
+                            </div>
+
+                            <div id="phoneNumberForMoney">
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-0"></div>
+                                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4" style="padding-right: 0!important;">
+                                        <select class="form-control" id="selectCountry" name="other_phone_code">
+                                            <option class="small" selected disabled>@lang('miscellaneous.phone_code')</option>
+        @forelse ($countries as $country)
+            								<option value="{{ ltrim($country['phone'], '+') }}">{{ $country['label'] }}</option>
+        @empty
+        @endforelse
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-6 col-xs-8">
+                                        <input type="text" class="form-control" id="phone_number" name="other_phone_number" placeholder="@lang('miscellaneous.phone_number')">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <button class="btn btn-block strt-btn-green rounded-pill" type="submit">@lang('miscellaneous.send')</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @if ($entity == 'products')
         <!-- ### Add product ### -->
         <div class="modal fade" id="newProductModal" tabindex="-1" role="dialog">
@@ -163,7 +241,7 @@
                         </button>
                     </div>
 
-                    <div class="modal-body" style="padding-top: 10px 50px;">
+                    <div class="modal-body" style="padding-top: 10px;">
                         <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.product.add', ['entity' => __('miscellaneous.admin.product.entity.product.singular')])</h2>
                         <hr>
 
@@ -278,7 +356,7 @@
                         </button>
                     </div>
 
-                    <div class="modal-body" style="padding-top: 10px 50px;">
+                    <div class="modal-body" style="padding-top: 10px;">
                         <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.product.add', ['entity' => __('miscellaneous.admin.product.entity.project.singular')])</h2>
                         <hr>
 
@@ -393,7 +471,7 @@
                         </button>
                     </div>
 
-                    <div class="modal-body" style="padding-top: 10px 50px;">
+                    <div class="modal-body" style="padding-top: 10px;">
                         <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.product.add', ['entity' => __('miscellaneous.admin.product.entity.service.singular')])</h2>
                         <hr>
 
@@ -726,7 +804,6 @@
                                                         <p>
                                                             <a href="{{ route('account.entity', ['entity' => 'cart']) }}" class="btn btn-custom-2 btn-block">@lang('miscellaneous.cart')</a>
                                                         </p>
-                                                        <p><a href="{{ route('account.entity', ['entity' => 'cart']) }}" class="btn btn-custom btn-block">@lang('miscellaneous.checkout')</a></p>
                                                     </div><!-- End .dropdown-cart-action -->
         
     @else
@@ -1046,26 +1123,29 @@
                 /**
                  * Add to cart button
                  */
-                $('.item-add-btn').on('click', function () {
-                    const productId = $(this).data('id');
+                $('.item-add-btn').each(function (index, element) {
+                    $(this).on('click', function () {
+                        const productId = $(this).data('id');
 
-                    $(`#icon-cart-text-${productId}`).css('opacity', 0);
-                    $(`#ajax-loading-${productId}`).show();
+                        $(`#icon-cart-text-${productId}`).css('opacity', 0);
+                        $(`#ajax-loading-${productId}`).show();
 
-                    $.ajax({
-                        url: `${currentHost}/products/add-to-cart/${productId}`,
-                        method: 'POST',
-                        data: {
-                            quantity: 1,
-                            _token: $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success(response) {
-                            $('[id^="product-"]').load(location.href + ' [id^="product-"] > *');
-                            console.log('Produit ajouté');
-                        },
-                        error(xhr) {
-                            alert(xhr.responseJSON.message || '{{ __('notifications.add_error') }}');
-                        }
+                        $.ajax({
+                            url: `${currentHost}/products/add-to-cart/${productId}`,
+                            method: 'POST',
+                            data: {
+                                quantity: 1,
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success(response) {
+                                $('[id^="product-"]').load(location.href + ' [id^="product-"] > *');
+                                $('#quick-access').load(location.href + ' #quick-access > *');
+                                console.log('Produit ajouté');
+                            },
+                            error(xhr) {
+                                alert(xhr.responseJSON.message || '{{ __('notifications.add_error') }}');
+                            }
+                        });
                     });
                 });
             });
