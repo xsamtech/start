@@ -1887,7 +1887,9 @@ select.input-lg {
 	cursor: default;
 }
 
-#products-tabs-content {
+#projects-tabs-content,
+#products-tabs-content,
+#services-tabs-content {
 	margin-bottom: 25px;
 }
 
@@ -1940,7 +1942,9 @@ select.input-lg {
 	cursor: default;
 }
 
-#products-tabs-content {
+#projects-tabs-content,
+#products-tabs-content,
+#services-tabs-content {
 	margin-bottom: 25px;
 }
 
@@ -4280,7 +4284,9 @@ parent's font-size:0
 }
 
 
-#products-tabs-content .item:hover {
+#projects-tabs-content .item:hover,
+#products-tabs-content .item:hover,
+#services-tabs-content .item:hover {
 	border: 1px solid #e8e8e8;
 	-webkit-box-shadow: 0 0 1px rgba(232, 232, 232, 0.15);
 	box-shadow: 0 0 1px rgba(232, 232, 232, 0.15);

@@ -1083,15 +1083,45 @@ class PublicController extends Controller
     {
         if ($entity == 'add-to-cart') {
             $request->validate([
-                'quantity'   => 'required|integer|min:1',
+                'quantity' => 'required|integer|min:1',
             ]);
 
-            $user = User::find(Auth::id());
+            $product = Product::find($id);  // On récupère le produit pour vérifier son stock
 
             try {
-                $user->addProductToCart($id, $request->quantity);
+                if (Auth::check()) {
+                    // Si l'utilisateur est connecté, on ajoute au panier normal
+                    $user = User::find(Auth::id());
 
-                return response()->json(['message' => __('notifications.added_data')]);
+                    $user->addProductToCart($id, $request->quantity);
+
+                    $inCart = $user->hasProductInUnpaidCart($id);  // Vérifie si le produit est dans le panier
+                    $inStock = $product->quantity > 0;  // Vérifie si le produit est en stock
+                    $isLoggedIn = true;
+
+                } else {
+                    // Si l'utilisateur n'est pas connecté, on stocke le produit dans la session
+                    $cart = session()->get('cart', []);
+                    $cart[$id] = [
+                        'product_name' => $product->product_name,
+                        'quantity' => $request->quantity,
+                        'price' => $product->price,
+                        'currency' => $product->currency,
+                    ];
+
+                    session()->put('cart', $cart);
+
+                    $inCart = true;  // Le produit est dans la session "panier"
+                    $inStock = $product->quantity > 0;
+                    $isLoggedIn = false;  // L'utilisateur n'est pas connecté
+                }
+
+                return response()->json([
+                    'message' => __('notifications.added_data'),
+                    'inCart' => $inCart,
+                    'inStock' => $inStock,
+                    'isLoggedIn' => $isLoggedIn,
+                ]);
             } catch (\Exception $e) {
                 return response()->json(['message' => $e->getMessage()], 422);
             }

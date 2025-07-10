@@ -230,4 +230,22 @@ class User extends Authenticatable
             return $existingOrder;
         });
     }
+
+    /**
+     * Add product from session to cart
+     */
+    public function addProductsFromSessionToCart()
+    {
+        // Récupère les produits en session (panier)
+        $cartItems = session()->get('cart', []);
+
+        // Si des produits existent en session
+        foreach ($cartItems as $productId => $item) {
+            // Ajouter chaque produit au panier de l'utilisateur
+            $this->addProductToCart($productId, $item['quantity']);
+        }
+
+        // Vider le panier en session après l'ajout
+        session()->forget('cart');
+    }
 }

@@ -1,3 +1,7 @@
+{{-- @php
+    session()->forget('cart');
+    dd(session()->get('cart'));
+@endphp --}}
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="ie9"> <![endif]-->
@@ -1123,29 +1127,58 @@
                 /**
                  * Add to cart button
                  */
-                $('.item-add-btn').each(function (index, element) {
-                    $(this).on('click', function () {
-                        const productId = $(this).data('id');
+                $('.item-add-btn').on('click', function () {
+                    const productId = $(this).data('id');
+                    const productContainer = $(`#product-${productId}`); // Le conteneur du produit à mettre à jour
 
-                        $(`#icon-cart-text-${productId}`).css('opacity', 0);
-                        $(`#ajax-loading-${productId}`).show();
+                    // Cacher le texte et afficher l'icône de chargement pour ce produit spécifique
+                    $(`#icon-cart-text-${productId}`).css('opacity', 0);
+                    $(`#ajax-loading-${productId}`).show();
 
-                        $.ajax({
-                            url: `${currentHost}/products/add-to-cart/${productId}`,
-                            method: 'POST',
-                            data: {
-                                quantity: 1,
-                                _token: $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success(response) {
-                                $('[id^="product-"]').load(location.href + ' [id^="product-"] > *');
-                                $('#quick-access').load(location.href + ' #quick-access > *');
-                                console.log('Produit ajouté');
-                            },
-                            error(xhr) {
-                                alert(xhr.responseJSON.message || '{{ __('notifications.add_error') }}');
+                    $.ajax({
+                        url: `${currentHost}/products/add-to-cart/${productId}`,
+                        method: 'POST',
+                        data: {
+                            quantity: 1,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success(response) {
+                            let newHtml = '';
+
+                            if (!response.isLoggedIn) {
+                                // Si l'utilisateur n'est pas connecté, on affiche un message ou un bouton "se connecter"
+                                newHtml = `<p class="btn btn-default disabled" style="margin: -2px;">
+                                                <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.public.product_is_in_cart')</span>
+                                            </p>`;
+
+                            } else if (response.inCart) {
+                                // Si le produit est dans le panier (connecté)
+                                newHtml = `<p class="btn btn-default disabled" style="margin: -2px;">
+                                                <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.public.product_is_in_cart')</span>
+                                            </p>`;
+
+                            } else if (response.inStock) {
+                                // Si le produit est en stock
+                                newHtml = `<button class="item-add-btn" data-id="${productId}" style="position: relative;">
+                                                <span id="icon-cart-text-${productId}" class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
+                                                <img id="ajax-loading-${productId}" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="@lang('miscellaneous.loading')" width="30" height="30" style="position: absolute; top: 2px; right: 43%; display: none;">
+                                            </button>`;
+
+                            } else {
+                                // Si le produit est en rupture de stock
+                                newHtml = `<p class="btn btn-default disabled" style="margin: -2px;">
+                                                <span class="text-uppercase">@lang('miscellaneous.public.insufficient_stock')</span>
+                                            </p>`;
                             }
-                        });
+
+                            // Remplacer le bloc du produit avec le nouveau HTML
+                            productContainer.find('.item-add-btn').replaceWith(newHtml);
+                            $('#quick-access').load(location.href + ' #quick-access > *');
+                            console.log('Produit ajouté');
+                        },
+                        error(xhr) {
+                            alert(xhr.responseJSON.message || '{{ __('notifications.add_error') }}');
+                        }
                     });
                 });
             });

@@ -645,9 +645,13 @@ return [
             'title' => 'Produits récents',
             'description' => '',
         ],
-        'latest_investor' => [
-            'title' => 'Investisseurs récents',
-            'description' => 'Trouver un investisseur pour votre projet ou produit.',
+        'latest_projects' => [
+            'title' => 'Projets récents',
+            'description' => 'Les projets récemment ajoutés par les membres de la plateforme.',
+        ],
+        'latest_services' => [
+            'title' => 'Services récents',
+            'description' => 'Les services récemment ajoutés par les membres de la plateforme.',
         ],
         'our_partners' => 'Nos partenaires',
         'your_cart' => 'Votre panier',

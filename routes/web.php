@@ -17,6 +17,7 @@ Route::get('/products', [PublicController::class, 'products'])->name('product.ho
 Route::get('/products/{entity}', [PublicController::class, 'productEntity'])->name('product.entity');
 Route::post('/products/{entity}', [PublicController::class, 'addProductEntity']);
 Route::get('/products/{entity}/{id}', [PublicController::class, 'productDatas'])->whereNumber('id')->name('product.entity.datas');
+Route::post('/products/{entity}/{id}', [PublicController::class, 'updateProductEntity'])->whereNumber('id');
 // Discussions
 Route::get('/discussions', [PublicController::class, 'discussions'])->name('discussion.home');
 Route::get('/discussions/{id}', [PublicController::class, 'discussionDatas'])->whereNumber('id')->name('discussion.datas');
@@ -38,7 +39,6 @@ Route::middleware('auth')->group(function () {
 
     // Products
     Route::post('/products', [PublicController::class, 'addProduct']);
-    Route::post('/products/{entity}/{id}', [PublicController::class, 'updateProductEntity'])->whereNumber('id');
     // Discussions
     Route::post('/discussions', [PublicController::class, 'addDiscussion']);
     Route::post('/discussions/{id}', [PublicController::class, 'updateDiscussion'])->whereNumber('id');
