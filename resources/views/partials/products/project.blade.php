@@ -72,29 +72,10 @@
                                                                 {{ $product['product_name'] }}
                                                             </a>
                                                         </h3>
-                                                        <div id="product-{{ $product['id'] }}" class="item-action">
-    @if (!empty($current_user))
-        @if ($current_user->hasProductInUnpaidCart($product['id']))
-                                                            <p class="btn btn-default disabled" style="margin: -2px;">
-                                                                <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.public.product_is_in_cart')</span>
-                                                            </p>
-        @else
-            @if ($product['quantity'] > 0)
-                                                            <button class="item-add-btn" data-id="{{ $product['id'] }}" style="position: relative;">
-                                                                <span id="icon-cart-text-{{ $product['id'] }}" class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
-                                                                <img id="ajax-loading-{{ $product['id'] }}" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="@lang('miscellaneous.loading')" width="30" height="30" style="position: absolute; top: 2px; right: 43%; display: none;">
-                                                            </button>
-            @else
-                                                            <p class="btn btn-default disabled" style="margin: -2px;">
-                                                                <span class="text-uppercase">@lang('miscellaneous.public.insufficient_stock')</span>
-                                                            </p>
-            @endif
-        @endif
-    @else
-                                                            <a href="{{ route('login', ['product_id' => $product['id']]) }}" class="item-add-btn">
-                                                                <span class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
+                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
+                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}" class="btn strt-btn-chocolate-3">
+                                                                @lang('miscellaneous.see_more')
                                                             </a>
-    @endif
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
                                                 </div><!-- End .item -->

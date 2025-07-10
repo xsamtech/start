@@ -48,6 +48,10 @@
                                     <div class="category-item-container">
                                         <div class="row">
 @forelse ($items as $product)
+    @php
+        $cart = session()->get('cart', []);
+        $isInCart = isset($cart[$product['id']]);
+    @endphp
                                             <div class="col-md-4 col-sm-6 col-xs-12">
                                                 <div class="item item-hover">
                                                     <div class="item-image-wrapper">
@@ -72,7 +76,7 @@
                                                                 {{ $product['product_name'] }}
                                                             </a>
                                                         </h3>
-                                                        <div id="product-{{ $product['id'] }}" class="item-action">
+                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
     @if (!empty($current_user))
         @if ($current_user->hasProductInUnpaidCart($product['id']))
                                                             <p class="btn btn-default disabled" style="margin: -2px;">
@@ -91,9 +95,16 @@
             @endif
         @endif
     @else
-                                                            <a href="{{ route('login', ['product_id' => $product['id']]) }}" class="item-add-btn">
-                                                                <span class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
-                                                            </a>
+        @if ($isInCart)  <!-- Vérifie si le produit est dans la session -->
+                                                            <p class="btn btn-default disabled" style="margin: -2px;">
+                                                                <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.public.product_is_in_cart')</span>
+                                                            </p>
+        @else
+                                                            <button class="item-add-btn" data-id="{{ $product['id'] }}" style="position: relative;">
+                                                                <span id="icon-cart-text-{{ $product['id'] }}" class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
+                                                                <img id="ajax-loading-{{ $product['id'] }}" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="@lang('miscellaneous.loading')" width="30" height="30" style="position: absolute; top: 2px; right: 43%; display: none;">
+                                                            </button>
+        @endif
     @endif
                                                         </div><!-- End .item-action -->
                                                     </div><!-- End .item-meta-container -->
