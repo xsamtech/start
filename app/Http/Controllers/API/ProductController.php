@@ -172,7 +172,7 @@ class ProductController extends BaseController
                         $payment = Payment::create([
                             'reference' => $reference_code,
                             'order_number' => $jsonRes['orderNumber'],
-                            'amount' => ((int) $total_to_pay),
+                            'amount' => round($total_to_pay),
                             'phone' => $request->other_phone,
                             'currency' => $current_user->currency,
                             'channel' => $request->channel,
@@ -213,13 +213,13 @@ class ProductController extends BaseController
                 'authorization' => 'Bearer ' . config('services.flexpay.api_token'),
                 'merchant' => config('services.flexpay.merchant'),
                 'reference' => $reference_code,
-                'amount' => ((int) $total_to_pay),
+                'amount' => round($total_to_pay),
                 'currency' => $current_user->currency,
                 'description' => __('miscellaneous.bank_transaction_description'),
                 'callback_url' => getApiURL() . '/payment/store',
-                'approve_url' => $request->app_url . '/paid/' . ((int) $total_to_pay) . '/' . $current_user->currency . '/0/' . $cart->id,
-                'cancel_url' => $request->app_url . '/paid/' . ((int) $total_to_pay) . '/' . $current_user->currency . '/1/' . $cart->id,
-                'decline_url' => $request->app_url . '/paid/' . ((int) $total_to_pay) . '/' . $current_user->currency . '/2/' . $cart->id,
+                'approve_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/0/' . $cart->id,
+                'cancel_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/1/' . $cart->id,
+                'decline_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/2/' . $cart->id,
                 'home_url' => $request->app_url . '/account/cart?paid=done',
             ));
 
@@ -251,7 +251,7 @@ class ProductController extends BaseController
                         $payment = Payment::create([
                             'reference' => $reference_code,
                             'order_number' => $orderNumber,
-                            'amount' => ((int) $total_to_pay),
+                            'amount' => round($total_to_pay),
                             'phone' => $request->other_phone,
                             'currency' => $current_user->currency,
                             'channel' => $request->channel,
