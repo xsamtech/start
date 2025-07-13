@@ -682,6 +682,7 @@ return [
             'description' => 'Commencez un nouveau sujet ou sélectionnez un pour commenter.',
             'related' => 'Posts associés',
             'empty_comments_list' => 'Pas encore de commentaire pour ce post.',
+            'login_leave_comment' => 'Se connecter pour laisser un commentaire',
             'leave_comment' => 'Laisser un commentaire',
             'your_comment' => 'Votre commentaire',
         ],

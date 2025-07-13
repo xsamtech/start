@@ -85,7 +85,9 @@
 															</div><!-- End .comment-title -->
 															<div class="comment-meta-container">
 																<span>{{ \Carbon\Carbon::parse($comment->created_at)->format('d.m.Y') }}</span>
-																<a class="replay-button">@lang('miscellaneous.answer')</a>
+		@if (!empty($current_user))
+																<a class="replay-button strt-text-green" style="cursor: pointer;" onclick="document.getElementById('posts_content').focus()">@lang('miscellaneous.answer')</a>
+		@endif
 															</div><!-- End .comment-meta-container -->
 															<p>{{ $comment->posts_content }}</p>
 														</div><!-- End .comment-details -->
@@ -100,10 +102,11 @@
 											</div>
 @endif
 
+@if (!empty($current_user))
 											<h4 class="sub-title">@lang('miscellaneous.public.discussion.leave_comment')</h4>
 
 											<form action="{{ route('discussion.home') }}" id="comment-form">
-@csrf
+	@csrf
 												<input type="hidden" name="answered_for" value="{{ $selected_post->id }}">
 												<input type="hidden" name="type" value="comment">
 
@@ -119,6 +122,11 @@
 													<img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
 												</div>
 											</form>
+@else
+											<h6 style="margin: 0;">
+												<a href="{{ route('login') }}" style="text-decoration: underline;">@lang('miscellaneous.public.discussion.login_leave_comment')</a>
+											</h6>
+@endif
 										</div><!-- End .comments -->
 									</article><!-- End .article -->
 								</div><!-- End .col-md-9 -->

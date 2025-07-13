@@ -682,6 +682,7 @@ return [
             'description' => 'Start a new topic or select one to comment on.',
             'related' => 'Related posts',
             'empty_comments_list' => 'No comments yet for this post.',
+            'login_leave_comment' => 'Login to leave a comment',
             'leave_comment' => 'Leave a comment',
             'your_comment' => 'Your comment',
         ],
