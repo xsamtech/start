@@ -61,6 +61,9 @@ return [
     'confirm' => 'Confirmer',
     'send' => 'Envoyer',
     'add' => 'Ajouter',
+    'publish' => 'Publier',
+    'ask' => 'Demander',
+    'answer' => 'Répondre',
     'validated' => 'Validé',
     'invalid' => 'Non valide',
     'issued_on' => 'Délivrée à Kinshasa, le',
@@ -105,12 +108,14 @@ return [
     'mark_all_read' => 'Tout marquer comme lue',
     'empty_list' => 'La liste est vide',
     'see' => 'Voir',
+    'read_more' => 'Lire la suite',
     'see_more' => 'Voir plus',
     'see_less' => 'Voir moins',
     'show' => 'Afficher',
     'show_all' => 'Afficher tout',
     'entry' => 'entrée',
     'entries' => 'entrées',
+    'pages_count' => 'Page :count sur :total',
     'sort_by' => 'Trier par :',
     'error_label' => 'Erreur :',
     'message_label' => 'Message :',
@@ -300,6 +305,7 @@ return [
     'cdf' => 'Franc congolais',
     'cart' => 'Panier',
     'pay' => 'Payer',
+    'comments' => '{0} Pas de commentaire|{1} Un commentaire|[2,*] :count commentaires',
     'items' => '{0} Aucun article|{1} Un article|[2,*] :count articles',
     'recently_added_items' => '{1} Article récemment ajouté.|[2,*] Articles récemment ajoutés.',
 
@@ -482,6 +488,8 @@ return [
             'search' => 'Rechercher un post',
             'list' => 'Liste des posts',
             'data' => [
+                'about_author' => 'A propos de l\'auteur',
+                'comments' => 'Commentaires',
                 'posts_title' => 'Titre du post',
                 'posts_content' => 'Contenu',
                 'event_start_at' => 'Commence à',
@@ -667,6 +675,16 @@ return [
         'checkout_now' => 'Commander maintenant',
         'related_product' => 'Produits associés',
         'add_rating' => 'Ajouter votre note',
+
+        // Discussion
+        'discussion' => [
+            'title' => 'Forum de discussion',
+            'description' => 'Commencez un nouveau sujet ou sélectionnez un pour commenter.',
+            'related' => 'Posts associés',
+            'empty_comments_list' => 'Pas encore de commentaire pour ce post.',
+            'leave_comment' => 'Laisser un commentaire',
+            'your_comment' => 'Votre commentaire',
+        ],
 
         // Footer
         'footer' => [

@@ -43,6 +43,22 @@ class Post extends Model
     }
 
     /**
+     * Retrieve all comments associated with this post
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Post::class, 'answered_for');
+    }
+
+    /**
+     * Compter le nombre de commentaires pour ce post
+     */
+    public function countComments()
+    {
+        return $this->comments()->count();
+    }
+
+    /**
      * Get photo files
      */
     public function photos()

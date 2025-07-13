@@ -61,6 +61,9 @@ return [
     'confirm' => 'Confirm',
     'send' => 'Send',
     'add' => 'Add',
+    'publish' => 'Publish',
+    'ask' => 'Ask',
+    'answer' => 'Answer',
     'validated' => 'Validated',
     'invalid' => 'Invalid',
     'issued_on' => 'Issued in Kinshasa, on',
@@ -105,12 +108,14 @@ return [
     'mark_all_read' => 'Mark all as read',
     'empty_list' => 'The list is empty',
     'see' => 'See',
+    'read_more' => 'Read more',
     'see_more' => 'See more',
     'see_less' => 'See less',
     'show' => 'Show',
     'show_all' => 'Show all',
     'entry' => 'entry',
     'entries' => 'entries',
+    'pages_count' => 'Page :count of :total',
     'sort_by' => 'Sort by:',
     'error_label' => 'Error:',
     'message_label' => 'Message:',
@@ -300,6 +305,7 @@ return [
     'cdf' => 'Congolese franc',
     'cart' => 'Cart',
     'pay' => 'Pay',
+    'comments' => '{0} No comment|{1} One comment|[2,*] :count comments',
     'items' => '{0} No item|{1} One item|[2,*] :count items',
     'recently_added_items' => '{1} Recently added item.|[2,*] Recently added items.',
 
@@ -482,6 +488,8 @@ return [
             'search' => 'Search post',
             'list' => 'Posts list',
             'data' => [
+                'about_author' => 'About the author',
+                'comments' => 'Comments',
                 'posts_title' => 'Post title',
                 'posts_content' => 'Content',
                 'event_start_at' => 'Start at',
@@ -667,6 +675,16 @@ return [
         'checkout_now' => 'Checkout now',
         'related_product' => 'Related products',
         'add_rating' => 'Add your rating',
+
+        // Discussion
+        'discussion' => [
+            'title' => 'Discussion forum',
+            'description' => 'Start a new topic or select one to comment on.',
+            'related' => 'Related posts',
+            'empty_comments_list' => 'No comments yet for this post.',
+            'leave_comment' => 'Leave a comment',
+            'your_comment' => 'Your comment',
+        ],
 
         // Footer
         'footer' => [

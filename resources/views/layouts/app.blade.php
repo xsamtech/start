@@ -1,7 +1,4 @@
-{{-- @php
-    session()->forget('cart');
-    dd(session()->get('cart'));
-@endphp --}}
+{{-- {{ dd($posts) }} --}}
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="ie9"> <![endif]-->
@@ -44,6 +41,8 @@
         <link rel="stylesheet" href="{{ asset('assets/addons/cropper/css/cropper.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/addons/jquery/jquery-ui/jquery-ui.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/addons/jquery/datetimepicker/css/jquery.datetimepicker.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
         <!--- jQuery -->
@@ -71,12 +70,27 @@
             #personalInfo td { text-align: left; padding: 1rem 0.5rem; border: 0!important; }
             .d-none { display: none; }
             #paymentMethod, #phoneNumberForMoney { margin-bottom: 10px; }
+            .article .article-meta-date { background: #732f0b; }
+            .article-author-image img {
+                width: 145px;
+                height: 145px;
+            }
+            .comment img {
+                width: 70px;
+                height: 70px;
+            }
             @media screen and (min-width: 500px) {
                 .d-xs-none { display: inline-block; }
+                .d-lg-none { display: none; }
                 #paymentMethod { text-align: center; }
             }
             @media screen and (max-width: 500px) {
                 .d-xs-none { display: none; }
+                .d-lg-none { display: inline-block; }
+                .article-author-image img {
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
             }
             /* Image preview to upload */
             #image-preview-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
@@ -579,6 +593,76 @@
         </div>
     @endif
 @endif
+@if (Route::is('discussion.home'))
+        <!-- ### Add product ### -->
+        <div class="modal fade" id="newPostModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 5px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body" style="padding-top: 10px;">
+                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.post.add')</h2>
+                        <hr>
+
+                        <form id="postForm" action="{{ route('discussion.home') }}" method="POST">
+                            <input type="hidden" name="type" value="post">
+        @csrf
+                            <!-- Post title -->
+                            <div class="form-group">
+                                <label for="posts_title">@lang('miscellaneous.admin.post.data.posts_title')</label>
+                                <input type="text" class="form-control" id="posts_title" name="posts_title" required>
+                            </div>
+
+                            <!-- Post content -->
+                            <div class="form-group">
+                                <label for="posts_content">@lang('miscellaneous.admin.post.data.posts_content')</label>
+                                <textarea id="mytextarea" class="form-control" id="posts_content" name="posts_content" rows="2" required></textarea>
+                            </div>
+
+                            <!-- Category -->
+                            <div class="form-group">
+                                <label for="for_category_id">@lang('miscellaneous.admin.product.data.category')</label>
+                                <select class="form-control" id="for_category_id" name="for_category_id">
+                                    <option class="small" disabled selected>@lang('miscellaneous.admin.product.data.category')</option>
+        @forelse ($project_categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+        @empty
+        @endforelse
+        @forelse ($product_categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+        @empty
+        @endforelse
+        @forelse ($service_categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+        @empty
+        @endforelse
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="files_urls">@lang('miscellaneous.upload.upload_images')</label>
+                                <input type="file" id="files_urls" name="files_urls[]" class="form-control" multiple>
+                            </div>
+
+                            <div id="image-preview-container" class="mt-2"></div> <!-- Conteneur pour les vignettes -->
+
+                            <hr>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
+                                    <span style="color: #fff;">@lang('miscellaneous.register')</span>
+                                </button>
+                                <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+@endif
         <!-- MODALS-->
 
         <div id="wrapper">
@@ -941,9 +1025,26 @@
         <script src="{{ asset('assets/js/venedor/main.js') }}"></script>
         <script src="{{ asset('assets/addons/cropper/js/cropper.min.js') }}"></script>
         <script src="{{ asset('assets/addons/autosize/js/autosize.min.js') }}"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+        <script src="https://cdn.tiny.cloud/1/1jb70lfiyigr5qfhgclx0pv2t9fnl4uco3cs1xk50eqdz73i/tinymce/5/tinymce.min.js"></script>
         <script src="{{ asset('assets/js/scripts.custom.js') }}"></script>
 
         <script>
+            /**
+             * TinyMCE : Custom textarea
+             */
+            tinymce.init({
+                selector: '#mytextarea',
+                // plugins: 'lists link image',
+                // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
+                // setup: function (editor) {
+                //     editor.on('change', function () {
+                //         let content = editor.getContent();  // Texte avec les balises HTML
+                //         document.getElementById('mytextarea').value = content;
+                //     });
+                // }
+            });
+
             /**
              * Utility to update the list of files in the input
              */
@@ -997,6 +1098,16 @@
                     shadow: 0,
                     hideTimerBar: "on",
                     // navigationStyle:"preview4"
+                });
+
+                /**
+                 * Slick carousel
+                 */
+                $('.my-carousel').slick({
+                    autoplay: true,
+                    autoplaySpeed: 2000,
+                    arrows: true,
+                    dots: true
                 });
 
                 /**
@@ -1112,6 +1223,129 @@
 
                              // Afficher une alerte d'erreur
                              $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                    <i class="bi bi-x-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.error_while_processing') }}
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>`);
+                        }
+                    });
+                });
+
+                $('#postForm').on('submit', function (e) {
+                    e.preventDefault();
+
+                    // Afficher l'animation de chargement
+                    $('#loading-icon').show();
+
+                    // Effacer les alertes précédentes
+                    $('#ajax-alert-container').empty();
+
+                    var formData = new FormData(this);
+
+                    // Ajouter les images à FormData (dans le cas où il y en a)
+                    var images = $('#files_urls')[0].files;
+
+                    for (var i = 0; i < images.length; i++) {
+                        formData.append('files_urls[' + i + ']', images[i]);
+                    }
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
+
+                            // Afficher une alerte de succès
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    ${response.message || 'Post ajouté avec succès !'}
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>`);
+
+                            // Optionnellement, fermer le modal après un succès
+                            $('#newPostModal').modal('hide');
+
+                            // Réinitialiser tous les champs du formulaire
+                            $('#postForm')[0].reset();
+
+                            // Réinitialiser le champ de fichiers (images)
+                            $('#files_urls').val(null);
+
+                            location.reload();
+                        },
+                        error: function (error) {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
+
+                            // Afficher une alerte d'erreur
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                    <i class="bi bi-x-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.error_while_processing') }}
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>`);
+                        }
+                    });
+                });
+
+                $('#comment-form').on('submit', function (e) {
+                    e.preventDefault();
+
+                    // Afficher l'animation de chargement
+                    $('#loading-icon').show();
+
+                    // Effacer les alertes précédentes
+                    $('#ajax-alert-container').empty();
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
+
+                            // Afficher une alerte de succès
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    ${response.message || 'Post ajouté avec succès !'}
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>`);
+
+                            // Réinitialiser tous les champs du formulaire
+                            $('#comment-form')[0].reset();
+
+                            location.reload();
+                        },
+                        error: function (error) {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
+
+                            // Afficher une alerte d'erreur
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
                                                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                                                     <i class="bi bi-x-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
                                                                     {{ __('notifications.error_while_processing') }}

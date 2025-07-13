@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Post as ResourcesPost;
 use App\Http\Resources\Product as ResourcesProduct;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\File;
+use App\Models\Post;
 use App\Models\Product;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -554,7 +556,7 @@ class PublicController extends Controller
     }
 
     /**
-     * GET: Home page
+     * GET: Product details
      *
      * @param  string  $entity
      * @param  string  $id
@@ -589,13 +591,50 @@ class PublicController extends Controller
     }
 
     /**
-     * GET: Products page
+     * GET: Posts page
      *
      * @return \Illuminate\View\View
      */
     public function discussions()
     {
-        return view('discussions');
+        $project_categories = Category::where('for_service', 2)->get();
+        $product_categories = Category::where('for_service', 0)->get();
+        $service_categories = Category::where('for_service', 1)->get();
+        $posts = request()->has('category_id') ? Post::where([['for_category_id', request()->get('category_id')], ['type', 'post']])->orderByDesc('created_at')->paginate(5)->appends(request()->query()) : Post::where('type', 'post')->orderByDesc('created_at')->paginate(5)->appends(request()->query());
+
+        return view('discussions', [
+            'posts' => ResourcesPost::collection($posts),
+            'posts_req' => $posts,
+            'posts_req_lastPage' => $posts->lastPage(),
+            'posts_req_total' => $posts->total(),
+            'project_categories' => $project_categories,
+            'product_categories' => $product_categories,
+            'service_categories' => $service_categories,
+        ]);
+    }
+
+    /**
+     * GET: Post details
+     *
+     * @param  string  $id
+     * @return \Illuminate\View\View
+     */
+    public function discussionDatas($id)
+    {
+        $entity_title = __('miscellaneous.admin.post.details');
+        $selected_post = Post::find($id);
+
+        if (is_null($selected_post)) {
+            redirect('/')->with('error_message', __('notifications.find_error'));
+        }
+
+        $related_posts = Post::where([['id', '<>', $selected_post->id], ['for_category_id', '=', $selected_post->for_category_id]])->take(3)->get();
+
+        return view('discussions', [
+            'entity_title' => $entity_title,
+            'selected_post' => $selected_post,
+            'related_posts' => ResourcesPost::collection($related_posts),
+        ]);
     }
 
     // ==================================== HTTP DELETE METHODS ====================================
@@ -1065,6 +1104,96 @@ class PublicController extends Controller
                         'product_id' => $product->id
                     ]);
                 }
+            }
+
+            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+        }
+    }
+
+    /**
+     * POST: Add a post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addDiscussion(Request $request)
+    {
+        $post = Post::create([
+            'posts_title' => $request->posts_title,
+            'posts_content' => $request->posts_content,
+            'event_start_at' => $request->event_start_at,
+            'event_end_at' => $request->event_end_at,
+            'answered_for' => $request->answered_for,
+            'type' => $request->type,
+            'for_category_id' => $request->for_category_id,
+            'user_id' => Auth::id(),
+        ]);
+
+        // If image files exist
+        if ($request->hasFile('files_urls')) {
+            $files = $request->file('files_urls', []);
+            $fileNames = $request->input('files_names', []);
+
+            // Types of extensions for different file types
+            $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
+            $audio_extensions = ['mp3', 'wav', 'flac'];
+
+            foreach ($files as $key => $singleFile) {
+                // Checking the file extension
+                $file_extension = $singleFile->getClientOriginalExtension();
+
+                // File type check
+                $custom_uri = '';
+                $is_valid_type = false;
+                $file_type = null;
+
+                if (in_array($file_extension, $video_extensions)) { // File is a video
+                    $custom_uri = 'videos/posts';
+                    $file_type = 'video';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
+                    $custom_uri = 'photos/posts';
+                    $file_type = 'photo';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
+                    $custom_uri = 'audios/posts';
+                    $file_type = 'audio';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $document_extensions)) { // File is a document
+                    $custom_uri = 'documents/posts';
+                    $file_type = 'video';
+                    $is_valid_type = true;
+                }
+
+                // If the extension does not match any valid type
+                if (!$is_valid_type) {
+                    return $this->handleError(__('notifications.type_is_not_file'));
+                }
+
+                // Generate a unique path for the file
+                $filename = $singleFile->getClientOriginalName();
+                $file_url =  $custom_uri . '/' . $post->id . '/' . $filename;
+
+                // Upload file
+                try {
+                    $singleFile->storeAs($custom_uri . '/' . $post->id, $filename, 'public');
+
+                } catch (\Throwable $th) {
+                    return $this->handleError($th, __('notifications.create_work_file_500'), 500);
+                }
+
+                // Creating the database record for the file
+                File::create([
+                    'file_name' => trim($fileNames[$key] ?? $filename),
+                    'file_url' => getWebURL() . '/storage/' . $file_url,
+                    'file_type' => $file_type,
+                    'post_id' => $post->id
+                ]);
             }
 
             return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
