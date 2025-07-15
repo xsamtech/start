@@ -89,7 +89,7 @@
 																<a class="replay-button strt-text-green" style="cursor: pointer;" onclick="document.getElementById('posts_content').focus()">@lang('miscellaneous.answer')</a>
 		@endif
 															</div><!-- End .comment-meta-container -->
-															<p>{{ $comment->posts_content }}</p>
+															<p>{!! $comment->posts_content !!}</p>
 														</div><!-- End .comment-details -->
 													</div><!-- End .comment -->
 												</li>

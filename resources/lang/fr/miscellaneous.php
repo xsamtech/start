@@ -589,17 +589,17 @@ return [
             ],
         ],
 
-        // Partner
-        'partner' => [
-            'details' => 'Détails du partenaire',
-            'link' => 'Gérer les partenaires',
-            'add' => 'Ajouter un partenaire',
-            'edit' => 'Editer le partenaire',
-            'search' => 'Rechercher un partenaire',
-            'list' => 'Liste des partenaires',
+        // Investor
+        'investor' => [
+            'details' => 'Détails sur l’investisseur',
+            'link' => 'Gérer les investisseurs',
+            'add' => 'Ajouter un investisseur',
+            'edit' => 'Editer l’investisseur',
+            'search' => 'Rechercher un investisseur',
+            'list' => 'Liste des investisseurs',
             'data' => [
-                'name' => 'Nom du partenaire',
-                'image_url' => 'Image du partenaire',
+                'name' => 'Nom de l’investisseur',
+                'image_url' => 'Image de l’investisseur',
                 'website_url' => 'URL du site web'
             ],
         ],
@@ -686,6 +686,17 @@ return [
             'login_leave_comment' => 'Se connecter pour laisser un commentaire',
             'leave_comment' => 'Laisser un commentaire',
             'your_comment' => 'Votre commentaire',
+        ],
+
+        // Investor
+        'investor' => [
+            'title' => 'Nos investisseurs',
+            'description' => 'Trouver des investisseurs pour ses projets ou devenir un investisseur.',
+            'become_investor' => [
+                'link' => 'Devenir un investisseur',
+                'info' => 'Vous êtes sur le point de devenir un investisseur pour nos membres. En cliquant sur « Commencer », vous acceptez nos conditions d’utilisation et notre politique de confidentialité.',
+            ],
+            'request' => 'Demander un investissement',
         ],
 
         // Footer

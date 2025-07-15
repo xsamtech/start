@@ -589,17 +589,17 @@ return [
             ],
         ],
 
-        // Partner
-        'partner' => [
-            'details' => 'Partner details',
-            'link' => 'Manage partners',
-            'add' => 'Add a partner',
-            'edit' => 'Edit the partner',
-            'search' => 'Search a partner',
-            'list' => 'Partners list',
+        // Investor
+        'investor' => [
+            'details' => 'Investor details',
+            'link' => 'Manage investors',
+            'add' => 'Add a investor',
+            'edit' => 'Edit the investor',
+            'search' => 'Search a investor',
+            'list' => 'Investors list',
             'data' => [
-                'name' => 'Partner name',
-                'image_url' => 'Partner image',
+                'name' => 'Investor name',
+                'image_url' => 'Investor image',
                 'website_url' => 'Website URL'
             ],
         ],
@@ -686,6 +686,17 @@ return [
             'login_leave_comment' => 'Login to leave a comment',
             'leave_comment' => 'Leave a comment',
             'your_comment' => 'Your comment',
+        ],
+
+        // Investor
+        'investor' => [
+            'title' => 'Our investors',
+            'description' => 'Find investors for your projects or become an investor.',
+            'become_investor' => [
+                'link' => 'Become an investor',
+                'info' => 'You are about to become an investor for our members. By clicking "Start," you agree to our Terms of Use and Privacy Policy.',
+            ],
+            'request' => 'Request an investment',
         ],
 
         // Footer

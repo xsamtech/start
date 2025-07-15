@@ -46,7 +46,7 @@
 													<span class="separator"><i class="fa fa-user"></i></span>{{ $post->user->firstname . ' ' . $post->user->lastname }}
 												</a><br class="d-lg-none">
 												<a href="{{ route('discussion.datas', ['id' => $post->id]) }}">
-													<span class="separator"><i class="fa fa-comments "></i></span>{{ trans_choice('miscellaneous.comments', $post->count_comments, ['count' => $post->count_comments]) }}
+													<span class="separator"><i class="fa fa-comments "></i></span>{{ trans_choice('miscellaneous.comments', $post->countComments(), ['count' => $post->countComments()]) }}
 												</a>
 											</div><!-- End. pull-left -->
 										</div><!-- End .article-meta-container -->

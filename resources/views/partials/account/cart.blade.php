@@ -113,7 +113,7 @@
 	
 @else
 							<div class="row">
-								<div class="col-md-12 table-responsive">
+								<div class="col-md-12">
 									<div style="display: flex; justify-content: center; align-items: flex-end; height: 200px;">
 										<i class="bi bi-cart3" style="font-size: 10rem"></i>
 									</div>

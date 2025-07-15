@@ -54,7 +54,7 @@ class AuthenticatedSessionController extends Controller
 
         if (!Auth::attempt([$login_type => $request->login, 'password' => $request->password], $request->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'login' => __('Identifiants incorrects.'),
+                'login' => __('notifications.find_user_404'),
             ]);
         }
 
@@ -93,6 +93,10 @@ class AuthenticatedSessionController extends Controller
             }
 
             return redirect()->route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+        }
+
+        if ($request->has('cart')) {
+            return redirect()->route('account.entity', ['entity' => 'cart']);
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);

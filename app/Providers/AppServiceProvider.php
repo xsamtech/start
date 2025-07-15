@@ -46,9 +46,6 @@ class AppServiceProvider extends ServiceProvider
             $popular_projects = Product::mostOrdered(6, 'project', 'monthly');
             $popular_products = Product::mostOrdered(6, 'product', 'monthly');
             $popular_services = Product::mostOrdered(6, 'service', 'monthly');
-            $recent_investors = User::whereHas('roles', function ($query) {
-                                    $query->where('role_name->fr', 'Investisseur');
-                                })->orderByDesc('users.created_at')->take(6)->get();
 
             $view->with('cartService', $cartService);
             $view->with('session_cart_total', $sessionCartTotal);
@@ -56,7 +53,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('popular_projects', ResourcesProduct::collection($popular_projects)->resolve());
             $view->with('popular_products', ResourcesProduct::collection($popular_products)->resolve());
             $view->with('popular_services', ResourcesProduct::collection($popular_services)->resolve());
-            $view->with('recent_investors', ResourcesUser::collection($recent_investors)->resolve());
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));
         });

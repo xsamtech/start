@@ -35,12 +35,16 @@
 										<input type="hidden" name="product_id" value="{{ request()->get('product_id') }}">
 	@endif
 
+	@if (request()->has('cart'))
+										<input type="hidden" name="cart" value="{{ request()->get('cart') }}">
+	@endif
+
                                         <div class="input-group" style="margin-bottom: 5px">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-email"></span>
                                                 <span class="input-text">@lang('miscellaneous.email_phone')</span>
                                             </span>
-                                            <input type="text" name="login" required class="form-control input-lg @error('login') is-invalid @enderror" placeholder="@lang('miscellaneous.login_username')">
+                                            <input type="text" name="login" required class="form-control input-lg @error('login') is-invalid @enderror" value="{{ old('login') }}" placeholder="@lang('miscellaneous.login_username')">
 										</div><!-- End .input-group -->
     @error('login')
                                         <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>

@@ -191,12 +191,13 @@
                         <hr>
 
                         <form action="{{ route('pay') }}" method="POST">
+        @csrf
                             <input type="hidden" name="app_url" value="{{ getWebURL() }}">
                             <input type="hidden" name="user_id" value="{{ !empty($current_user) ? $current_user->id : null }}">
                             <input type="hidden" name="amount" value="{{ $current_user->unpaidCartTotal() }}">
                             <input type="hidden" name="currency" value="{{ $current_user->currency }}">
                             <input type="hidden" name="cart_id" value="{{ !empty($cart) ? $cart->id : null }}">
-        @csrf
+
                             <div class="card border border-default text-center" style="width: 300px; margin: 0 auto 10px auto;">
                                 <div class="card-header">
                                     <h5 style="margin-bottom: 0;">@lang('miscellaneous.amount_to_pay')</p>
@@ -264,8 +265,9 @@
                         <hr>
 
                         <form id="productForm" action="{{ route('product.entity', ['entity' => 'product']) }}" method="POST">
-                            <input type="hidden" name="type" value="product">
         @csrf
+                            <input type="hidden" name="type" value="product">
+
                             <div class="row">
                                 <!-- Product name -->
                                 <div class="col-md-6 col-xs-12">
@@ -379,8 +381,9 @@
                         <hr>
 
                         <form id="productForm" action="{{ route('product.entity', ['entity' => 'project']) }}" method="POST">
-                            <input type="hidden" name="type" value="project">
         @csrf
+                            <input type="hidden" name="type" value="project">
+
                             <div class="row">
                                 <!-- Product name -->
                                 <div class="col-md-6 col-xs-12">
@@ -454,8 +457,9 @@
                         <hr>
 
                         <form id="projectForm" action="{{ route('product.entity', ['entity' => 'service']) }}" method="POST">
-                            <input type="hidden" name="type" value="service">
         @csrf
+                            <input type="hidden" name="type" value="service">
+
                             <div class="row">
                                 <!-- Product name -->
                                 <div class="col-md-6 col-xs-12">
@@ -561,8 +565,9 @@
                         <hr>
 
                         <form id="postForm" action="{{ route('discussion.home') }}" method="POST">
+    @csrf
                             <input type="hidden" name="type" value="post">
-        @csrf
+
                             <!-- Post title -->
                             <div class="form-group">
                                 <label for="posts_title">@lang('miscellaneous.admin.post.data.posts_title')</label>
@@ -580,18 +585,18 @@
                                 <label for="for_category_id">@lang('miscellaneous.admin.product.data.category')</label>
                                 <select class="form-control" id="for_category_id" name="for_category_id">
                                     <option class="small" disabled selected>@lang('miscellaneous.admin.product.data.category')</option>
-        @forelse ($project_categories as $category)
+    @forelse ($project_categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-        @empty
-        @endforelse
-        @forelse ($product_categories as $category)
+    @empty
+    @endforelse
+    @forelse ($product_categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-        @empty
-        @endforelse
-        @forelse ($service_categories as $category)
+    @empty
+    @endforelse
+    @forelse ($service_categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-        @empty
-        @endforelse
+    @empty
+    @endforelse
                                 </select>
                             </div>
 
@@ -601,6 +606,41 @@
                             </div>
 
                             <div id="image-preview-container" class="mt-2"></div> <!-- Conteneur pour les vignettes -->
+
+                            <hr>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
+                                    <span style="color: #fff;">@lang('miscellaneous.register')</span>
+                                </button>
+                                <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+@endif
+@if (Route::is('investor.home') && !empty($current_user))
+        <!-- ### Add product ### -->
+        <div class="modal fade" id="newInvestorModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 5px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body" style="padding-top: 10px;">
+                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.public.investor.become_investor.link')</h2>
+                        <hr>
+
+                        <form id="investorForm" action="{{ route('dashboard.role.entity.datas', ['entity' => 'users', 'id' => $current_user->id]) }}" method="POST">
+    @csrf
+                            <input type="hidden" name="user_id" value="{{ $current_user->id }}">
+                            <input type="hidden" name="role_id" value="{{ $role_investor->id }}">
+
+                            <p class="lead text-center" style="margin-bottom: 0;">@lang('miscellaneous.public.investor.become_investor.info')</p>
 
                             <hr>
                             <div style="display: flex; justify-content: flex-start;">
@@ -1187,6 +1227,7 @@
                 /**
                  * Ajax to send
                  */
+                /* Product form */
                 $('#productForm').on('submit', function (e) {
                     e.preventDefault();
 
@@ -1217,12 +1258,12 @@
 
                             // Afficher une alerte de succès
                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    ${response.message || 'Produit ajouté avec succès !'}
+                                                                <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
                                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    ${response.message || 'Produit ajouté avec succès !'}
                                                                 </div>
                                                             </div>`);
 
@@ -1238,23 +1279,24 @@
                             location.reload();
                         },
                         error: function (error) {
-                             // Cacher l'animation de chargement
-                             $('#loading-icon').hide();
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
 
-                             // Afficher une alerte d'erreur
-                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                                                    <i class="bi bi-x-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                            // Afficher une alerte d'erreur
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
                                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
+                                                                    <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.error_while_processing') }}
                                                                 </div>
                                                             </div>`);
                         }
                     });
                 });
 
+                /* Post form */
                 $('#postForm').on('submit', function (e) {
                     e.preventDefault();
 
@@ -1285,12 +1327,12 @@
 
                             // Afficher une alerte de succès
                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    ${response.message || 'Post ajouté avec succès !'}
+                                                                <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
                                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    ${response.message || 'Produit ajouté avec succès !'}
                                                                 </div>
                                                             </div>`);
 
@@ -1311,18 +1353,19 @@
 
                             // Afficher une alerte d'erreur
                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                                                    <i class="bi bi-x-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                                                                <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
                                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
+                                                                    <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.error_while_processing') }}
                                                                 </div>
                                                             </div>`);
                         }
                     });
                 });
 
+                /* Comment form */
                 $('#comment-form').on('submit', function (e) {
                     e.preventDefault();
 
@@ -1346,12 +1389,12 @@
 
                             // Afficher une alerte de succès
                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    ${response.message || 'Post ajouté avec succès !'}
+                                                                <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
                                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    ${response.message || 'Commentaire ajouté avec succès !'}
                                                                 </div>
                                                             </div>`);
 
@@ -1366,12 +1409,68 @@
 
                             // Afficher une alerte d'erreur
                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                                                    <i class="bi bi-x-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                                                                <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
                                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
+                                                                    <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.error_while_processing') }}
+                                                                </div>
+                                                            </div>`);
+                        }
+                    });
+                });
+
+                /* Investor form */
+                $('#investorForm').on('submit', function (e) {
+                    e.preventDefault();
+
+                    // Afficher l'animation de chargement
+                    $('#loading-icon').show();
+
+                    // Effacer les alertes précédentes
+                    $('#ajax-alert-container').empty();
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
+
+                            // Afficher une alerte de succès
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    ${response.message || 'Vous êtes maintenant un investisseur !'}
+                                                                </div>
+                                                            </div>`);
+
+                            // Réinitialiser tous les champs du formulaire
+                            $('#investorForm')[0].reset();
+
+                            location.reload();
+                        },
+                        error: function (error) {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
+
+                            // Afficher une alerte d'erreur
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.error_while_processing') }}
                                                                 </div>
                                                             </div>`);
                         }

@@ -6,11 +6,13 @@ use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Post as ResourcesPost;
 use App\Http\Resources\Product as ResourcesProduct;
+use App\Http\Resources\User as ResourcesUser;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Post;
 use App\Models\Product;
+use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -125,6 +127,22 @@ class PublicController extends Controller
     public function account()
     {
         return view('account');
+    }
+
+    /**
+     * GET: User profile page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function profile($id)
+    {
+        $user = User::find($id);
+
+        if (is_null($user)) {
+            return redirect('/')->with('error_message', __('notifications.find_user_404'));
+        }
+
+        return view('profile', ['user' => $user]);
     }
 
     /**
@@ -580,7 +598,7 @@ class PublicController extends Controller
         $selected_product = Product::find($id);
 
         if (is_null($selected_product)) {
-            redirect('/')->with('error_message', __('notifications.find_product_404'));
+            return redirect('/')->with('error_message', __('notifications.find_product_404'));
         }
 
         if ($entity == 'project') {
@@ -614,7 +632,6 @@ class PublicController extends Controller
         $product_categories = Category::where('for_service', 0)->get();
         $service_categories = Category::where('for_service', 1)->get();
 
-        // dd($posts);
         return view('discussions', [
             'posts' => ResourcesPost::collection($posts),
             'posts_req' => $posts,
@@ -639,7 +656,7 @@ class PublicController extends Controller
         $selected_post = Post::find($id);
 
         if (is_null($selected_post)) {
-            redirect('/')->with('error_message', __('notifications.find_error'));
+            return redirect('/')->with('error_message', __('notifications.find_error'));
         }
 
         $related_posts = Post::where([['id', '<>', $selected_post->id], ['for_category_id', '=', $selected_post->for_category_id]])->take(3)->get();
@@ -654,6 +671,74 @@ class PublicController extends Controller
             'project_categories' => $project_categories,
             'product_categories' => $product_categories,
             'service_categories' => $service_categories,
+        ]);
+    }
+
+    /**
+     * GET: Investors page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function investors()
+    {
+        $investors = Auth::check() ? User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
+                                            $query->where('role_name->fr', 'Investisseur');
+                                        })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query())
+                                    : User::whereHas('roles', function ($query) {
+                                        $query->where('role_name->fr', 'Investisseur');
+                                    })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query());
+
+        $role_investor = null;
+        $role_investor_exists = Role::where('role_name->fr', 'Investisseur')->exists();
+
+        if (!$role_investor_exists) {
+            $role_investor = Role::create([
+                'role_name' => [
+                    'en' => 'Investor',
+                    'fr' => 'Investisseur',
+                ],
+                'role_description' => [
+                    'en' => 'A person who invests their money in a project on the platform.',
+                    'fr' => 'Personne qui investit son argent pour un projet sur la plateforme.',
+                ]
+            ]);
+        }
+
+        $role_investor = Role::where('role_name->fr', 'Investisseur')->first();
+
+        return view('investors', [
+            'role_investor' => $role_investor,
+            'investors' => ResourcesUser::collection($investors),
+            'investors_req' => $investors,
+            'investors_req_currentPage' => $investors->currentPage(),
+            'investors_req_lastPage' => $investors->lastPage(),
+            'investors_req_total' => $investors->total(),
+        ]);
+    }
+
+    /**
+     * GET: Investor details
+     *
+     * @param  string  $id
+     * @return \Illuminate\View\View
+     */
+    public function investorDatas($id)
+    {
+        $entity_title = __('miscellaneous.admin.investor.details');
+        $investor_role_id = Role::where('role_name->fr', 'Investisseur')->first()->id;
+        $selected_investor = User::find($id);
+
+        if (is_null($selected_investor)) {
+            return redirect('/')->with('error_message', __('notifications.find_investor_404'));
+        }
+
+        if (!$selected_investor->roles->contains('id', $investor_role_id)) {
+            return redirect('/')->with('error_message', __('notifications.find_error'));
+        }
+
+        return view('investors', [
+            'entity_title' => $entity_title,
+            'selected_investor' => $selected_investor,
         ]);
     }
 
@@ -1221,7 +1306,7 @@ class PublicController extends Controller
     }
 
     /**
-     * POST: Add a product entity
+     * POST: Update a product entity
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $entity

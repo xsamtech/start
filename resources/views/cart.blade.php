@@ -90,7 +90,7 @@
 										</tfoot>
 									</table>
 									<div class="md-margin"></div><!-- End .space -->
-									<a href="{{ route('login') }}" class="btn btn-danger text-uppercase" style="width: 300px">@lang('miscellaneous.public.login_to_checkout')</a>
+									<a href="{{ route('login', ['cart' => '1']) }}" class="btn btn-danger text-uppercase" style="width: 300px">@lang('miscellaneous.public.login_to_checkout')</a>
 								</div><!-- End .col-md-4 -->
 
                             </div><!-- End.row -->
