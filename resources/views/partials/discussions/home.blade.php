@@ -62,7 +62,7 @@
 
 									<div class="pagination-container clearfix">
 										<div class="pull-left page-count">
-											@lang('miscellaneous.pages_count', ['count' => $posts_req_lastPage, 'total' => $posts_req_total])
+											@lang('miscellaneous.pages_count', ['count' => $posts_req_currentPage, 'total' => $posts_req_lastPage])
 										</div><!-- End .pull-left -->
 
 										<div class="pull-right">

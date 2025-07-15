@@ -6,6 +6,7 @@ use App\Http\Resources\Product as ResourcesProduct;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\CartService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -27,11 +28,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(CartService $cartService): void
     {
         Paginator::useBootstrap();
 
-        view()->composer('*', function ($view) {
+        view()->composer('*', function ($view) use ($cartService) {
+            $sessionCartTotal = session()->has('cart') ? $cartService->getCartTotalFromSession() : 0;
             $current_user = null;
 
             if (Auth::check()) {
@@ -48,6 +50,8 @@ class AppServiceProvider extends ServiceProvider
                                     $query->where('role_name->fr', 'Investisseur');
                                 })->orderByDesc('users.created_at')->take(6)->get();
 
+            $view->with('cartService', $cartService);
+            $view->with('session_cart_total', $sessionCartTotal);
             $view->with('current_user', $current_user);
             $view->with('popular_projects', ResourcesProduct::collection($popular_projects)->resolve());
             $view->with('popular_products', ResourcesProduct::collection($popular_products)->resolve());

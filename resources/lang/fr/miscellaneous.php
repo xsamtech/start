@@ -673,6 +673,7 @@ return [
         'view_cart' => 'Voir panier',
         'checkout' => 'Commander',
         'checkout_now' => 'Commander maintenant',
+        'login_to_checkout' => 'Se connecter pour payer',
         'related_product' => 'Produits associés',
         'add_rating' => 'Ajouter votre note',
 

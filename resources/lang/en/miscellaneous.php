@@ -673,6 +673,7 @@ return [
         'view_cart' => 'View cart',
         'checkout' => 'Checkout',
         'checkout_now' => 'Checkout now',
+        'login_to_checkout' => 'Log in to checkout',
         'related_product' => 'Related products',
         'add_rating' => 'Add your rating',
 

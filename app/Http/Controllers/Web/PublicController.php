@@ -90,8 +90,8 @@ class PublicController extends Controller
     }
 
     /**
-     * GET: Create symbolic link
-     *
+     * GET: Search something
+     * 
      * @return \Illuminate\View\View
      */
     public function search(Request $request)
@@ -103,6 +103,18 @@ class PublicController extends Controller
         $products = Product::searchWithFilters($query, $filters, $per_page);
 
         return view('search', ['products' => $products]);
+    }
+
+    /**
+     * GET: Create symbolic link
+     *
+     * @return \Illuminate\View\View
+     */
+    public function cart()
+    {
+        $cartItems = session()->get('cart', []);
+
+        return view('cart', ['items' => $cartItems]);
     }
 
     /**
@@ -597,14 +609,16 @@ class PublicController extends Controller
      */
     public function discussions()
     {
+        $posts = request()->has('category_id') ? Post::where([['for_category_id', request()->get('category_id')], ['type', 'post']])->orderByDesc('created_at')->paginate(5)->appends(request()->query()) : Post::where('type', 'post')->orderByDesc('created_at')->paginate(5)->appends(request()->query());
         $project_categories = Category::where('for_service', 2)->get();
         $product_categories = Category::where('for_service', 0)->get();
         $service_categories = Category::where('for_service', 1)->get();
-        $posts = request()->has('category_id') ? Post::where([['for_category_id', request()->get('category_id')], ['type', 'post']])->orderByDesc('created_at')->paginate(5)->appends(request()->query()) : Post::where('type', 'post')->orderByDesc('created_at')->paginate(5)->appends(request()->query());
 
+        // dd($posts);
         return view('discussions', [
             'posts' => ResourcesPost::collection($posts),
             'posts_req' => $posts,
+            'posts_req_currentPage' => $posts->currentPage(),
             'posts_req_lastPage' => $posts->lastPage(),
             'posts_req_total' => $posts->total(),
             'project_categories' => $project_categories,
@@ -629,11 +643,17 @@ class PublicController extends Controller
         }
 
         $related_posts = Post::where([['id', '<>', $selected_post->id], ['for_category_id', '=', $selected_post->for_category_id]])->take(3)->get();
+        $project_categories = Category::where('for_service', 2)->get();
+        $product_categories = Category::where('for_service', 0)->get();
+        $service_categories = Category::where('for_service', 1)->get();
 
         return view('discussions', [
             'entity_title' => $entity_title,
             'selected_post' => $selected_post,
             'related_posts' => ResourcesPost::collection($related_posts),
+            'project_categories' => $project_categories,
+            'product_categories' => $product_categories,
+            'service_categories' => $service_categories,
         ]);
     }
 
@@ -1215,27 +1235,35 @@ class PublicController extends Controller
                 'quantity' => 'required|integer|min:1',
             ]);
 
-            $product = Product::find($id);  // On récupère le produit pour vérifier son stock
+            $product = Product::find($id);  // We get product to check the stock
 
             try {
                 if (Auth::check()) {
-                    // Si l'utilisateur est connecté, on ajoute au panier normal
+                    // If user is connected, we add to its normal cart
                     $user = User::find(Auth::id());
 
                     $user->addProductToCart($id, $request->quantity);
 
-                    $inCart = $user->hasProductInUnpaidCart($id);  // Vérifie si le produit est dans le panier
-                    $inStock = $product->quantity > 0;  // Vérifie si le produit est en stock
+                    $inCart = $user->hasProductInUnpaidCart($id);  // Check if product is in the cart
+                    $inStock = $product->quantity > 0;  // Check if prouct is in stock
                     $isLoggedIn = true;
 
                 } else {
-                    // Si l'utilisateur n'est pas connecté, on stocke le produit dans la session
+                    // If user is connected, we store product in the session
                     $cart = session()->get('cart', []);
+                    // Product photos
+                    $photos = $product->photos()->pluck('file_url');
+                    // Add product in the session cart
                     $cart[$id] = [
+                        'id' => $product->id,
                         'product_name' => $product->product_name,
+                        'product_description' => $product->product_description,
                         'quantity' => $request->quantity,
                         'price' => $product->price,
                         'currency' => $product->currency,
+                        'type' => $product->type,
+                        'action' => $product->action,
+                        'photos' => $photos,
                     ];
 
                     session()->put('cart', $cart);

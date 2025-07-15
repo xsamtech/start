@@ -1,4 +1,4 @@
-{{-- {{ dd($posts) }} --}}
+{{-- {{ session()->forget('cart') }} --}}
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="ie9"> <![endif]-->
@@ -59,9 +59,9 @@
 
         <style id="custom-style">
             textarea { resize: none; }
-            /* #product-image-container, */
+            #footer .bottom a { color: #84bb26; }
+            #footer .bottom a:hover { text-decoration: underline; }
             .item .item-image-container { position: relative; width: 100%; padding-top: 139.91%; overflow: hidden; }
-            /* #product-image-container img, */
             .item .item-image-container img { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; object-fit: cover; }
             .item-price-container { display: flex; justify-content: center; align-items: center; width: 200px!important; height: 40px!important; border-radius: 50px!important; }
             .item-price-container .item-price { margin-top: 0!important; }
@@ -398,46 +398,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Price -->
-                                <div class="col-md-6 col-xs-6">
-                                    <div class="form-group">
-                                        <label for="price">@lang('miscellaneous.admin.product.data.price')</label>
-                                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
-                                    </div>
-                                </div>
-
-                                <!-- Currency -->
-                                <div class="col-md-6 col-xs-6">
-                                    <div class="form-group">
-                                        <label for="currency">@lang('miscellaneous.currency')</label>
-                                        <select class="form-control" id="currency" name="currency">
-                                            <option class="small" disabled>@lang('miscellaneous.currency')</option>
-                                            <option>USD</option>
-                                            <option>CDF</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Quantity -->
-                                <div class="col-md-6 col-xs-6">
-                                    <div class="form-group">
-                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
-                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
-                                    </div>
-                                </div>
-
-                                <!-- Action -->
-                                <div class="col-md-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="action">@lang('miscellaneous.admin.product.action.title')</label>
-                                        <select class="form-control" id="action" name="action">
-                                            <option value="sell">@lang('miscellaneous.admin.product.data.action.sell')</option>
-                                            <option value="rent">@lang('miscellaneous.admin.product.data.action.rent')</option>
-                                            <option value="distribute">@lang('miscellaneous.admin.product.data.action.distribute')</option>
-                                        </select>
-                                    </div>
-                                </div>
-
                                 <!-- Category -->
                                 <div class="col-md-6 col-xs-12">
                                     <div class="form-group">
@@ -533,14 +493,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Quantity -->
-                                <div class="col-md-6 col-xs-6">
-                                    <div class="form-group">
-                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
-                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1">
-                                    </div>
-                                </div>
-
                                 <!-- Action -->
                                 <div class="col-md-6 col-xs-12">
                                     <div class="form-group">
@@ -620,7 +572,7 @@
                             <!-- Post content -->
                             <div class="form-group">
                                 <label for="posts_content">@lang('miscellaneous.admin.post.data.posts_content')</label>
-                                <textarea id="mytextarea" class="form-control" id="posts_content" name="posts_content" rows="2" required></textarea>
+                                <textarea class="form-control" id="posts_content" name="posts_content" rows="2" required></textarea>
                             </div>
 
                             <!-- Category -->
@@ -672,16 +624,19 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="header-top-left">
-@if (!empty($current_user))
                                     <ul id="top-links" class="clearfix">
+@session('cart')
+                                        <li><a href="{{ route('cart') }}" title="@lang('miscellaneous.menu.account.cart')"><i class="bi bi-cart3" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.cart')</span></a></li>
+@endsession
+@if (!empty($current_user))
                                         <li><a href="{{ route('account.home') }}" title="@lang('miscellaneous.menu.account.title')"><i class="bi bi-person" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.title')</span></a></li>
                                         <li>
                                             <form action="{{ route('logout') }}" method="post">
                                                 <button class="btn btn-link" style="color: #777;"><i class="bi bi-power" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.logout')</span></button>
                                             </form>
                                         </li>
-                                    </ul>
 @endif
+                                    </ul>
                                 </div><!-- End .header-top-left -->
                                 <div class="header-top-right">
                                     <div class="header-top-dropdowns pull-right">
@@ -833,6 +788,71 @@
                                     </nav>
 
                                     <div id="quick-access">
+@session('cart')
+    @php
+        $cartItems = session()->get('cart', []);
+    @endphp
+                                        <div class="dropdown-cart-menu-container pull-right">
+                                            <div class="btn-group dropdown-cart">
+                                                <button type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="cart-menu-icon"></span>
+                                                    {{ trans_choice('miscellaneous.items', count($cartItems), ['count' => count($cartItems)]) }} <span class="drop-price">- {{ formatDecimalNumber($session_cart_total) . ' FC' }}</span>
+                                                </button>
+
+                                                <div class="dropdown-menu dropdown-cart-menu pull-right clearfix" role="menu">
+                                                    <p class="dropdown-cart-description">{{ trans_choice('miscellaneous.recently_added_items', count($cartItems)) }}</p>
+    @if (count($cartItems) > 0)
+                                                    <ul class="dropdown-cart-product-list">
+        @foreach ($cartItems as $item)
+            @if ($loop->index < 3)
+                                                        <li class="item clearfix">
+                                                            <a href="#" title="Delete item" class="delete-item">
+                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                            <a href="{{ route('account.entity', ['entity' => 'cart']) }}" title="Edit item" class="edit-item">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                            <figure>
+                                                                <a href="{{ route('product.entity.datas', ['entity' => $item['type'], 'id' => $item['id']]) }}">
+                                                                    <img src="{{ count($item['photos']) > 0 ? $item['photos'][0] : getWebURL() . '/template/public/images/products/thumbnails/item12.jpg' }}" alt="{{ $item['product_name'] }}">
+                                                                </a>
+                                                            </figure>
+                                                            <div class="dropdown-cart-details">
+                                                                <p class="item-name">
+                                                                    <a href="{{ route('product.entity.datas', ['entity' => $item['type'], 'id' => $item['id']]) }}">
+                                                                        {{ $item['product_name'] }}
+                                                                    </a>
+                                                                </p>
+                                                                <p>
+                                                                    {{ $item['quantity'] }}x <span class="item-price">{{ formatDecimalNumber($item['price']) . ' FC' }}</span>
+                                                                </p>
+                                                            </div><!-- End .dropdown-cart-details -->
+                                                        </li>
+            @endif
+        @endforeach
+                                                    </ul>
+                                                    <ul class="dropdown-cart-total">
+                                                        <li><span class="dropdown-cart-total-title">
+                                                            {{ 'TOTAL' . __('miscellaneous.colon_after_word') }}</span>
+                                                            {{ formatDecimalNumber($session_cart_total) . ' FC' }}
+                                                        </li>
+                                                    </ul><!-- .dropdown-cart-total -->
+                                                    <div class="dropdown-cart-action">
+                                                        <p>
+                                                            <a href="{{ route('cart') }}" class="btn btn-custom-2 btn-block">@lang('miscellaneous.cart')</a>
+                                                        </p>
+                                                    </div><!-- End .dropdown-cart-action -->
+        
+    @else
+                                                    <div style="display: flex; justify-content: center; align-items: flex-end; height: 100px;">
+                                                        <i class="bi bi-cart3" style="font-size: 5rem"></i>
+                                                    </div>
+                                                    <h5 class="text-center">@lang('miscellaneous.empty_list')</h5>
+    @endif
+                                                </div><!-- End .dropdown-cart -->
+                                            </div><!-- End .btn-group -->
+                                        </div><!-- End .dropdown-cart-menu-container -->
+@endsession
 @if (!empty($current_user))
                                         <div class="dropdown-cart-menu-container pull-right">
                                             <div class="btn-group dropdown-cart">
@@ -993,7 +1013,7 @@
                                 </ul>
                             </div><!-- End .col-md-7 -->
 
-                            <div class="col-md-5 col-sm-5 col-xs-12 footer-text-container">
+                            <div class="col-md-5 col-sm-5 col-xs-12 footer-text-container bottom">
                                 <p>&copy; {{ date('Y') }} START&trade; @lang('miscellaneous.all_right_reserved') | Designed by <a href="https://xsamtech.com" target="_blank">Xsam Technologies</a></p>
                             </div><!-- End .col-md-5 -->
                         </div><!-- End .row -->
@@ -1034,13 +1054,13 @@
              * TinyMCE : Custom textarea
              */
             tinymce.init({
-                selector: '#mytextarea',
+                selector: '#posts_content',
                 // plugins: 'lists link image',
                 // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
                 // setup: function (editor) {
                 //     editor.on('change', function () {
                 //         let content = editor.getContent();  // Texte avec les balises HTML
-                //         document.getElementById('mytextarea').value = content;
+                //         document.getElementById('posts_content').value = content;
                 //     });
                 // }
             });
@@ -1407,6 +1427,7 @@
 
                             // Remplacer le bloc du produit avec le nouveau HTML
                             productContainer.find('.item-add-btn').replaceWith(newHtml);
+                            $('#top-links').load(location.href + ' #top-links > *');
                             $('#quick-access').load(location.href + ' #quick-access > *');
                             console.log('Produit ajouté');
                         },
