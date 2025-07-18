@@ -81,7 +81,7 @@
                                                     <h2 class="sub-title text-uppercase">@lang('miscellaneous.account.personal_infos.title')</h2>
 
                                                     <!-- First name -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-user"></span>
                                                             <span class="input-text">@lang('miscellaneous.firstname') <span class="text-danger">&#42;</span></span>
@@ -93,7 +93,7 @@
 @enderror
 
                                                     <!-- Last name -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-user"></span>
                                                             <span class="input-text">@lang('miscellaneous.lastname')</span>
@@ -102,7 +102,7 @@
                                                     </div><!-- End .input-group -->
         
                                                     <!-- Surname -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-user"></span>
                                                             <span class="input-text">@lang('miscellaneous.surname')</span>
@@ -144,7 +144,7 @@
 @enderror
 
                                                     <!-- Phone -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-phone"></span>
                                                             <span class="input-text">@lang('miscellaneous.phone') <span class="text-danger">&#42;</span></span>
@@ -162,7 +162,7 @@
                                                     <h2 class="sub-title text-uppercase">@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')</h2>
 
                                                     <!-- Address 1 -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-address"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.title') 1</span>
@@ -171,7 +171,7 @@
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Address 2 -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-address"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.title') 2</span>
@@ -180,7 +180,7 @@
                                                     </div><!-- End .input-group -->
 
                                                     <!-- City -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-city"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.city')</span>
@@ -189,7 +189,7 @@
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Country -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-country"></span>
                                                             <span class="input-text">@lang('miscellaneous.country')</span>
@@ -216,24 +216,30 @@
                                                     <h2 class="sub-title text-uppercase">@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')</h2>
 
                                                     <!-- Password -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="position: relative; margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-password"></span>
                                                             <span class="input-text">@lang('miscellaneous.password.label') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="password" name="password" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')">
+                                                        <input type="password" name="password" id="register_password" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')">
+                                                        <button id="showPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px;" onclick="event.preventDefault(); passwordVisible(this, 'register_password');">
+                                                            <i class="bi bi-eye-fill"></i>
+                                                        </button>
                                                     </div><!-- End .input-group -->
 
 @error('password')
                                                     <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
 @enderror
                                                     <!-- Password confirmation -->
-                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                    <div class="input-group" style="position: relative; margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-password"></span>
                                                             <span class="input-text">@lang('miscellaneous.confirm') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="password" name="password_confirmation" class="form-control input-lg" placeholder="@lang('auth.confirm-password')">
+                                                        <input type="password" name="password_confirmation" id="register_confirm_password" class="form-control input-lg" placeholder="@lang('auth.confirm-password')">
+                                                        <button id="showConfirmPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px;" onclick="event.preventDefault(); passwordVisible(this, 'register_confirm_password');">
+                                                            <i class="bi bi-eye-fill"></i>
+                                                        </button>
                                                     </div><!-- End .input-group -->
 @error('password_confirmation')
                                                     <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>

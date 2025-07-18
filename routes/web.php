@@ -59,6 +59,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/role/{entity}', [AdminController::class, 'addRoleEntity']);
     Route::get('/dashboard/role/{entity}/{id}', [AdminController::class, 'roleEntityDatas'])->whereNumber('id')->name('dashboard.role.entity.datas');
     Route::post('/dashboard/role/{entity}/{id}', [AdminController::class, 'updateRoleEntity'])->whereNumber('id');
+    // Project sectors
+    Route::get('/dashboard/project-sector', [AdminController::class, 'sector'])->name('dashboard.sector.home');
+    Route::post('/dashboard/project-sector', [AdminController::class, 'addSector']);
+    Route::get('/dashboard/project-sector/{id}', [AdminController::class, 'sectorDatas'])->whereNumber('id')->name('dashboard.sector.datas');
+    Route::post('/dashboard/project-sector/{id}', [AdminController::class, 'updateSector'])->whereNumber('id');
     // Category
     Route::get('/dashboard/category', [AdminController::class, 'category'])->name('dashboard.category.home');
     Route::post('/dashboard/category', [AdminController::class, 'addCategory']);

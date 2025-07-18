@@ -31,24 +31,30 @@
 									<form id="login-form" method="POST" action="{{ route('password.reset') }}">
     @csrf
                                         <!-- Password -->
-                                        <div class="input-group" style="margin-bottom: 5px">
+                                        <div class="input-group" style="margin-bottom: 5px;">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-password"></span>
                                                 <span class="input-text">@lang('miscellaneous.password.label') <span class="text-danger">&#42;</span></span>
                                             </span>
-											<input type="password" name="new_password" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')">
+											<input type="password" name="new_password" id="register_password" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')">
+											<button id="showNewPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px;" onclick="event.preventDefault(); passwordVisible(this, 'register_password');">
+												<i class="bi bi-eye-fill"></i>
+											</button>
 										</div><!-- End .input-group -->
 
     @error('new_password')
                                         <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
     @enderror
                                         <!-- Password confirmation -->
-                                        <div class="input-group" style="margin-bottom: 5px">
+                                        <div class="input-group" style="margin-bottom: 5px;">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-password"></span>
                                                 <span class="input-text">@lang('miscellaneous.confirm') <span class="text-danger">&#42;</span></span>
                                             </span>
-											<input type="password" name="confirm_new_password" class="form-control input-lg" placeholder="@lang('auth.confirm-password')">
+											<input type="password" name="confirm_new_password" id="register_confirm_password" class="form-control input-lg" placeholder="@lang('auth.confirm-password')">
+											<button id="showConfirmNewPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px;" onclick="event.preventDefault(); passwordVisible(this, 'register_confirm_password');">
+												<i class="bi bi-eye-fill"></i>
+											</button>
 										</div><!-- End .input-group -->
     @error('confirm_new_password')
                                         <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>

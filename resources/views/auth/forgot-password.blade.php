@@ -32,7 +32,7 @@
 
     @if (session()->has('email') || session()->has('phone'))
 									    <p class="lead" style="font-weight: 700;">@lang('notifications.token_title')</p>
-                                        <div class="input-group" style="margin-bottom: 5px">
+                                        <div class="input-group" style="margin-bottom: 5px;">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-password"></span>
                                                 <span class="input-text">@lang('notifications.token_label')</span>
@@ -50,7 +50,7 @@
     @else
         @if (request()->get('check') == 'phone')
 									    <p class="lead" style="font-weight: 700;">@lang('auth.verify-phone')</p>
-                                        <div class="input-group" style="margin-bottom: 5px">
+                                        <div class="input-group" style="margin-bottom: 5px;">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-phone"></span>
                                                 <span class="input-text">@lang('miscellaneous.phone')</span>
@@ -62,7 +62,7 @@
             @enderror
         @else
 									    <p class="lead" style="font-weight: 700;">@lang('auth.verify-email')</p>
-                                        <div class="input-group" style="margin-bottom: 5px">
+                                        <div class="input-group" style="margin-bottom: 5px;">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-email"></span>
                                                 <span class="input-text">@lang('miscellaneous.email')</span>
