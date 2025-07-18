@@ -591,6 +591,22 @@ return [
             ],
         ],
 
+        // Crowdfunding
+        'crowdfunding' => [
+            'details' => 'Détails du crowdfunding',
+            'link' => 'Gérer les crowdfundings',
+            'add' => 'Ajouter crowdfunding',
+            'edit' => 'Editer le crowdfunding',
+            'search' => 'Rechercher un crowdfunding',
+            'list' => 'Liste des crowdfundings',
+            'data' => [
+                'description' => 'Description du crowdfunding',
+                'expected_amount' => 'Montant attendu',
+                'amount' => 'Montant',
+                'currency' => 'Devise'
+            ],
+        ],
+
         // Investor
         'investor' => [
             'details' => 'Détails sur l’investisseur',
@@ -699,6 +715,12 @@ return [
                 'info' => 'Vous êtes sur le point de devenir un investisseur pour nos membres. En cliquant sur « Commencer », vous acceptez nos conditions d’utilisation et notre politique de confidentialité.',
             ],
             'request' => 'Demander un investissement',
+        ],
+
+        // Crowdfunding
+        'crowdfunding' => [
+            'title' => 'Faire du crowdfunding',
+            'description' => 'Lancer un financement participatif ou participer à celui d\'un autre membre.',
         ],
 
         // Footer

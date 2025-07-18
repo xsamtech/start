@@ -1,11 +1,11 @@
-@extends('layouts.app', ['page_title' => !empty($selected_investor) ? __('miscellaneous.admin.investor.details') : __('miscellaneous.menu.public.investors.title')])
+@extends('layouts.app', ['page_title' => !empty($selected_crowdfunding) ? __('miscellaneous.admin.crowdfunding.details') : __('miscellaneous.menu.public.crowdfunding')])
 
 @section('app-content')
 
-    @if (!empty($selected_investor))
-        @include('partials.investors.datas')
+    @if (!empty($selected_crowdfunding))
+        @include('partials.crowdfundings.datas')
     @else
-        @include('partials.investors.home')
+        @include('partials.crowdfundings.home')
     @endif
 
 @endsection

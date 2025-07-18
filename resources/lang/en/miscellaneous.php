@@ -606,6 +606,22 @@ return [
             ],
         ],
 
+        // Crowdfunding
+        'crowdfunding' => [
+            'details' => 'Crowdfunding details',
+            'link' => 'Manage crowdfundings',
+            'add' => 'Add a crowdfunding',
+            'edit' => 'Edit the crowdfunding',
+            'search' => 'Search a crowdfunding',
+            'list' => 'Crowdfundings list',
+            'data' => [
+                'description' => 'Crowdfunding description',
+                'expected_amount' => 'Expected amount',
+                'amount' => 'Amount',
+                'currency' => 'Currency'
+            ],
+        ],
+
         // Users
         'users' => [
             'details' => 'user details',
@@ -699,6 +715,12 @@ return [
                 'info' => 'You are about to become an investor for our members. By clicking "Start," you agree to our Terms of Use and Privacy Policy.',
             ],
             'request' => 'Request an investment',
+        ],
+
+        // Crowdfunding
+        'crowdfunding' => [
+            'title' => 'Do crowdfunding',
+            'description' => 'Start a crowdfunding campaign or participate in another member\'s.',
         ],
 
         // Footer

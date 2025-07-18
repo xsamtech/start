@@ -742,6 +742,16 @@ class PublicController extends Controller
         ]);
     }
 
+    /**
+     * GET: Crowdfundings page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function crowdfunding()
+    {
+        return view('crowdfundings');
+    }
+
     // ==================================== HTTP DELETE METHODS ====================================
     /**
      * GET: Delete something
