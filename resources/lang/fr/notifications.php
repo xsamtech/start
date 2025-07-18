@@ -191,6 +191,7 @@ return [
     'find_user_success' => 'Utilisateur trouvé',
     'find_api_token_success' => 'Jeton d\'API trouvé',
     'find_user_404' => 'Utilisateur non trouvé',
+    'find_user_password_404' => 'Utilisateur ou mot de passe incorrect',
     'find_all_members_success' => 'Membres trouvés',
     'find_member_success' => 'Membre trouvé',
     'find_member_404' => 'Membre non trouvé',

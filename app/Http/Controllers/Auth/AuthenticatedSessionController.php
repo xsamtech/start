@@ -57,7 +57,7 @@ class AuthenticatedSessionController extends Controller
 
         if (!Auth::attempt([$login_type => $request->login, 'password' => $request->password], $request->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'login' => __('notifications.find_user_404'),
+                'login' => __('notifications.find_user_password_404'),
             ]);
         }
 

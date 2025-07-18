@@ -191,6 +191,7 @@ return [
     'find_user_success' => 'User found',
     'find_api_token_success' => 'API token found',
     'find_user_404' => 'User not found',
+    'find_user_password_404' => 'Incorrect username or password',
     'find_all_members_success' => 'Members found',
     'find_member_success' => 'Member found',
     'find_member_404' => 'Member not found',

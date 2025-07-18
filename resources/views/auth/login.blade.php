@@ -46,9 +46,6 @@
                                             </span>
                                             <input type="text" name="login" id="sign_login" required class="form-control input-lg @error('login') is-invalid @enderror" value="{{ old('login') }}" placeholder="@lang('miscellaneous.login_username')">
 										</div><!-- End .input-group -->
-    @error('login')
-                                        <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
-    @enderror
 
                                         <div class="input-group xs-margin" style="position: relative; margin-bottom: 5px;">
 											<span class="input-group-addon">
@@ -60,6 +57,9 @@
 												<i class="bi bi-eye-fill"></i>
 											</button>
 										</div><!-- End .input-group -->
+    @error('login')
+                                        <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
+    @enderror
     @error('password')
                                         <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
     @enderror
