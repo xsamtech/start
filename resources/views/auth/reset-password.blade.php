@@ -1,39 +1,73 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+@extends('layouts.app', ['page_title' => __('auth.reset-password')])
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+@section('app-content')
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+			<section id="content">
+				<div id="breadcrumb-container">
+					<div class="container">
+						<ul class="breadcrumb">
+							<li><a href="{{ route('home') }}">@lang('miscellaneous.menu.home')</a></li>
+							<li class="active">@lang('auth.reset-password')</li>
+						</ul>
+					</div>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<header class="content-title">
+								<h1 class="title">@lang('auth.reset-password')</h1>
+								<div class="md-margin"></div><!-- space -->
+							</header>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+							<div class="row">
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<p class="lead">@lang('miscellaneous.reset_password_info')</p>
+									<a href="{{ route('login') }}" class="lead text-uppercase">@lang('miscellaneous.cancel') <i class="bi bi-chevron-double-right"></i></a>
+									<div class="lg-margin"></div><!-- space -->
+								</div><!-- End .col-md-6 -->
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<form id="login-form" method="POST" action="{{ route('password.reset') }}">
+    @csrf
+                                        <!-- Password -->
+                                        <div class="input-group" style="margin-bottom: 5px">
+											<span class="input-group-addon">
+                                                <span class="input-icon input-icon-password"></span>
+                                                <span class="input-text">@lang('miscellaneous.password.label') <span class="text-danger">&#42;</span></span>
+                                            </span>
+											<input type="password" name="new_password" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')">
+										</div><!-- End .input-group -->
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+    @error('new_password')
+                                        <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
+    @enderror
+                                        <!-- Password confirmation -->
+                                        <div class="input-group" style="margin-bottom: 5px">
+											<span class="input-group-addon">
+                                                <span class="input-icon input-icon-password"></span>
+                                                <span class="input-text">@lang('miscellaneous.confirm') <span class="text-danger">&#42;</span></span>
+                                            </span>
+											<input type="password" name="confirm_new_password" class="form-control input-lg" placeholder="@lang('auth.confirm-password')">
+										</div><!-- End .input-group -->
+    @error('confirm_new_password')
+                                        <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
+    @enderror
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                                        <div class="xs-margin"></div>
+
+                                        <button class="btn btn-custom-2">@lang('miscellaneous.register')</button>
+									</form>
+									<div class="sm-margin"></div><!-- space -->
+								</div><!-- End .col-md-6 -->
+
+							</div><!-- End.row -->
+
+						</div><!-- End .col-md-12 -->
+					</div><!-- End .row -->
+				</div><!-- End .container -->
+
+			</section><!-- End #content -->
+
+
+@endsection

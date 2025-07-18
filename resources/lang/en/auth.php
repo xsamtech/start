@@ -22,6 +22,8 @@ return [
     'login' => 'Log in',
     'reset-password' => 'Reset password',
     'verify-email' => 'Verify e-mail',
+    'verify-phone' => 'Verify phone number',
+    'verify-email-phone' => 'Verify e-mail or phone number',
     'confirm-password' => 'Confirm password',
     // Error messages
     'unauthorized' => 'This space is reserved for the administrator',

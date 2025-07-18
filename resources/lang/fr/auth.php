@@ -22,6 +22,8 @@ return [
     'login' => 'Connexion',
     'reset-password' => 'Réinitialiser mot de passe',
     'verify-email' => 'Vérifier e-mail',
+    'verify-phone' => 'Vérifier n° de téléphone',
+    'verify-email-phone' => 'Vérifier e-mail ou n° de téléphone',
     'confirm-password' => 'Confirmer mot de passe',
     // Error messages
     'unauthorized' => 'Cet espace est réservé à l\'administrateur',

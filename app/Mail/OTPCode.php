@@ -31,7 +31,7 @@ class OTPCode extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Boongo OTP',
+            subject: 'START verifying code',
         );
     }
 

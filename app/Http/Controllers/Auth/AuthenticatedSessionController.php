@@ -25,6 +25,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        if (session()->has('email')) session()->forget('email');
+        if (session()->has('phone')) session()->forget('phone');
+
         return view('auth.login');
     }
 

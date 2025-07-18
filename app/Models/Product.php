@@ -38,6 +38,15 @@ class Product extends Model
     }
 
     /**
+     * MANY-TO-MANY
+     * Several categories for several products (having "project" type)
+     */
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'category_product');
+    }
+
+    /**
      * ONE-TO-MANY
      * One user for several products
      */

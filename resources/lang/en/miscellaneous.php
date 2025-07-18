@@ -232,6 +232,8 @@ return [
     'login_username' => 'Phone number or E-mail',
     'remember_me' => 'Stay connected',
     'forgotten_password' => 'Forgotten password?',
+    'forgotten_password_info' => 'Just let us know your email address (or phone number) and we will send you a code that will allow you to choose a new one.',
+    'reset_password_info' => 'Please create a secure password that you will not forget this time.',
     'not_member' => 'Not a member?',
     'signup_with' => 'or sign up with:',
     'go_register' => 'I don’t have an account',

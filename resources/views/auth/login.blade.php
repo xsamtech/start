@@ -44,18 +44,21 @@
                                                 <span class="input-icon input-icon-email"></span>
                                                 <span class="input-text">@lang('miscellaneous.email_phone')</span>
                                             </span>
-                                            <input type="text" name="login" required class="form-control input-lg @error('login') is-invalid @enderror" value="{{ old('login') }}" placeholder="@lang('miscellaneous.login_username')">
+                                            <input type="text" name="login" id="sign_login" required class="form-control input-lg @error('login') is-invalid @enderror" value="{{ old('login') }}" placeholder="@lang('miscellaneous.login_username')">
 										</div><!-- End .input-group -->
     @error('login')
                                         <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
     @enderror
 
-                                        <div class="input-group xs-margin" style="margin-bottom: 5px">
+                                        <div class="input-group xs-margin" style="position: relative; margin-bottom: 5px;">
 											<span class="input-group-addon">
                                                 <span class="input-icon input-icon-password"></span>
                                                 <span class="input-text">@lang('miscellaneous.password.label')</span>
                                             </span>
-                                            <input type="password" name="password" required class="form-control input-lg @error('password') is-invalid @enderror" placeholder="@lang('miscellaneous.password.label')">
+                                            <input type="password" name="password" id="sign_password" required class="form-control input-lg @error('password') is-invalid @enderror" placeholder="@lang('miscellaneous.password.label')">
+											<button id="showPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px;" onclick="event.preventDefault(); passwordVisible(this, 'sign_password');">
+												<i class="bi bi-eye-fill"></i>
+											</button>
 										</div><!-- End .input-group -->
     @error('password')
                                         <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>

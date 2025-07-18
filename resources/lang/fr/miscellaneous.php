@@ -232,6 +232,8 @@ return [
     'login_username' => 'N° de téléphone ou e-mail',
     'remember_me' => 'Rester connecté',
     'forgotten_password' => 'Mot de passe oublié ?',
+    'forgotten_password_info' => 'Indiquez-nous simplement votre adresse e-mail (ou n° de téléphone) et nous vous enverrons un code pour changer votre mot de passe.',
+    'reset_password_info' => 'Veuillez créer un mot de passe sécurisé et que vous n\'oublierai pas cette fois.',
     'not_member' => 'Pas encore membre ?',
     'signup_with' => 'ou s’inscrire avec :',
     'go_register' => 'Je n’ai pas de compte',

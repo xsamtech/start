@@ -30,10 +30,12 @@ class Category extends JsonResource
             'for_service' => $this->for_service,
             'icon' => $this->icon,
             'image_url' => $this->image_url,
+            'project_sector' => ProjectSector::make($this->project_sector),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by
+            'updated_by' => $this->updated_by,
+            'project_sector_id' => $this->project_sector_id
         ];
     }
 }

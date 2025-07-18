@@ -60,7 +60,8 @@
         <style id="custom-style">
             textarea { resize: none; }
             #footer .bottom a { color: #84bb26; }
-            #footer .bottom a:hover { text-decoration: underline; }
+            #footer .bottom a { color: #84bb26; }
+            #showPassword i { font-size: 2rem; }
             .item .item-image-container { position: relative; width: 100%; padding-top: 139.91%; overflow: hidden; }
             .item .item-image-container img { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; object-fit: cover; }
             .item-price-container { display: flex; justify-content: center; align-items: center; width: 200px!important; height: 40px!important; border-radius: 50px!important; }
