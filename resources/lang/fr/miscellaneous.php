@@ -617,6 +617,7 @@ return [
             'data' => [
                 'description' => 'Description du crowdfunding',
                 'expected_amount' => 'Montant attendu',
+                'collected_amount' => 'Montant déjà récolté',
                 'amount' => 'Montant',
                 'currency' => 'Devise'
             ],

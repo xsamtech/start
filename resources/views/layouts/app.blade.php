@@ -675,7 +675,7 @@
         @csrf
                             <input type="hidden" name="app_url" value="{{ getWebURL() }}">
                             <input type="hidden" name="user_id" value="{{ !empty($current_user) ? $current_user->id : null }}">
-                            <input type="hidden" name="crowdfunding_id" value="{{ !empty($selected_crowdfunding) ? $selected_crowdfunding->id : null }}">
+                            <input type="hidden" name="crowdfunding_id" value="{{ !empty($selected_crowdfunding) ? $selected_crowdfunding['id'] : null }}">
 
                             <div class="row">
                                 <!-- Amount -->

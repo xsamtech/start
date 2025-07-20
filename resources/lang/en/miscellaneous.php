@@ -632,6 +632,7 @@ return [
             'data' => [
                 'description' => 'Crowdfunding description',
                 'expected_amount' => 'Expected amount',
+                'collected_amount' => 'Amount already collected',
                 'amount' => 'Amount',
                 'currency' => 'Currency'
             ],

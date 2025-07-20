@@ -751,7 +751,7 @@ class PublicController extends Controller
 
         return view('crowdfundings', [
             'entity_title' => $entity_title,
-            'selected_crowdfunding' => $selected_crowdfunding,
+            'selected_crowdfunding' => (new ResourcesCrowdfunding($selected_crowdfunding))->resolve(),
             'countries' => showCountries(),
         ]);
     }

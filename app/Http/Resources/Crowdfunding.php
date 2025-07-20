@@ -28,6 +28,7 @@ class Crowdfunding extends JsonResource
             'currency' => $currency,
             'financing_rate' => $this->financingRate($currency),
             'convert_expected_amount' => $this->convertExpectedAmount($currency),
+            'total_paid' => $this->totalPaid($currency),
             'product' => Product::make($this->product),
             'user' => User::make($this->user),
             'paid_funds' => PaidFund::collection($this->paid_funds),

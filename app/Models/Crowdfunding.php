@@ -89,7 +89,7 @@ class Crowdfunding extends Model
     public function financingRate($userCurrency): float
     {
         // Retrieve the total amount paid, converted to the user's currency
-        $totalPaid = $this->getTotalPaid($userCurrency);
+        $totalPaid = $this->totalPaid($userCurrency);
 
         // Convert the expected amount to the user's currency
         $convertedExpectedAmount = $this->convertExpectedAmount($userCurrency);
@@ -113,7 +113,7 @@ class Crowdfunding extends Model
      * @param  string  $userCurrency
      * @return float
      */
-    private function getTotalPaid($userCurrency): float
+    public function totalPaid($userCurrency): float
     {
         // Get all the participations for this crowdfunding
         $paidFunds = PaidFund::where('crowdfunding_id', $this->id)->get();
