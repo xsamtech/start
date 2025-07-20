@@ -98,7 +98,7 @@ class PaidFundController extends BaseController
             return $this->handleError(__('notifications.find_user_404'));
         }
 
-        $paid_fund = User::find($paid_fund_id);
+        $paid_fund = PaidFund::find($paid_fund_id);
 
         if (is_null($paid_fund)) {
             return $this->handleError(__('notifications.find_paid_fund_404'));

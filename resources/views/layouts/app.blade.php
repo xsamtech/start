@@ -214,7 +214,7 @@
 
                                 <label class="radio-inline" for="mobile_money">
                                     <img src="{{ asset('assets/img/payment-mobile-money.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')" width="40" style="vertical-align: middle; margin-right: 20px;">
-                                    <input type="radio" name="transaction_type_id" id="mobile_money" value="1" style="position: relative; top: 1px;" /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')</span>
+                                    <input type="radio" name="transaction_type_id" id="mobile_money" value="1" style="position: relative; top: 1px;" checked /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')</span>
                                 </label>
                                 <label class="radio-inline" for="bank_card" style="margin: 0;">
                                     <img src="{{ asset('assets/img/payment-credit-card.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.bank_card')" width="40" style="vertical-align: middle; margin-right: 20px;">
@@ -705,7 +705,7 @@
 
                                 <label class="radio-inline" for="mobile_money">
                                     <img src="{{ asset('assets/img/payment-mobile-money.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')" width="40" style="vertical-align: middle; margin-right: 20px;">
-                                    <input type="radio" name="transaction_type_id" id="mobile_money" value="1" style="position: relative; top: 1px;" /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')</span>
+                                    <input type="radio" name="transaction_type_id" id="mobile_money" value="1" style="position: relative; top: 1px;" checked /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')</span>
                                 </label>
                                 <label class="radio-inline" for="bank_card" style="margin: 0;">
                                     <img src="{{ asset('assets/img/payment-credit-card.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.bank_card')" width="40" style="vertical-align: middle; margin-right: 20px;">

@@ -71,7 +71,11 @@
 												</div>
 											</div>
 											<div class="social-links">
-												<button class="btn strt-btn-chocolate-3" data-toggle="modal" data-target="#newCrowdfundingModal">@lang('miscellaneous.participate')</button>
+@if (!empty($current_user))
+												<button class="btn strt-btn-chocolate-3" data-toggle="modal" data-target="#payModal">@lang('miscellaneous.participate')</button>
+@else
+												<a href="{{ route('login', ['redirect' => 'crowdfunding.home']) }}" class="btn strt-btn-chocolate-3">@lang('miscellaneous.participate')</a>
+@endif
 											</div>
 										</div><!-- End .team-member-extra-->
 									</div><!-- End .team-member-header-meta -->
