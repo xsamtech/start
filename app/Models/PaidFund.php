@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @author Xanders
@@ -25,7 +26,7 @@ class PaidFund extends Model
 
     /**
      * ONE-TO-MANY
-     * One user for several customer_orders
+     * One user for several paid_funds
      */
     public function user(): BelongsTo
     {
@@ -38,7 +39,26 @@ class PaidFund extends Model
      */
     public function crowdfunding(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Crowdfunding::class);
+    }
+
+    /**
+     * MANY-TO-ONE
+     * Several payments for a cart
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Check if "paid_fund" has successful "payment"
+     * 
+     * @return bool
+     */
+    public function hasSuccessfulPayment(): bool
+    {
+        return $this->payments()->where('status', 0)->exists();
     }
 
     /**

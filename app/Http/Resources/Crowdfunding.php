@@ -19,13 +19,21 @@ class Crowdfunding extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $currency = auth()->check() ? auth()->user()->currency : $this->currency;
+
         return [
             'id' => $this->id,
             'description' => $this->description,
             'expected_amount' => $this->expected_amount,
+            'currency' => $currency,
+            'financing_rate' => $this->financingRate($currency),
+            'convert_expected_amount' => $this->convertExpectedAmount($currency),
             'product' => Product::make($this->product),
+            'user' => User::make($this->user),
+            'paid_funds' => PaidFund::collection($this->paid_funds),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+            'product_id' => $this->product_id,
             'user_id' => $this->user_id
         ];
     }

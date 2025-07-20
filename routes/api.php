@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['localization'])->group(function () {
     Route::apiResource('product', 'App\Http\Controllers\API\ProductController');
+    Route::apiResource('paid_fund', 'App\Http\Controllers\API\PaidFundController');
     Route::apiResource('payment', 'App\Http\Controllers\API\PaymentController');
 });
 /*
@@ -24,10 +25,13 @@ Route::middleware(['localization'])->group(function () {
  */
 Route::group(['middleware' => ['api', 'localization']], function () {
     Route::resource('product', 'App\Http\Controllers\API\ProductController');
+    Route::resource('paid_fund', 'App\Http\Controllers\API\PaidFundController');
     Route::resource('payment', 'App\Http\Controllers\API\PaymentController');
 
     // Product
     Route::post('product/purchase/{cart_id}/{user_id}', 'App\Http\Controllers\API\ProductController@purchase')->name('product.api.purchase');
+    // PaidFund
+    Route::post('paid_fund/pay/{paid_fund_id}/{user_id}', 'App\Http\Controllers\API\PaidFundController@pay')->name('paid_fund.api.pay');
     // Payment
     Route::post('payment/store', 'App\Http\Controllers\API\PaymentController@store')->name('payment.api.store');
     Route::get('payment/find_by_phone/{phone_number}', 'App\Http\Controllers\API\PaymentController@findByPhone')->name('payment.api.find_by_phone');

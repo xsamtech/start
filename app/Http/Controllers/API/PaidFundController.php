@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Resources\Cart as ResourcesCart;
-use App\Models\Product;
+use App\Models\PaidFund;
 use Illuminate\Http\Request;
-use App\Http\Resources\Product as ResourcesProduct;
-use App\Models\Cart;
+use App\Http\Resources\PaidFund as ResourcesPaidFund;
 use App\Models\Payment;
 use App\Models\User;
 use stdClass;
@@ -15,7 +13,7 @@ use stdClass;
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
  */
-class ProductController extends BaseController
+class PaidFundController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -24,21 +22,21 @@ class ProductController extends BaseController
      */
     public function index()
     {
-        // Récupérer tous les produits avec leurs catégories
-        $products = Product::with('category')->get();
+        // Récupérer tous les produits avec leurs crowdfundings
+        $paid_funds = PaidFund::with('crowdfunding')->get();
 
         // Regrouper les produits par catégorie
-        $groupedProducts = $products->groupBy(function ($product) {
-            return $product->category->category_name;
+        $groupedProducts = $paid_funds->groupBy(function ($paid_fund) {
+            return $paid_fund->crowdfunding->description;
         });
 
         // Transformer les données regroupées pour les envoyer dans la réponse
-        // Ici on fait une ressource personnalisée pour chaque catégorie, tu peux adapter selon ce que tu veux retourner
-        $groupedProductsResource = $groupedProducts->map(function ($group) {
-            return ResourcesProduct::collection($group); // ou créer une nouvelle ressource personnalisée pour chaque groupe
+        // Ici on fait une ressource personnalisée pour chaque crowdfunding, tu peux adapter selon ce que tu veux retourner
+        $groupedPaidFundsResource = $groupedProducts->map(function ($group) {
+            return ResourcesPaidFund::collection($group); // ou créer une nouvelle ressource personnalisée pour chaque groupe
         });
 
-        return $this->handleResponse($groupedProductsResource, __('notifications.find_all_products_success'));
+        return $this->handleResponse($groupedPaidFundsResource, __('notifications.find_all_paid_funds_success'));
     }
 
     /**
@@ -55,7 +53,7 @@ class ProductController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(PaidFund $paid_fund)
     {
         //
     }
@@ -63,7 +61,7 @@ class ProductController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, PaidFund $paid_fund)
     {
         //
     }
@@ -71,21 +69,21 @@ class ProductController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(PaidFund $paid_fund)
     {
         //
     }
 
     // ==================================== CUSTOM METHODS ====================================
     /**
-     * Purchase ordered product/service.
+     * Pay fund.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int $cart_id
+     * @param  int $paid_fund_id
      * @param  int $user_id
      * @return \Illuminate\Http\Response
      */
-    public function purchase(Request $request, $cart_id, $user_id)
+    public function pay(Request $request, $paid_fund_id, $user_id)
     {
         // FlexPay accessing data
         $gateway_mobile = config('services.flexpay.gateway_mobile');
@@ -100,14 +98,11 @@ class ProductController extends BaseController
             return $this->handleError(__('notifications.find_user_404'));
         }
 
-        $cart = Cart::where('id', $cart_id)->where('is_paid', 0)->where('user_id', $user_id)->first();
+        $paid_fund = User::find($paid_fund_id);
 
-        if (is_null($cart)) {
-            return $this->handleError(__('notifications.find_cart_404'));
+        if (is_null($paid_fund)) {
+            return $this->handleError(__('notifications.find_paid_fund_404'));
         }
-
-        // Get total prices in the cart
-        $total_to_pay = $cart->totalConvertedAmount($current_user->currency);
 
         // Validations
         if ($request->transaction_type_id == null OR !is_numeric($request->transaction_type_id)) {
@@ -116,7 +111,7 @@ class ProductController extends BaseController
 
         // If the transaction is via mobile money
         if ($request->transaction_type_id == 1) {
-            $reference_code = 'REF-' . ((string) random_int(10000000, 99999999)) . '-' . $cart->user_id;
+            $reference_code = 'REF-' . ((string) random_int(10000000, 99999999)) . '-' . $paid_fund->user_id;
 
             // Create response by sending request to FlexPay
             $data = array(
@@ -124,7 +119,7 @@ class ProductController extends BaseController
                 'type' => 1,
                 'phone' => $request->other_phone,
                 'reference' => $reference_code,
-                'amount' => $total_to_pay,
+                'amount' => $paid_fund->convertAmount($current_user->currency),
                 'currency' => $current_user->currency,
                 'callbackUrl' => getApiURL() . '/payment/store'
             );
@@ -164,24 +159,15 @@ class ProductController extends BaseController
                         $payment = Payment::create([
                             'reference' => $reference_code,
                             'order_number' => $jsonRes['orderNumber'],
-                            'amount' => round($total_to_pay),
+                            'amount' => $paid_fund->convertAmount($current_user->currency),
                             'phone' => $request->other_phone,
                             'currency' => $current_user->currency,
                             'channel' => $request->channel,
                             'type' => $request->transaction_type_id,
                             'status' => 1,
-                            'cart_id' => $cart->id
+                            'paid_fund_id' => $paid_fund->id
                         ]);
                     }
-
-                    // The cart is updated only if the processing succeed
-                    $random_string = (string) random_int(1000000, 9999999);
-                    $generated_number = 'STRT-' . $random_string . '-' . date('Y.m.d');
-
-                    $cart->update([
-                        'payment_code' => $generated_number,
-                        'is_paid' => 1,
-                    ]);
 
                     $object = new stdClass();
 
@@ -189,30 +175,30 @@ class ProductController extends BaseController
                         'message' => $jsonRes['message'],
                         'order_number' => $jsonRes['orderNumber']
                     ];
-                    $object->cart = new ResourcesCart($cart);
+                    $object->paid_fund = new ResourcesPaidFund($paid_fund);
 
-                    return $this->handleResponse($object, __('notifications.payment_done'));
+                    return $this->handleResponse($object, __('notifications.create_paid_fund_success'));
                 }
             }
         }
 
         // If the transaction is via bank card
         if ($request->transaction_type_id == 2) {
-            $reference_code = 'REF-' . ((string) random_int(10000000, 99999999)) . '-' . $cart->user_id;
+            $reference_code = 'REF-' . ((string) random_int(10000000, 99999999)) . '-' . $paid_fund->user_id;
 
             // Create response by sending request to FlexPay
             $body = json_encode(array(
                 'authorization' => 'Bearer ' . config('services.flexpay.api_token'),
                 'merchant' => config('services.flexpay.merchant'),
                 'reference' => $reference_code,
-                'amount' => round($total_to_pay),
+                'amount' => $paid_fund->convertAmount($current_user->currency),
                 'currency' => $current_user->currency,
                 'description' => __('miscellaneous.bank_transaction_description'),
                 'callback_url' => getApiURL() . '/payment/store',
-                'approve_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/0/cart/' . $cart->id,
-                'cancel_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/1/cart/' . $cart->id,
-                'decline_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/2/cart/' . $cart->id,
-                'home_url' => $request->app_url . '/account/cart?paid=done',
+                'approve_url' => $request->app_url . '/paid/' . $paid_fund->convertAmount($current_user->currency) . '/' . $current_user->currency . '/0/paid_fund/' . $paid_fund->id,
+                'cancel_url' => $request->app_url . '/paid/' . $paid_fund->convertAmount($current_user->currency) . '/' . $current_user->currency . '/1/paid_fund/' . $paid_fund->id,
+                'decline_url' => $request->app_url . '/paid/' . $paid_fund->convertAmount($current_user->currency) . '/' . $current_user->currency . '/2/paid_fund/' . $paid_fund->id,
+                'home_url' => $request->app_url . '/crowdfunding/' . $paid_fund->crowdfunding_id,
             ));
 
             $curl = curl_init($gateway_card);
@@ -243,24 +229,15 @@ class ProductController extends BaseController
                         $payment = Payment::create([
                             'reference' => $reference_code,
                             'order_number' => $orderNumber,
-                            'amount' => round($total_to_pay),
+                            'amount' => $paid_fund->convertAmount($current_user->currency),
                             'phone' => $request->other_phone,
                             'currency' => $current_user->currency,
                             'channel' => $request->channel,
                             'type' => $request->transaction_type_id,
                             'status' => 1,
-                            'cart_id' => $cart->id
+                            'paid_fund_id' => $paid_fund->id
                         ]);
                     }
-
-                    // The cart is updated only if the processing succeed
-                    $random_string = (string) random_int(1000000, 9999999);
-                    $generated_number = 'STRT-' . $random_string . '-' . date('Y.m.d');
-
-                    $cart->update([
-                        'payment_code' => $generated_number,
-                        'is_paid' => 1
-                    ]);
 
                     $object = new stdClass();
 
@@ -269,9 +246,9 @@ class ProductController extends BaseController
                         'order_number' => $orderNumber,
                         'url' => $url
                     ];
-                    $object->cart = new ResourcesCart($cart);
+                    $object->paid_fund = new ResourcesPaidFund($paid_fund);
 
-                    return $this->handleResponse($object, __('notifications.create_subscription_success'));
+                    return $this->handleResponse($object, __('notifications.create_paid_fund_success'));
                 }
             }
         }

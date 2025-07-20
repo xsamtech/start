@@ -157,7 +157,8 @@ if (!function_exists('addItemsToExplodedArray')) {
 if (!function_exists('getExchangeRate')) {
     function getExchangeRate($baseCurrency, $targetCurrency)
     {
-        $apiKey = config('services.exchangerate.key');
+        // $baseCurrency = $baseCurrency ?? 'USD';
+        // $apiKey = config('services.exchangerate.key');
         // ExchangeRate API URL
         // $url = "https://v6.exchangerate-api.com/v6/{$apiKey}/pair/{$baseCurrency}/{$targetCurrency}";
 

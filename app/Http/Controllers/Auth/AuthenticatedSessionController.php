@@ -98,6 +98,10 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
         }
 
+        if ($request->has('redirect')) {
+            return redirect()->route($request->get('redirect'));
+        }
+
         if ($request->has('cart')) {
             return redirect()->route('account.entity', ['entity' => 'cart']);
         }

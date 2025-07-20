@@ -34,7 +34,7 @@ Route::get('/pay', [PublicController::class, 'pay'])->name('pay');
 Route::post('/pay', [PublicController::class, 'runPay']);
 Route::get('/transaction_waiting', [PublicController::class, 'transactionWaiting'])->name('transaction.waiting');
 Route::get('/transaction_message/{orderNumber}', [PublicController::class, 'transactionMessage'])->name('transaction.message');
-Route::get('/paid/{amount}/{currency}/{code}/{cart_id}', [PublicController::class, 'paid'])->whereNumber(['amount', 'code', 'cart_id'])->name('paid');
+Route::get('/paid/{amount}/{currency}/{code}/{entity}/{entity_id}', [PublicController::class, 'paid'])->whereNumber(['amount', 'code', 'cart_id'])->name('paid');
 
 Route::middleware('auth')->group(function () {
     Route::get('/change-currency/{currency}', [PublicController::class, 'changeCurrency'])->name('change_currency');

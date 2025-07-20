@@ -52,6 +52,16 @@ class Cart extends Model
     }
 
     /**
+     * Check if "cart" has successful "payment"
+     * 
+     * @return bool
+     */
+    public function hasSuccessfulPayment(): bool
+    {
+        return $this->payments()->where('status', 0)->exists();
+    }
+
+    /**
      * Total price of ordered products
      *
      * @return float

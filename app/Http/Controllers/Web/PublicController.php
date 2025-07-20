@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Crowdfunding as ResourcesCrowdfunding;
 use App\Http\Resources\Post as ResourcesPost;
 use App\Http\Resources\Product as ResourcesProduct;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Crowdfunding;
 use App\Models\File;
+use App\Models\PaidFund;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Role;
@@ -201,23 +204,6 @@ class PublicController extends Controller
             $category = Category::where([['id', $categoryId], ['for_service', 2]])->first();
             // Get user projects
             $query = Product::where([['type', 'project'], ['category_id', $categoryId], ['user_id', $current_user->id]]);
-
-            // Sort by "action" if needed
-            $query->when($request->action, function ($query) use ($request) {
-                return $query->where('action', $request->action);
-            });
-
-            // Filter by price if values ​​are passed in the query
-            $fromPrice = $request->input('from_price', 0);
-            $toPrice = $request->input('to_price', 999999);
-
-            if ($fromPrice > $toPrice) {
-                return redirect()->back()->with('error_message', __('notifications.min_max_price_error'));
-            }
-
-            // Add price filter to query
-            $query->whereBetween('price', [$fromPrice, $toPrice]);
-
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
 
             // Ajouter la méthode convertPrice au résultat paginé
@@ -416,23 +402,6 @@ class PublicController extends Controller
             $category = Category::where([['id', $categoryId], ['for_service', 2]])->first();
             // Get user projects
             $query = Product::where([['type', 'project'], ['category_id', $categoryId]]);
-
-            // Sort by "action" if needed
-            $query->when($request->action, function ($query) use ($request) {
-                return $query->where('action', $request->action);
-            });
-
-            // Filter by price if values ​​are passed in the query
-            $fromPrice = $request->input('from_price', 0);
-            $toPrice = $request->input('to_price', 999999);
-
-            if ($fromPrice > $toPrice) {
-                return redirect()->back()->with('error_message', __('notifications.min_max_price_error'));
-            }
-
-            // Add price filter to query
-            $query->whereBetween('price', [$fromPrice, $toPrice]);
-
             $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
 
             if (Auth::check()) {
@@ -749,7 +718,41 @@ class PublicController extends Controller
      */
     public function crowdfunding()
     {
-        return view('crowdfundings');
+        $crowdfundings = Crowdfunding::orderByDesc('created_at')->paginate(8)->appends(request()->query());
+
+        // Ajouter le taux de financement à chaque crowdfunding
+        $crowdfundings->getCollection()->transform(function ($crowdfunding) {
+            $currency = (Auth::check() ? Auth::user()->currency : $crowdfunding->currency);
+            $crowdfunding->financing_rate = $crowdfunding->financingRate($currency);
+
+            return $crowdfunding;
+        });
+
+        return view('crowdfundings', [
+            'crowdfundings' => ResourcesCrowdfunding::collection($crowdfundings)->resolve(),
+            'crowdfundings_req' => $crowdfundings,
+        ]);
+    }
+
+    /**
+     * GET: Crowdfunding details
+     *
+     * @param  string  $id
+     * @return \Illuminate\View\View
+     */
+    public function crowdfundingDatas($id)
+    {
+        $entity_title = __('miscellaneous.admin.crowdfunding.details');
+        $selected_crowdfunding = Crowdfunding::find($id);
+
+        if (is_null($selected_crowdfunding)) {
+            return redirect('/crowdfunding')->with('error_message', __('notifications.find_error'));
+        }
+
+        return view('crowdfundings', [
+            'entity_title' => $entity_title,
+            'selected_crowdfunding' => $selected_crowdfunding,
+        ]);
     }
 
     // ==================================== HTTP DELETE METHODS ====================================
@@ -835,56 +838,110 @@ class PublicController extends Controller
      * @param $cart_id
      * @return \Illuminate\View\View
      */
-    public function paid($amount = null, $currency = null, $code, $cart_id)
+    public function paid($amount = null, $currency = null, $code, $entity, $entity_id)
     {
-        $cart = Cart::find($cart_id);
+        if ($entity == 'paid_fund') {
+            $paid_fund = PaidFund::find($entity_id);
 
-        if ($code == '0') {
-            return view('transaction_message', [
-                'amount' => $amount,
-                'currency' => $currency,
-                'status_code' => $code,
-                'cart' => $cart,
-                'message_content' => __('notifications.processing_succeed')
-            ]);
-        }
-
-        if ($code == '1') {
-            // Find payment by order number API
-            $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
-
-            if ($payment->success) {
-                // Update payment status API
-                $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+            if ($code == '0') {
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'paid_fund' => $paid_fund,
+                    'message_content' => __('notifications.processing_succeed')
+                ]);
             }
 
-            return view('transaction_message', [
-                'amount' => $amount,
-                'currency' => $currency,
-                'status_code' => $code,
-                'cart' => $cart,
-                'status_code' => $code,
-                'message_content' => __('notifications.process_canceled')
-            ]);
-        }
+            if ($code == '1') {
+                // Find payment by order number API
+                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
 
-        if ($code == '2') {
-            // Find payment by order number API
-            $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
+                if ($payment->success) {
+                    // Update payment status API
+                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                }
 
-            if ($payment->success) {
-                // Update payment status API
-                $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'paid_fund' => $paid_fund,
+                    'status_code' => $code,
+                    'message_content' => __('notifications.process_canceled')
+                ]);
             }
 
-            return view('transaction_message', [
-                'amount' => $amount,
-                'currency' => $currency,
-                'status_code' => $code,
-                'cart' => $cart,
-                'status_code' => $code,
-                'message_content' => __('notifications.process_failed')
-            ]);
+            if ($code == '2') {
+                // Find payment by order number API
+                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
+
+                if ($payment->success) {
+                    // Update payment status API
+                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                }
+
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'paid_fund' => $paid_fund,
+                    'status_code' => $code,
+                    'message_content' => __('notifications.process_failed')
+                ]);
+            }
+        }
+
+        if ($entity == 'cart') {
+            $cart = Cart::find($entity_id);
+
+            if ($code == '0') {
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'cart' => $cart,
+                    'message_content' => __('notifications.processing_succeed')
+                ]);
+            }
+
+            if ($code == '1') {
+                // Find payment by order number API
+                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
+
+                if ($payment->success) {
+                    // Update payment status API
+                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                }
+
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'cart' => $cart,
+                    'status_code' => $code,
+                    'message_content' => __('notifications.process_canceled')
+                ]);
+            }
+
+            if ($code == '2') {
+                // Find payment by order number API
+                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
+
+                if ($payment->success) {
+                    // Update payment status API
+                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                }
+
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'cart' => $cart,
+                    'status_code' => $code,
+                    'message_content' => __('notifications.process_failed')
+                ]);
+            }
         }
     }
 
@@ -897,36 +954,58 @@ class PublicController extends Controller
      */
     public function runPay(Request $request)
     {
-        $inputs = [
-            'transaction_type_id' => $request->transaction_type_id,
-            'other_phone' => $request->other_phone_code . $request->other_phone_number,
-            'user_id' => $request->user_id,
-            'cart_id' => $request->cart_id,
-            'app_url' => $request->app_url
-        ];
+        $paid_fund = null;
 
-        if ($inputs['transaction_type_id'] == null) {
+        if ($request->transaction_type_id == null) {
             return redirect()->back()->with('error_message', __('notifications.transaction_type_error'));
         }
 
-        if ($inputs['transaction_type_id'] == 1) {
+        if ($request->transaction_type_id == 1) {
             if (trim($request->other_phone_code) == null OR trim($request->other_phone_number) == null) {
                 return redirect()->back()->with('error_message', __('validation.custom.phone.incorrect'));
             }
         }
 
-        if ($inputs['transaction_type_id'] != null) {
-            if ($inputs['transaction_type_id'] == 1) {
+        if (!empty($request->crowdfunding_id)) {
+            $paid_fund = PaidFund::create([
+                'crowdfunding_id' => $request->crowdfunding_id,
+                'user_id' => $request->user_id,
+                'amount' => $request->amount,
+                'currency' => $request->currency
+            ]);
+        }
+
+        if ($request->transaction_type_id != null) {
+            $product_api = $this::$api_client_manager::call('POST', 
+                                                            getApiURL() . '/product/purchase/' . $request->cart_id . '/' . $request->user_id, 
+                                                            null, [
+                                                                'transaction_type_id' => $request->transaction_type_id,
+                                                                'other_phone' => $request->other_phone_code . $request->other_phone_number,
+                                                                'user_id' => $request->user_id,
+                                                                'cart_id' => $request->cart_id,
+                                                                'app_url' => $request->app_url
+                                                            ]);
+            $paid_fund_api = $this::$api_client_manager::call('POST', 
+                                                                getApiURL() . '/paid_fund/pay/' . $paid_fund->id . '/' . $request->user_id, 
+                                                                null, [
+                                                                'transaction_type_id' => $request->transaction_type_id,
+                                                                'other_phone' => $request->other_phone_code . $request->other_phone_number,
+                                                                'user_id' => $request->user_id,
+                                                                'paid_fund_id' => $paid_fund->id,
+                                                                'app_url' => $request->app_url
+                                                            ]);
+
+            if ($request->transaction_type_id == 1) {
                 if ($request->other_phone_code == null or $request->other_phone_number == null) {
                     return redirect()->back()->with('error_message', __('validation.custom.phone.incorrect'));
                 }
 
-                $cart = $this::$api_client_manager::call('POST', getApiURL() . '/product/purchase/' . $inputs['cart_id'] . '/' . $inputs['user_id'], null, $inputs);
+                $cart = !empty($request->crowdfunding_id) ? $paid_fund_api : $product_api;
 
                 if ($cart->success) {
                     return redirect()->route('transaction.waiting', [
                         'app_id' => '-',
-                        'success_message' => $cart->data->result_response->order_number . '-' . $inputs['user_id'],
+                        'success_message' => $cart->data->result_response->order_number . '-' . $request->user_id,
                     ]);
 
                 } else {
@@ -934,8 +1013,8 @@ class PublicController extends Controller
                 }
             }
 
-            if ($inputs['transaction_type_id'] == 2) {
-                $cart = $this::$api_client_manager::call('POST', getApiURL() . '/product/purchase/' . $inputs['cart_id'] . '/' . $inputs['user_id'], null, $inputs);
+            if ($request->transaction_type_id == 2) {
+                $cart = !empty($request->crowdfunding_id) ? $paid_fund_api : $product_api;
 
                 if ($cart->success) {
                     return redirect($cart->data->result_response->url)->with('order_number', $cart->data->result_response->order_number);

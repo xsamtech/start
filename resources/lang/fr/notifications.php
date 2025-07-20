@@ -296,6 +296,13 @@ return [
     'create_session_success' => 'Session créée',
     'update_session_success' => 'Session modifiée',
     'delete_session_success' => 'Session supprimée',
+    // PaidFund
+    'find_all_paid_funds_success' => 'Fonds payés trouvés',
+    'find_paid_fund_success' => 'Fond payé trouvé',
+    'find_paid_fund_404' => 'Fond payé non trouvé',
+    'create_paid_fund_success' => 'Fond payé et envoyé',
+    'update_paid_fund_success' => 'Fond payé modifié',
+    'delete_paid_fund_success' => 'Fond payé supprimé',
     // Payment
     'find_all_payments_success' => 'Paiements trouvés',
     'find_payment_success' => 'Paiement trouvé',

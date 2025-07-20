@@ -31,6 +31,10 @@
 									<form id="login-form" method="POST" action="{{ route('login') }}">
     @csrf
 
+	@if (request()->has('redirect'))
+										<input type="hidden" name="redirect" value="{{ request()->get('redirect') }}">
+	@endif
+
 	@if (request()->has('product_id'))
 										<input type="hidden" name="product_id" value="{{ request()->get('product_id') }}">
 	@endif

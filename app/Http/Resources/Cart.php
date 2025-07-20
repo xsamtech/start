@@ -24,6 +24,7 @@ class Cart extends JsonResource
             'payment_code' => $this->payment_code,
             'is_paid' => $this->is_paid,
             'total_amount' => $this->totalAmount(),
+            'has_successful_payment' => $this->hasSuccessfulPayment(),
             'orders' => CustomerOrder::collection($this->customer_orders),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s')

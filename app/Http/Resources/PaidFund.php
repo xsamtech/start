@@ -19,13 +19,19 @@ class PaidFund extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $currency = auth()->check() ? auth()->user()->currency : $this->currency;
+
         return [
             'id' => $this->id,
-            'crowdfunding_id' => $this->crowdfunding_id,
-            'user_id' => $this->user_id,
+            'user' => User::make($this->user),
             'amount' => $this->amount,
+            'currency' => $currency,
+            'convert_amount' => $this->convertAmount($currency),
+            'has_successful_payment' => $this->hasSuccessfulPayment(),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at->format('Y-m-d H:i:s')
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+            'crowdfunding_id' => $this->crowdfunding_id,
+            'user_id' => $this->user_id
         ];
     }
 }

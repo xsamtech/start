@@ -61,6 +61,8 @@ return [
     'confirm' => 'Confirm',
     'send' => 'Send',
     'add' => 'Add',
+    'launch_new' => 'Launch a campaign',
+    'participate' => 'Participate',
     'publish' => 'Publish',
     'ask' => 'Ask',
     'answer' => 'Answer',
@@ -556,6 +558,19 @@ return [
                     'category_name' => 'Category name'
                 ],
             ],
+
+            // ProjectSector
+            'project_sector' => [
+                'details' => 'Sector details',
+                'link' => 'Manage sectors',
+                'add' => 'Add a sector',
+                'edit' => 'Edit the sector',
+                'search' => 'Search a sector',
+                'list' => 'Sectors list',
+                'data' => [
+                    'sector_name' => 'Sector name'
+                ],
+            ],
         ],
 
         // Subscription
@@ -721,6 +736,10 @@ return [
         'crowdfunding' => [
             'title' => 'Do crowdfunding',
             'description' => 'Start a crowdfunding campaign or participate in another member\'s.',
+            'sector' => [
+                'title' => 'Sector',
+                'category' => 'Category',
+            ],
         ],
 
         // Footer

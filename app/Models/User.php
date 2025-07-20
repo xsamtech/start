@@ -75,6 +75,15 @@ class User extends Authenticatable
     }
 
     /**
+     * MANY-TO-ONE
+     * Several paid_funds for a user
+     */
+    public function paid_funds(): HasMany
+    {
+        return $this->hasMany(PaidFund::class);
+    }
+
+    /**
      * Selected role
      */
     public function getSelectedRoleAttribute()

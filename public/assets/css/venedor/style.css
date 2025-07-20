@@ -1488,44 +1488,44 @@ select.input-lg {
 ------------- 11 Progress Bars */
 
 .progress {
-	height: 20px;
-	margin-bottom: 15px;
-	overflow: visible;
-	background-color: #eaeaea;
-	border-radius: 0;
-	-webkit-box-shadow: none;
-	box-shadow: none;
+  height: 20px;
+  margin-bottom: 15px;
+  overflow: visible;
+  background-color: #eaeaea;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .progress-bar {
-	float: left;
-	width: 0;
-	height: 100%;
-	font-size: 12px;
-	line-height: 20px;
-	color: #fff;
-	text-align: center;
-	-webkit-box-shadow: none;
-	box-shadow: none;
+  float: left;
+  width: 0;
+  height: 100%;
+  font-size: 12px;
+  line-height: 20px;
+  color: #fff;
+  text-align: center;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .progress-bar-custom {
-	background-color: #04471a;
-	position: relative;
-	color: #444645;
+  background-color: #7bae23;
+  position: relative;
+  color:#444645;
 }
 
 .progress-bar-custom:after {
-	display: block;
-	content: '';
+	display:block;
+	content:'';
 	position: absolute;
-	right: 0;
-	bottom: 100%;
+	right:0;
+	bottom:100%;
 	width: 0px;
 	height: 0px;
 	border-style: solid;
 	border-width: 9px 0 0 9px;
-	border-color: transparent transparent transparent #6e9b20;
+	border-color: transparent transparent transparent #04471a;
 }
 
 .progress-text {
