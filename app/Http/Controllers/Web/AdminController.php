@@ -29,7 +29,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        return view('dashboard.home');
     }
 
     // ==================================== HTTP POST METHODS ====================================

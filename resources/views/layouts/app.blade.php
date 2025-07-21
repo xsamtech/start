@@ -37,15 +37,16 @@
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/owl.carousel.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/responsive.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/addons/cropper/css/cropper.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/addons/jquery/jquery-ui/jquery-ui.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/addons/jquery/datetimepicker/css/jquery.datetimepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/custom/cropper/css/cropper.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/custom/sweetalert2/dist/sweetalert2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/custom/jquery/jquery-ui/jquery-ui.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/custom/jquery/datetimepicker/css/jquery.datetimepicker.min.css') }}">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
         <!--- jQuery -->
-        {{-- <script src="{{ asset('assets/addons/jquery/js/jquery.min.js') }}"></script> --}}
+        {{-- <script src="{{ asset('assets/addons/custom/jquery/js/jquery.min.js') }}"></script> --}}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script>
             window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')
@@ -1151,30 +1152,31 @@
         <a href="#" id="scroll-top" title="Scroll to Top"><i class="fa-solid fa-angle-up"></i></a><!-- End #scroll-top -->
 
         <!-- END -->
-        <script src="{{ asset('assets/addons/jquery/js/jquery-ui.min.js') }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
-        <script src="{{ asset('assets/addons/jquery/datetimepicker/js/jquery.datetimepicker.full.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/smoothscroll.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.debouncedresize.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/retina.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.placeholder.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.hoverIntent.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/twitter/jquery.tweet.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.flexslider-min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/owl.carousel.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jflickrfeed.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.prettyPhoto.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.themepunch.tools.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/jquery.themepunch.revolution.min.js') }}"></script>
-        <script src="{{ asset('assets/js/venedor/main.js') }}"></script>
-        <script src="{{ asset('assets/addons/cropper/js/cropper.min.js') }}"></script>
-        <script src="{{ asset('assets/addons/autosize/js/autosize.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/addons/custom/jquery/js/jquery-ui.min.js') }}"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
+        <script type="text/javascript" src="{{ asset('assets/addons/custom/jquery/datetimepicker/js/jquery.datetimepicker.full.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/smoothscroll.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/jquery.debouncedresize.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/retina.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/jquery.placeholder.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/jquery.hoverIntent.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/twitter/jquery.tweet.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/jquery.flexslider-min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/owl.carousel.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/jflickrfeed.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/jquery.prettyPhoto.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/jquery.themepunch.tools.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/jquery.themepunch.revolution.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/venedor/main.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/addons/custom/cropper/js/cropper.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/addons/custom/autosize/js/autosize.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/addons/custom/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-        <script src="https://cdn.tiny.cloud/1/1jb70lfiyigr5qfhgclx0pv2t9fnl4uco3cs1xk50eqdz73i/tinymce/5/tinymce.min.js"></script>
-        <script src="{{ asset('assets/js/scripts.custom.js') }}"></script>
+        <script type="text/javascript" src="https://cdn.tiny.cloud/1/1jb70lfiyigr5qfhgclx0pv2t9fnl4uco3cs1xk50eqdz73i/tinymce/5/tinymce.min.js"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/scripts.custom.js') }}"></script>
 
-        <script>
+        <script type="text/javascript">
             /**
              * TinyMCE : Custom textarea
              */

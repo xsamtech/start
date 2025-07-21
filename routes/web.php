@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/crowdfunding/finance/{id}', [PublicController::class, 'financeCrowdfunding'])->whereNumber('id')->name('crowdfunding.finance');
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.home');
-    // Role
+    // Roles
     Route::get('/dashboard/role', [AdminController::class, 'role'])->name('dashboard.role.home');
     Route::post('/dashboard/role', [AdminController::class, 'addRole']);
     Route::get('/dashboard/role/{id}', [AdminController::class, 'roleDatas'])->whereNumber('id')->name('dashboard.role.datas');
@@ -59,12 +59,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/role/{entity}', [AdminController::class, 'addRoleEntity']);
     Route::get('/dashboard/role/{entity}/{id}', [AdminController::class, 'roleEntityDatas'])->whereNumber('id')->name('dashboard.role.entity.datas');
     Route::post('/dashboard/role/{entity}/{id}', [AdminController::class, 'updateRoleEntity'])->whereNumber('id');
-    // Project sectors
-    Route::get('/dashboard/project-sector', [AdminController::class, 'sector'])->name('dashboard.sector.home');
-    Route::post('/dashboard/project-sector', [AdminController::class, 'addSector']);
-    Route::get('/dashboard/project-sector/{id}', [AdminController::class, 'sectorDatas'])->whereNumber('id')->name('dashboard.sector.datas');
-    Route::post('/dashboard/project-sector/{id}', [AdminController::class, 'updateSector'])->whereNumber('id');
-    // Category
+    // Sectors
+    Route::get('/dashboard/sector', [AdminController::class, 'sector'])->name('dashboard.sector.home');
+    Route::post('/dashboard/sector', [AdminController::class, 'addSector']);
+    Route::get('/dashboard/sector/{id}', [AdminController::class, 'sectorDatas'])->whereNumber('id')->name('dashboard.sector.datas');
+    Route::post('/dashboard/sector/{id}', [AdminController::class, 'updateSector'])->whereNumber('id');
+    // Categories
     Route::get('/dashboard/category', [AdminController::class, 'category'])->name('dashboard.category.home');
     Route::post('/dashboard/category', [AdminController::class, 'addCategory']);
     Route::get('/dashboard/category/{id}', [AdminController::class, 'categoryDatas'])->whereNumber('id')->name('dashboard.category.datas');
