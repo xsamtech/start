@@ -39,8 +39,7 @@
         <link rel="stylesheet" href="{{ asset('assets/css/venedor/responsive.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/addons/custom/cropper/css/cropper.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/addons/custom/sweetalert2/dist/sweetalert2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/addons/custom/jquery/jquery-ui/jquery-ui.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/addons/custom/jquery/datetimepicker/css/jquery.datetimepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/addons/custom/flatpickr/dist/flatpickr.min.css') }}">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -1152,9 +1151,8 @@
         <a href="#" id="scroll-top" title="Scroll to Top"><i class="fa-solid fa-angle-up"></i></a><!-- End #scroll-top -->
 
         <!-- END -->
-        <script type="text/javascript" src="{{ asset('assets/addons/custom/jquery/js/jquery-ui.min.js') }}"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
-        <script type="text/javascript" src="{{ asset('assets/addons/custom/jquery/datetimepicker/js/jquery.datetimepicker.full.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/addons/custom/flatpickr/dist/flatpickr.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/addons/custom/flatpickr/dist/fr.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/venedor/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/venedor/smoothscroll.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/venedor/jquery.debouncedresize.js') }}"></script>
@@ -1177,6 +1175,18 @@
         <script type="text/javascript" src="{{ asset('assets/js/scripts.custom.js') }}"></script>
 
         <script type="text/javascript">
+            /**
+             * Flatpickr : DateTime picker
+             */
+            flatpickr("#birthdate", {
+                dateFormat: "d/m/Y",  // Affiche la date comme "DD/MM/YYYY"
+                locale: locale,
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Format MySQL avant l'envoi (automatique au submit)
+                    instance.input.value = selectedDates[0].toISOString().split('T')[0]; // YYYY-MM-DD
+                }
+            });
+
             /**
              * TinyMCE : Custom textarea
              */

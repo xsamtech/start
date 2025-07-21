@@ -92,6 +92,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user is administator
+     */
+    public function isAdmin()
+    {
+        $selectedRole = $this->selected_role;
+
+        // Vérifier si le rôle sélectionné est "admin" en prenant en compte la langue
+        return $selectedRole && $selectedRole->getTranslation('role_name', 'fr') == 'Administrateur'; 
+    }
+
+    /**
      * Unpaid cart
      */
     public function unpaidCart(): HasOne

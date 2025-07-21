@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -21,6 +23,23 @@ use Illuminate\Validation\Rules;
  */
 class AdminController extends Controller
 {
+    public static $api_client_manager;
+    protected $currentUser;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            /** @var User $user */
+            $user = Auth::user();
+
+            if (!$user || !$user->isAdmin()) {
+                abort(403);
+            }
+
+            return $next($request);
+        });
+    }
+
     // ==================================== HTTP GET METHODS ====================================
     /**
      * GET: Home page

@@ -103,7 +103,11 @@ return [
     'deactivate' => 'Désactiver',
     'lock' => 'Bloquer',
     'unlock' => 'Débloquer',
-    'search_input' => 'Rechercher ici',
+    'search_input' => 'Rechercher ...',
+    'search_info' => 'Je recherche ...',
+    'search_members' => 'Membres',
+    'search_sectors' => 'Secteurs',
+    'search_categories' => 'Catégories',
     'search' => 'Rechercher',
     'all_categories' => 'Toute catégorie',
     'all_types' => 'Tous les types',
@@ -351,6 +355,7 @@ return [
                 'admins' => 'Administrateurs',
                 'membres' => 'Membres'
             ],
+            'project_sectors' => 'Secteurs',
             'categories' => [
                 'title' => 'Catégories',
                 'projects' => 'Projets',

@@ -24,6 +24,7 @@ const retrievedImageRecto = document.getElementById('retrieved_image_recto');
 const currentImageRecto = document.querySelector('#rectoImageWrapper img');
 const retrievedImageVerso = document.getElementById('retrieved_image_verso');
 const currentImageVerso = document.querySelector('#versoImageWrapper img');
+let locale = currentLanguage === 'fr' ? 'fr' : 'en';
 let cropper;
 
 /**
@@ -127,20 +128,20 @@ $(function () {
 
     /* jQuery Date picker */
     // Ensure the localization exists
-    if ($.datepicker.regional[browserLanguage]) {
-        $.datepicker.setDefaults($.datepicker.regional[browserLanguage]);
+    // if ($.datepicker.regional[browserLanguage]) {
+    //     $.datepicker.setDefaults($.datepicker.regional[browserLanguage]);
 
-    } else {
-        // fallback to english if language is not found
-        $.datepicker.setDefaults($.datepicker.regional['fr']);
-    }
+    // } else {
+    //     // fallback to english if language is not found
+    //     $.datepicker.setDefaults($.datepicker.regional['fr']);
+    // }
 
     // Initialize the datepicker
-    $('#birthdate, #register_birthdate, #update_birthdate').datepicker({
-        onSelect: function () {
-            $(this).focus();
-        }
-    });
+    // $('#birthdate, #register_birthdate, #update_birthdate').datepicker({
+    //     onSelect: function () {
+    //         $(this).focus();
+    //     }
+    // });
 
     // $('#birthdate, #register_birthdate, #update_birthdate').datepicker({
     //     dateFormat: currentLanguage.startsWith('fr') || currentLanguage.startsWith('ln') ? 'dd/mm/yy' : 'mm/dd/yy',
@@ -150,10 +151,10 @@ $(function () {
     // });
 
     /* jQuery DateTime picker */
-    jQuery('#outflow_date').datetimepicker({
-        format: 'd/m/Y H:i'
-    });
-    jQuery.datetimepicker.setLocale('fr');
+    // jQuery('#outflow_date').datetimepicker({
+    //     format: 'd/m/Y H:i'
+    // });
+    // jQuery.datetimepicker.setLocale('fr');
 
     // AVATAR with ajax
     $('#avatar').on('change', function (e) {

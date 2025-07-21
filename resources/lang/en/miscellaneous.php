@@ -103,7 +103,11 @@ return [
     'deactivate' => 'Deactivate',
     'lock' => 'Lock',
     'unlock' => 'Unlock',
-    'search_input' => 'Search here',
+    'search_input' => 'Search...',
+    'search_info' => 'I\'m searching for...',
+    'search_members' => 'Members',
+    'search_sectors' => 'Sectors',
+    'search_categories' => 'Categories',
     'search' => 'Search',
     'all_categories' => 'Any category',
     'all_types' => 'All types',
@@ -351,6 +355,7 @@ return [
                 'admins' => 'Administrators',
                 'membres' => 'Members'
             ],
+            'project_sectors' => 'Sectors',
             'categories' => [
                 'title' => 'Categories',
                 'projects' => 'Projects',

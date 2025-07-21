@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Http\Resources\Category as ResourcesCategory;
 use App\Http\Resources\Product as ResourcesProduct;
+use App\Http\Resources\ProjectSector as ResourcesProjectSector;
 use App\Http\Resources\User as ResourcesUser;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProjectSector;
 use App\Models\User;
 use App\Services\CartService;
 use Illuminate\Pagination\Paginator;
@@ -43,10 +47,26 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('user_orders', $user_orders);
             }
 
+            $members = User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
+                                $query->where('role_name->fr', 'Membre');
+                            })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query());
+            $members_req = User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
+                                $query->where('role_name->fr', 'Membre');
+                            })->get();
+            $sectors = ProjectSector::orderByDesc('created_at')->paginate(12)->appends(request()->query());
+            $sectors_req = ProjectSector::all();
+            $categories = Category::orderByDesc('created_at')->paginate(12)->appends(request()->query());
+            $categories_req = Category::all();
             $popular_projects = Product::mostOrdered(6, 'project', 'monthly');
             $popular_products = Product::mostOrdered(6, 'product', 'monthly');
             $popular_services = Product::mostOrdered(6, 'service', 'monthly');
 
+            $view->with('members', ResourcesUser::collection($members)->resolve());
+            $view->with('members_req', $members_req);
+            $view->with('sectors', ResourcesProjectSector::collection($sectors)->resolve());
+            $view->with('sectors_req', $sectors_req);
+            $view->with('categories', ResourcesCategory::collection($categories)->resolve());
+            $view->with('categories_req', $categories_req);
             $view->with('cartService', $cartService);
             $view->with('session_cart_total', $sessionCartTotal);
             $view->with('current_user', $current_user);
