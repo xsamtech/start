@@ -415,7 +415,7 @@
                         </div>
                         <div class="dropdown nxl-h-item">
                             <a href="javascript:void(0);" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
-                                <img src="{{ $current_user['avatar_url'] }}" alt="user-image" class="img-fluid user-avtar me-0" />
+                                <img src="{{ $current_user['avatar_url'] ?? asset('assets/img/user.png') }}" alt="user-image" class="img-fluid user-avtar me-0" />
                             </a>
                             <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
                                 <div class="dropdown-header">
