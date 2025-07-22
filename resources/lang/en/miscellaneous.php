@@ -366,7 +366,7 @@ return [
         ],
         'public' => [
             'products' => [
-                'title' => 'Products',
+                'title' => 'Catalog',
                 'projects' => 'Projects',
                 'about_project' => 'About project',
                 'products' => 'Products',
@@ -375,10 +375,10 @@ return [
                 'about_service' => 'About service'
             ],
             'investors' => [
-                'title' => 'Investors',
+                'title' => 'Agribusiness',
                 'ask' => 'Investment request',
             ],
-            'crowdfunding' => 'Crowdfunding',
+            'crowdfunding' => 'Project financing',
         ],
     ],
 
@@ -560,7 +560,13 @@ return [
                 'search' => 'Search a category',
                 'list' => 'Categories list',
                 'data' => [
-                    'category_name' => 'Category name'
+                    'category_name' => 'Category name',
+                    'alias' => 'Alias',
+                    'for_which_group' => 'For which group?',
+                    'for_projects' => 'For projects',
+                    'for_products' => 'For products',
+                    'for_services' => 'For services',
+                    'sector' => 'Sector',
                 ],
             ],
 

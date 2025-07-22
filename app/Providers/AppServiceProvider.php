@@ -49,24 +49,19 @@ class AppServiceProvider extends ServiceProvider
 
             $members = User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
                                 $query->where('role_name->fr', 'Membre');
-                            })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query());
-            $members_req = User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
-                                $query->where('role_name->fr', 'Membre');
-                            })->get();
-            $sectors = ProjectSector::orderByDesc('created_at')->paginate(12)->appends(request()->query());
-            $sectors_req = ProjectSector::all();
-            $categories = Category::orderByDesc('created_at')->paginate(12)->appends(request()->query());
-            $categories_req = Category::all();
+                            })->orderByDesc('users.created_at')->paginate(5)->appends(request()->query());
+            $sectors = ProjectSector::orderByDesc('created_at')->paginate(5)->appends(request()->query());
+            $categories = Category::orderByDesc('created_at')->paginate(5)->appends(request()->query());
             $popular_projects = Product::mostOrdered(6, 'project', 'monthly');
             $popular_products = Product::mostOrdered(6, 'product', 'monthly');
             $popular_services = Product::mostOrdered(6, 'service', 'monthly');
 
             $view->with('members', ResourcesUser::collection($members)->resolve());
-            $view->with('members_req', $members_req);
+            $view->with('members_req', $members);
             $view->with('sectors', ResourcesProjectSector::collection($sectors)->resolve());
-            $view->with('sectors_req', $sectors_req);
-            $view->with('categories', ResourcesCategory::collection($categories)->resolve());
-            $view->with('categories_req', $categories_req);
+            $view->with('sectors_req', $sectors);
+            $view->with('m_categories', ResourcesCategory::collection($categories)->resolve());
+            $view->with('categories_req', $categories);
             $view->with('cartService', $cartService);
             $view->with('session_cart_total', $sessionCartTotal);
             $view->with('current_user', $current_user);

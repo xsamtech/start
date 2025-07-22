@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User as ResourcesUser;
+use App\Models\Category;
+use App\Models\ProjectSector;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -51,7 +53,232 @@ class AdminController extends Controller
         return view('dashboard.home');
     }
 
+    /**
+     * GET: Home page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function sector()
+    {
+        return view('dashboard.sectors');
+    }
+
+    /**
+     * GET: Sector details page
+     *
+     * @param  int $id
+     * @return \Illuminate\View\View
+     */
+    public function sectorDatas($id)
+    {
+        $selected_sector = ProjectSector::find($id);
+
+        if (is_null($selected_sector)) {
+            return redirect()->route('dashboard.sector.home')->with('error_message', __('notifications.404_title'));
+        }
+
+        return view('dashboard.sectors', ['selected_sector' => $selected_sector]);
+    }
+
+    /**
+     * GET: Home page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function category()
+    {
+        $sectors = ProjectSector::all();
+
+        return view('dashboard.categories', ['project_sectors' => $sectors]);
+    }
+
+    /**
+     * GET: Sector details page
+     *
+     * @param  int $id
+     * @return \Illuminate\View\View
+     */
+    public function categoryDatas($id)
+    {
+        $sectors = ProjectSector::all();
+        $selected_category = Category::find($id);
+
+        if (is_null($selected_category)) {
+            return redirect()->route('dashboard.sector.home')->with('error_message', __('notifications.find_category_404'));
+        }
+
+        return view('dashboard.categories', [
+            'project_sectors' => $sectors,
+            'selected_category' => $selected_category,
+        ]);
+    }
+
     // ==================================== HTTP POST METHODS ====================================
+    /**
+     * POST: Add a sector
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @throws \Illuminate\Http\RedirectResponse
+     */
+    public function addSector(Request $request)
+    {
+        ProjectSector::create([
+            'sector_name' => [
+                'en' => $request->sector_name_en,
+                'fr' => $request->sector_name_fr
+            ],
+            'sector_description' => [
+                'en' => $request->sector_description_en,
+                'fr' => $request->sector_description_fr
+            ],
+        ]);
+
+        // return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+        return redirect()->back()->with('success_message', __('notifications.registered_data'));
+    }
+
+    /**
+     * POST: Update a sector
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @throws \Illuminate\Http\RedirectResponse
+     */
+    public function updateSector(Request $request, $id)
+    {
+        $sector = ProjectSector::find($id);
+
+        if (is_null($sector)) {
+            return redirect()->back()->with('error_message', __('notifications.404_title'));
+        }
+
+        if ($request->has('sector_name_en') AND $request->sector_name_en != $sector->getTranslation('sector_name', 'en')) {
+            $sector->setTranslation('sector_name', 'en', $request->sector_name_en);
+        }
+
+        if ($request->has('sector_name_fr') AND $request->sector_name_fr != $sector->getTranslation('sector_name', 'fr')) {
+            $sector->setTranslation('sector_name', 'fr', $request->sector_name_fr);
+        }
+
+        if ($request->has('sector_description_en') AND $request->sector_description_en != $sector->getTranslation('sector_description', 'en')) {
+            $sector->setTranslation('sector_description', 'en', $request->sector_description_en);
+        }
+
+        if ($request->has('sector_description_fr') AND $request->sector_description_fr != $sector->getTranslation('sector_description', 'fr')) {
+            $sector->setTranslation('sector_description', 'fr', $request->sector_description_fr);
+        }
+
+        $sector->save();
+
+        return redirect()->back()->with('success_message', __('notifications.updated_data'));
+    }
+
+    /**
+     * POST: Add a category
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @throws \Illuminate\Http\RedirectResponse
+     */
+    public function addCategory(Request $request)
+    {
+        $category = Category::create([
+            'category_name' => [
+                'en' => $request->category_name_en,
+                'fr' => $request->category_name_fr
+            ],
+            'category_description' => [
+                'en' => $request->category_description_en,
+                'fr' => $request->category_description_fr
+            ],
+            'for_service' => $request->for_service,
+            'alias' => $request->alias,
+            'project_sector_id' => $request->project_sector_id,
+        ]);
+
+        if (isset($request->image_64)) {
+            // $extension = explode('/', explode(':', substr($request->image_64, 0, strpos($request->image_64, ';')))[1])[1];
+            $replace = substr($request->image_64, 0, strpos($request->image_64, ',') + 1);
+            // Find substring from replace here eg: data:image/png;base64,
+            $image = str_replace($replace, '', $request->image_64);
+            $image = str_replace(' ', '+', $image);
+            // Create image URL
+            $image_path = 'images/categories/' . $category->id . '/' . Str::random(50) . '.png';
+
+            // Upload image
+            Storage::disk('public')->put($image_path, base64_decode($image));
+
+            $category->update([
+                'image_url' => Storage::url($image_path),
+                'updated_at' => now()
+            ]);
+        }
+
+        return redirect()->back()->with('success_message', __('notifications.registered_data'));
+    }
+
+    /**
+     * POST: Update a category
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @throws \Illuminate\Http\RedirectResponse
+     */
+    public function updateCategory(Request $request, $id)
+    {
+        $category = Category::find($id);
+
+        if (is_null($category)) {
+            return redirect()->back()->with('error_message', __('notifications.404_title'));
+        }
+
+        if ($request->has('category_name_en') AND $request->category_name_en != $category->getTranslation('category_name', 'en')) {
+            $category->setTranslation('category_name', 'en', $request->category_name_en);
+        }
+
+        if ($request->has('category_name_fr') AND $request->category_name_fr != $category->getTranslation('category_name', 'fr')) {
+            $category->setTranslation('category_name', 'fr', $request->category_name_fr);
+        }
+
+        if ($request->has('category_description_en') AND $request->category_description_en != $category->getTranslation('category_description', 'en')) {
+            $category->setTranslation('category_description', 'en', $request->category_description_en);
+        }
+
+        if ($request->has('category_description_fr') AND $request->category_description_fr != $category->getTranslation('category_description', 'fr')) {
+            $category->setTranslation('category_description', 'fr', $request->category_description_fr);
+        }
+
+        if ($request->has('for_service') AND $request->for_service != $category->for_service) {
+            $category->for_service = $request->for_service;
+        }
+
+        if ($request->has('alias') AND $request->alias != $category->alias) {
+            $category->alias = $request->alias;
+        }
+
+        if ($request->has('project_sector_id') AND $request->project_sector_id != $category->project_sector_id) {
+            $category->project_sector_id = $request->project_sector_id;
+        }
+
+        if ($request->filled('image_64')) {
+            // $extension = explode('/', explode(':', substr($request->image_64, 0, strpos($request->image_64, ';')))[1])[1];
+            $replace = substr($request->image_64, 0, strpos($request->image_64, ',') + 1);
+            // Find substring from replace here eg: data:image/png;base64,
+            $image = str_replace($replace, '', $request->image_64);
+            $image = str_replace(' ', '+', $image);
+            // Create image URL
+            $image_path = 'images/categories/' . $category->id . '/' . Str::random(50) . '.png';
+
+            // Upload image
+            Storage::disk('public')->put($image_path, base64_decode($image));
+
+            $category->image_url = Storage::url($image_path);
+        }
+
+        $category->save();
+
+        return redirect()->back()->with('success_message', __('notifications.updated_data'));
+    }
+
     /**
      * POST: Update a role entity
      *
