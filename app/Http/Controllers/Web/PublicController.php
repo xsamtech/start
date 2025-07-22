@@ -371,7 +371,7 @@ class PublicController extends Controller
         $items = null;
 
         if ($entity == 'project') {
-            $entity_title = __('miscellaneous.menu.account.project.title');
+            $entity_title = __('miscellaneous.menu.admin.categories.projects');
             $categories = Category::withCount('products')->where('for_service', 2)->get();
 
             if ($categories->isEmpty()) {
@@ -418,7 +418,7 @@ class PublicController extends Controller
         }
 
         if ($entity == 'product') {
-            $entity_title = __('miscellaneous.menu.account.product.title');
+            $entity_title = __('miscellaneous.menu.public.products.products');
             $categories = Category::withCount('products')->where('for_service', 0)->get();
 
             if ($categories->isEmpty()) {
@@ -482,7 +482,7 @@ class PublicController extends Controller
         }
 
         if ($entity == 'service') {
-            $entity_title = __('miscellaneous.menu.account.service.title');
+            $entity_title = __('miscellaneous.menu.public.products.services');
             $categories = Category::withCount('products')->where('for_service', 1)->get();
 
             if ($categories->isEmpty()) {
