@@ -870,7 +870,7 @@
                             <div class="col-md-7 col-sm-7 col-xs-12 header-inner-right">
                                 <div class="header-box contact-infos pull-right">
     								<ul>
-    									<li><span class="header-box-icon header-box-icon-email"></span><a href="mailto:contact@start.com">contact@start.com</a></li>
+    									<li><span class="header-box-icon header-box-icon-email"></span><a href="mailto:admin@start-africa.com">admin@start-africa.com</a></li>
     								</ul>
                                 </div><!-- End .contact-infos -->
 
