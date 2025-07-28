@@ -97,7 +97,7 @@
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">{{ !empty($current_user) ? ($product['converted_price'] . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }}</span>
+                                                            <span class="item-price">{{ !empty($current_user) ? (formatDecimalNumber($product['converted_price']) . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }}</span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
@@ -184,9 +184,9 @@
                                                                 <img src="{{ count($product['photos']) > 0 ? (!empty($product['photos'][1]) ? $product['photos'][1]->file_url : $product['photos'][0]->file_url) : getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
                                                         </figure>
-                                                        <div class="item-price-container">
+                                                        {{-- <div class="item-price-container">
                                                             <span class="item-price">{{ !empty($current_user) ? ($product['converted_price'] . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }}</span>
-                                                        </div><!-- End .item-price-container -->
+                                                        </div><!-- End .item-price-container --> --}}
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
                                                         <div class="ratings-container">

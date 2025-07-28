@@ -194,8 +194,12 @@ class User extends Authenticatable
 
     /**
      * Add product to cart
+     * 
+     * @param  int $productId
+     * @param  int $quantity
+     * @return \App\Models\CustomerOrder
      */
-    public function addProductToCart(int $productId, int $quantity = 1): CustomerOrder
+    public function addProductToCart($productId, $quantity = 1): CustomerOrder
     {
         return DB::transaction(function () use ($productId, $quantity) {
             // 1. Check or create a unpaid cart
@@ -267,5 +271,131 @@ class User extends Authenticatable
 
         // Vider le panier en session après l'ajout
         session()->forget('cart');
+    }
+
+    /**
+     * Update product quantity from the cart
+     * 
+     * @param  int $customerOrderId
+     * @param  int $quantityChange
+     * @param  string $action
+     * @return bool
+     */
+    public function updateProductQuantityInCart($customerOrderId, $quantityChange, $action): bool
+    {
+        return DB::transaction(function () use ($customerOrderId, $quantityChange, $action) {
+            // 1. Get the unpaid cart
+            $cart = $this->carts()->where('is_paid', 0)->latest()->first();
+
+            if (!$cart) {
+                throw new \Exception(__('notifications.find_cart_404'));
+            }
+
+            // 2. Find the order line by its ID
+            $existingOrder = $cart->customer_orders()->where('id', $customerOrderId)->first();
+
+            if (!$existingOrder) {
+                throw new \Exception(__('notifications.find_customer_order_404'));
+            }
+
+            // 3. Get the product related to the order line
+            $product = $existingOrder->product;
+
+            switch ($action) {
+                case 'increment':
+                    // Check if stock is sufficient for increment
+                    if ($product->quantity <= 0) {
+                        throw new \Exception(__('notifications.insufficient_stock', ['product_name' => $product->product_name, 'quantity' => $product->quantity]));
+                    }
+
+                    // Increment quantity in cart
+                    $existingOrder->increment('quantity', 1);
+
+                    // Decrease stock
+                    $product->decrement('quantity', 1);
+                    break;
+
+                case 'decrement':
+                    // Check that the quantity in the cart is > 500
+                    if ($existingOrder->quantity <= 500) {
+                        throw new \Exception(__('notifications.minimum_quantity_error'));
+                    }
+
+                    // Decrease quantity in cart
+                    $existingOrder->decrement('quantity', 1);
+
+                    // Increment the stock
+                    $product->increment('quantity', 1);
+                    break;
+
+                case 'update':
+                    // Check the new quantity
+                    if ($quantityChange < 500) {
+                        throw new \Exception(__('notifications.minimum_quantity_error'));
+                    }
+
+                    // Update quantity in cart
+                    $existingOrder->update(['quantity' => $quantityChange]);
+
+                    // Adjust stock according to the new quantity
+                    $stockDifference = $quantityChange - $existingOrder->quantity;
+
+                    if ($stockDifference > 0) {
+                        // If we increase the order quantity, check that there is enough product stock
+                        if ($product->quantity < $stockDifference) {
+                            throw new \Exception(__('notifications.insufficient_stock', ['product_name' => $product->product_name, 'quantity' => $product->quantity]));
+                        }
+
+                        // Decrease product stock based on increase
+                        $product->decrement('quantity', $stockDifference);
+
+                    } else {
+                        // If we decrease the order quantity, increase the product stock
+                        $product->increment('quantity', abs($stockDifference));
+                    }
+                    break;
+                default:
+                    throw new \Exception(__('validation.custom.action.required'));
+            }
+
+            return true; // Indicate that the operation was successful
+        });
+    }
+
+
+    /**
+     * Remove product from cart
+     * 
+     * @param  int $customerOrderId
+     * @return bool
+     */
+    public function removeProductFromCart($customerOrderId): bool
+    {
+        return DB::transaction(function () use ($customerOrderId) {
+            // 1. Get the unpaid cart
+            $cart = $this->carts()->where('is_paid', 0)->latest()->first();
+
+            if (!$cart) {
+                throw new \Exception(__('notifications.find_cart_404'));
+            }
+
+            // 2. Find the order line by its ID
+            $existingOrder = $cart->customer_orders()->where('id', $customerOrderId)->first();
+
+            if (!$existingOrder) {
+                throw new \Exception(__('notifications.find_customer_order_404'));
+            }
+
+            // 3. Get the product related to the order line
+            $product = $existingOrder->product;
+
+            // 4. Delete the order line from the cart
+            $existingOrder->delete();
+
+            // 5. Increment the stock of the product
+            $product->increment('quantity', $existingOrder->quantity);
+
+            return true; // Indicate success
+        });
     }
 }

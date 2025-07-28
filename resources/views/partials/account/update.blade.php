@@ -222,9 +222,9 @@
                                                             <span class="input-text">@lang('miscellaneous.password.label') <span class="text-danger">&#42;</span></span>
                                                         </span>
                                                         <input type="password" name="password" id="register_password" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.password.label')">
-                                                        <button id="showPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px;" onclick="event.preventDefault(); passwordVisible(this, 'register_password');">
+                                                        <a id="showPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px; cursor: pointer;" onclick="event.preventDefault(); passwordVisible(this, 'register_password');">
                                                             <i class="bi bi-eye-fill"></i>
-                                                        </button>
+                                                        </a>
                                                     </div><!-- End .input-group -->
 
 @error('password')
@@ -237,9 +237,9 @@
                                                             <span class="input-text">@lang('miscellaneous.confirm') <span class="text-danger">&#42;</span></span>
                                                         </span>
                                                         <input type="password" name="password_confirmation" id="register_confirm_password" class="form-control input-lg" placeholder="@lang('auth.confirm-password')">
-                                                        <button id="showConfirmPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px;" onclick="event.preventDefault(); passwordVisible(this, 'register_confirm_password');">
+                                                        <a id="showConfirmPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px; cursor: pointer;" onclick="event.preventDefault(); passwordVisible(this, 'register_confirm_password');">
                                                             <i class="bi bi-eye-fill"></i>
-                                                        </button>
+                                                        </a>
                                                     </div><!-- End .input-group -->
 @error('password_confirmation')
                                                     <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>

@@ -33,7 +33,7 @@
 
 										<tbody>
 	@foreach ($items as $item)
-											<tr>
+											<tr id="item-{{ $item['id'] }}">
 												<td class="item-name-col">
 													<figure>
 														<a href="{{ route('product.entity.datas', ['entity' => $item['type'], 'id' => $item['id']]) }}">
@@ -47,28 +47,30 @@
 													</header>
 													<ul>
 														<li>
-															<u>Description</u><br>
+															<u>@lang('miscellaneous.description')</u><br>
 															{{ $item['product_description'] }}
 														</li>
 													</ul>
 												</td>
 												<td class="item-price-col">
-													<span class="item-price-special">{{ formatDecimalNumber($item['price']) . ' FC' }}</span>
+													<span class="item-price-special">{{ formatDecimalNumber($item['price']) . ' $' }}</span>
 												</td>
 												<td>
 													<div class="custom-quantity-input">
-														<input type="text" name="quantity" value="{{ $item['quantity'] }}" min="500">
-														<a href="#" onclick="return false;" class="quantity-btn quantity-input-up">
+														<input id="order-quantity-{{ $item['id'] }}" type="text" name="quantity" value="{{ $item['quantity'] }}" onchange="updateProductQuantity('update', {{ $item['id'] }}, this.value)">
+														<a href="#" class="quantity-btn quantity-input-up" onclick="event.preventDefault(); updateProductQuantity('increment', {{ $item['id'] }});">
 															<i class="fa fa-angle-up"></i>
 														</a>
-														<a href="#" onclick="return false;" class="quantity-btn quantity-input-down">
+		@if ($item['quantity'] > 500)
+														<a href="#" class="quantity-btn quantity-input-down" onclick="event.preventDefault(); updateProductQuantity('decrement', {{ $item['id'] }});">
 															<i class="fa fa-angle-down"></i>
 														</a>
+		@endif
 													</div>
 												</td>
 												<td class="item-total-col">
-													<span class="item-price-special">{{ $cartService->subtotalPrice($item, 'CDF') . ' FC' }}</span>
-													<a href="#" class="close-button"></a>
+													<span class="item-price-special">{{ formatDecimalNumber($cartService->subtotalPrice($item, 'USD')) . ' $' }}</span>
+													<a href="#" class="close-button" onclick="event.preventDefault(); performAction('delete', 'order', 'item-{{ $item['id'] }}')"></a>
 												</td>
 											</tr>
 	@endforeach
@@ -85,7 +87,7 @@
 										<tfoot>
 											<tr>
 												<td>{{ 'TOTAL' . __('miscellaneous.colon_after_word') }}</td>
-												<td>{{ formatDecimalNumber($session_cart_total) . ' FC' }}</td>
+												<td>{{ formatDecimalNumber($session_cart_total) . ' $' }}</td>
 											</tr>
 										</tfoot>
 									</table>

@@ -57,9 +57,9 @@
                                                 <span class="input-text">@lang('miscellaneous.password.label')</span>
                                             </span>
                                             <input type="password" name="password" id="sign_password" required class="form-control input-lg @error('password') is-invalid @enderror" placeholder="@lang('miscellaneous.password.label')">
-											<button id="showPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px;" onclick="event.preventDefault(); passwordVisible(this, 'sign_password');">
+											<a id="showPassword" class="btn" style="position: absolute; top: 5px; right: 5px; z-index: 999; background-color: transparent; padding: 5px; cursor: pointer;" onclick="event.preventDefault(); passwordVisible(this, 'sign_password');">
 												<i class="bi bi-eye-fill"></i>
-											</button>
+											</a>
 										</div><!-- End .input-group -->
     @error('login')
                                         <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>

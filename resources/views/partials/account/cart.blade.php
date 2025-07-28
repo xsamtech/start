@@ -41,8 +41,8 @@
 										<tbody>
 	@php
 		foreach ($items as $item) {
-			$item->converted_price = $item->convertPriceAtThatTime($current_user->currency);
-			$item->subtotal_price = $item->subtotalPrice($current_user->currency);
+			$item->converted_price = formatDecimalNumber($item->convertPriceAtThatTime($current_user->currency));
+			$item->subtotal_price = formatDecimalNumber($item->subtotalPrice($current_user->currency));
 		}
 
 		$itemsArray = $items->toArray();
@@ -73,18 +73,20 @@
 												</td>
 												<td>
 													<div class="custom-quantity-input">
-														<input type="text" name="quantity" value="{{ $item['quantity'] }}" min="500">
-														<a href="#" onclick="return false;" class="quantity-btn quantity-input-up">
+														<input id="order-quantity-{{ $item['id'] }}" type="text" name="quantity" value="{{ $item['quantity'] }}" onchange="updateProductQuantity('update', {{ $item['id'] }}, this.value)">
+														<a href="#" class="quantity-btn quantity-input-up" onclick="event.preventDefault(); updateProductQuantity('increment', {{ $item['id'] }});">
 															<i class="fa fa-angle-up"></i>
 														</a>
-														<a href="#" onclick="return false;" class="quantity-btn quantity-input-down">
+		@if ($item['quantity'] > 500)
+														<a href="#" class="quantity-btn quantity-input-down" onclick="event.preventDefault(); updateProductQuantity('decrement', {{ $item['id'] }});">
 															<i class="fa fa-angle-down"></i>
 														</a>
+		@endif
 													</div>
 												</td>
 												<td class="item-total-col">
 													<span class="item-price-special">{{ $item['subtotal_price'] . ' ' . $current_user->readable_currency }}</span>
-													<a href="#" class="close-button"></a>
+													<a href="#" class="close-button" onclick="event.preventDefault(); performAction('delete', 'order', 'item-{{ $item['id'] }}')"></a>
 												</td>
 											</tr>
 	@endforeach
@@ -101,7 +103,7 @@
 										<tfoot>
 											<tr>
 												<td>{{ 'TOTAL' . __('miscellaneous.colon_after_word') }}</td>
-												<td>{{ $current_user->unpaidCartTotal() . ' ' . $current_user->readable_currency }}</td>
+												<td>{{ formatDecimalNumber($current_user->unpaidCartTotal()) . ' ' . $current_user->readable_currency }}</td>
 											</tr>
 										</tfoot>
 									</table>

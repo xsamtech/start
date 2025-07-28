@@ -11,6 +11,7 @@ use App\Http\Resources\User as ResourcesUser;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Crowdfunding;
+use App\Models\CustomerOrder;
 use App\Models\File;
 use App\Models\PaidFund;
 use App\Models\Post;
@@ -770,7 +771,10 @@ class PublicController extends Controller
             $product = Product::find($id);
 
             if (!$product) {
-                return redirect(RouteServiceProvider::HOME)->with('error_message', __('notifications.find_error'));
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_product_404'),
+                ], 404);
             }
 
             $filesToDelete = File::where('product_id', $product->id)->get();
@@ -787,19 +791,117 @@ class PublicController extends Controller
 
             $product->delete();
 
-            return redirect('/products/' . $product->type)->with('success_message', __('notifications.deleted_data'));
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_product_success'),
+            ]);
+        }
+
+        if ($entity == 'order') {
+            try {
+                // We start by retrieving the order associated with this ID (for connected users)
+                if (Auth::check()) {
+                    // If the user is logged in
+                    $user = User::find(Auth::id());
+
+                    // Get user's unpaid cart
+                    $cart = $user->unpaidCart()->first();
+
+                    if (!$cart) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => __('notifications.find_cart_404')
+                        ], 404);
+                    }
+
+                    // Find the order to delete from the order ID in the cart
+                    $existingOrder = $cart->customer_orders()->find($id);
+
+                    if (!$existingOrder) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => __('notifications.find_customer_order_404')
+                        ], 404);
+                    }
+
+                    // Delete order (cart line)
+                    $existingOrder->delete();
+
+                    // Retrieve the associated product to restore stock
+                    $product = $existingOrder->product;
+
+                    // Restore product stock
+                    $product->increment('quantity', $existingOrder->quantity);
+
+                    // Check if the product is still in the user's cart
+                    $inCart = !$cart->customer_orders()->find($id);
+
+                    // If the cart is empty, it is deleted from the database
+                    if ($cart->customer_orders->isEmpty()) {
+                        $cart->delete();
+                    }
+
+                    $isLoggedIn = true;
+
+                } else {
+                    // If the user is not logged in, we work with the cart in the session
+                    $cart = session()->get('cart', []);
+
+                    // Check if order exists in session (by order ID)
+                    if (isset($cart[$id])) {
+                        // Remove product from session
+                        unset($cart[$id]);
+                        session()->put('cart', $cart);
+
+                        // Check if the cart is empty
+                        if (empty($cart)) {
+                            // If the cart is empty, delete the session
+                            session()->forget('cart');
+                        }
+
+                        $inCart = false;  // The product has been removed from the cart
+
+                    } else {
+                        return response()->json([
+                            'success' => false,
+                            'message' => __('notifications.find_product_404')
+                        ], 404);
+                    }
+
+                    $isLoggedIn = false;
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => __('notifications.delete_customer_order_success'),
+                    'inCart' => $inCart,
+                    'isLoggedIn' => $isLoggedIn,
+                ]);
+
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ], 422);
+            }
         }
 
         if ($entity == 'cart') {
             $cart = Cart::find($id);
 
             if (!$cart) {
-                return redirect(RouteServiceProvider::HOME)->with('error_message', __('notifications.find_error'));
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_cart_404'),
+                ], 404);
             }
 
             $cart->delete();
 
-            return redirect('/account')->with('success_message', __('notifications.deleted_data'));
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_cart_success'),
+            ]);
         }
     }
 
@@ -1420,11 +1522,11 @@ class PublicController extends Controller
                     $user->addProductToCart($id, $request->quantity);
 
                     $inCart = $user->hasProductInUnpaidCart($id);  // Check if product is in the cart
-                    $inStock = $product->quantity > 0;  // Check if prouct is in stock
+                    $inStock = $product->quantity > 0;  // Check if product is in stock
                     $isLoggedIn = true;
 
                 } else {
-                    // If user is connected, we store product in the session
+                    // If user is not connected, we store product in the session
                     $cart = session()->get('cart', []);
                     // Product photos
                     $photos = $product->photos()->pluck('file_url');
@@ -1434,8 +1536,8 @@ class PublicController extends Controller
                         'product_name' => $product->product_name,
                         'product_description' => $product->product_description,
                         'quantity' => $request->quantity,
-                        'price' => $product->price,
-                        'currency' => $product->currency,
+                        'price' => $product->currency == 'USD' ? $product->price : $product->convertPrice('USD'),
+                        'currency' => $product->currency == 'USD' ? $product->currency : 'USD',
                         'type' => $product->type,
                         'action' => $product->action,
                         'photos' => $photos,
@@ -1454,6 +1556,148 @@ class PublicController extends Controller
                     'inStock' => $inStock,
                     'isLoggedIn' => $isLoggedIn,
                 ]);
+            } catch (\Exception $e) {
+                return response()->json(['message' => $e->getMessage()], 422);
+            }
+        }
+
+        if ($entity == 'update-order-quantity') {
+            try {
+                // Checking if the user is authenticated
+                if (Auth::check()) {
+                    $order = CustomerOrder::find($id); // Get the order with the ID passed in the URL
+
+                    if (!$order) {
+                        return response()->json([
+                            'message' => __('notifications.find_customer_order_404')
+                        ], 404);
+                    }
+
+                    // Get the product associated with the order
+                    $product = $order->product;
+
+                    if (!$product) {
+                        return response()->json(['message' => __('notifications.find_product_404')], 404);
+                    }
+
+                    $user = User::find(Auth::id());
+
+                    switch ($request->action) {
+                        case 'increment':
+                            $user->updateProductQuantityInCart($order->id, 1, 'increment');
+                            break;
+
+                        case 'decrement':
+                            $user->updateProductQuantityInCart($order->id, 1, 'decrement');
+                            break;
+
+                        case 'update':
+                            if ($request->quantity < 500) {
+                                return response()->json([
+                                    'message' => __('notifications.minimum_quantity_error'),
+                                    'newQuantity' => $order->quantity,
+                                    'inStock' => false,
+                                ], 400);
+
+                            } else {
+                                $user->updateProductQuantityInCart($order->id, $request->quantity, 'update');
+                            }
+                            break;
+
+                        default:
+                            return response()->json([
+                                'message' => __('validation.custom.action.required'),
+                                'newQuantity' => $order->quantity,
+                                'inStock' => false,
+                            ], 400);
+                    }
+
+                    return response()->json([
+                        'message' => __('notifications.update_customer_order_success'),
+                        'newQuantity' => $order->quantity,
+                        'inCart' => true,
+                        'inStock' => $product->quantity > 0,
+                    ]);
+
+                } else {
+                    $product = Product::find($id);
+
+                    if (!$product) {
+                        return response()->json(['message' => __('notifications.find_product_404')], 404);
+                    }
+
+                    // If user is not connected, operation is done in the session
+                    $cart = session()->get('cart', []);
+
+                    if (!isset($cart[$id])) {
+                        return response()->json(['message' => __('notifications.find_cart_404')], 404);
+                    }
+
+                    // Vérification de la quantité
+                    switch ($request->action) {
+                        case 'increment':
+                            // Check if stock is sufficient for increment
+                            if ($product->quantity <= 0) {
+                                return response()->json([
+                                    'message' => __('notifications.insufficient_stock', ['product_name' => $product->product_name, 'quantity' => $product->quantity]),
+                                    'newQuantity' => $cart[$id]['quantity'],
+                                    'inStock' => false,
+                                ], 422);
+
+                            } else {
+                                // Increment quantity in cart
+                                $cart[$id]['quantity']++;
+                            }
+                            break;
+
+                        case 'decrement':
+                            // Check that the quantity in the cart is > 500
+                            if ($cart[$id]['quantity'] <= 500) {
+                                return response()->json([
+                                    'message' => __('notifications.minimum_quantity_error'),
+                                    'newQuantity' => $cart[$id]['quantity'],
+                                    'inStock' => false,
+                                ], 422);
+
+                            } else {
+                                // Decrease quantity in cart
+                                $cart[$id]['quantity']--;
+                            }
+                            break;
+
+                        case 'update':
+                            // Mise à jour de la quantité
+                            if ($request->quantity < 500) {
+                                return response()->json([
+                                    'message' => __('notifications.minimum_quantity_error'),
+                                    'newQuantity' => $cart[$id]['quantity'],
+                                    'inStock' => false,
+                                ], 400);
+
+                            } else {
+                                $cart[$id]['quantity'] = $request->quantity;
+                            }
+                            break;
+
+                        default:
+                            return response()->json([
+                                'message' => __('validation.custom.action.required'),
+                                'newQuantity' => $cart[$id]['quantity'],
+                                'inStock' => false,
+                            ], 400);
+                    }
+
+                    // Save session with new quantity
+                    session()->put('cart', $cart);
+
+                    return response()->json([
+                        'message' => __('notifications.update_customer_order_success'),
+                        'newQuantity' => $cart[$id]['quantity'],
+                        'inCart' => true,
+                        'inStock' => true,
+                    ]);
+                }
+
             } catch (\Exception $e) {
                 return response()->json(['message' => $e->getMessage()], 422);
             }

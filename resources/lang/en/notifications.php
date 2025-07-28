@@ -170,6 +170,14 @@ return [
     'create_cart_success' => 'Cart created',
     'update_cart_success' => 'Cart updated',
     'delete_cart_success' => 'Cart deleted',
+    // CustomerOrder
+    'find_all_customers_orders_success' => 'Orders found',
+    'find_customer_order_success' => 'Order found',
+    'find_customer_order_404' => 'Order not found',
+    'create_customer_order_success' => 'Order created',
+    'update_customer_order_success' => 'Order updated',
+    'delete_customer_order_success' => 'Order deleted',
+    'minimum_quantity_error' => 'The minimum quantity to order is 500 kilos',
     // Product
     'find_all_products_success' => 'Products found',
     'find_product_success' => 'Product found',

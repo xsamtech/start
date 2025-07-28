@@ -921,7 +921,7 @@
                                             <div class="btn-group dropdown-cart">
                                                 <button type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
                                                     <span class="cart-menu-icon"></span>
-                                                    {{ trans_choice('miscellaneous.items', count($cartItems), ['count' => count($cartItems)]) }} <span class="drop-price">- {{ formatDecimalNumber($session_cart_total) . ' FC' }}</span>
+                                                    {{ trans_choice('miscellaneous.items', count($cartItems), ['count' => count($cartItems)]) }} <span class="drop-price">- {{ formatDecimalNumber($session_cart_total) . ' $' }}</span>
                                                 </button>
 
                                                 <div class="dropdown-menu dropdown-cart-menu pull-right clearfix" role="menu">
@@ -930,8 +930,8 @@
                                                     <ul class="dropdown-cart-product-list">
         @foreach ($cartItems as $item)
             @if ($loop->index < 3)
-                                                        <li class="item clearfix">
-                                                            <a href="#" title="Delete item" class="delete-item">
+                                                        <li id="item-{{ $item['id'] }}" class="item clearfix">
+                                                            <a href="#" title="Delete item" class="delete-item" onclick="event.preventDefault(); performAction('delete', 'order', 'item-{{ $item['id'] }}')">
                                                                 <i class="fa fa-times"></i>
                                                             </a>
                                                             <a href="{{ route('account.entity', ['entity' => 'cart']) }}" title="Edit item" class="edit-item">
@@ -949,7 +949,7 @@
                                                                     </a>
                                                                 </p>
                                                                 <p>
-                                                                    {{ $item['quantity'] }}x <span class="item-price">{{ formatDecimalNumber($item['price']) . ' FC' }}</span>
+                                                                    {{ $item['quantity'] }}x <span class="item-price">{{ formatDecimalNumber($item['price']) . ' $' }}</span>
                                                                 </p>
                                                             </div><!-- End .dropdown-cart-details -->
                                                         </li>
@@ -959,7 +959,7 @@
                                                     <ul class="dropdown-cart-total">
                                                         <li><span class="dropdown-cart-total-title">
                                                             {{ 'TOTAL' . __('miscellaneous.colon_after_word') }}</span>
-                                                            {{ formatDecimalNumber($session_cart_total) . ' FC' }}
+                                                            {{ formatDecimalNumber($session_cart_total) . ' $' }}
                                                         </li>
                                                     </ul><!-- .dropdown-cart-total -->
                                                     <div class="dropdown-cart-action">
@@ -983,7 +983,7 @@
                                             <div class="btn-group dropdown-cart">
                                                 <button type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
                                                     <span class="cart-menu-icon"></span>
-                                                    {{ trans_choice('miscellaneous.items', count($user_orders), ['count' => count($user_orders)]) }} <span class="drop-price">- {{ $current_user->unpaidCartTotal() . ' ' . $current_user->readable_currency }}</span>
+                                                    {{ trans_choice('miscellaneous.items', count($user_orders), ['count' => count($user_orders)]) }} <span class="drop-price">- {{ formatDecimalNumber($current_user->unpaidCartTotal()) . ' ' . $current_user->readable_currency }}</span>
                                                 </button>
 
                                                 <div class="dropdown-menu dropdown-cart-menu pull-right clearfix" role="menu">
@@ -992,8 +992,8 @@
                                                     <ul class="dropdown-cart-product-list">
         @php
             foreach ($user_orders as $item) {
-                $item->converted_price = $item->convertPriceAtThatTime($current_user->currency);
-                $item->subtotal_price = $item->subtotalPrice($current_user->currency);
+                $item->converted_price = formatDecimalNumber($item->convertPriceAtThatTime($current_user->currency));
+                $item->subtotal_price = formatDecimalNumber($item->subtotalPrice($current_user->currency));
             }
 
             $itemsArray = $user_orders->toArray();
@@ -1001,15 +1001,15 @@
 
         @foreach ($itemsArray as $item)
             @if ($loop->index < 3)
-                                                        <li class="item clearfix">
-                                                            <a href="#" title="Delete item" class="delete-item">
+                                                        <li id="item-{{ $item['id'] }}" class="item clearfix">
+                                                            <a href="#" title="Delete item" class="delete-item" onclick="event.preventDefault(); performAction('delete', 'order', 'item-{{ $item['id'] }}')">
                                                                 <i class="fa fa-times"></i>
                                                             </a>
                                                             <a href="{{ route('account.entity', ['entity' => 'cart']) }}" title="Edit item" class="edit-item">
                                                                 <i class="fa fa-pencil"></i>
                                                             </a>
                                                             <figure>
-                                                                <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => 1]) }}">
+                                                                <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $item['id']]) }}">
                                                                     <img src="{{ count($item['product']['photos']) > 0 ? $item['product']['photos'][0]['file_url'] : getWebURL() . '/template/public/images/products/thumbnails/item12.jpg' }}" alt="{{ $item['product']['product_name'] }}">
                                                                 </a>
                                                             </figure>
@@ -1030,7 +1030,7 @@
                                                     <ul class="dropdown-cart-total">
                                                         <li><span class="dropdown-cart-total-title">
                                                             {{ 'TOTAL' . __('miscellaneous.colon_after_word') }}</span>
-                                                            {{ $current_user->unpaidCartTotal() . ' ' . $current_user->readable_currency }}
+                                                            {{ formatDecimalNumber($current_user->unpaidCartTotal()) . ' ' . $current_user->readable_currency }}
                                                         </li>
                                                     </ul><!-- .dropdown-cart-total -->
                                                     <div class="dropdown-cart-action">
@@ -1175,6 +1175,65 @@
         <script type="text/javascript" src="{{ asset('assets/js/scripts.custom.js') }}"></script>
 
         <script type="text/javascript">
+            function performAction(action, entity, entity_id) {
+                if (action === 'delete') {
+                    var entityId = parseInt(entity_id.split('-')[1]);
+
+                    Swal.fire({
+                        title: "<?= __('miscellaneous.alert.attention.delete') ?>",
+                        text: "<?= __('miscellaneous.alert.confirm.delete') ?>",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "<?= __('miscellaneous.alert.yes.delete') ?>",
+                        cancelButtonText: "<?= __('miscellaneous.cancel') ?>"
+
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                headers: headers,
+                                type: "DELETE",
+                                url: `${currentHost}/delete/${entity}/${entityId}`,
+                                contentType: false,
+                                processData: false,
+                                data: JSON.stringify({ "entity" : entity, "id" : entityId }),
+                                success: function (result) {
+                                    if (!result.success) {
+                                        Swal.fire({
+                                            title: "<?= __('miscellaneous.alert.oups') ?>",
+                                            text: result.message,
+                                            icon: "error"
+                                        });
+
+                                    } else {
+                                        Swal.fire({
+                                            title: "<?= __('miscellaneous.alert.perfect') ?>",
+                                            text: result.message,
+                                            icon: "success"
+                                        });
+                                        location.reload();
+                                    }
+                                },
+                                error: function (xhr, error, status_description) {
+                                    console.log(xhr.responseJSON);
+                                    console.log(xhr.status);
+                                    console.log(error);
+                                    console.log(status_description);
+                                }
+                            });
+
+                        } else {
+                            Swal.fire({
+                                title: "<?= __('miscellaneous.cancel') ?>",
+                                text: "<?= __('miscellaneous.alert.canceled.delete') ?>",
+                                icon: "error"
+                            });
+                        }
+                    });
+                }
+            }
+
             /**
              * Flatpickr : DateTime picker
              */
@@ -1214,17 +1273,79 @@
             }
 
             /**
-             * For all number fields, it is forbidden to enter a value less than 500
+             * Update order quantity
              */
-            const inputs = document.querySelectorAll('.input-minimum');
+            function updateProductQuantity(action, orderId, quantity = null) {
+                let url = `${currentHost}/products/update-order-quantity/${orderId}`;
+                let data = {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    action: action
+                };
 
-            inputs.forEach(input => {
-                input.addEventListener('input', function () {
-                    if (parseInt(input.value) < 500) {
-                        input.value = 500;
+                // If the action is "update", we add the specific quantity
+                if (action === 'update') {
+                    data.quantity = quantity;
+
+                } else {
+                    // For "increment" or "decrement", the quantity is always 1
+                    data.quantity = 1;
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    success: function(response) {
+                        // Update the UI if everything is fine
+                        if (response.inCart) {
+                            // Update the quantity in the input
+                            $(`#order-quantity-${orderId}`).val(response.newQuantity);
+                            // Display success message
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    ${response.message || '{{ __("notifications.update_customer_order_success") }}'}
+                                                                </div>
+                                                            </div>`);
+                        }
+
+                        if (!response.inStock) {
+                            // Update the quantity in the input
+                            $(`#order-quantity-${orderId}`).val(response.newQuantity);
+                            // Display error message if the stock is insufficient
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('miscellaneous.public.insufficient_stock') }}
+                                                                </div>
+                                                            </div>`);
+                        }
+
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        // Update the quantity in the input
+                        $(`#order-quantity-${orderId}`).val(xhr.responseJSON.newQuantity);
+                        // Display error alert
+                        $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                            <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                ${xhr.responseJSON.message}
+                                                            </div>
+                                                        </div>`);
+                        location.reload();
                     }
                 });
-            });
+            }
 
             $(function() {
                 // Slider Revolution
@@ -1589,7 +1710,7 @@
                         url: `${currentHost}/products/add-to-cart/${productId}`,
                         method: 'POST',
                         data: {
-                            quantity: 1,
+                            quantity: 500,
                             _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         success(response) {

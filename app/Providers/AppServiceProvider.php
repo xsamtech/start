@@ -37,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         view()->composer('*', function ($view) use ($cartService) {
+            // dd($cartService->getCartTotalFromSession());
             $sessionCartTotal = session()->has('cart') ? $cartService->getCartTotalFromSession() : 0;
             $current_user = null;
 
