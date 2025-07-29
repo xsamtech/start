@@ -763,7 +763,7 @@ class PublicController extends Controller
      *
      * @param  string $entity
      * @param  int $id
-     * @throws \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function removeData($entity, $id)
     {
