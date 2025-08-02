@@ -28,6 +28,7 @@
 								<li><a href="{{ route('account.entity', ['entity' => 'projects']) }}">@lang('miscellaneous.menu.account.project.title')</a></li>
 								<li><a class="active">@lang('miscellaneous.menu.account.product.title')</a></li>
 								<li><a href="{{ route('account.entity', ['entity' => 'services']) }}">@lang('miscellaneous.menu.account.service.title')</a></li>
+								<li><a href="{{ route('account.entity', ['entity' => 'customers']) }}">@lang('miscellaneous.menu.account.customer')</a></li>
 							</ul><!-- End .portfolio-filter -->
 
 							<div class="row">

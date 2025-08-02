@@ -13,12 +13,12 @@
 						<div class="col-md-12">
 							<div class="clearfix">
 								<header class="content-title" style="float: left;">
-                                    <h1 class="title">@lang('miscellaneous.public.investor.title')</h1>
-                                    <p class="title-desc">@lang('miscellaneous.public.investor.description')</p>
+                                    <h1 class="title">@lang('miscellaneous.public.agribusiness.title')</h1>
+                                    <p class="title-desc">@lang('miscellaneous.public.agribusiness.description')</p>
 								</header>
 @if (!empty($current_user))
 								<button class="btn strt-btn-green pb-2" style="float: right; display: flex; align-items: center;" class="btn btn-primary" data-toggle="modal" data-target="#newInvestorModal">
-									<i class="bi bi-person-plus" style="font-size: 2.5rem; color: white"></i> <span class="d-xs-none" style="margin-left: 8px; color: white">@lang('miscellaneous.public.investor.become_investor.link')</span>
+									<i class="bi bi-plus" style="font-size: 2.5rem; color: white"></i> <span class="d-xs-none" style="margin-left: 8px; color: white">@lang('miscellaneous.publish')</span>
 								</button>
 @endif
                         </div>

@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Notifications\Notifiable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
@@ -147,6 +149,125 @@ class User extends Authenticatable
         }
 
         return 0;
+    }
+
+    /**
+     * All customers of user products
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function customers(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, Cart::class, 'user_id', 'id');
+    }
+
+    /**
+     * All customers of user products with unpaid orders
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function customersWithUnpaidOrders(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, 
+                                    Cart::class, 
+                                    'user_id', // foreign key in the Cart table
+                                    'id', // foreign key in the User table
+                                    'id', // primary key of the User table
+                                    'user_id' // foreign key in the Cart table
+                                    )->whereHas('carts', function ($query) {
+                                        $query->where('is_paid', 0);  // Check that the cart is not paid
+                                    })->with('carts');  // Adds the baskets for each customer
+    }
+
+    /**
+     * All customer orders
+     * 
+     * @param  string $period
+     * @param  int $userId
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function myOrders($period = 'daily', $userId = null): Collection
+    {
+        // Déterminer la plage de dates en fonction du paramètre $period
+        $startDate = Carbon::now();
+        $endDate = Carbon::now();
+
+        switch ($period) {
+            case 'daily':
+                $startDate->startOfDay();
+                $endDate->endOfDay();
+                break;
+
+            case 'weekly':
+                $startDate->startOfWeek();
+                $endDate->endOfWeek();
+                break;
+
+            case 'monthly':
+                $startDate->startOfMonth();
+                $endDate->endOfMonth();
+                break;
+
+            case 'quarterly':
+                $startDate->firstOfQuarter();
+                $endDate->lastOfQuarter();
+                break;
+
+            case 'biannual':
+                if ($startDate->month <= 6) {
+                    $startDate->firstOfYear();
+                    $endDate->endOfMonth(6);
+
+                } else {
+                    $startDate->firstOfMonth(7);
+                    $endDate->endOfMonth(12);
+                }
+                break;
+
+            case 'yearly':
+                $startDate->firstOfYear();
+                $endDate->endOfYear();
+                break;
+
+            default:
+                throw new \InvalidArgumentException(__('miscellaneous.public.about.subscribe.period.choose'));
+        }
+
+        // Récupérer les commandes des produits associés à l'utilisateur dans cette période
+        return CustomerOrder::whereHas('product', function ($query) use ($userId) {
+                                    // Si un $userId est passé, on filtre sur ce user_id, sinon on ne filtre pas
+                                    if ($userId) {
+                                        $query->where('user_id', $userId);
+                                    }
+                                })->whereBetween('created_at', [$startDate, $endDate])
+                                ->with(['product', 'product.photos'])  // Charger les produits et leurs photos
+                                ->orderByDesc('customer_orders.created_at')->get();
+    }
+
+    /**
+     * All customers in given period
+     * 
+     * @param  string $period
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function customersInPeriod($period = 'daily'): Collection
+    {
+        // Récupérer les commandes des produits associés à l'utilisateur ou à n'importe quel utilisateur
+        $orders = $this->myOrders($period, $this->id);
+
+        // Récupérer les utilisateurs (clients) associés aux produits commandés
+        $clients = $orders->map(function ($order) {
+            return $order->cart->user;  // Récupérer l'utilisateur (client) associé au panier de la commande
+        })->unique();  // Utiliser `unique()` pour éviter les doublons
+
+        // Appliquer la conversion des prix en fonction de la devise de l'utilisateur
+        foreach ($orders as $order) {
+            $userCurrency = $this->currency;
+
+            $order->converted_price = $order->convertPriceAtThatTime($userCurrency);
+        }
+
+        return $clients;
     }
 
     /**

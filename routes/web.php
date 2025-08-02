@@ -13,6 +13,8 @@ Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/symlink', [PublicController::class, 'symlink'])->name('symlink');
 Route::post('/search', [PublicController::class, 'search'])->name('search');
 Route::get('/cart', [PublicController::class, 'cart'])->name('cart');
+Route::get('/terms_of_use', [PublicController::class, 'termsOfUse'])->name('terms');
+Route::get('/privacy_policy', [PublicController::class, 'privacyPolicy'])->name('privacy');
 Route::get('/profile/{id}', [PublicController::class, 'profile'])->whereNumber('id')->name('profile');
 Route::get('/change-lang/{locale}', [PublicController::class, 'changeLanguage'])->name('change_language');
 // Products
@@ -28,8 +30,8 @@ Route::get('/discussions/{id}', [PublicController::class, 'discussionDatas'])->w
 Route::get('/investors', [PublicController::class, 'investors'])->name('investor.home');
 Route::get('/investors/{id}', [PublicController::class, 'investorDatas'])->whereNumber('id')->name('investor.datas');
 // Crowdfundings
-Route::get('/crowdfunding', [PublicController::class, 'crowdfunding'])->name('crowdfunding.home');
-Route::get('/crowdfunding/{id}', [PublicController::class, 'crowdfundingDatas'])->whereNumber('id')->name('crowdfunding.datas');
+Route::get('/project-writing', [PublicController::class, 'crowdfunding'])->name('crowdfunding.home');
+Route::get('/project-writing/{id}', [PublicController::class, 'crowdfundingDatas'])->whereNumber('id')->name('crowdfunding.datas');
 // Payment
 Route::get('/pay', [PublicController::class, 'pay'])->name('pay');
 Route::post('/pay', [PublicController::class, 'runPay']);
@@ -47,10 +49,10 @@ Route::middleware('auth')->group(function () {
     // Discussions
     Route::post('/discussions', [PublicController::class, 'addDiscussion']);
     Route::post('/discussions/{id}', [PublicController::class, 'updateDiscussion'])->whereNumber('id');
-    // Crowdfunding
-    Route::post('/crowdfunding', [PublicController::class, 'addCrowdfunding']);
-    Route::post('/crowdfunding/{id}', [PublicController::class, 'updateCrowdfunding'])->whereNumber('id');
-    Route::post('/crowdfunding/finance/{id}', [PublicController::class, 'financeCrowdfunding'])->whereNumber('id')->name('crowdfunding.finance');
+    // Project writing
+    Route::post('/project-writing', [PublicController::class, 'addCrowdfunding']);
+    Route::post('/project-writing/{id}', [PublicController::class, 'updateCrowdfunding'])->whereNumber('id');
+    Route::post('/project-writing/finance/{id}', [PublicController::class, 'financeCrowdfunding'])->whereNumber('id')->name('crowdfunding.finance');
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.home');
     // Roles

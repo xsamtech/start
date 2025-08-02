@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Http\Resources\Category as ResourcesCategory;
+use App\Http\Resources\Post as ResourcesPost;
 use App\Http\Resources\Product as ResourcesProduct;
 use App\Http\Resources\ProjectSector as ResourcesProjectSector;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Product;
 use App\Models\ProjectSector;
 use App\Models\User;
@@ -53,9 +55,10 @@ class AppServiceProvider extends ServiceProvider
                             })->orderByDesc('users.created_at')->paginate(5)->appends(request()->query());
             $sectors = ProjectSector::orderByDesc('created_at')->paginate(5)->appends(request()->query());
             $categories = Category::orderByDesc('created_at')->paginate(5)->appends(request()->query());
-            $popular_projects = Product::mostOrdered(6, 'project', 'monthly');
             $popular_products = Product::mostOrdered(6, 'product', 'monthly');
             $popular_services = Product::mostOrdered(6, 'service', 'monthly');
+            $news_posts = Post::where('type', 'news')->orderByDesc('created_at')->limit(3)->get();
+            $comments_posts = Post::where('type', 'comment')->orderByDesc('created_at')->limit(3)->get();
 
             $view->with('members', ResourcesUser::collection($members)->resolve());
             $view->with('members_req', $members);
@@ -66,9 +69,10 @@ class AppServiceProvider extends ServiceProvider
             $view->with('cartService', $cartService);
             $view->with('session_cart_total', $sessionCartTotal);
             $view->with('current_user', $current_user);
-            $view->with('popular_projects', ResourcesProduct::collection($popular_projects)->resolve());
             $view->with('popular_products', ResourcesProduct::collection($popular_products)->resolve());
             $view->with('popular_services', ResourcesProduct::collection($popular_services)->resolve());
+            $view->with('news_posts', ResourcesPost::collection($news_posts)->resolve());
+            $view->with('comments_posts', ResourcesPost::collection($comments_posts)->resolve());
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));
         });

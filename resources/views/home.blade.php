@@ -21,8 +21,8 @@
 
                             <li data-transition="fade" data-slotamount="5" data-masterspeed="600" data-saveperformance="on" data-title="Learn More">
                                 <img src="{{ getWebURL() . '/template/public/images/revslider/dummy.png' }}" alt="slidebg2" data-lazyload="{{ getWebURL() . '/template/public/images/homeslider/slide2.jpg' }}" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat">
-                                <div class="tp-caption rev-title lfr ltr text-uppercase" data-x="755" data-y="160" data-speed="1600" data-start="750" data-endspeed="300" style="z-index: 9999">@lang('miscellaneous.public.slides.slide_2.title')</div>
-                                <div class="tp-caption rev-text2 lfr ltr" data-x="755" data-y="252" data-speed="1600" data-start="1050" data-endspeed="550" style="z-index: 9999">@lang('miscellaneous.public.slides.slide_2.description')</div>
+                                <div class="tp-caption rev-title lfr ltr text-uppercase" data-x="755" data-y="160" data-speed="1600" data-start="750" data-endspeed="300" style="z-index: 9999; color: #fff; text-shadow: rgba(0,0,0,0.5)">@lang('miscellaneous.public.slides.slide_2.title')</div>
+                                <div class="tp-caption rev-text2 lfr ltr" data-x="755" data-y="252" data-speed="1600" data-start="1050" data-endspeed="550" style="z-index: 9999; color: #fff; text-shadow: rgba(0,0,0,0.5)">@lang('miscellaneous.public.slides.slide_2.description')</div>
 
                                 <div class="tp-caption lfr ltr" data-x="755" data-y="360" data-speed="1600" data-start="1350" data-endspeed="800" style="z-index: 9999">
                                     <a href="{{ route('discussion.home') }}" class="btn btn-custom-2">@lang('miscellaneous.see_more')</a>
@@ -165,57 +165,8 @@
                                             <img src="{{ asset('assets/img/about/mission.png') }}" alt="Showcase Venedor" class="img-responsive">
                                         </div><!-- End .col-md-5 -->
                                     </div><!-- End .row -->
+
                                     <div class="xlg-margin"></div><!-- Space -->
-
-                                    <header class="content-title">
-                                        <h2 class="title">@lang('miscellaneous.public.latest_projects.title')</h2>
-                                        <p class="title-desc">@lang('miscellaneous.public.latest_projects.description')</p>
-                                    </header>
-
-                                    <div id="products-tabs-content" class="row tab-content">
-                                        <div class="tab-pane active" id="all">
-    @forelse ($popular_projects as $product)
-                                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                                <div class="item item-hover">
-                                                    <div class="item-image-wrapper">
-                                                        <figure class="item-image-container">
-                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}">
-                                                                <img src="{{ count($product['photos']) > 0 ? $product['photos'][0]->file_url : getWebURL() . '/template/public/images/products/item6.jpg' }}" alt="item1" class="item-image">
-                                                                <img src="{{ count($product['photos']) > 0 ? (!empty($product['photos'][1]) ? $product['photos'][1]->file_url : $product['photos'][0]->file_url) : getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
-                                                            </a>
-                                                        </figure>
-                                                        {{-- <div class="item-price-container">
-                                                            <span class="item-price">{{ !empty($current_user) ? ($product['converted_price'] . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }}</span>
-                                                        </div><!-- End .item-price-container --> --}}
-                                                    </div><!-- End .item-image-wrapper -->
-                                                    <div class="item-meta-container">
-                                                        <div class="ratings-container">
-                                                            <div class="ratings">
-                                                                <div class="ratings-result" data-result="{{ $product['average_rating'] }}"></div>
-                                                            </div><!-- End .ratings -->
-                                                        </div><!-- End .rating-container -->
-                                                        <h3 class="item-name">
-                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}">
-                                                                {{ $product['product_name'] }}
-                                                            </a>
-                                                        </h3>
-                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
-                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}" class="btn strt-btn-chocolate-3">
-                                                                @lang('miscellaneous.see_more')
-                                                            </a>
-                                                        </div><!-- End .item-action -->
-                                                    </div><!-- End .item-meta-container -->
-                                                </div><!-- End .item -->
-                                            </div><!-- End .col-md-4 -->
-    @empty
-                                            <div class="col-12">
-                                                <p class="lead text-center strt-text-chocolate-2">@lang('miscellaneous.empty_list')</p>
-                                            </div><!-- End .col-md-4 -->
-    @endforelse
-                                        </div><!-- End .tab-pane -->
-                                    </div><!-- End #products-tabs-content -->
-
-                                    <div class="sm-margin"></div><!-- Space -->
 
                                     <header class="content-title">
                                         <h2 class="title">@lang('miscellaneous.public.latest_services.title')</h2>
@@ -275,36 +226,23 @@
 
                                         <div class="testimonials-slider flexslider sidebarslider">
                                             <ul class="testimonials-list clearfix">
+    @forelse ($comments_posts as $comment)
+        @php
+            $parentPost = \App\Models\Post::find($comment['answered_for']);
+        @endphp
                                                 <li>
-                                                    <div class="testimonial-details">
-                                                        {{-- <header>Best Service!</header> --}}
-                                                        Maecenas semper aliquam massa. Praesent pharetra sem vitae nisi
-                                                        eleifend molestie. Aliquam molestie scelerisque ultricies.
-                                                        Suspendisse potenti.
-                                                    </div><!-- End .testimonial-details -->
+                                                    <div class="testimonial-details">{!! Str::limit($comment['posts_content'], 100) !!}</div><!-- End .testimonial-details -->
                                                     <figure class="clearfix">
-                                                        <img src="{{ getWebURL() . '/template/public/images/testimonials/anna.jpg' }}" alt="Computer Ceo">
+                                                        <img src="{{ $comment['user']['avatar_url'] }}" alt="{{ $comment['user']['firstname'] . ' ' . $comment['user']['lastname'] }}" width="75" height="75">
                                                         <figcaption>
-                                                            <a href="#">Anna Retallic</a>
-                                                            <span>12.05.2013</span>
+                                                            <a href="{{ route('discussion.datas', ['id' => $parentPost->id]) }}">{{ $comment['user']['firstname'] . ' ' . $comment['user']['lastname'] }}</a>
+                                                            <span>{{ \Carbon\Carbon::parse($comment['created_at'])->format('d.m.Y') }}</span>
                                                         </figcaption>
                                                     </figure>
                                                 </li>
-                                                <li>
-                                                    <div class="testimonial-details">
-                                                        {{-- <header>Cool Style!</header> --}}
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt iure
-                                                        quisquam necessitatibus fugit! Nisi tempora reiciendis omnis error
-                                                        sapiente ipsam maiores dolorem maxime.
-                                                    </div><!-- End .testimonial-details -->
-                                                    <figure class="clearfix">
-                                                        <img src="{{ getWebURL() . '/template/public/images/testimonials/jake.jpg' }}" alt="Computer Ceo">
-                                                        <figcaption>
-                                                            <a href="#">Jake Suasoo</a>
-                                                            <span>17.05.2013</span>
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
+    @empty
+                                                <li><i class="strt-text-chocolate-3">@lang('miscellaneous.empty_list')</i></li>
+    @endforelse
                                             </ul>
                                         </div><!-- End .testimonials-slider -->
                                     </div><!-- End .widget -->
@@ -315,64 +253,27 @@
 
                                         <div class="latest-posts-slider flexslider sidebarslider">
                                             <ul class="latest-posts-list clearfix">
+    @forelse ($news_posts as $news)
                                                 <li>
-                                                    <a href="single.html">
+                                                    <a href="{{ route('discussion.datas', ['id' => $news['id']]) }}">
                                                         <figure class="latest-posts-media-container">
-                                                            <img class="img-responsive" src="{{ getWebURL() . '/template/public/images/blog/post1-small.jpg' }}" alt="lats post">
+                                                            <img class="img-responsive" src="{{ $news['photos'][0]['file_url'] ?? getWebURL() . '/template/public/images/blog/post1-small.jpg' }}" alt="lats post" style="width: 100%; height: 120px; object-fit: cover;">
                                                         </figure>
                                                     </a>
-                                                    <h4><a href="single.html">35% Discount on second purchase!</a></h4>
-                                                    <p>Sed blandit nulla nec nunc ullamcorper tristique. Mauris adipiscing
-                                                        cursus ante ultricies dictum sed lobortis.</p>
+                                                    <h4><a href="{{ route('discussion.datas', ['id' => $news['id']]) }}">{{ $news['posts_title'] }}</a></h4>
+                                                    <p>{!! Str::limit($news['posts_content'], 100) !!}</p>
                                                     <div class="latest-posts-meta-container clearfix">
                                                         <div class="pull-left">
-                                                            <a href="#">Read More...</a>
+                                                            <a href="{{ route('discussion.datas', ['id' => $news['id']]) }}">@lang('miscellaneous.see_more')...</a>
                                                         </div><!-- End .pull-left -->
                                                         <div class="pull-right">
-                                                            12.05.2013
+                                                            {{ \Carbon\Carbon::parse($news['created_at'])->format('d.m.Y') }}
                                                         </div><!-- End .pull-right -->
                                                     </div><!-- End .latest-posts-meta-container -->
                                                 </li>
-
-                                                <li>
-                                                    <a href="single.html">
-                                                        <figure class="latest-posts-media-container">
-                                                            <img class="img-responsive" src="{{ getWebURL() . '/template/public/images/blog/post2-small.jpg' }}" alt="lats post">
-                                                        </figure>
-                                                    </a>
-                                                    <h4><a href="single.html">Free shipping for regular customers.</a>
-                                                    </h4>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque
-                                                        fuga officia in molestiae easint..</p>
-                                                    <div class="latest-posts-meta-container clearfix">
-                                                        <div class="pull-left">
-                                                            <a href="#">Read More...</a>
-                                                        </div><!-- End .pull-left -->
-                                                        <div class="pull-right">
-                                                            10.05.2013
-                                                        </div><!-- End .pull-right -->
-                                                    </div><!-- End .latest-posts-meta-container -->
-                                                </li>
-
-                                                <li>
-                                                    <a href="single.html">
-                                                        <figure class="latest-posts-media-container">
-                                                            <img class="img-responsive" src="{{ getWebURL() . '/template/public/images/blog/post3-small.jpg' }}" alt="lats post">
-                                                        </figure>
-                                                    </a>
-                                                    <h4><a href="#">New jeans on sales!</a></h4>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque
-                                                        fuga officia in molestiae easint..</p>
-                                                    <div class="latest-posts-meta-container clearfix">
-                                                        <div class="pull-left">
-                                                            <a href="#">Read More...</a>
-                                                        </div><!-- End .pull-left -->
-                                                        <div class="pull-right">
-                                                            8.05.2013
-                                                        </div><!-- End .pull-right -->
-                                                    </div><!-- End .latest-posts-meta-container -->
-                                                </li>
-
+    @empty
+                                                <li><i class="strt-text-chocolate-3">@lang('miscellaneous.empty_list')</i></li>
+    @endforelse
                                             </ul>
                                         </div><!-- End .latest-posts-slider -->
                                     </div><!-- End .widget -->
@@ -380,9 +281,10 @@
                                     <div class="widget banner-slider-container">
                                         <div class="banner-slider flexslider">
                                             <ul class="banner-slider-list clearfix">
-                                                <li><a href="#"><img src="{{ getWebURL() . '/template/public/images/banner1.jpg' }}" alt="Banner 1"></a></li>
-                                                <li><a href="#"><img src="{{ getWebURL() . '/template/public/images/banner2.jpg' }}" alt="Banner 2"></a></li>
-                                                <li><a href="#"><img src="{{ getWebURL() . '/template/public/images/banner3.jpg' }}" alt="Banner 3"></a></li>
+                                                <li><a href="#"><img src="{{ asset('assets/img/gallery/ad001.png') }}" alt="Banner 1"></a></li>
+                                                <li><a href="#"><img src="{{ asset('assets/img/gallery/ad002.png') }}" alt="Banner 2"></a></li>
+                                                <li><a href="#"><img src="{{ asset('assets/img/gallery/ad003.png') }}" alt="Banner 3"></a></li>
+                                                <li><a href="#"><img src="{{ asset('assets/img/gallery/ad004.png') }}" alt="Banner 4"></a></li>
                                             </ul>
                                         </div>
                                     </div><!-- End .widget -->
@@ -405,21 +307,9 @@
                                 <div class="sm-margin"></div><!-- space -->
                                 <div class="row">
                                     <div class="brand-slider owl-carousel">
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 1"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 2"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 3"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 4"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 5"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 6"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 7"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 8"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 9"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 10"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 11"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 12"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 13"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 14"></a>
-                                        <a href="" target="_blank"><img src="{{ getWebURL() . '/template/public/images/brands/brand-logo.png' }}" alt="Brand Logo 15"></a>
+    @for ($i = 0; $i < 10; $i++)
+                                        <a href="" target="_blank" style="min-height: 100px;"><img src="{{ asset('assets/img/partners/partner-' . $i . '.jpg') }}" alt="Brand Logo 1"></a>
+    @endfor
                                     </div><!-- End .brand-slider -->
                                 </div><!-- End .row -->
                             </div><!-- End #brand-slider-container -->

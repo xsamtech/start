@@ -173,49 +173,6 @@ class PublicController extends Controller
             $items = $current_user->unpaidOrders();
         }
 
-        if ($entity == 'projects') {
-            $entity_title = __('miscellaneous.menu.account.project.title');
-            $categories = Category::withCount('products')->where('for_service', 2)->get();
-
-            if ($categories->isEmpty()) {
-                Category::create([
-                    'category_name' => [
-                        'en' => 'Processing plant',
-                        'fr' => 'Usine de transformation'
-                    ],
-                    'category_description' => [
-                        'en' => 'Industrial establishment that transforms agricultural raw materials into finished or semi-finished products.',
-                        'fr' => 'Etablissement industriel qui transforme les matières premières agricoles en produits finis ou semi-finis.'
-                    ],
-                    'for_service' => 2,
-                    'alias' => 'processing-plant',
-                ]);
-            }
-
-            $categories_ids = $categories->pluck('id')->toArray();
-
-            // If $categories_ids is empty, we have a problem
-            $categoryId = $request->category_id ?? ($categories_ids[0] ?? null);
-
-            if ($categoryId === null) {
-                return redirect()->route('home')->with('error_message', __('notifications.find_category_404'));
-            }
-
-            // Get the first category in the case user has not yet selected his category
-            $category = Category::where([['id', $categoryId], ['for_service', 2]])->first();
-            // Get user projects
-            $query = Product::where([['type', 'project'], ['category_id', $categoryId], ['user_id', $current_user->id]]);
-            $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
-
-            // Ajouter la méthode convertPrice au résultat paginé
-            $items->getCollection()->transform(function ($item) use ($current_user) {
-                // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
-                $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
-
-                return $item;
-            });
-        }
-
         if ($entity == 'products') {
             $entity_title = __('miscellaneous.menu.account.product.title');
             $categories = Category::withCount('products')->where('for_service', 0)->get();
@@ -336,6 +293,14 @@ class PublicController extends Controller
             });
         }
 
+        if ($entity == 'customers') {
+            $entity_title = __('miscellaneous.menu.account.customer');
+            // Get the period of ordering
+            $period = $request->get('period') ?? 'yearly'; // Default is "daily"
+            // Get user customers
+            $items = $current_user->customersInPeriod($period);
+        }
+
         return view('account', [
             'entity' => $entity,
             'entity_title' => $entity_title,
@@ -370,53 +335,6 @@ class PublicController extends Controller
         $category = null;
         $categories = null;
         $items = null;
-
-        if ($entity == 'project') {
-            $entity_title = __('miscellaneous.menu.admin.categories.projects');
-            $categories = Category::withCount('products')->where('for_service', 2)->get();
-
-            if ($categories->isEmpty()) {
-                Category::create([
-                    'category_name' => [
-                        'en' => 'Processing plant',
-                        'fr' => 'Usine de transformation'
-                    ],
-                    'category_description' => [
-                        'en' => 'Industrial establishment that transforms agricultural raw materials into finished or semi-finished products.',
-                        'fr' => 'Etablissement industriel qui transforme les matières premières agricoles en produits finis ou semi-finis.'
-                    ],
-                    'for_service' => 2,
-                    'alias' => 'processing-plant',
-                ]);
-            }
-
-            $categories_ids = $categories->pluck('id')->toArray();
-
-            // If $categories_ids is empty, we have a problem
-            $categoryId = $request->category_id ?? ($categories_ids[0] ?? null);
-
-            if ($categoryId === null) {
-                return redirect()->route('home')->with('error_message', __('notifications.find_category_404'));
-            }
-
-            // Get the first category in the case user has not yet selected his category
-            $category = Category::where([['id', $categoryId], ['for_service', 2]])->first();
-            // Get user projects
-            $query = Product::where([['type', 'project'], ['category_id', $categoryId]]);
-            $items = $query->orderByDesc('updated_at')->paginate(12)->appends($request->query());
-
-            if (Auth::check()) {
-                $current_user = User::find(Auth::id());
-
-                // Ajouter la méthode convertPrice au résultat paginé
-                $items->getCollection()->transform(function ($item) use ($current_user) {
-                    // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
-                    $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
-
-                    return $item;
-                });
-            }
-        }
 
         if ($entity == 'product') {
             $entity_title = __('miscellaneous.menu.public.products.products');

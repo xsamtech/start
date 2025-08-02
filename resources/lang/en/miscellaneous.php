@@ -62,6 +62,7 @@ return [
     'send' => 'Send',
     'add' => 'Add',
     'launch_new' => 'Launch a campaign',
+    'write_new' => 'Register new project',
     'participate' => 'Participate',
     'publish' => 'Publish',
     'ask' => 'Ask',
@@ -186,7 +187,7 @@ return [
         ],
     ],
     'search_input' => 'Search...',
-    'search_info' => 'I\'m searching for...',
+    'search_info' => 'I’m searching for...',
     'search_members' => 'Members',
     'search_sectors' => 'Sectors',
     'search_categories' => 'Categories',
@@ -424,6 +425,7 @@ return [
                 'title' => 'My services',
                 'add' => 'Add a service'
             ],
+            'customer' => 'My customers',
             'post' => [
                 'news' => 'News',
                 'complaints' => 'Complaints'
@@ -449,8 +451,6 @@ return [
         'public' => [
             'products' => [
                 'title' => 'Catalog',
-                'projects' => 'Projects',
-                'about_project' => 'About project',
                 'products' => 'Products',
                 'about_product' => 'About product',
                 'services' => 'Services',
@@ -460,7 +460,7 @@ return [
                 'title' => 'Agribusiness',
                 'ask' => 'Investment request',
             ],
-            'crowdfunding' => 'Project financing',
+            'crowdfunding' => 'Project writing',
         ],
     ],
 
@@ -481,7 +481,7 @@ return [
         ],
         'personal_infos' => [
             'title' => 'Personal Infos',
-            'click_to_change_picture' => 'Cliquez sur l\'image pour la modifier',
+            'click_to_change_picture' => 'Cliquez sur l’image pour la modifier',
             'change_avatar' => 'Change the avatar',
             'link' => 'Register update',
         ],
@@ -714,20 +714,111 @@ return [
             ],
         ],
 
-        // Crowdfunding
-        'crowdfunding' => [
-            'details' => 'Crowdfunding details',
-            'link' => 'Manage crowdfundings',
-            'add' => 'Add a crowdfunding',
-            'edit' => 'Edit the crowdfunding',
-            'search' => 'Search a crowdfunding',
-            'list' => 'Crowdfundings list',
+        // Project writing
+        'project_writing' => [
+            'details' => 'Project details',
+            'link' => 'Manage projects',
+            'add' => 'Write new project',
+            'edit' => 'Edit the project',
+            'search' => 'Search a project',
+            'list' => 'Projects list',
             'data' => [
-                'description' => 'Crowdfunding description',
-                'expected_amount' => 'Expected amount',
-                'collected_amount' => 'Amount already collected',
-                'amount' => 'Amount',
-                'currency' => 'Currency'
+                'description' => 'Activity description',
+                'company_name' => 'Company name',
+                'rccm' => 'RCCM',
+                'id_nat' => 'NAT ID',
+                'tax_number' => 'Taxe number',
+                'company_address' => 'Head office address',
+                'company_email' => 'Company email',
+                'company_phone' => 'Company phone number',
+                'website_url' => 'Website URL',
+                'field_experience' => [
+                    'title' => 'Experience in the agricultural field',
+                    'junior' => 'Junior (0 to 2 years)',
+                    'intermediate' => 'Intermediate (3 to 5 years)',
+                    'experienced' => 'Experienced (6 to 10 years)',
+                    'expert' => 'Expert (more than 10 years)',
+                ],
+                'activity_orientation' => [
+                    'title' => 'Orientation of agricultural activity',
+                    'seed_producer_distributor' => [
+                        'title' => 'Seed producer and/or distributor',
+                        'info' => 'Indicate the product brand and legal category (e.g. GMO, organic, hybrid, etc.)',
+                    ],
+                    'farmer' => [
+                        'title' => 'Farmer',
+                        'info' => 'Specify the type of crop (Ex: Tomatoes, Peanuts, Corn, etc.)',
+                    ],
+                    'processing_transformation_unit' => [
+                        'title' => 'Agricultural processing and transformation unit',
+                        'data_1' => 'Processed products',
+                        'info_1' => 'Specify the type of crop treated (Ex: Tomatoes, Peanuts, Corn, etc.)',
+                        'data_2' => [
+                            'title' => 'Unit capacity',
+                            'quantity' => 'Quantity (in tons)',
+                            'period' => [
+                                'title' => 'Period',
+                                'daily' => 'Daily',
+                                'weekly' => 'Weekly',
+                                'monthly' => 'Monthly',
+                                'quarterly' => 'Quarterly',
+                                'biannual' => 'Biannual',
+                                'annual' => 'Annual',
+                            ],
+                        ],
+                        'info_2' => 'Indicate the daily? monthly? quantity processed in tonnes',
+                    ],
+                    'marketing_agency' => 'Marketing agency',
+                    'food_distribution' => 'Food distribution establishment',
+                ],
+                'market_segments_or_target' => [
+                    'title' => 'Market segments or target',
+                    'farmers' => 'Farmers',
+                    'ngo_research' => 'International NGOs and research organizations',
+                    'agro_dealers' => 'Agro-dealers and other private sector operators',
+                    'consumers' => 'Consumers',
+                    'others' => 'Others (Specify)',
+                ],
+                'physical_and_land_organization' => [
+                    'title' => 'Physical and land organization',
+                    'info' => 'Do you own a plantation?',
+                    'yes' => [
+                        'title' => 'Yes',
+                        'info' => 'Specify the size of your plantation in hectares and the yield per tonne per hectare',
+                        'size' => 'Size (in hectares)',
+                        'yield' => 'Yield per tonne per hectare',
+                    ],
+                    'no' => 'No',
+                ],
+                'land_status' => [
+                    'title' => 'Land status',
+                    'tenant' => [
+                        'title' => 'Tenant',
+                        'info' => 'Indicate the amount of the monthly allowance (in USD)',
+                    ],
+                    'owner' => [
+                        'title' => 'Owner',
+                        'info' => 'Download your property deed',
+                    ],
+                ],
+                'accounting_synthesis' => [
+                    'effective' => [
+                        'title' => 'Effective',
+                        'info' => 'Indicate the number of people employed',
+                    ],
+                    'annual_turnover' => [
+                        'title' => 'Annual turnover',
+                        'info' => 'Indicate the value in USD or CDF',
+                    ],
+                    'projected_turnover' => [
+                        'title' => 'Projected turnover',
+                        'info' => 'Indicate the value in USD or CDF of the revenue expected from the financing obtained',
+                    ],
+                ],
+                'strategic_synthesis' => [
+                    'title' => 'Strategic synthesis',
+                    'info' => 'Describe in a few lines your business model or what you offer to your customers, your target, your sources of income, production costs, your resources and partnerships and the structure of your costs',
+                ],
             ],
         ],
 
@@ -795,6 +886,8 @@ return [
         'withdraw_from_cart' => 'Withdraw from cart',
         'insufficient_stock' => 'Insufficient stock',
         'product_is_in_cart' => 'Already in your cart',
+        'number_of_products_ordered' => 'Number of products',
+        'order_data' => 'Date of order',
         'total' => 'Total',
         'subtotal' => 'Subtotal',
         'view_cart' => 'View cart',
@@ -826,13 +919,20 @@ return [
             'request' => 'Request an investment',
         ],
 
-        // Crowdfunding
-        'crowdfunding' => [
-            'title' => 'Do crowdfunding',
-            'description' => 'Start a crowdfunding campaign or participate in another member\'s.',
-            'sector' => [
-                'title' => 'Sector',
-                'category' => 'Category',
+        // Agribusiness
+        'agribusiness' => [
+            'title' => 'Agribusiness',
+            'description' => 'Share your projects on the platform',
+            'request' => 'Request an investment',
+        ],
+
+        // Project writing
+        'project_writing' => [
+            'title' => 'Project writing',
+            'description' => 'Write a project worthy of obtaining funding',
+            'new_file' => [
+                'title' => 'Use our file',
+                'description' => 'This file contains additional information about your activities',
             ],
         ],
 
@@ -846,7 +946,7 @@ return [
         'slides' => [
             'slide_1' => [
                 'title' => 'Sell or<br>buy online',
-                'description' => 'Products, services or other<br>projects are available for purchase<br>or you can publish your own.',
+                'description' => 'Products or services <br>are available for purchase<br>or you can publish your own.',
             ],
 
             'slide_2' => [

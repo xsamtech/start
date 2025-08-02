@@ -58,6 +58,7 @@
 
         <style id="custom-style">
             textarea { resize: none; }
+            /* .owl-item { width: 300px!important; } */
             #footer .bottom a { color: #84bb26; }
             #footer .bottom a { color: #84bb26; }
             .breadcrumb li a, .breadcrumb li { font-size: 1.5rem; }
@@ -366,82 +367,6 @@
         </div>
     @endif
 
-    @if ($entity == 'projects')
-        <!-- ### Add project ### -->
-        <div class="modal fade" id="newProductModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header" style="padding: 5px; border: 0;">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body" style="padding-top: 10px;">
-                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.product.add', ['entity' => __('miscellaneous.admin.product.entity.project.singular')])</h2>
-                        <hr>
-
-                        <form id="productForm" action="{{ route('product.entity', ['entity' => 'project']) }}" method="POST">
-        @csrf
-                            <input type="hidden" name="type" value="project">
-
-                            <div class="row">
-                                <!-- Product name -->
-                                <div class="col-md-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="product_name">@lang('miscellaneous.admin.product.data.product_name', ['entity' => __('miscellaneous.admin.product.entity.project.singular')])</label>
-                                        <input type="text" class="form-control" id="product_name" name="product_name" required>
-                                    </div>
-                                </div>
-
-                                <!-- Description -->
-                                <div class="col-md-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="product_description">@lang('miscellaneous.admin.product.data.product_description')</label>
-                                        <textarea class="form-control" id="product_description" name="product_description" rows="2"></textarea>
-                                    </div>
-                                </div>
-
-                                <!-- Category -->
-                                <div class="col-md-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="category_id">@lang('miscellaneous.admin.product.data.category')</label>
-                                        <select class="form-control" id="category_id" name="category_id">
-        @forelse ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-        @empty
-                                            <option disabled>@lang('miscellaneous.empty_list')</option>
-        @endforelse
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Upload images -->
-                                <div class="col-md-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="files_urls">@lang('miscellaneous.upload.upload_images')</label>
-                                        <input type="file" id="files_urls" name="files_urls[]" class="form-control" multiple>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-xs-12">
-                                    <div id="image-preview-container" class="mt-2"></div> <!-- Conteneur pour les vignettes -->
-                                </div>
-                            </div>
-
-                            <hr>
-                            <div style="display: flex; justify-content: flex-start;">
-                                <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
-                                    <span style="color: #fff;">@lang('miscellaneous.register')</span>
-                                </button>
-                                <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-
     @if ($entity == 'services')
         <!-- ### Add project ### -->
         <div class="modal fade" id="newProductModal" tabindex="-1" role="dialog">
@@ -621,125 +546,6 @@
             </div>
         </div>
 @endif
-@if (Route::is('investor.home') && !empty($current_user))
-        <!-- ### Add product ### -->
-        <div class="modal fade" id="newInvestorModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header" style="padding: 5px; border: 0;">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body" style="padding-top: 10px;">
-                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.public.investor.become_investor.link')</h2>
-                        <hr>
-
-                        <form id="investorForm" action="{{ route('dashboard.role.entity.datas', ['entity' => 'users', 'id' => $current_user->id]) }}" method="POST">
-    @csrf
-                            <input type="hidden" name="user_id" value="{{ $current_user->id }}">
-                            <input type="hidden" name="role_id" value="{{ $role_investor->id }}">
-
-                            <p class="lead text-center" style="margin-bottom: 0;">@lang('miscellaneous.public.investor.become_investor.info')</p>
-
-                            <hr>
-                            <div style="display: flex; justify-content: flex-start;">
-                                <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
-                                    <span style="color: #fff;">@lang('miscellaneous.register')</span>
-                                </button>
-                                <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-@endif
-@if (Route::is('crowdfunding.datas'))
-        <!-- ### Add product ### -->
-        <div class="modal fade" id="payModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header" style="padding: 5px; border: 0;">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body" style="padding-top: 10px;">
-                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.public.about.subscribe.send_money.title')</h2>
-                        <hr>
-
-                        <form action="{{ route('pay') }}" method="POST">
-        @csrf
-                            <input type="hidden" name="app_url" value="{{ getWebURL() }}">
-                            <input type="hidden" name="user_id" value="{{ !empty($current_user) ? $current_user->id : null }}">
-                            <input type="hidden" name="crowdfunding_id" value="{{ !empty($selected_crowdfunding) ? $selected_crowdfunding['id'] : null }}">
-
-                            <div class="row">
-                                <!-- Amount -->
-                                <div class="col-md-6 col-xs-6">
-                                    <div class="form-group">
-                                        <label for="amount">@lang('miscellaneous.admin.crowdfunding.data.amount')</label>
-                                        <input type="number" class="form-control" id="amount" name="amount" step="0.01" required>
-                                    </div>
-                                </div>
-
-                                <!-- Currency -->
-                                <div class="col-md-6 col-xs-6">
-                                    <div class="form-group">
-                                        <label for="currency">@lang('miscellaneous.currency')</label>
-                                        <select class="form-control" id="currency" name="currency">
-                                            <option class="small" disabled>@lang('miscellaneous.currency')</option>
-                                            <option>USD</option>
-                                            <option>CDF</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-                            <div id="paymentMethod">
-                                <p class="lead" style="margin-bottom: 5px;">@lang('miscellaneous.payment_method')</p>
-
-                                <label class="radio-inline" for="mobile_money">
-                                    <img src="{{ asset('assets/img/payment-mobile-money.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')" width="40" style="vertical-align: middle; margin-right: 20px;">
-                                    <input type="radio" name="transaction_type_id" id="mobile_money" value="1" style="position: relative; top: 1px;" checked /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')</span>
-                                </label>
-                                <label class="radio-inline" for="bank_card" style="margin: 0;">
-                                    <img src="{{ asset('assets/img/payment-credit-card.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.bank_card')" width="40" style="vertical-align: middle; margin-right: 20px;">
-                                    <input type="radio" name="transaction_type_id" id="bank_card" value="2" style="position: relative; top: 1px;" /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.bank_card')</span>
-                                </label>
-                            </div>
-
-                            <div id="phoneNumberForMoney">
-                                <hr>
-                                <div class="row">
-                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-0"></div>
-                                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4" style="padding-right: 0!important;">
-                                        <select class="form-control" id="selectCountry" name="other_phone_code">
-                                            <option class="small" selected disabled>@lang('miscellaneous.phone_code')</option>
-        @forelse ($countries as $country)
-            								<option value="{{ ltrim($country['phone'], '+') }}">{{ $country['label'] }}</option>
-        @empty
-        @endforelse
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-7 col-md-6 col-sm-6 col-xs-8">
-                                        <input type="text" class="form-control" id="phone_number" name="other_phone_number" placeholder="@lang('miscellaneous.phone_number')">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-                            <button class="btn btn-block strt-btn-green rounded-pill" type="submit">@lang('miscellaneous.send')</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-@endif
         <!-- MODALS-->
 
         <div id="wrapper">
@@ -877,7 +683,7 @@
                                 <div class="header-box contact-phones pull-right clearfix">
                                     <span class="header-box-icon header-box-icon-earphones"></span>
                                     <ul class="pull-left">
-                                        <li>+(243) 581 000 815</li>
+                                        <li>+(243) 810 045 300</li>
                                     </ul>
                                 </div><!-- End .contact-phones -->
 
@@ -901,7 +707,6 @@
                                             <li>
                                                 <a href="#">@lang('miscellaneous.menu.public.products.title')</a>
                                                 <ul>
-                                                    <li><a href="{{ route('product.entity', ['entity' => 'project']) }}">@lang('miscellaneous.menu.public.products.projects')</a></li>
                                                     <li><a href="{{ route('product.entity', ['entity' => 'product']) }}">@lang('miscellaneous.menu.public.products.products')</a></li>
                                                     <li><a href="{{ route('product.entity', ['entity' => 'service']) }}">@lang('miscellaneous.menu.public.products.services')</a></li>
                                                 </ul>

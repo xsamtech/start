@@ -19,7 +19,7 @@ return [
     'welcome_description' => 'Publiez ou commandez des produits ou des services agricoles. Faites du crowdfunding sur votre projet agricole. Investissez et faites investir. Echangez dans le forum.',
     'welcome_about' => [
         'title' => 'A propos de START',
-        'content' => 'L\'initiative START (Science Technology and Agricultural Resource Transformation) est une plateforme en ligne permettant la commercialisation nationale et internationale des produits agricoles de la République démocratique du Congo. Cette plateforme permettra de mettre en relation les petits, moyens et grands exploitants agricoles avec les commerçants et les entreprises, tout en facilitant les négociations et les échanges financiers.',
+        'content' => 'L’initiative START (Science Technology and Agricultural Resource Transformation) est une plateforme en ligne permettant la commercialisation nationale et internationale des produits agricoles de la République démocratique du Congo. Cette plateforme permettra de mettre en relation les petits, moyens et grands exploitants agricoles avec les commerçants et les entreprises, tout en facilitant les négociations et les échanges financiers.',
         'mission' => [
             'title' => 'Notre mission',
             'content' => 'Nous connectons les agriculteurs au marché et les consommateurs à la ferme. Nous formons, conseillons, achetons et vendons.',
@@ -29,7 +29,7 @@ return [
     'all_right_reserved' => 'Tous droits réservés',
     'follow_us' => 'Suivez-nous :',
     'call_us' => 'Appelez-nous :',
-    'bank_transaction_description' => 'Transaction d\'argent depuis la plateforme START',
+    'bank_transaction_description' => 'Transaction d’argent depuis la plateforme START',
     'transaction_successful' => 'Transaction réussie',
     'transaction_pending' => 'Transaction en attente',
     'transaction_failed' => 'Transaction échouée',
@@ -62,6 +62,7 @@ return [
     'send' => 'Envoyer',
     'add' => 'Ajouter',
     'launch_new' => 'Lancer une campagne',
+    'write_new' => 'Enregistrer nouveau projet',
     'participate' => 'Participer',
     'publish' => 'Publier',
     'ask' => 'Demander',
@@ -125,7 +126,7 @@ return [
                 'deactivate' => 'Désactivation de compte'
             ],
             'role' => 'Attention changement de rôle',
-            'status' => 'Attention changement d\'état',
+            'status' => 'Attention changement d’état',
             'deactive' => 'Attention désactivation',
             'lock' => 'Attention blocage',
             'unlock' => 'Attention activation',
@@ -138,7 +139,7 @@ return [
                 'deactivate' => 'Voulez-vous vraiment désactiver ?'
             ],
             'role' => 'Voulez-vous vraiment changer le rôle ?',
-            'status' => 'Voulez-vous vraiment changer l\'état ?',
+            'status' => 'Voulez-vous vraiment changer l’état ?',
             'deactive' => 'Voulez-vous vraiment désactiver ?',
             'lock' => 'Voulez-vous vraiment bloquer ?',
             'unlock' => 'Voulez-vous vraiment activer ?',
@@ -151,7 +152,7 @@ return [
                 'deactivate' => 'Désactivation réussie'
             ],
             'role' => 'Changement de rôle réussi',
-            'status' => 'Changement d\'état réussi',
+            'status' => 'Changement d’état réussi',
             'deactive' => 'Désactivation réussie',
             'lock' => 'Blocage réussi',
             'unlock' => 'Activation réussie',
@@ -164,7 +165,7 @@ return [
                 'deactivate' => 'Désactivation annulée'
             ],
             'role' => 'Changement de rôle annulé',
-            'status' => 'Changement d\'état annulé',
+            'status' => 'Changement d’état annulé',
             'deactive' => 'Désactivation annulée',
             'lock' => 'Blocage annulé',
             'unlock' => 'Activation annulée',
@@ -177,7 +178,7 @@ return [
                 'deactivate' => 'Désactivation échouée'
             ],
             'role' => 'Changement de rôle échoué',
-            'status' => 'Changement d\'état échoué',
+            'status' => 'Changement d’état échoué',
             'deactive' => 'Désactivation échouée',
             'lock' => 'Blocage échoué',
             'unlock' => 'Activation échouée',
@@ -321,7 +322,7 @@ return [
     'remember_me' => 'Rester connecté',
     'forgotten_password' => 'Mot de passe oublié ?',
     'forgotten_password_info' => 'Indiquez-nous simplement votre adresse e-mail (ou n° de téléphone) et nous vous enverrons un code pour changer votre mot de passe.',
-    'reset_password_info' => 'Veuillez créer un mot de passe sécurisé et que vous n\'oublierez pas cette fois.',
+    'reset_password_info' => 'Veuillez créer un mot de passe sécurisé et que vous n’oublierez pas cette fois.',
     'not_member' => 'Pas encore membre ?',
     'signup_with' => 'ou s’inscrire avec :',
     'go_register' => 'Je n’ai pas de compte',
@@ -424,6 +425,7 @@ return [
                 'title' => 'Mes services',
                 'add' => 'Ajouter un service'
             ],
+            'customer' => 'Mes clients',
             'post' => [
                 'news' => 'Actualité',
                 'complaints' => 'Plainte'
@@ -449,8 +451,6 @@ return [
         'public' => [
             'products' => [
                 'title' => 'Catalogue',
-                'projects' => 'Projets',
-                'about_project' => 'A propos du projet',
                 'products' => 'Produits',
                 'about_product' => 'A propos du produit',
                 'services' => 'Services',
@@ -458,9 +458,9 @@ return [
             ],
             'investors' => [
                 'title' => 'Agribusiness',
-                'ask' => 'Demande d\'investissement',
+                'ask' => 'Demande d’investissement',
             ],
-            'crowdfunding' => 'Financement projet',
+            'crowdfunding' => 'Rédaction projet',
         ],
     ],
 
@@ -579,7 +579,7 @@ return [
             'search' => 'Rechercher un post',
             'list' => 'Liste des posts',
             'data' => [
-                'about_author' => 'A propos de l\'auteur',
+                'about_author' => 'A propos de l’auteur',
                 'comments' => 'Commentaires',
                 'posts_title' => 'Titre du post',
                 'posts_content' => 'Contenu',
@@ -699,23 +699,6 @@ return [
             ],
         ],
 
-        // Crowdfunding
-        'crowdfunding' => [
-            'details' => 'Détails du crowdfunding',
-            'link' => 'Gérer les crowdfundings',
-            'add' => 'Ajouter crowdfunding',
-            'edit' => 'Editer le crowdfunding',
-            'search' => 'Rechercher un crowdfunding',
-            'list' => 'Liste des crowdfundings',
-            'data' => [
-                'description' => 'Description du crowdfunding',
-                'expected_amount' => 'Montant attendu',
-                'collected_amount' => 'Montant déjà récolté',
-                'amount' => 'Montant',
-                'currency' => 'Devise'
-            ],
-        ],
-
         // Investor
         'investor' => [
             'details' => 'Détails sur l’investisseur',
@@ -728,6 +711,114 @@ return [
                 'name' => 'Nom de l’investisseur',
                 'image_url' => 'Image de l’investisseur',
                 'website_url' => 'URL du site web'
+            ],
+        ],
+
+        // Project writing
+        'project_writing' => [
+            'details' => 'Détails du projet',
+            'link' => 'Gérer les projets',
+            'add' => 'Rédiger un projet',
+            'edit' => 'Editer le projet',
+            'search' => 'Rechercher un projet',
+            'list' => 'Liste des projets',
+            'data' => [
+                'description' => 'Description de l’activité',
+                'company_name' => 'Nom de l’entreprise',
+                'rccm' => 'RCCM',
+                'id_nat' => 'ID. NAT.',
+                'tax_number' => 'N° d’Impôt',
+                'company_address' => 'Adresse du siège social',
+                'company_email' => 'E-mail de l’entreprise',
+                'company_phone' => 'N° de tél. de l’entreprise',
+                'website_url' => 'URL du site web',
+                'field_experience' => [
+                    'title' => 'Expérience dans le domaine agricole',
+                    'junior' => 'Junior (0 à 2 ans)',
+                    'intermediate' => 'Intermédiaire (3 à 5 ans)',
+                    'experienced' => 'Expérimenté (6 à 10 ans)',
+                    'expert' => 'Expert (plus de 10 ans)',
+                ],
+                'activity_orientation' => [
+                    'title' => 'Orientation de l’activité agricole',
+                    'seed_producer_distributor' => [
+                        'title' => 'Producteur et/ou distributeur de semences',
+                        'info' => 'Indiquez la marque du produit et la catégorie juridique (Ex. : OGM, Bio, hybrides, etc.)',
+                    ],
+                    'farmer' => [
+                        'title' => 'Agriculteur',
+                        'info' => 'Précisez le type de culture (Ex. : Tomates, Arachides, Maïs, etc.)',
+                    ],
+                    'processing_transformation_unit' => [
+                        'title' => 'Unité de traitement et de transformation agricole',
+                        'data_1' => 'Produits transformés',
+                        'info_1' => 'Précisez le type de culture traitées (Ex. : Tomates, Arachides, Maïs, etc.)',
+                        'data_2' => [
+                            'title' => 'Capacité de l’unité',
+                            'quantity' => 'Quantité (en tonnes)',
+                            'period' => [
+                                'title' => 'Période',
+                                'daily' => 'Journalière',
+                                'weekly' => 'Hebdomadaire',
+                                'monthly' => 'Mensuelle',
+                                'quarterly' => 'Trimestrielle',
+                                'biannual' => 'Semestrielle',
+                                'annual' => 'Annuelle',
+                            ],
+                        ],
+                        'info_2' => 'Indiquez la quantité journalière ? mensuelle ? transformée par tonnes',
+                    ],
+                    'marketing_agency' => 'Agence de marketing',
+                    'food_distribution' => 'Etablissement de distribution alimentaire',
+                ],
+                'market_segments_or_target' => [
+                    'title' => 'Segments de marchés ou cible',
+                    'farmers' => 'Agriculteurs',
+                    'ngo_research' => 'ONG internationales et organismes de recherche',
+                    'agro_dealers' => 'Agro-dealers et autres opérateurs du secteurs privés',
+                    'consumers' => 'Consommateurs',
+                    'others' => 'Autres (Préciser)',
+                ],
+                'physical_and_land_organization' => [
+                    'title' => 'Organisation physique et foncière',
+                    'info' => 'Etes-vous détenteur d’une plantation ?',
+                    'yes' => [
+                        'title' => 'Oui',
+                        'info' => 'Précisez la taille de votre plantation en hectares et le rendement par tonne à l’hectare',
+                        'size' => 'Taille (en hectares)',
+                        'yield' => 'Rendement par tonne à l’hectare',
+                    ],
+                    'no' => 'Non',
+                ],
+                'land_status' => [
+                    'title' => 'Statut foncier',
+                    'tenant' => [
+                        'title' => 'Locataire',
+                        'info' => 'Indiquez le montant de l’allocation mensuelle (en USD)',
+                    ],
+                    'owner' => [
+                        'title' => 'Propriétaire',
+                        'info' => 'Télécharger votre acte de propriété',
+                    ],
+                ],
+                'accounting_synthesis' => [
+                    'effective' => [
+                        'title' => 'Effectif',
+                        'info' => 'Indiquez le nombre de personnes employées',
+                    ],
+                    'annual_turnover' => [
+                        'title' => 'Chiffre d’affaires annuel',
+                        'info' => 'Indiquez la valeur en USD ou en CDF',
+                    ],
+                    'projected_turnover' => [
+                        'title' => 'Chiffre d’affaires projeté',
+                        'info' => 'Indiquez la valeur en USD ou en CDF des recettes attendues grâce au financement obtenu',
+                    ],
+                ],
+                'strategic_synthesis' => [
+                    'title' => 'Synthèse stratégique',
+                    'info' => 'Décrire en quelques lignes votre modèle économique ou ce que vous proposez à votre clientèle, votre cible, vos sources de revenus, les coûts de productions, vos ressources et partenariats et la structure de vos charges',
+                ],
             ],
         ],
 
@@ -795,6 +886,8 @@ return [
         'withdraw_from_cart' => 'Retirer du panier',
         'insufficient_stock' => 'Stock insuffisant',
         'product_is_in_cart' => 'Déjà dans votre panier',
+        'number_of_products_ordered' => 'Nombre de produits',
+        'order_data' => 'Date de la commande',
         'total' => 'Total',
         'subtotal' => 'Sous-total',
         'view_cart' => 'Voir panier',
@@ -826,13 +919,20 @@ return [
             'request' => 'Demander un investissement',
         ],
 
-        // Crowdfunding
-        'crowdfunding' => [
-            'title' => 'Faire du crowdfunding',
-            'description' => 'Lancer un financement participatif ou participer à celui d\'un autre membre.',
-            'sector' => [
-                'title' => 'Secteur',
-                'category' => 'Categorie',
+        // Agribusiness
+        'agribusiness' => [
+            'title' => 'Agribusiness',
+            'description' => 'Partagez vos projets sur la plateforme',
+            'request' => 'Demander un investissement',
+        ],
+
+        // Project writing
+        'project_writing' => [
+            'title' => 'Rédaction projet',
+            'description' => 'Rédigez un projet digne d’obtenir un financement',
+            'new_file' => [
+                'title' => 'Utiliser notre fichier',
+                'description' => 'Ce fichier contient des informations supplémentaires sur vos activités',
             ],
         ],
 
@@ -846,7 +946,7 @@ return [
         'slides' => [
             'slide_1' => [
                 'title' => 'Vendre ou<br>acheter en ligne',
-                'description' => 'Produits, services ou autres<br>projets sont disponibles pour acheter<br>ou vous pouvez publier les vôtres.',
+                'description' => 'Produits ou services <br>sont disponibles pour acheter<br>ou vous pouvez publier les vôtres.',
             ],
 
             'slide_2' => [
@@ -981,7 +1081,7 @@ return [
                 'anonyme' => 'Faites votre don',
                 'partner' => 'Devenir un partenaire',
                 'your_identity' => 'Votre identité',
-                'choosen_subscription' => 'Type d\'abonnement choisi :',
+                'choosen_subscription' => 'Type d’abonnement choisi :',
                 'period' => [
                     'title' => 'Period',
                     'choose' => 'Choose a period',
@@ -1022,18 +1122,18 @@ return [
 
         // Event
         'event' => [
-            'details' => 'Détails sur l\'événement',
+            'details' => 'Détails sur l’événement',
             'link' => 'Gérer les événements',
             'add' => 'Ajouter un événement',
-            'edit' => 'Editer l\'événement',
+            'edit' => 'Editer l’événement',
             'search' => 'Rechercher un événement',
             'list' => 'Liste des événements',
             'data' => [
-                'event_title' => 'Titre de l\'événement',
+                'event_title' => 'Titre de l’événement',
                 'event_description' => 'Description',
                 'start_at' => 'Heure de début',
                 'end_at' => 'Heure de fin',
-                'access_type' => 'Type d\'accès (Public ou Privé)'
+                'access_type' => 'Type d’accès (Public ou Privé)'
             ],
         ],
     ],

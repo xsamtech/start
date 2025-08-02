@@ -494,7 +494,7 @@
 		            itemsTablet: [768,2],
 		            itemsMobile : [479,1],
 		            slideSpeed: 600,
-		            autoPlay: 10000,
+		            autoPlay: 5000,
 		            stopOnHover: true,
 		            navigation: false,
 		            pagination: false,
