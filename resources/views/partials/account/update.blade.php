@@ -97,9 +97,9 @@
                                                     <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-user"></span>
-                                                            <span class="input-text">@lang('miscellaneous.lastname')</span>
+                                                            <span class="input-text">@lang('miscellaneous.lastname') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="lastname" id="lastname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.lastname')" value="{{ $current_user->lastname }}">
+                                                        <input type="text" name="lastname" required id="lastname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.lastname')" value="{{ $current_user->lastname }}">
                                                     </div><!-- End .input-group -->
         
                                                     <!-- Surname -->
@@ -111,17 +111,35 @@
                                                         <input type="text" name="surname" id="surname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.surname')" value="{{ $current_user->surname }}">
                                                     </div><!-- End .input-group -->
 
+                                                    <!-- Username -->
+                                                    <div class="input-group" style="margin-bottom: 5px;">
+                                                        <span class="input-group-addon">
+                                                            <span class="input-icon input-icon-user"></span>
+                                                            <span class="input-text">@lang('miscellaneous.username') <span class="text-danger">&#42;</span></span>
+                                                        </span>
+                                                        <input type="text" name="username" required id="username" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.username')" value="{{ $current_user->username }}">
+                                                    </div><!-- End .input-group -->
+
                                                     <!-- Birth date -->
                                                     <div class="input-group" style="margin-bottom: 5px; z-index: 5;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-region"></span>
-                                                            <span class="input-text">@lang('miscellaneous.birth_date.label2')</span>
+                                                            <span class="input-text">@lang('miscellaneous.birth_date.label2') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="birthdate" id="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.birth_date.label')" value="{{ !empty($current_user->birthdate) ? date('m/d/Y', strtotime($current_user->birthdate)) : '' }}">
+                                                        <input type="text" name="birthdate" required id="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.birth_date.label')" value="{{ !empty($current_user->birthdate) ? date('m/d/Y', strtotime($current_user->birthdate)) : '' }}">
+                                                    </div><!-- End .input-group -->
+
+                                                    <!-- Nationality -->
+                                                    <div class="input-group" style="margin-bottom: 10px; z-index: 5;">
+                                                        <span class="input-group-addon">
+                                                            <span class="input-icon input-icon-country"></span>
+                                                            <span class="input-text">@lang('miscellaneous.nationality')</span>
+                                                        </span>
+                                                        <input type="text" name="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.nationality')" value="{{ $current_user->nationality }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Gender -->
-                                                    <div class="text-center">
+                                                    <div id="userGender" class="text-center">
                                                         <p style="margin-bottom: 0">@lang('miscellaneous.gender_title')</p>
 
                                                         <label class="radio-inline">
@@ -166,9 +184,9 @@
                                                     <div class="input-group" style="margin-bottom: 5px;">
                                                         <span class="input-group-addon">
                                                             <span class="input-icon input-icon-address"></span>
-                                                            <span class="input-text">@lang('miscellaneous.address.title') 1</span>
+                                                            <span class="input-text">@lang('miscellaneous.address.title') 1 <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="address_1" id="address_1" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')" value="{{ $current_user->address_1 }}">
+                                                        <input type="text" name="address_1" required id="address_1" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')" value="{{ $current_user->address_1 }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Address 2 -->
@@ -178,6 +196,24 @@
                                                             <span class="input-text">@lang('miscellaneous.address.title') 2</span>
                                                         </span>
                                                         <input type="text" name="address_2" id="address_2" class="form-control input-lg" placeholder="@lang('miscellaneous.address.line2')" value="{{ $current_user->address_2 }}">
+                                                    </div><!-- End .input-group -->
+
+                                                    <!-- Province -->
+                                                    <div class="input-group" style="margin-bottom: 5px;">
+                                                        <span class="input-group-addon">
+                                                            <span class="input-icon input-icon-address"></span>
+                                                            <span class="input-text">@lang('miscellaneous.address.province')</span>
+                                                        </span>
+                                                        <input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.province')" value="{{ $current_user->province }}">
+                                                    </div><!-- End .input-group -->
+
+                                                    <!-- Territory -->
+                                                    <div class="input-group" style="margin-bottom: 5px;">
+                                                        <span class="input-group-addon">
+                                                            <span class="input-icon input-icon-address"></span>
+                                                            <span class="input-text">@lang('miscellaneous.address.territory')</span>
+                                                        </span>
+                                                        <input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.territory')" value="{{ $current_user->territory }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- City -->
@@ -208,8 +244,17 @@
 
                                                     <!-- Abour me -->
                                                     <div class="input-group textarea-container" style="z-index: 3">
-                                                        <span class="input-group-addon"><span class="input-icon input-icon-message"></span><span class="input-text">@lang('miscellaneous.about_user.label')</span></span>
-                                                        <textarea name="about_me" id="about_me" class="form-control" cols="30" rows="4" placeholder="@lang('miscellaneous.about_user.placeholder')">{{ $current_user->about_me }}</textarea>
+                                                        <span class="input-group-addon clearfix">
+                                                            <span style="float: left;">
+                                                                <span class="input-icon input-icon-message"></span>
+                                                                <span class="input-text">@lang('miscellaneous.about_user.label')</span>
+                                                            </span>
+                                                            <span style="float: right; display: inline-block; padding-top: 5px;">
+                                                                @lang('miscellaneous.characters_remaining') 
+                                                                <span id="charCount" style="font-weight: 600;">300</span>
+                                                            </span>
+                                                        </span>
+                                                        <textarea name="about_me" id="limitChars" class="form-control" cols="30" rows="4" maxlength="300" placeholder="@lang('miscellaneous.about_user.placeholder')">{{ $current_user->about_me }}</textarea>
                                                     </div><!-- End .input-group -->
                                                 </fieldset>
                                                 

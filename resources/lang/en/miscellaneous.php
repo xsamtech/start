@@ -25,10 +25,13 @@ return [
             'content' => 'We connect farmers to the market and consumers to the farm. We teach, we advise, we buy and we sell.',
         ],
     ],
+    'accept_terms' => 'I agree to the START’s <a href="' . route('terms') . '">terms of use</a> and <a href="' . route('privacy') . '">privacy policy</a>.',
     'keywords' => 'agricultural product, agriculture, agricultural service',
     'all_right_reserved' => 'All right reserved',
     'follow_us' => 'Follow us:',
     'call_us' => 'Call us:',
+    'characters_remaining' => 'Characters remaining:',
+    'words_remaining' => 'Words remaining:',
     'bank_transaction_description' => 'Money transaction from the START platform',
     'transaction_successful' => 'Transaction successful',
     'transaction_pending' => 'Pending transaction',
@@ -50,6 +53,7 @@ return [
     'back_form' => 'Return to the form',
     'back_toc' => 'Return to the table of content',
     'see_all_notifications' => 'View all notifications',
+    'table_of_content' => 'Table of content',
     'loading' => 'Loading...',
     'yes' => 'Yes',
     'no' => 'No',
@@ -318,7 +322,7 @@ return [
     'login_title1' => 'Log in',
     'login_title2' => 'Identify yourself',
     'login_description' => 'Your data is safe with us. So you need to identify yourself to be sure it’s you.',
-    'login_username' => 'Phone number or E-mail',
+    'login_username' => 'Phone number, username or E-mail',
     'remember_me' => 'Stay connected',
     'forgotten_password' => 'Forgotten password?',
     'forgotten_password_info' => 'Just let us know your email address (or phone number) and we will send you a code that will allow you to choose a new one.',
@@ -374,10 +378,12 @@ return [
         'line2' => 'Address line 2 (Optional)',
         'neighborhood' => 'Neighborhood',
         'area' => 'Area',
+        'province' => 'Province',
+        'territory' => 'Territory',
         'city' => 'City',
     ],
     'addresses' => 'Addresses',
-    'username' => 'User name',
+    'username' => 'Username',
     'password' => [
         'label' => 'Password',
         'error' => 'Must have at least 8 characters, be alphanumeric, have at least one uppercase and have a special character',
@@ -723,6 +729,7 @@ return [
             'search' => 'Search a project',
             'list' => 'Projects list',
             'data' => [
+                'profile' => 'Profil',
                 'description' => 'Activity description',
                 'company_name' => 'Company name',
                 'rccm' => 'RCCM',
@@ -752,7 +759,7 @@ return [
                     'processing_transformation_unit' => [
                         'title' => 'Agricultural processing and transformation unit',
                         'data_1' => 'Processed products',
-                        'info_1' => 'Specify the type of crop treated (Ex: Tomatoes, Peanuts, Corn, etc.)',
+                        'info_1' => 'Type of crop treated (Ex: Tomatoes, Peanuts, Corn, etc.)',
                         'data_2' => [
                             'title' => 'Unit capacity',
                             'quantity' => 'Quantity (in tons)',
@@ -766,7 +773,7 @@ return [
                                 'annual' => 'Annual',
                             ],
                         ],
-                        'info_2' => 'Indicate the daily? monthly? quantity processed in tonnes',
+                        'info_2' => 'Quantity processed in tonnes (daily? monthly?)',
                     ],
                     'marketing_agency' => 'Marketing agency',
                     'food_distribution' => 'Food distribution establishment',
@@ -799,6 +806,7 @@ return [
                     'owner' => [
                         'title' => 'Owner',
                         'info' => 'Download your property deed',
+                        'property_deed' => 'Property deed',
                     ],
                 ],
                 'accounting_synthesis' => [
@@ -923,6 +931,10 @@ return [
         'agribusiness' => [
             'title' => 'Agribusiness',
             'description' => 'Share your projects on the platform',
+            'infos' => [
+                'paragraph_1' => 'Here you will see the list of all projects published on the platform; and that you are able to finance.',
+                'link' => 'Log in to see',
+            ],
             'request' => 'Request an investment',
         ],
 
@@ -930,6 +942,11 @@ return [
         'project_writing' => [
             'title' => 'Project writing',
             'description' => 'Write a project worthy of obtaining funding',
+            'infos' => [
+                'paragraph_1' => 'START allows you to draft your project, enabling you to obtain funding from investors who register on the platform.',
+                'paragraph_2' => 'As a bonus, you’ll receive a downloadable Excel spreadsheet containing detailed information about your products or services.',
+                'link' => 'Log in to get started',
+            ],
             'new_file' => [
                 'title' => 'Use our file',
                 'description' => 'This file contains additional information about your activities',
@@ -1055,20 +1072,433 @@ return [
             // Terms of use
             'terms_of_use' => [
                 'title' => 'Terms of use',
-                'description' => 'By using our services, you agree to our terms of use. So we suggest you take some time to read these conditions, because you are about to enter into a binding contract.',
+                'description' => 'The platform is designed as an integrated online marketplace dedicated exclusively to the agricultural sector. Its purpose is to centralize interactions between the various actors in the agricultural value chain in the Democratic Republic of Congo (DRC) and beyond. By bringing together producers, suppliers, buyers, investors, and experts, it simplifies and optimizes transactions, while improving access to resources and markets. The platform offers an intuitive and easy-to-use interface, while being equipped with powerful tools for managing sales, purchases, investments, and logistics.',
                 'titles' =>
                 [
                     [
-                        'ref' => '',
-                        'title' => '',
+                        'ref' => 'object',
+                        'title' => 'Object',
                         'contents' =>
                         [
                             [
                                 'subtitle' => '',
-                                'content' => ''
+                                'content' => 'START-AFRICA’s General Terms of Use (GTU) govern access to and use of the START-AFRICA platform, accessible via <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a>. By using our services, you agree to these terms, which constitute a binding contract between you and START-AFICA located at Apartment 150, Bloc 27, Cité du Fleuve, in the commune of Limete, Kinshasa, Democratic Republic of Congo, and we are registered there under the trade register number CD/KIN/RCCM/16- B-9756; National Identification Number: 01-F4300-N6387L Tax Number: A1612732H with Mr. Jerry SANGINGA NTALE as Statutory Manager.',
+                                'dashes' => [],
                             ],
-                        ]
-                    ]
+                            [
+                                'subtitle' => '',
+                                'content' => 'When you register as a START-AFRICA customer or continue to use our services, you agree to comply with these Terms and Conditions and you unconditionally adhere to them. You must therefore read and fully understand these Terms and Conditions and if you do not accept them, you must not register and/or use the platform.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'access_to_platform',
+                        'title' => 'Access to the platform',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'To fully access the platform’s services, the customer must create an account by providing accurate and up-to-date information (name, contact, email address). Creating an account is mandatory to post ads and carry out transactions; Use of the platform is strictly reserved for persons aged 18 and over. By creating an account, the user certifies that they are of legal age and legally capable of entering into commercial transactions; Each user is responsible for the confidentiality of their identifiers and the activities carried out from their account.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'rules_of_use',
+                        'title' => 'Rules of Use',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'It is prohibited to:',
+                                'dashes' => 
+                                [
+                                    0 => 'Post false or misleading, offensive or illegal content;',
+                                    1 => 'Selling prohibited products (weapons, drugs, counterfeits, etc.)',
+                                    2 => 'Impersonate another person;',
+                                    3 => 'Use the platform for fraudulent purposes.',
+                                ],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'Any breach will result in the immediate removal of the content, suspension or termination of the contract, and if necessary, reporting to the relevant authorities.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'responsibilities',
+                        'title' => 'Responsibilities',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'Each user is fully responsible for the product information and content that they publish on the platform. They undertake:',
+                                'dashes' => 
+                                [
+                                    0 => 'Provide accurate, verifiable and legally compliant data;',
+                                    1 => 'Do not publish fraudulent, misleading or illicit content;',
+                                    2 => 'Respect the rights of third parties (image rights, intellectual property).',
+                                ],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'The platform facilitates interactions between different stakeholders in the agricultural sector, improves access to resources and optimizes transaction and logistics processes.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'However, the platform cannot be held responsible for content published by users. In the event of a breach, users incur their own civil, commercial, and criminal liability.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'commissions',
+                        'title' => 'Commissions',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'The customer accepts that a commission will be automatically charged on each transaction made via the platform. The rate of this commission is specified in the pricing conditions available on the platform <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a> . The commission rate applied by the platform includes Value Added Tax (VAT), which is paid in accordance with tax obligations.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'In the event of a dispute between customers regarding a transaction made via the platform, we reserve the right to temporarily freeze the funds resulting from said transaction. This suspension will remain in effect until:',
+                                'dashes' => 
+                                [
+                                    0 => 'An amicable agreement is reached between the parties;',
+                                    1 => 'That a decision be made by a competent authority;',
+                                    2 => 'That a reasonable period of time has allowed the elements of the dispute to be assessed.',
+                                ],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'The platform acts as a technical intermediary and does not take any action except in cases of clear violation of the terms of use. In cases of proven fraud or obvious non-performance, we may issue a partial or full refund or return the funds depending on the circumstances.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'Transactions on the platform are made via FlexPay, a secure, integrated payment method. It is the most widely used payment option for credit cards and mobile money in the DRC.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'account_suspension_or_deletion',
+                        'title' => 'Account suspension or deletion',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'We reserve the right to suspend or delete an account in the event of violation of the T&Cs or abusive use.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'personal_data',
+                        'title' => 'Personal data',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'The use of your data is described in our Privacy Policy.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'modification_of_conditions',
+                        'title' => 'Modification of the conditions',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'START-AFRICA reserves the right to modify these Terms of Use at any time in order to adapt them to the evolution of the service, legislative changes or any other necessity. Users will be informed of any major changes by publication on the platform or by direct notification.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'Continued use of the platform after updating constitutes acceptance of the new terms.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'guarantee',
+                        'title' => 'Guarantee',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'We provide our services in accordance with our reasonable best efforts obligations. If we do not meet the level of quality described in this Guarantee, you agree to notify us so that we can help you resolve the problem.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'applicable_law',
+                        'title' => 'Applicable law',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'START-AFRICA is committed to complying with the legislation in force in the Democratic Republic of Congo. START-AFRICA ensures that its services, activities, and the processing of personal data comply with applicable laws, particularly those relating to e-commerce, digital technology, consumer protection, privacy, and taxation.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'You also agree to use the platform in compliance with applicable laws. These terms are governed by the laws in force in the Democratic Republic of Congo. In the event of a dispute, the courts and tribunals of the Democratic Republic of Congo shall have jurisdiction.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // Privacy policy
+            'privacy_policy' => [
+                'title' => 'Privacy policy',
+                'description' => '',
+                'titles' =>
+                [
+                    [
+                        'ref' => 'introduction',
+                        'title' => 'Introduction',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'The START-AFRICA (Science Technology and Agricultural Resource Transformation-AFRICA) initiative is an online platform (marketplace) on which agricultural products produced in the Democratic Republic of Congo can be marketed nationally and internationally.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'The START-AFRICA platform provides farmers with free information on sustainable agronomic practices, as well as information and advice on high-yielding seeds; where to find them, how much they cost, the use of modern fertilizers and irrigation techniques, and the benefits of applying these inputs. Information on pest and disease control systems, planting and harvesting times, legal and financial advice are also available to all farmers and other members registered on the platform.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'START-AFRICA attaches great importance to the protection of your personal data. As a major responsibility, START-AFRICA deploys all means to protect your personal data and to allow you to manage it. This policy explains how we collect, use, share, and secure your information when you use our platform.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'who_are_we',
+                        'title' => 'Who are we ?',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'We are START-AFRICA, an online platform (marketplace) <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a> of the company START S.A.R.L.U. We connect large, medium, and small farmers with traders and businesses, while facilitating negotiations and financial exchanges at the national and international level.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'Our head office is located at apartment 150, Bloc 27, Cité du Fleuve, in the commune of Limete, in Kinshasa, in the Democratic Republic of Congo and we are registered there under the commercial register number CD/KIN/RCCM/16- B-9756; National Identification: 01-F4300-N6387L; Tax Number: A1612732H having as statutory manager Mr. Jerry SANGINGA NTALE.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'data_collected',
+                        'title' => 'Data collected',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'When using our platform, we collect the following data:',
+                                'dashes' => 
+                                [
+                                    0 => 'Identification or contact data/Registration information (including name, email address, postal address, and, where applicable, telephone number);',
+                                    1 => 'Transaction data: connection between actors, product and service catalog, transaction management (payment information managed by a secure provider), logistics monitoring, investment space);',
+                                    2 => 'Browsing data: (IP address, device type, browser, connection logs).',
+                                ],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'This data is exclusively intended for statistical monitoring of visits to our platform and is collected by cookies.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'use_of_data',
+                        'title' => 'Use of data',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'The data is used for:',
+                                'dashes' => 
+                                [
+                                    0 => 'Create and manage your account: Your account has many settings that you can use to manage your account;',
+                                    1 => 'Facilitate transactions between buyers and sellers, investors and other stakeholders;',
+                                    2 => 'Secure operations and prevent fraud;',
+                                    3 => 'Improve user experience and platform performance;',
+                                    4 => 'To inform you of our offers or updates.',
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'sharing_of_personal_data',
+                        'title' => 'Sharing of personal data',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'Based on mutual trust with our customers, we maintain the confidentiality of all personal data collected at all times. However, we may share your personal data with actors in the agricultural value chain in the DRC and internationally under the following conditions:',
+                                'dashes' => 
+                                [
+                                    0 => 
+                                    [
+                                        'title' => 'Consent Agreement:',
+                                        'subdashes' => 
+                                        [
+                                            0 => 'If you authorize us to share your personal data;',
+                                        ],
+                                    ],
+                                    1 => 
+                                    [
+                                        'title' => 'Achieving the platform’s objectives with the consent agreement:',
+                                        'subdashes' => 
+                                        [
+                                            0 => 'To improve commercial exchanges between producers, processors, suppliers, investors and buyers, thanks to automated and intelligent networking;',
+                                            1 => 'To increase access to agricultural resources by providing a centralized platform where users can find seeds, equipment, as well as financing opportunities;',
+                                            2 => 'To optimize the agricultural value chain, by simplifying the management of stocks, transactions, logistics and contracts via efficient and accessible digital tools;',
+                                            3 => 'To support investment in the agricultural sector, through a space dedicated to crowdfunding projects and investment management;',
+                                            4 => 'To adapt the platform to local realities, offering a digital solution that works effectively in rural areas with poor connectivity, while remaining scalable and adaptable to future changes.',
+                                        ],
+                                    ],
+                                    2 => 
+                                    [
+                                        'title' => 'For legal reasons:',
+                                        'subdashes' => 
+                                        [
+                                            0 => 'Comply with applicable laws and regulations;',
+                                            1 => 'Enforce applicable Terms of Use, including investigating potential violations thereof;',
+                                            2 => 'Identify, prevent or address fraudulent activities, security breaches or any technical issues;',
+                                            3 => 'Protect against any harm to the rights, property or safety of START, its users or the public.',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'Your personal data collected will under no circumstances be sold, transferred or shared with third parties for commercial purposes.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'international_transfer_of_personal_data',
+                        'title' => 'INTERNATIONAL transfer of personal data',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'We may transfer your personal data to other agricultural stakeholders in countries other than the DRC, to the extent permitted or required by applicable law, regulatory authorities, law enforcement agencies and government agencies. This may be necessary (a) to provide our services to you; (b) to fulfill a purpose of the Platform where that purpose does not override your rights and freedoms as a data subject; or (c) for legal and compliance obligations that apply to the Platform.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'storage_and_security',
+                        'title' => 'Storage and security',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'We will retain your personal data for as long as necessary to fulfill the purpose for which it was collected, to satisfy legal and regulatory requirements or to bring or defend legal claims, if applicable.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'We deploy all necessary security measures to protect you against unauthorized access to the data held by the platform and against its modification, disclosure, or destruction. Access to personal data is strictly reserved for our processing. Anyone with this access is subject to strict confidentiality obligations. They may also be subject to disciplinary action, up to and including dismissal, if they fail to comply with these obligations.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'Several security measures are in place to protect your personal data and your transactions (Data encryption, HTTPS, Strong authentication, Permission management and Compliance with PCI-DSS standards).',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'your_rights',
+                        'title' => 'Your rights',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'You can, at any time:',
+                                'dashes' => 
+                                [
+                                    0 => '<strong>Accessing your personal data</strong>: You have the right to request a copy of the personal data that START-AFRICA holds about you.',
+                                    1 => '<strong>Request rectification or deletion</strong>: You have the right to request rectification of your personal information if it is inaccurate. If the information we hold about you needs to be updated or if you believe it is inaccurate, you can contact us. You also have the right to request deletion of your personal data that we hold. However, the termination of the contract with us must precede this deletion.',
+                                    2 => '<strong>Object to certain processing</strong>: In certain circumstances, if you believe that the data we hold about you is inaccurate or that we should not process it, you have the right to ask us to restrict the processing of your personal data.',
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'the_content',
+                        'title' => 'Content',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'All digital elements on the platform reflect the latest information available. It is possible that some elements may be outdated, which is not due to negligence, but we guarantee to make every effort to update the elements. Any changes made will be published on our platform and communicated to you. The platform reserves the right to modify the digital elements without prior notice.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'cookies',
+                        'title' => 'Cookies',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'When browsing the platform, cookies are placed for statistical tracking purposes only. This tracking is intended to measure the audience of our site and aims to improve its content and ergonomics.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'compliance_and_cooperation_with_regulators',
+                        'title' => 'Compliance and cooperation with regulators',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'START-AFRICA is committed to complying with the laws, regulations and standards in force in the jurisdictions in which it operates. It cooperates fully with the competent authorities and regulators, particularly in the event of requests for information, inspections or investigations.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'In the event of suspicion of illicit activity, START-AFRICA reserves the right to transmit the necessary data to the relevant authorities, in compliance with the legal framework.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
+                    [
+                        'ref' => 'contact',
+                        'title' => 'Contact',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'If you have any further concerns or require information regarding your personal data, please contact us at +243 998 307 600 or email us at <a href="mailto:privacy@start-africa.com">privacy@start-africa.com</a>',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
                 ]
             ],
 

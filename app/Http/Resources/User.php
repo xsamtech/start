@@ -22,6 +22,7 @@ class User extends JsonResource
             'gender' => $this->gender,
             'birthdate' => $this->birthdate,
             'age' => !empty($this->birthdate) ? $this->age() : null,
+            'nationality' => $this->nationality,
             'country' => $this->country,
             'province' => $this->province,
             'territory' => $this->territory,

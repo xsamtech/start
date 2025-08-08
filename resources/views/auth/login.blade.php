@@ -45,7 +45,7 @@
 
                                         <div class="input-group" style="margin-bottom: 5px;">
 											<span class="input-group-addon">
-                                                <span class="input-icon input-icon-email"></span>
+                                                <span class="input-icon input-icon-user"></span>
                                                 <span class="input-text">@lang('miscellaneous.email_phone')</span>
                                             </span>
                                             <input type="text" name="login" id="sign_login" required class="form-control input-lg @error('login') is-invalid @enderror" value="{{ old('login') }}" placeholder="@lang('miscellaneous.login_username')">

@@ -222,20 +222,28 @@ $(function () {
                     contentType: false, // IMPORTANT : do not specify a contentType
                     processData: false, // IMPORTANT : do not transform the data
                     success: function (res) {
-                        $('.user-image').attr('src', currentHost + '/storage/' + res.avatar_url);
-                        $('#ajax-alert-container').html(`<div class="position-relative">
-                                                            <div class="row position-fixed w-100" style="opacity: 0.9; z-index: 999;">
-                                                                <div class="col-lg-4 col-sm-6 mx-auto">
-                                                                    <div class="alert alert-success alert-dismissible fade show rounded-0 cnpr-line-height-1_1" role="alert">
-                                                                        <i class="bi bi-info-circle me-2 fs-4" style="vertical-align: -3px;"></i>Photo mise à jour.
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-                                                                    </div>
-                                                                </div>
+                        $('.user-image').attr('src', currentHost + res.avatar_url);
+                        $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                            <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                ${res.message || 'Photo mise à jour'}
                                                             </div>
                                                         </div>`);
                     },
                     error: function (xhr, status, error) {
                         console.error(xhr.responseJSON || xhr.responseText);
+                        $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                            <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                ${xhr.responseJSON.message || xhr.responseText.message}
+                                                            </div>
+                                                        </div>`);
                     }
                 });
             };

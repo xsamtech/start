@@ -53,8 +53,20 @@ class AuthenticatedSessionController extends Controller
             'password' => 'required|string',
         ]);
 
-        $login_type = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+        // Déterminer le type de login (email, téléphone, ou username)
+        if (filter_var($request->login, FILTER_VALIDATE_EMAIL)) {
+            $login_type = 'email';
 
+        } elseif (preg_match('/^[0-9]{10}$/', $request->login)) {
+            // Si c'est un numéro de téléphone (par exemple, format 10 chiffres)
+            $login_type = 'phone';
+
+        } else {
+            // Si c'est un username (ici on suppose que ce n'est ni un email, ni un téléphone)
+            $login_type = 'username';
+        }
+
+        // Essayer de se connecter avec l'email, téléphone ou username
         if (!Auth::attempt([$login_type => $request->login, 'password' => $request->password], $request->boolean('remember'))) {
             throw ValidationException::withMessages([
                 'login' => __('notifications.find_user_password_404'),

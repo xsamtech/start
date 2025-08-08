@@ -62,7 +62,7 @@
                                         <tr>
                                             <td><strong>@lang('miscellaneous.username')</strong></td>
                                             <td>@lang('miscellaneous.colon_after_word')</td>
-                                            <td>{{ !empty($current_user->username) ? $current_user->username : '- - - - - -' }}</td>
+                                            <td>{{ !empty($current_user->username) ? '@' . $current_user->username : '- - - - - -' }}</td>
                                         </tr>
 
                                         <!-- Gender -->
@@ -77,6 +77,13 @@
                                             <td><strong>@lang('miscellaneous.birth_date.label')</strong></td>
                                             <td>@lang('miscellaneous.colon_after_word')</td>
                                             <td>{{ !empty($current_user->birthdate) ? ucfirst(__('miscellaneous.on_date') . ' ' . explicitDate($current_user->birthdate))  : '- - - - - -' }}</td>
+                                        </tr>
+
+                                        <!-- Nationality -->
+                                        <tr>
+                                            <td><strong>@lang('miscellaneous.nationality')</strong></td>
+                                            <td>@lang('miscellaneous.colon_after_word')</td>
+                                            <td>{{ !empty($current_user->nationality) ? $current_user->nationality : '- - - - - -' }}</td>
                                         </tr>
 
                                         <!-- E-mail -->

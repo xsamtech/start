@@ -45,6 +45,7 @@ return [
     'create_error' => 'The creation failed!',
     'update_error' => 'The change failed!',
     'delete_error' => 'Deletion failed!',
+    'file_generation_error' => 'Unable to generate file!',
     'added_data' => 'Addition successful!',
     'registered_data' => 'Data registered!',
     'updated_data' => 'Data updated!',
@@ -80,6 +81,7 @@ return [
     'update_type_success' => 'Type updated',
     'delete_type_success' => 'Type deleted',
     'type_is_not_file' => 'The type you chose is not a file',
+    'type_is_not_document' => 'Please upload a document or image file',
     // Category
     'find_all_categories_success' => 'Categories found',
     'find_category_success' => 'Category found',
@@ -311,6 +313,13 @@ return [
     'create_paid_fund_success' => 'Fund paid and sent',
     'update_paid_fund_success' => 'Paid fund updated',
     'delete_paid_fund_success' => 'Paid fund deleted',
+    // Project
+    'find_all_projects_success' => 'Projects found',
+    'find_project_success' => 'Project found',
+    'find_project_404' => 'Project not found',
+    'create_project_success' => 'Project created',
+    'update_project_success' => 'Project updated',
+    'delete_project_success' => 'Project deleted',
     // Payment
     'find_all_payments_success' => 'Payments found',
     'find_payment_success' => 'Payment found',

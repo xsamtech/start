@@ -58,9 +58,27 @@
 
         <style id="custom-style">
             textarea { resize: none; }
-            /* .owl-item { width: 300px!important; } */
+            #header { background: transparent url({{ asset('assets/img/watermak.png') }}) repeat center center / cover; }
+            #content { background: transparent url({{ asset('assets/img/watermak.png') }}) repeat center center / contain; }
+            #tableOfContent h4 { margin: 0; }
+            #tableOfContent ul, #termsContent ul, #privacyContent ul { padding-left: 30px; }
+            #tableOfContent ul li { list-style-type: decimal-leading-zero; margin-top: 10px; }
+            #tableOfContent ul li:first-child { margin-top: 0; }
+            #tableOfContent ul li a { color: #6e9e1a; }
+            #tableOfContent ul li a:hover { text-decoration: underline; }
+            #termsContent ul li, #privacyContent ul li { list-style-type: disc; }
+            #termsContent h3, #privacyContent h3 { font-weight: bold; margin-top: 20px; margin-bottom: 7px; }
+            #termsContent, #privacyContent { color: #000;; }
+            #termsContent p, #privacyContent p { margin-top: 10px; }
+            #termsContent p a, #privacyContent p a { color: #6e9e1a; text-decoration: underline; }
+            #termsContent p a:hover, #privacyContent p a:hover { text-decoration: none; }
             #footer .bottom a { color: #84bb26; }
-            #footer .bottom a { color: #84bb26; }
+            [for="termsAccept"] a { color: #72a51a; }
+            [for="termsAccept"] a:hover { text-decoration: underline; }
+            .title-desc a { color: #732f0b; }
+            .title-desc a:hover { color: #72a51a; }
+            .custom-link { color: #732f0b; }
+            .custom-link:hover { color: #72a51a; }
             .breadcrumb li a, .breadcrumb li { font-size: 1.5rem; }
             #showPassword i, #showConfirmPassword i, #showNewPassword i, #showConfirmNewPassword i { font-size: 2rem; }
             .item .item-image-container { position: relative; width: 100%; padding-top: 139.91%; overflow: hidden; }
@@ -89,10 +107,8 @@
             @media screen and (max-width: 500px) {
                 .d-xs-none { display: none; }
                 .d-lg-none { display: inline-block; }
-                .article-author-image img {
-                    width: 100%;
-                    margin-bottom: 20px;
-                }
+                .article-author-image img { width: 100%; margin-bottom: 20px; }
+                #userGender { margin-bottom: 20px; }
             }
             /* Image preview to upload */
             #image-preview-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
@@ -901,12 +917,11 @@
                             <div class="col-md-3 col-sm-6 col-xs-12 ml-auto widget">
                                 <h3>@lang('miscellaneous.public.footer.useful_links')</h3>
                                 <ul class="links">
-                                    <li><a href="#">@lang('miscellaneous.menu.terms_of_use')</a></li>
-                                    <li><a href="#">@lang('miscellaneous.menu.privacy_policy')</a></li>
-                                    <li><a href="#">@lang('miscellaneous.menu.contact')</a></li>
-                                    <li><a href="#">@lang('miscellaneous.menu.discussions')</a></li>
-                                    <li><a href="#">@lang('miscellaneous.menu.public.crowdfunding')</a></li>
-                                    <li><a href="#">@lang('miscellaneous.menu.public.investors.title')</a></li>
+                                    <li><a href="{{ route('terms') }}">@lang('miscellaneous.menu.terms_of_use')</a></li>
+                                    <li><a href="{{ route('privacy') }}">@lang('miscellaneous.menu.privacy_policy')</a></li>
+                                    <li><a href="{{ route('discussion.home') }}">@lang('miscellaneous.menu.discussions')</a></li>
+                                    <li><a href="{{ route('crowdfunding.home') }}">@lang('miscellaneous.menu.public.crowdfunding')</a></li>
+                                    <li><a href="{{ route('investor.home') }}">@lang('miscellaneous.menu.public.investors.title')</a></li>
                                 </ul>
                             </div><!-- End .widget -->
 
@@ -979,7 +994,170 @@
         <script type="text/javascript" src="https://cdn.tiny.cloud/1/1jb70lfiyigr5qfhgclx0pv2t9fnl4uco3cs1xk50eqdz73i/tinymce/5/tinymce.min.js"></script>
         <script type="text/javascript" src="{{ asset('assets/js/scripts.custom.js') }}"></script>
 
+@if (Route::is('register') || Route::is('account.entity') && $entity == 'update')
         <script type="text/javascript">
+            /**
+             * Limit characters in the textarea
+             */
+            const textarea = document.getElementById('limitChars');
+            const charCountSpan = document.getElementById('charCount');
+            const maxLength = textarea.getAttribute('maxlength');
+
+            // Initial update on page load
+            updateCharCount();
+
+            // Add event listener for input changes
+            textarea.addEventListener('input', updateCharCount);
+
+            function updateCharCount() {
+                const currentLength = textarea.value.length;
+                const remaining = maxLength - currentLength;
+
+                charCountSpan.textContent = remaining;
+
+                // Optional: Add visual cues when approaching or exceeding limit
+                if (remaining <= 10 && remaining >= 0) {
+                    charCountSpan.style.color = 'orange'; // Warning color
+
+                } else if (remaining < 0) {
+                    charCountSpan.style.color = 'red'; // Exceeded limit color
+                    // Optionally, truncate the text if the maxlength attribute isn't strictly enforced
+                    // textarea.value = textarea.value.substring(0, maxLength);
+
+                } else {
+                    charCountSpan.style.color = 'initial'; // Reset color
+                }
+            }
+        </script>
+@endif
+@if (Route::is('crowdfunding.home') && !empty($current_user))
+        <script type="text/javascript">
+            /**
+             * Limit words in the textarea
+             */
+            const textarea = document.getElementById('limitWords');
+            const wordCountDisplay = document.getElementById('wordCount');
+            const maxWords = 500; // Set your desired word limit
+
+            textarea.addEventListener('input', function() {
+                const text = textarea.value.trim(); // Trim leading/trailing spaces
+                const words = text.split(/\s+/).filter(word => word.length > 0); // Split by spaces and filter empty strings
+                const currentWords = words.length;
+
+                if (currentWords > maxWords) {
+                    // If limit exceeded, truncate the text to the allowed word count
+                    textarea.value = words.slice(0, maxWords).join(' ');
+                }
+
+                wordCountDisplay.textContent = maxWords - currentWords;
+            });
+
+            // Initialize the display on page load
+            textarea.dispatchEvent(new Event('input'));
+
+            /**
+             * Switch between inputs and blocks
+             */
+            const radioYes = document.getElementById('physical_and_land_organization1');
+            const radioTenant = document.getElementById('land_status1');
+            const radioOwner = document.getElementById('land_status2');
+            const radios = document.querySelectorAll('input[type="radio"][name="activity_orientation"]');
+            const spans = document.querySelectorAll('span[data-value]');
+
+            // Function to manage the display of input
+            function toggleYes() {
+                const yesHaveLand = document.getElementById('yesHaveLand');
+
+                if (radioYes.checked) {
+                    yesHaveLand.classList.remove('d-none');
+
+                } else {
+                    yesHaveLand.classList.add('d-none');
+                }
+            }
+
+            function toggleLandStatus() {
+                const landStatusTenant = document.getElementById('landStatusTenant');
+                const landStatusOwner = document.getElementById('landStatusOwner');
+
+                if (radioTenant.checked) {
+                    landStatusTenant.classList.remove('d-none');
+                    landStatusOwner.classList.add('d-none');
+
+                } else if (radioOwner.checked) {
+                    landStatusTenant.classList.add('d-none');
+                    landStatusOwner.classList.remove('d-none');
+                }
+            }
+
+            // Function to reset input:text fields and select
+            function resetTextInputs() {
+                // All input:text
+                document.querySelectorAll('span[data-value] input[type="text"]').forEach(input => {
+                    input.value = '';  // Reset the value
+                });
+                // All select
+                document.querySelectorAll('span[data-value] select').forEach(select => {
+                    select.selectedIndex = 0;  // Reset to first item (default option)
+                });
+            }
+
+            // Function to manage the display of spans
+            function toggleSpans() {
+                const checkedValue = document.querySelector('input[type="radio"][name="activity_orientation"]:checked')?.value;
+
+                // If a radio is checked
+                if (checkedValue) {
+                    spans.forEach(span => {
+                        if (span.getAttribute('data-value') === checkedValue) {
+                            span.classList.remove('d-none');  // Afficher le span correspondant
+
+                        } else {
+                            span.classList.add('d-none');  // Cacher les autres spans
+                        }
+                    });
+
+                } else {
+                    // If nothing is checked, all spans are hidden
+                    spans.forEach(span => {
+                        span.classList.add('d-none');
+                    });
+                }
+            }
+
+            // Added event listeners for each radio input
+            radios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    toggleSpans();  // Manage the display of spans
+                    resetTextInputs();  // Reset text fields
+                });
+            });
+
+            // Initialize display on load
+            toggleLandStatus();
+            toggleYes();
+            toggleSpans();
+        </script>
+@endif
+        <script type="text/javascript">
+            /**
+             * Activate submit on check terms accept
+             */
+            function checkTermsAccept() {
+                const termsAccept = document.getElementById('termsAccept');
+                const registerNewUser = document.getElementById('registerNewUser');
+
+                if (termsAccept.checked) {
+                    registerNewUser.classList.remove('disabled');
+
+                } else {
+                    registerNewUser.classList.add('disabled');
+                }
+            }
+
+            /**
+             * Perform action on element
+             */
             function performAction(action, entity, entity_id) {
                 if (action === 'delete') {
                     var entityId = parseInt(entity_id.split('-')[1]);
@@ -989,7 +1167,7 @@
                         text: "<?= __('miscellaneous.alert.confirm.delete') ?>",
                         icon: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
+                        confirmButtonColor: "#04471a",
                         cancelButtonColor: "#d33",
                         confirmButtonText: "<?= __('miscellaneous.alert.yes.delete') ?>",
                         cancelButtonText: "<?= __('miscellaneous.cancel') ?>"

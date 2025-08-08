@@ -43,6 +43,7 @@ Route::delete('/delete/{entity}/{id}', [PublicController::class, 'removeData'])-
 
 Route::middleware('auth')->group(function () {
     Route::get('/change-currency/{currency}', [PublicController::class, 'changeCurrency'])->name('change_currency');
+    Route::get('/generate-sheet/{user_id}/{language}', [PublicController::class, 'generateSheet'])->whereNumber('user_id')->name('generate_sheet');
 
     // Products
     Route::post('/products', [PublicController::class, 'addProduct']);
@@ -50,9 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/discussions', [PublicController::class, 'addDiscussion']);
     Route::post('/discussions/{id}', [PublicController::class, 'updateDiscussion'])->whereNumber('id');
     // Project writing
-    Route::post('/project-writing', [PublicController::class, 'addCrowdfunding']);
-    Route::post('/project-writing/{id}', [PublicController::class, 'updateCrowdfunding'])->whereNumber('id');
-    Route::post('/project-writing/finance/{id}', [PublicController::class, 'financeCrowdfunding'])->whereNumber('id')->name('crowdfunding.finance');
+    Route::post('/project-writing', [PublicController::class, 'addProject']);
+    Route::post('/project-writing/{id}', [PublicController::class, 'updateProject'])->whereNumber('id');
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.home');
     // Roles

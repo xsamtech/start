@@ -16,6 +16,7 @@ use App\Models\File;
 use App\Models\PaidFund;
 use App\Models\Post;
 use App\Models\Product;
+use App\Models\Project;
 use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -23,6 +24,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -76,6 +79,46 @@ class PublicController extends Controller
     }
 
     /**
+     * GET: Generate Google Sheet document
+     *
+     * @param  int  $user_id
+     * @param  string  $language
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function generateSheet($user_id, $language)
+    {
+        $urlEN = 'https://script.googleapis.com/v1/scripts/AKfycbxhhZzPddr8B6RVOUeglKzNSKELum9IhQDorXImaZPdvZK1xWeTrlav1M2xgDh6vzv0bw:run';
+        $urlFR = 'https://script.googleapis.com/v1/scripts/AKfycbxRBewRecH8tWl0AyiXwMtj7KvNtTQYxCKy1r7ZFp2t5Eyld5a29pWgO3JNGeBlnhBwhQ:run';
+        // My Google AppScript URL
+        $scriptUrl = $language == 'en' ? $urlEN : $urlFR;
+        // Request
+        $user = User::find($user_id);
+
+        if (is_null($user)) {
+            return redirect()->back()->with('error_message', __('notifications.find_user_404'));
+        }
+
+        $response = Http::get($scriptUrl, [
+            'userId' => $user->id
+        ]);
+
+        if ($response->successful()) {
+            $sheet_url = $response->body(); // Link to the copied Google Sheet
+            $user_project = Project::where('user_id', $user->id)->latest('updated_at')->first(); // Get user project to update
+
+            if (is_null($user_project)) {
+                return redirect()->back()->with('error_message', __('notifications.find_project_404'));
+            }
+
+            $user_project->update(['sheet_url' => $sheet_url]);
+
+            return redirect($sheet_url);
+        }
+
+        return redirect()->back()->with('error_message', __('notifications.file_generation_error'));
+    }
+
+    /**
      * GET: Home page
      *
      * @return \Illuminate\View\View
@@ -109,6 +152,30 @@ class PublicController extends Controller
         $products = Product::searchWithFilters($query, $filters, $per_page);
 
         return view('search', ['products' => $products]);
+    }
+
+    /**
+     * GET: Terms of use page
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function termsOfUse()
+    {
+        $titles = Lang::get('miscellaneous.public.about.terms_of_use.titles');
+
+        return view('terms', ['titles' => $titles]);
+    }
+
+    /**
+     * GET: Privacy policy page
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function privacyPolicy()
+    {
+        $titles = Lang::get('miscellaneous.public.about.privacy_policy.titles');
+
+        return view('privacy', ['titles' => $titles]);
     }
 
     /**
@@ -1073,7 +1140,7 @@ class PublicController extends Controller
         }
 
         if ($request->has('about_me')) {
-            $rules['about_me'] = ['nullable', 'string', 'max:255'];
+            $rules['about_me'] = ['nullable', 'string', 'max:300'];
         }
 
         if ($request->has('gender')) {
@@ -1084,8 +1151,24 @@ class PublicController extends Controller
             $rules['birthdate'] = ['nullable', 'date_format:d/m/Y'];
         }
 
-        if ($request->has('p_o_box')) {
-            $rules['p_o_box'] = ['nullable', 'string', 'max:255'];
+        if ($request->has('nationality')) {
+            $rules['nationality'] = ['nullable', 'string', 'max:255'];
+        }
+
+        if ($request->has('country')) {
+            $rules['country'] = ['nullable', 'string', 'max:255'];
+        }
+
+        if ($request->has('province')) {
+            $rules['province'] = ['nullable', 'string', 'max:255'];
+        }
+
+        if ($request->has('territory')) {
+            $rules['territory'] = ['nullable', 'string', 'max:255'];
+        }
+
+        if ($request->has('city')) {
+            $rules['city'] = ['nullable', 'string', 'max:255'];
         }
 
         if ($request->has('address_1')) {
@@ -1094,6 +1177,14 @@ class PublicController extends Controller
 
         if ($request->has('address_2')) {
             $rules['address_2'] = ['nullable', 'string'];
+        }
+
+        if ($request->has('p_o_box')) {
+            $rules['p_o_box'] = ['nullable', 'string', 'max:45'];
+        }
+
+        if ($request->has('currency')) {
+            $rules['currency'] = ['nullable', 'string', 'max:45'];
         }
 
         if ($request->has('phone')) {
@@ -1118,11 +1209,6 @@ class PublicController extends Controller
 
         // Validation of present fields only
         $validated = $request->validate($rules);
-
-        // Date formatting
-        if (isset($validated['birthdate'])) {
-            $validated['birthdate'] = \Carbon\Carbon::createFromFormat('d/m/Y', $validated['birthdate'])->format('Y-m-d');
-        }
 
         // Password hash if present
         if (isset($validated['password'])) {
@@ -1170,8 +1256,8 @@ class PublicController extends Controller
 
         // Conditional return: AJAX or HTML POST
         return $request->expectsJson()
-            ? response()->json(['success_message' => true, 'avatar_url' => $user->avatar_url ?? null])
-            : back()->with('success_message', 'Vos informations ont bien été mises à jour.');
+            ? response()->json(['success' => true, 'message' => __('notifications.updated_data'), 'avatar_url' => $user->avatar_url ?? null])
+            : back()->with('success_message', __('notifications.updated_data'));
     }
 
     /**
@@ -1381,7 +1467,7 @@ class PublicController extends Controller
 
                 } elseif (in_array($file_extension, $document_extensions)) { // File is a document
                     $custom_uri = 'documents/posts';
-                    $file_type = 'video';
+                    $file_type = 'document';
                     $is_valid_type = true;
                 }
 
@@ -1620,5 +1706,100 @@ class PublicController extends Controller
                 return response()->json(['message' => $e->getMessage()], 422);
             }
         }
+    }
+
+    /**
+     * POST: Add a post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addProject(Request $request)
+    {
+        // Valid file types for photos and documents
+        $validExtensions = [
+            'photo' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+            'document' => ['pdf', 'doc', 'docx', 'txt']
+        ];
+
+        // Validation and upload of files
+        $files = [
+            'company_id_document_url' => __('miscellaneous.admin.project_writing.data.rccm'),
+            'land_status_property_deed_url' => __('miscellaneous.admin.project_writing.data.land_status.owner.property_deed')
+        ];
+
+        foreach ($files as $field => $errorMessage) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $fileExtension = $file->getClientOriginalExtension();
+
+                // File type check
+                if (!in_array($fileExtension, array_merge($validExtensions['photo'], $validExtensions['document']))) {
+                    return redirect('/')->with('error_message', __('notifications.type_is_not_document') . __('miscellaneous.colon_after_word') . ' ' . $errorMessage);
+                }
+            }
+        }
+
+        // Retrieve checkbox values
+        $marketSegments = $request->input('market_segments_or_target', []); // This will return an empty array if no checkbox is selected.
+        // Retrieve the value of the 'others' input
+        $others = $request->input('others', '');
+        // Merge the two datasets
+        $allValues = array_merge($marketSegments, [$others]);
+        // Convert to string with commas
+        $marketSegmentsData = implode(', ', array_filter($allValues));
+
+        $project = Project::create([
+            'projects_description' => $request->projects_description,
+            'company_name' => $request->company_name,
+            'rccm' => $request->rccm,
+            'id_nat' => $request->id_nat,
+            'tax_number' => $request->tax_number,
+            'company_address' => $request->company_address,
+            'company_email' => $request->company_email,
+            'company_phone' => $request->company_phone,
+            'website_url' => $request->website_url,
+            'field_experience' => $request->field_experience,
+            'activity_orientation' => $request->activity_orientation,
+            'activity_orientation_content' => $request->activity_orientation_content,
+            'processing_transformation_quantity' => $request->processing_transformation_quantity,
+            'processing_transformation_period' => $request->processing_transformation_period,
+            'market_segments_or_target' => $marketSegmentsData,
+            'physical_and_land_organization' => $request->physical_and_land_organization,
+            'physical_and_land_organization_size' => $request->physical_and_land_organization_size,
+            'physical_and_land_organization_yield' => $request->physical_and_land_organization_yield,
+            'land_status' => $request->land_status,
+            'land_status_amount' => $request->land_status_amount,
+            'accounting_synthesis' => $request->accounting_synthesis,
+            'accounting_synthesis_number_of_employees' => $request->accounting_synthesis_number_of_employees,
+            'accounting_synthesis_turnover_value' => $request->accounting_synthesis_turnover_value,
+            'strategic_synthesis' => $request->strategic_synthesis,
+            'category_id' => $request->category_id,
+            'user_id' => Auth::id(),
+        ]);
+
+        // Generic method of uploading files
+        foreach ($files as $field => $errorMessage) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $fileExtension = $file->getClientOriginalExtension();
+                $customUri = in_array($fileExtension, $validExtensions['photo']) ? 'photos/projects' : 'documents/projects';
+
+                // Chemin du fichier
+                $filename = $file->getClientOriginalName();
+                $cleanedFilename = sanitizeFileName($filename);
+                $filePath = $customUri . '/' . $project->id . '/' . $cleanedFilename;
+
+                // Upload du fichier
+                Storage::disk('public')->put($filePath, file_get_contents($file->getRealPath()));
+
+                // Mise à jour de l'URL du fichier dans la base de données
+                $project->update([
+                    $field => Storage::url($filePath)
+                ]);
+            }
+        }
+
+        return redirect()->route('account.entity', ['entity' => 'projects'])->with('success_message', __('notifications.create_project_success'));
     }
 }

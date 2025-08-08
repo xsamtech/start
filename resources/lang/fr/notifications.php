@@ -45,6 +45,7 @@ return [
     'create_error' => 'La création a échoué !',
     'update_error' => 'La modification a échoué !',
     'delete_error' => 'Suppression échouée !',
+    'file_generation_error' => 'Génération de fichier impossible !',
     'added_data' => 'Ajout réussi !',
     'registered_data' => 'Données enregistrées !',
     'updated_data' => 'Données mises à jour !',
@@ -80,6 +81,7 @@ return [
     'update_type_success' => 'Type modifié',
     'delete_type_success' => 'Type supprimé',
     'type_is_not_file' => 'Le type que vous avez choisi n\'est pas un fichier',
+    'type_is_not_document' => 'Veuillez télécharger un fichier document ou image',
     // Category
     'find_all_categories_success' => 'Catégories trouvées',
     'find_category_success' => 'Catégorie trouvée',
@@ -311,6 +313,13 @@ return [
     'create_paid_fund_success' => 'Fond payé et envoyé',
     'update_paid_fund_success' => 'Fond payé modifié',
     'delete_paid_fund_success' => 'Fond payé supprimé',
+    // Project
+    'find_all_projects_success' => 'Projets trouvés',
+    'find_project_success' => 'Projet trouvé',
+    'find_project_404' => 'Projet non trouvé',
+    'create_project_success' => 'Projet créé',
+    'update_project_success' => 'Projet modifié',
+    'delete_project_success' => 'Projet supprimé',
     // Payment
     'find_all_payments_success' => 'Paiements trouvés',
     'find_payment_success' => 'Paiement trouvé',

@@ -223,3 +223,20 @@ if (!function_exists('showCountries')) {
         return abort(500, 'Erreur lors du chargement des pays');
     }
 }
+
+// Helper function to sanitize filenames
+if (!function_exists('sanitizeFileName')) {
+    function sanitizeFileName($filename)
+    {
+        // Convert to lowercase
+        $filename = strtolower($filename);
+
+        // Replace spaces with underscores
+        $filename = str_replace(' ', '_', $filename);
+
+        // Remove special characters (you can add more if needed)
+        $filename = preg_replace('/[^a-z0-9._-]/', '', $filename);
+
+        return $filename;
+    }
+}

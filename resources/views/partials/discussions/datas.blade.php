@@ -12,7 +12,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12">
-							<header class="content-title" style="float: left;">
+							<header class="content-title">
 								<h1 class="title">@lang('miscellaneous.admin.post.details')</h1>
 							</header>
 
