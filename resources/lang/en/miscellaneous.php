@@ -59,6 +59,7 @@ return [
     'no' => 'No',
     'from' => 'from',
     'to' => 'to',
+    'or' => 'or',
     'clear' => 'Clear',
     'connection' => 'Connection',
     'register' => 'Register',
@@ -411,8 +412,8 @@ return [
         'home' => 'Home',
         'dashboard' => 'Dashboard',
         'about' => 'About',
-        'terms_of_use' => 'Terms',
-        'privacy_policy' => 'Privacy',
+        'terms_of_use' => 'Terms of use',
+        'privacy_policy' => 'Privacy policy',
         'cookies' => 'Cookies',
         'contact' => 'Contact',
         'login_register' => 'log in or register',
@@ -908,7 +909,7 @@ return [
         // Discussion
         'discussion' => [
             'title' => 'Discussion forum',
-            'description' => 'Start a new topic or select one to comment on.',
+            'description' => 'Introduce a new topic or select <br class="d-sm-none">a topic of your choice to comment on.',
             'related' => 'Related posts',
             'empty_comments_list' => 'No comments yet for this post.',
             'login_leave_comment' => 'Login to leave a comment',
@@ -916,21 +917,10 @@ return [
             'your_comment' => 'Your comment',
         ],
 
-        // Investor
-        'investor' => [
-            'title' => 'Our investors',
-            'description' => 'Find investors for your projects or become an investor.',
-            'become_investor' => [
-                'link' => 'Become an investor',
-                'info' => 'You are about to become an investor for our members. By clicking "Start," you agree to our Terms of Use and Privacy Policy.',
-            ],
-            'request' => 'Request an investment',
-        ],
-
         // Agribusiness
         'agribusiness' => [
             'title' => 'Agribusiness',
-            'description' => 'Share your projects on the platform',
+            'description' => 'High value-added investment opportunities',
             'infos' => [
                 'paragraph_1' => 'Here you will see the list of all projects published on the platform; and that you are able to finance.',
                 'link' => 'Log in to see',
@@ -941,7 +931,7 @@ return [
         // Project writing
         'project_writing' => [
             'title' => 'Project writing',
-            'description' => 'Write a project worthy of obtaining funding',
+            'description' => 'Write a project with high investment potential',
             'infos' => [
                 'paragraph_1' => 'START allows you to draft your project, enabling you to obtain funding from investors who register on the platform.',
                 'paragraph_2' => 'As a bonus, you’ll receive a downloadable Excel spreadsheet containing detailed information about your products or services.',
@@ -963,17 +953,20 @@ return [
         'slides' => [
             'slide_1' => [
                 'title' => 'Sell or<br>buy online',
-                'description' => 'Products or services <br>are available for purchase<br>or you can publish your own.',
+                // 'description' => 'Products or services <br>are available for purchase<br>or you can publish your own.',
+                'description' => 'To order, offer <br>quality products or services <br>in complete safety.',
             ],
 
             'slide_2' => [
                 'title' => 'Interact with<br>the public',
-                'description' => 'You have a forum where<br>you can discuss with everyone<br>about agricultural sector topics.',
+                // 'description' => 'You have a forum where<br>you can discuss with everyone<br>about agricultural sector topics.',
+                'description' => 'A discussion space where you can <br>freely share your ideas and experience <br>in the agricultural sector.',
             ],
 
             'slide_3' => [
                 'title' => 'Project financing',
-                'description' => 'START helps you obtain financing or<br>finance agricultural projects shared on the platform.',
+                // 'description' => 'START helps you obtain financing or<br>finance agricultural projects shared on the platform.',
+                'description' => 'Become an investor or benefit <br>from a financing opportunity for your projects.',
             ],
         ],
 
@@ -1072,9 +1065,26 @@ return [
             // Terms of use
             'terms_of_use' => [
                 'title' => 'Terms of use',
-                'description' => 'The platform is designed as an integrated online marketplace dedicated exclusively to the agricultural sector. Its purpose is to centralize interactions between the various actors in the agricultural value chain in the Democratic Republic of Congo (DRC) and beyond. By bringing together producers, suppliers, buyers, investors, and experts, it simplifies and optimizes transactions, while improving access to resources and markets. The platform offers an intuitive and easy-to-use interface, while being equipped with powerful tools for managing sales, purchases, investments, and logistics.',
+                'description' => '',
                 'titles' =>
                 [
+                    [
+                        'ref' => 'introduction',
+                        'title' => 'Introduction',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'The platform is designed as an integrated online marketplace dedicated exclusively to the agricultural sector.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'Its purpose is to centralize interactions between the various actors in the agricultural value chain in the Democratic Republic of Congo (DRC) and beyond. By bringing together producers, suppliers, buyers, investors, and experts, it simplifies and optimizes transactions, while improving access to resources and markets. The platform offers an intuitive and easy-to-use interface, while being equipped with powerful tools for managing sales, purchases, investments, and logistics.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
                     [
                         'ref' => 'object',
                         'title' => 'Object',
@@ -1082,12 +1092,12 @@ return [
                         [
                             [
                                 'subtitle' => '',
-                                'content' => 'START-AFRICA’s General Terms of Use (GTU) govern access to and use of the START-AFRICA platform, accessible via <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a>. By using our services, you agree to these terms, which constitute a binding contract between you and START-AFICA located at Apartment 150, Bloc 27, Cité du Fleuve, in the commune of Limete, Kinshasa, Democratic Republic of Congo, and we are registered there under the trade register number CD/KIN/RCCM/16- B-9756; National Identification Number: 01-F4300-N6387L Tax Number: A1612732H with Mr. Jerry SANGINGA NTALE as Statutory Manager.',
+                                'content' => 'START-AFRICA’s General Terms of Use (GTU) govern access to and use of the START-AFRICA platform, accessible via <a href="https://market.start-africa.com/" target="_blank">https://market.start-africa.com/</a>. By using our services, you agree to these terms and conditions, which constitute a binding contract between you and START-AFICA located at Apartment 150, Block 27, Cité du Fleuve, in the commune of Limete, Kinshasa, Democratic Republic of Congo and we are registered there under the trade register number CD/KIN/RCCM/16-B-9756; National Identification: 01-F4300-N6387L Tax Number: A1612732H having as Statutory Manager Mr. Jerry SANGINGA NTALE.',
                                 'dashes' => [],
                             ],
                             [
                                 'subtitle' => '',
-                                'content' => 'When you register as a START-AFRICA customer or continue to use our services, you agree to comply with these Terms and Conditions and you unconditionally adhere to them. You must therefore read and fully understand these Terms and Conditions and if you do not accept them, you must not register and/or use the platform.',
+                                'content' => 'When you register as a START-AFRICA customer or continue to use our services, you agree to comply with these Terms and Conditions and you unconditionally adhere to them. You must therefore read and fully understand these Terms and Conditions and if you do not accept them, you will not be able to register and/or use the platform.',
                                 'dashes' => [],
                             ],
                         ],
@@ -1114,15 +1124,15 @@ return [
                                 'content' => 'It is prohibited to:',
                                 'dashes' => 
                                 [
-                                    0 => 'Post false or misleading, offensive or illegal content;',
-                                    1 => 'Selling prohibited products (weapons, drugs, counterfeits, etc.)',
+                                    0 => 'Posting misleading, out-of-context, or offensive content;',
+                                    1 => 'Selling illegal products (weapons, drugs, counterfeits, etc.);',
                                     2 => 'Impersonate another person;',
                                     3 => 'Use the platform for fraudulent purposes.',
                                 ],
                             ],
                             [
                                 'subtitle' => '',
-                                'content' => 'Any breach will result in the immediate removal of the content, suspension or termination of the contract, and if necessary, reporting to the relevant authorities.',
+                                'content' => 'Any failure to comply with this obligation will result, depending on the circumstances, in the immediate removal of the content, the suspension or termination of the contract, and if necessary, reporting to the competent authorities.',
                                 'dashes' => [],
                             ],
                         ],
@@ -1161,7 +1171,7 @@ return [
                         [
                             [
                                 'subtitle' => '',
-                                'content' => 'The customer accepts that a commission will be automatically charged on each transaction made via the platform. The rate of this commission is specified in the pricing conditions available on the platform <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a> . The commission rate applied by the platform includes Value Added Tax (VAT), which is paid in accordance with tax obligations.',
+                                'content' => 'The customer accepts that a commission will be automatically charged on each transaction made via the platform. The rate of this commission is specified in the pricing conditions available on the platform <a href="https://market.start-africa.com/" target="_blank">https://market.start-africa.com/</a> . The commission rate applied by the platform includes Value Added Tax (VAT), which is paid in accordance with tax obligations.',
                                 'dashes' => [],
                             ],
                             [
@@ -1181,7 +1191,7 @@ return [
                             ],
                             [
                                 'subtitle' => '',
-                                'content' => 'Transactions on the platform are made via FlexPay, a secure, integrated payment method. It is the most widely used payment option for credit cards and mobile money in the DRC.',
+                                'content' => 'Transactions on the platform are made via FlexPaie, a secure, integrated payment method. This is the most widely used payment option by credit card and mobile money in the DRC.',
                                 'dashes' => [],
                             ],
                         ],
@@ -1205,7 +1215,7 @@ return [
                         [
                             [
                                 'subtitle' => '',
-                                'content' => 'The use of your data is described in our Privacy Policy.',
+                                'content' => 'The terms and conditions relating to the use of your data are described in our Privacy Policy.',
                                 'dashes' => [],
                             ],
                         ],
@@ -1294,7 +1304,7 @@ return [
                         [
                             [
                                 'subtitle' => '',
-                                'content' => 'We are START-AFRICA, an online platform (marketplace) <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a> of the company START S.A.R.L.U. We connect large, medium, and small farmers with traders and businesses, while facilitating negotiations and financial exchanges at the national and international level.',
+                                'content' => 'We are START-AFRICA, an online platform (marketplace) <a href="https://market.start-africa.com/" target="_blank">https://market.start-africa.com/</a> of the company START S.A.R.L.U. We connect large, medium, and small farmers with traders and businesses, while facilitating negotiations and financial exchanges at the national and international level.',
                                 'dashes' => [],
                             ],
                             [

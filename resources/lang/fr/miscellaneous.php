@@ -59,6 +59,7 @@ return [
     'no' => 'Non',
     'from' => 'de',
     'to' => 'à',
+    'or' => 'ou',
     'clear' => 'Effacer',
     'connection' => 'Connexion',
     'register' => 'Enregistrer',
@@ -322,7 +323,7 @@ return [
     'login_title1' => 'Se connecter',
     'login_title2' => 'Identifiez-vous',
     'login_description' => 'Vos données sont sécurisées avec nous. Alors vous devez vous identifier pour être sûr que c’est bien vous.',
-    'login_username' => 'N° de téléphone, pseudo ou e-mail',
+    'login_username' => 'N° de téléphone, nom d’utilisateur ou e-mail',
     'remember_me' => 'Rester connecté',
     'forgotten_password' => 'Mot de passe oublié ?',
     'forgotten_password_info' => 'Indiquez-nous simplement votre adresse e-mail (ou n° de téléphone) et nous vous enverrons un code pour changer votre mot de passe.',
@@ -411,8 +412,8 @@ return [
         'home' => 'Accueil',
         'dashboard' => 'Tableau de bord',
         'about' => 'A propos',
-        'terms_of_use' => 'Conditions',
-        'privacy_policy' => 'Confidentialité',
+        'terms_of_use' => 'Conditions d’utilisation',
+        'privacy_policy' => 'Politique de confidentialité',
         'cookies' => 'Cookies',
         'contact' => 'Contact',
         'login_register' => 's’identifier ou s’inscrire',
@@ -908,7 +909,7 @@ return [
         // Discussion
         'discussion' => [
             'title' => 'Forum de discussion',
-            'description' => 'Commencez un nouveau sujet ou sélectionnez un pour commenter.',
+            'description' => 'Introduisez un nouveau sujet ou sélectionner <br class="d-sm-none">un sujet de votre choix pour commenter.',
             'related' => 'Posts associés',
             'empty_comments_list' => 'Pas encore de commentaire pour ce post.',
             'login_leave_comment' => 'Se connecter pour laisser un commentaire',
@@ -916,21 +917,10 @@ return [
             'your_comment' => 'Votre commentaire',
         ],
 
-        // Investor
-        'investor' => [
-            'title' => 'Nos investisseurs',
-            'description' => 'Trouver des investisseurs pour ses projets ou devenir un investisseur.',
-            'become_investor' => [
-                'link' => 'Devenir un investisseur',
-                'info' => 'Vous êtes sur le point de devenir un investisseur pour nos membres. En cliquant sur « Commencer », vous acceptez nos conditions d’utilisation et notre politique de confidentialité.',
-            ],
-            'request' => 'Demander un investissement',
-        ],
-
         // Agribusiness
         'agribusiness' => [
             'title' => 'Agribusiness',
-            'description' => 'Partagez vos projets sur la plateforme',
+            'description' => 'Des opportunités d’investissement à haute valeur ajoutée',
             'infos' => [
                 'paragraph_1' => 'Ici vous verrez la liste de tous les projets publiés sur la plateforme ; et que vous êtes en mesure de financer.',
                 'link' => 'Connectez-vous pour voir',
@@ -941,7 +931,7 @@ return [
         // Project writing
         'project_writing' => [
             'title' => 'Rédaction projet',
-            'description' => 'Rédigez un projet digne d’obtenir un financement',
+            'description' => 'Rédiger un projet à fort potentiel d’investissement',
             'infos' => [
                 'paragraph_1' => 'START vous permet de rédiger votre projet, afin d’être en mesure obtenir des financements de la part des investisseurs qui s’inscrivent sur la plateforme.',
                 'paragraph_2' => 'En bonus, vous avez un fichier Excel téléchargeable contenant des données détaillées à fournir concernant vos produits ou vos services.',
@@ -963,17 +953,20 @@ return [
         'slides' => [
             'slide_1' => [
                 'title' => 'Vendre ou<br>acheter en ligne',
-                'description' => 'Produits ou services <br>sont disponibles pour acheter<br>ou vous pouvez publier les vôtres.',
+                // 'description' => 'Produits ou services <br>sont disponibles pour acheter<br>ou vous pouvez publier les vôtres.',
+                'description' => 'Pour commander, proposer <br>des produits ou des services de qualité <br>en toute sécurité.',
             ],
 
             'slide_2' => [
                 'title' => 'Echanger avec<br>le public',
-                'description' => 'Vous avez un forum où vous pouvez<br>discuter avec tout le monde sur les sujets<br>du secteur agricole.',
+                // 'description' => 'Vous avez un forum où vous pouvez<br>discuter avec tout le monde sur les sujets<br>du secteur agricole.',
+                'description' => 'Un espace de discussion où vous pouvez <br>librement partager vos idées, votre expérience <br>dans le secteur agricole.',
             ],
 
             'slide_3' => [
                 'title' => 'Financement des projets',
-                'description' => 'START vous aide a obtenir un financement ou à<br>financer les projets agricoles partagés sur la plateforme.',
+                // 'description' => 'START vous aide a obtenir un financement ou à<br>financer les projets agricoles partagés sur la plateforme.',
+                'description' => 'Devenez un investisseur ou bénéficier <br>d’une opportunité de financement pour vos projets.',
             ],
         ],
 
@@ -1072,9 +1065,26 @@ return [
             // Terms of use
             'terms_of_use' => [
                 'title' => 'Conditions d’utilisation',
-                'description' => 'La plateforme est conçue comme une marketplace en ligne intégréedédiée exclusivement au secteur agricole. Elle a pour vocation de centraliser les interactions entre les différents acteurs de la chaîne de valeur agricole en République Démocratique du Congo (RDC) et au-delà. En rassemblant producteurs, fournisseurs, acheteurs, investisseurs, et experts. Elle permet de simplifier et d’optimiser les transactions, tout en améliorant l’accès aux ressources et aux marchés. La plateforme offre une interface intuitive et facile à utiliser, tout en étant dotée d’outils puissants pour la gestion des ventes, des achats, des investissements, et de la logistique.',
+                'description' => '',
                 'titles' =>
                 [
+                    [
+                        'ref' => 'introduction',
+                        'title' => 'Introduction',
+                        'contents' =>
+                        [
+                            [
+                                'subtitle' => '',
+                                'content' => 'La plateforme est conçue comme une marketplace en ligne intégrée dédiée exclusivement au secteur agricole.',
+                                'dashes' => [],
+                            ],
+                            [
+                                'subtitle' => '',
+                                'content' => 'Elle a pour vocation de centraliser les interactions entre les différents acteurs de la chaîne de valeur agricole en République Démocratique du Congo (RDC) et au-delà. En rassemblant producteurs, fournisseurs, acheteurs, investisseurs, et experts. Elle permet de simplifier et d’optimiser les transactions, tout en améliorant l’accès aux ressources et aux marchés. La plateforme offre une interface intuitive et facile à utiliser, tout en étant dotée d’outils puissants pour la gestion des ventes, des achats, des investissements, et de la logistique.',
+                                'dashes' => [],
+                            ],
+                        ],
+                    ],
                     [
                         'ref' => 'object',
                         'title' => 'Objet',
@@ -1082,12 +1092,12 @@ return [
                         [
                             [
                                 'subtitle' => '',
-                                'content' => 'Les conditions générales d’utilisation (CGU) de START-AFRICA régissent l’accès et l’utilisation de la plateforme START-AFRICA, accessible via <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a>. En utilisant nos services, vous acceptez ces conditions constituant un contrat contraignant entre vous et START-AFICA situé à l’appartement 150, Bloc 27, Cité du Fleuve, dans la commune de Limete, à Kinshasa, en République démocratique du Congo et nous y sommes enregistrés sous le numéro du registre de commerce n° CD/KIN/RCCM/16- B-9756 ; Identification Nationale : 01-F4300-N6387L Numéro Fiscal : A1612732H ayant comme Gérant statutaire Monsieur Jerry SANGINGA NTALE.',
+                                'content' => 'Les conditions générales d’utilisation (CGU) de START-AFRICA régissent l’accès et l’utilisation de la plateforme START-AFRICA, accessible via <a href="https://market.start-africa.com/" target="_blank">https://market.start-africa.com/</a>. En utilisant nos services, vous acceptez ces conditions constituant un contrat contraignant entre vous et START-AFICA situé à l’appartement 150, Bloc 27, Cité du Fleuve, dans la commune de Limete, à Kinshasa, en République démocratique du Congo et nous y sommes enregistrés sous le numéro du registre de commerce n° CD/KIN/RCCM/16- B-9756 ; Identification Nationale : 01-F4300-N6387L Numéro Fiscal : A1612732H ayant comme Gérant statutaire Monsieur Jerry SANGINGA NTALE.',
                                 'dashes' => [],
                             ],
                             [
                                 'subtitle' => '',
-                                'content' => 'Lorsque vous vous inscrivez en tant que client de START-AFRICA ou que vous continuez à utiliser nos services, vous acceptez de respecter les présentes CGU et vous adhérez sans réserve à ces derniers. Vous devez donc lire et comprendre pleinement ces CGU et si vous ne les acceptez pas, vous ne devez pas vous inscrire et/ou utiliser la plateforme.',
+                                'content' => 'Lorsque vous vous inscrivez en tant que client de START-AFRICA ou que vous continuez à utiliser nos services, vous acceptez de respecter les présentes CGU et vous adhérez sans réserve à ces derniers. Vous devez donc lire et comprendre pleinement ces CGU et si vous ne les acceptez pas, vous ne pourrez pas vous inscrire et/ou utiliser la plateforme.',
                                 'dashes' => [],
                             ],
                         ],
@@ -1114,15 +1124,15 @@ return [
                                 'content' => 'Il est interdit de :',
                                 'dashes' => 
                                 [
-                                    0 => 'Publier des contenus faux ou trompeur, offensants ou illégaux ;',
-                                    1 => 'Vendre des produits interdits (armes, drogues, contrefaçons…)',
+                                    0 => 'Publier des contenus trompeurs, hors contexte ou offensants ;',
+                                    1 => 'Vendre des produits illégaux (armes, drogues, contrefaçons, …) ;',
                                     2 => 'Usurper l’identité d’autrui ;',
                                     3 => 'Utiliser la plateforme à des fins frauduleuses.',
                                 ],
                             ],
                             [
                                 'subtitle' => '',
-                                'content' => 'Tout manquement entrainera la suppression immédiate du contenu, la suspension ou résiliation du contrat, et si nécessaire, un signalement aux autorités compétentes.',
+                                'content' => 'Tout manquement à cette obligation entrainera, selon les circonstances, la suppression immédiate du contenu, la suspension ou résiliation du contrat, et si nécessaire, un signalement aux autorités compétentes.',
                                 'dashes' => [],
                             ],
                         ],
@@ -1161,7 +1171,7 @@ return [
                         [
                             [
                                 'subtitle' => '',
-                                'content' => 'Le client accepte qu’une commission soit prélevée automatiquement sur chaque transaction réalisée via la plateforme. Le taux de cette commission est précisé dans les conditions tarifaires disponibles sur la plateforme <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a> . Le taux de commission appliqué par la plateforme comprend la Taxe sur la Valeur Ajoutée (TVA), laquelle est reversée conformément aux obligations fiscales.',
+                                'content' => 'Le client accepte qu’une commission soit prélevée automatiquement sur chaque transaction réalisée via la plateforme. Le taux de cette commission est précisé dans les conditions tarifaires disponibles sur la plateforme <a href="https://market.start-africa.com/" target="_blank">https://market.start-africa.com/</a> . Le taux de commission appliqué par la plateforme comprend la Taxe sur la Valeur Ajoutée (TVA), laquelle est reversée conformément aux obligations fiscales.',
                                 'dashes' => [],
                             ],
                             [
@@ -1169,7 +1179,7 @@ return [
                                 'content' => 'En cas de litige déclaré entre clients concernant une transaction réalisée via la plateforme, nous nous réservons le droit de geler temporairement les fonds issus de ladite transaction. Cette suspension restera en vigueur jusqu’à ce que :',
                                 'dashes' => 
                                 [
-                                    0 => 'Un accord amiable soit trouvé entre les parties ;',
+                                    0 => 'Un accord à l’amiable soit trouvé entre les parties ;',
                                     1 => 'Qu’une décision soit rendue par une autorité compétente ;',
                                     2 => 'Qu’un délai raisonnable ait permis d’évaluer les éléments du litige.',
                                 ],
@@ -1181,7 +1191,7 @@ return [
                             ],
                             [
                                 'subtitle' => '',
-                                'content' => 'Les transactions sur la plateforme se font via FlexPay qui est un moyen de paiement sécurisé intégré. C’est l’option de paiement par carte bancaire et par mobile money considérablement utilisé en RDC.',
+                                'content' => 'Les transactions sur la plateforme se font via FlexPaie qui est un moyen de paiement sécurisé intégré. C’est l’option de paiement par carte bancaire et par mobile money considérablement utilisé en RDC.',
                                 'dashes' => [],
                             ],
                         ],
@@ -1205,7 +1215,7 @@ return [
                         [
                             [
                                 'subtitle' => '',
-                                'content' => 'L’utilisation de vos données est décrite dans notre Politique de confidentialité.',
+                                'content' => 'Les modalités relatives à l’utilisation de vos données sont décrites dans notre Politique de confidentialité.',
                                 'dashes' => [],
                             ],
                         ],
@@ -1294,7 +1304,7 @@ return [
                         [
                             [
                                 'subtitle' => '',
-                                'content' => 'Nous sommes START-AFRICA, une plateforme en ligne (marketplace) <a href="https://start-africa.com/" target="_blank">https://start-africa.com/</a> de la société START S.A.R.L.U. Nous mettons en relation les grands, moyens et petits agriculteurs avec les commerçants et les entreprises, tout en facilitant les négociations et les échanges financiers au niveau national et international.',
+                                'content' => 'Nous sommes START-AFRICA, une plateforme en ligne (marketplace) <a href="https://market.start-africa.com/" target="_blank">https://market.start-africa.com/</a> de la société START S.A.R.L.U. Nous mettons en relation les grands, moyens et petits agriculteurs avec les commerçants et les entreprises, tout en facilitant les négociations et les échanges financiers au niveau national et international.',
                                 'dashes' => [],
                             ],
                             [

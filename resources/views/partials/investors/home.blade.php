@@ -28,7 +28,7 @@
 @if (!empty($current_user))
 
 @else
-							<div class="row" style="display: flex; align-items: center;">
+							<div id="flexItemsCenter" class="row">
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
 									<div class="view" style="padding: 20px;">
 										<img src="{{ asset('assets/img/financing-project.png') }}" alt="" class="img-responsive">
@@ -36,7 +36,7 @@
 									</div>
 								</div>
 								<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
-									<p style="font-size: 3rem; line-height: 34px;">@lang('miscellaneous.public.agribusiness.infos.paragraph_1')</p>
+									<p>@lang('miscellaneous.public.agribusiness.infos.paragraph_1')</p>
 									<p style="margin: 30px 0 0 0;">
 										<a href="{{ route('login', ['redirect' => 'investor.home']) }}" class="btn strt-btn-chocolate-3 pb-2" style="float: right; display: flex; align-items: center;">
 											<span style="margin-right: 8px; color: white">@lang('miscellaneous.public.agribusiness.infos.link')</span><i class="bi bi-chevron-double-right" style="font-size: 2rem; color: white"></i>

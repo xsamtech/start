@@ -877,8 +877,8 @@ fieldset[disabled] .btn-custom.active {
 
 .btn-custom-2 {
 	color: #fff !important;
-	background-color: #732f0b;
-	border-color: #732f0b;
+	background-color: #04471a;
+	border-color: #04471a;
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	text-transform: uppercase;
@@ -890,8 +890,8 @@ fieldset[disabled] .btn-custom.active {
 .btn-custom-2.active,
 .open .dropdown-toggle.btn-custom-2 {
 	color: #fff !important;
-	background-color: #04471a;
-	border-color: #04471a;
+	background-color: #732f0b;
+	border-color: #732f0b;
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
@@ -917,8 +917,8 @@ fieldset[disabled] .btn-custom-2:active,
 .btn-custom-2.disabled.active,
 .btn-custom-2[disabled].active,
 fieldset[disabled] .btn-custom-2.active {
-	background-color: #0b9a0b;
-	border-color: #0b890b;
+	background-color: #da0000;
+	border-color: #da0000e7;
 }
 
 .btn-custom-3 {
@@ -2145,7 +2145,7 @@ select.input-lg {
 }
 
 #header-top .header-link a {
-	color: #04471a;
+	color: #72a51a;
 }
 
 .header4 #header-top .header-link a {
@@ -2154,6 +2154,7 @@ select.input-lg {
 
 #header-top .header-link a:hover {
 	color: #7f7d74;
+	text-decoration: underline;
 }
 
 .header4 #header-top .header-link a:hover {
@@ -3725,7 +3726,7 @@ parent's font-size:0
 
 .title {
 	padding-left: 8px;
-	border-left: 4px solid #04471a;
+	border-left: 4px solid #72a51a;
 	font-size: 40px;
 	margin-bottom: 15px;
 }
@@ -3734,7 +3735,7 @@ parent's font-size:0
 	padding-left: 0;
 	padding-right: 8px;
 	border-left: none;
-	border-right: 4px solid #04471a;
+	border-right: 4px solid #72a51a;
 	text-align: right;
 }
 

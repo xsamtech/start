@@ -41,7 +41,7 @@
                                 </div>
 
                                 <div id="privacyContent" class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
-                                    <p>@lang('miscellaneous.public.about.terms_of_use.description')</p>
+                                    <p>@lang('miscellaneous.public.about.privacy_policy.description')</p>
 
 @forelse ($titles as $title)
                                     <h3 id="{{ $title['ref'] }}">{!! $title['title'] !!}</h3>

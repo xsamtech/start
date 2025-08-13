@@ -314,7 +314,7 @@
 								</div>
 							</form>
 @else
-							<div class="row" style="display: flex; align-items: center;">
+							<div class="row">
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
 									<div class="view" style="padding: 20px;">
 										<img src="{{ asset('assets/img/writing-project-00.png') }}" alt="" class="img-responsive">
@@ -322,8 +322,8 @@
 									</div>
 								</div>
 								<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
-									<p class="lead" style="line-height: 34px;">@lang('miscellaneous.public.project_writing.infos.paragraph_1')</p>
-									<p class="lead" style="line-height: 34px;">@lang('miscellaneous.public.project_writing.infos.paragraph_2')</p>
+									<p class="lead" style="line-height: 30px;">@lang('miscellaneous.public.project_writing.infos.paragraph_1')</p>
+									<p class="lead" style="line-height: 30px;">@lang('miscellaneous.public.project_writing.infos.paragraph_2')</p>
 									<p style="margin: 30px 0 0 0;">
 										<a href="{{ route('login', ['redirect' => 'crowdfunding.home']) }}" class="btn strt-btn-chocolate-3 pb-2" style="float: right; display: flex; align-items: center;">
 											<span style="margin-right: 8px; color: white">@lang('miscellaneous.public.project_writing.infos.link')</span><i class="bi bi-chevron-double-right" style="font-size: 2rem; color: white"></i>

@@ -91,22 +91,21 @@
             .d-none { display: none; }
             #paymentMethod, #phoneNumberForMoney { margin-bottom: 10px; }
             .article .article-meta-date { background: #732f0b; }
-            .article-author-image img {
-                width: 145px;
-                height: 145px;
-            }
-            .comment img {
-                width: 70px;
-                height: 70px;
-            }
+            .article-author-image img { width: 145px; height: 145px; }
+            .comment img { width: 70px; height: 70px; }
+            #flexItemsCenter p:first-child { font-size: 2rem; line-height: 25px; }
             @media screen and (min-width: 500px) {
                 .d-xs-none { display: inline-block; }
                 .d-lg-none { display: none; }
+                .d-sm-none { display: none; }
                 #paymentMethod { text-align: center; }
+                #flexItemsCenter { display: flex; align-items: center; }
+                #flexItemsCenter p:first-child { font-size: 3rem; line-height: 34px; }
             }
             @media screen and (max-width: 500px) {
                 .d-xs-none { display: none; }
                 .d-lg-none { display: inline-block; }
+                .d-sm-none { display: block; }
                 .article-author-image img { width: 100%; margin-bottom: 20px; }
                 #userGender { margin-bottom: 20px; }
             }
@@ -637,7 +636,7 @@
 @if (!empty($current_user))
                                         <p class="header-text">@lang('miscellaneous.welcome_title', ['user' => $current_user->firstname . ' ' . $current_user->lastname])</p>
 @else
-            							<p class="header-link"><a href="{{ route('login') }}">@lang('auth.login')</a>&nbsp;or&nbsp;<a href="{{ route('register') }}">@lang('auth.register')</a></p>
+            							<p class="header-link"><a href="{{ route('login') }}">@lang('auth.login')</a>&nbsp;@lang('miscellaneous.or')&nbsp;<a href="{{ route('register') }}">@lang('auth.register')</a></p>
 @endif
                                     </div><!-- End .pull-right -->
                                 </div><!-- End .header-top-right -->
@@ -1139,6 +1138,7 @@
             toggleSpans();
         </script>
 @endif
+@if (Route::is('register'))
         <script type="text/javascript">
             /**
              * Activate submit on check terms accept
@@ -1155,6 +1155,10 @@
                 }
             }
 
+            checkTermsAccept();
+        </script>
+@endif
+        <script type="text/javascript">
             /**
              * Perform action on element
              */
