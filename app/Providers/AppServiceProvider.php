@@ -50,7 +50,10 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('user_orders', $user_orders);
             }
 
-            $members = User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
+            $members_disabled = User::where('status', 'disabled')->whereHas('roles', function ($query) {
+                                    $query->where('role_name->fr', 'Membre');
+                                })->orderByDesc('users.created_at')->paginate(5)->appends(request()->query());
+            $members = User::whereHas('roles', function ($query) {
                                 $query->where('role_name->fr', 'Membre');
                             })->orderByDesc('users.created_at')->paginate(5)->appends(request()->query());
             $sectors = ProjectSector::orderByDesc('created_at')->paginate(5)->appends(request()->query());
@@ -60,6 +63,8 @@ class AppServiceProvider extends ServiceProvider
             $news_posts = Post::where('type', 'news')->orderByDesc('created_at')->limit(3)->get();
             $comments_posts = Post::where('type', 'comment')->orderByDesc('created_at')->limit(3)->get();
 
+            $view->with('members_disabled', ResourcesUser::collection($members_disabled)->resolve());
+            $view->with('members_disabled_req', $members_disabled);
             $view->with('members', ResourcesUser::collection($members)->resolve());
             $view->with('members_req', $members);
             $view->with('sectors', ResourcesProjectSector::collection($sectors)->resolve());

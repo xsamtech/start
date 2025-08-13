@@ -131,7 +131,7 @@
                             <ul class="nxl-submenu">
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.role.home') }}">@lang('miscellaneous.admin.role.link')</a></li>
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.role.entity.home', ['entity' => 'admins']) }}">@lang('miscellaneous.menu.admin.role.admins')</a></li>
-                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.role.entity.home', ['entity' => 'membres']) }}">@lang('miscellaneous.menu.admin.role.membres')</a></li>
+                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.role.entity.home', ['entity' => 'members']) }}">@lang('miscellaneous.menu.admin.role.membres')</a></li>
                             </ul>
                         </li>
                         <!-- Sectors -->
@@ -501,6 +501,8 @@
         <script type="text/javascript" src="{{ asset('assets/addons/custom/autosize/js/autosize.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/addons/custom/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
         <script type="text/javascript">
+            // Custom switch
+            $('[data-toggle="switchbutton"]').bootstrapSwitchButton();
             // Common variables
             const navigator = window.navigator;
             const currentLanguage = $('html').attr('lang');

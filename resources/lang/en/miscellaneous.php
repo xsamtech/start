@@ -515,6 +515,42 @@ return [
 
     // ===== ADMIN PAGES
     'admin' => [
+        'statistics' => [
+            'members' => [
+                'title' => '{0} Member|{1} Member|[2,*] Members',
+                'disabled' => [
+                    'title' => 'Members disabled',
+                    'content' => '{0} No disabled|{1} One disabled|[2,*] :count disabled',
+                ],
+            ],
+            'products' => [
+                'title' => '{0} Product|{1} Product|[2,*] Products',
+                'unshared' => [
+                    'title' => 'Unshared products',
+                    'content' => '{0} No unshared|{1} One unshared|[2,*] :count unshared',
+                ],
+            ],
+            'services' => [
+                'title' => '{0} Service|{1} Service|[2,*] Services',
+                'unshared' => [
+                    'title' => 'Unshared services',
+                    'content' => '{0} No unshared|{1} One unshared|[2,*] :count unshared',
+                ],
+            ],
+            'projects' => [
+                'title' => '{0} Project|{1} Project|[2,*] Projects',
+                'unshared' => [
+                    'title' => 'Unshared projects',
+                    'content' => '{0} No unshared|{1} One unshared|[2,*] :count unshared',
+                ],
+            ],
+            'payment' => [
+                'title' => 'Payments',
+                'ongoing' => 'Ongoing',
+                'Done' => 'Done',
+                'canceled' => 'Canceled',
+            ],
+        ],
         'icon_name' => 'Icon name',
         'color_name' => 'Color name',
         'home' => [
