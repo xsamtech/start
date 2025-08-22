@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
@@ -34,15 +33,6 @@ class Category extends Model
     protected $translatable = ['category_name', 'category_description'];
 
     /**
-     * MANY-TO-MANY
-     * Several products (having "project" type) for several categories
-     */
-    public function projects(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'category_product');
-    }
-
-    /**
      * ONE-TO-MANY
      * One project_sector for several products
      */
@@ -53,10 +43,19 @@ class Category extends Model
 
     /**
      * MANY-TO-ONE
-     * Several products for a cart
+     * Several products for a category
      */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    /**
+     * MANY-TO-ONE
+     * Several projects for a category
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
     }
 }

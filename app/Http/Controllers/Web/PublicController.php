@@ -13,10 +13,13 @@ use App\Models\Category;
 use App\Models\Crowdfunding;
 use App\Models\CustomerOrder;
 use App\Models\File;
+use App\Models\MarketSegment;
+use App\Models\Notification;
 use App\Models\PaidFund;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\ProjectActivity;
 use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -358,6 +361,12 @@ class PublicController extends Controller
 
                 return $item;
             });
+        }
+
+        if ($entity == 'notifications') {
+            $entity_title = __('miscellaneous.menu.notifications');
+            // Get user notifications
+            $items = Notification::where('to_user_id', $current_user->id)->orderByDesc('created_at')->paginate(12)->appends($request->query());
         }
 
         if ($entity == 'customers') {
@@ -1115,6 +1124,358 @@ class PublicController extends Controller
     }
 
     /**
+     * POST: Add a product entity
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $entity
+     * @throws \Illuminate\Http\RedirectResponse
+     */
+    public function addProductEntity(Request $request, $entity)
+    {
+        if ($entity == 'product' OR $entity == 'service') {
+            // $request->validate([
+            //     'product_name' => ['required', 'string', 'max:255'],
+            //     'price' => ['required', 'float'],
+            //     'quantity' => ['required', 'integer', 'min:1'],
+            // ], [
+            //     'product_name.required' => __('validation.required'),
+            //     'price' => __('validation.required'),
+            //     'quantity' => __('validation.required'),
+            // ]);
+
+            $product = Product::create([
+                'product_name' => $request->product_name,
+                'product_description' => $request->product_description,
+                'quantity' => $request->quantity,
+                'price' => $request->price,
+                'currency' => $request->currency,
+                'type' => $request->filled('type') ? $request->type : 'product',
+                'action' => $request->filled('action') ? $request->action : 'sell',
+                'is_shared' => $request->filled('is_shared') ? $request->is_shared : 0,
+                'category_id' => $request->category_id,
+                'user_id' => Auth::id(),
+                'created_by' => Auth::check() ? Auth::id() : null,
+            ]);
+
+            // If image files exist
+            if ($request->hasFile('files_urls')) {
+                $files = $request->file('files_urls', []);
+                $fileNames = $request->input('files_names', []);
+
+                // Types of extensions for different file types
+                $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+                $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
+                $audio_extensions = ['mp3', 'wav', 'flac'];
+
+                foreach ($files as $key => $singleFile) {
+                    // Checking the file extension
+                    $file_extension = $singleFile->getClientOriginalExtension();
+
+                    // File type check
+                    $custom_uri = '';
+                    $is_valid_type = false;
+                    $file_type = null;
+
+                    if (in_array($file_extension, $video_extensions)) { // File is a video
+                        $custom_uri = 'videos/products';
+                        $file_type = 'video';
+                        $is_valid_type = true;
+
+                    } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
+                        $custom_uri = 'photos/products';
+                        $file_type = 'photo';
+                        $is_valid_type = true;
+
+                    } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
+                        $custom_uri = 'audios/products';
+                        $file_type = 'audio';
+                        $is_valid_type = true;
+
+                    } elseif (in_array($file_extension, $document_extensions)) { // File is a document
+                        $custom_uri = 'documents/products';
+                        $file_type = 'video';
+                        $is_valid_type = true;
+                    }
+
+                    // If the extension does not match any valid type
+                    if (!$is_valid_type) {
+                        return $this->handleError(__('notifications.type_is_not_file'));
+                    }
+
+                    // Generate a unique path for the file
+                    $filename = $singleFile->getClientOriginalName();
+                    $file_url =  $custom_uri . '/' . $product->id . '/' . $filename;
+
+                    // Upload file
+                    try {
+                        $singleFile->storeAs($custom_uri . '/' . $product->id, $filename, 'public');
+
+                    } catch (\Throwable $th) {
+                        return $this->handleError($th, __('notifications.create_work_file_500'), 500);
+                    }
+
+                    // Creating the database record for the file
+                    File::create([
+                        'file_name' => trim($fileNames[$key] ?? $filename),
+                        'file_url' => getWebURL() . '/storage/' . $file_url,
+                        'file_type' => $file_type,
+                        'product_id' => $product->id
+                    ]);
+                }
+            }
+
+            /*
+                NOTIFICATION MANAGEMENT
+            */
+            $administrators = User::whereHas('roles', function ($query) {
+                                        $query->where('role_name->fr', 'Administrateur');
+                                    })->get();
+
+            foreach ($administrators as $admin) {
+                Notification::create([
+                    'type' => 'product_shared',
+                    'is_read' => 0,
+                    'from_user_id' => Auth::id(),
+                    'to_user_id' => $admin->id,
+                    'product_id' => $product->id
+                ]);
+            }
+
+            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+        }
+    }
+
+    /**
+     * POST: Add a post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addDiscussion(Request $request)
+    {
+        $post = Post::create([
+            'posts_title' => $request->posts_title,
+            'posts_content' => $request->posts_content,
+            'event_start_at' => $request->event_start_at,
+            'event_end_at' => $request->event_end_at,
+            'answered_for' => $request->answered_for,
+            'type' => $request->type,
+            'for_category_id' => $request->for_category_id,
+            'user_id' => Auth::id(),
+        ]);
+
+        // If image files exist
+        if ($request->hasFile('files_urls')) {
+            $files = $request->file('files_urls', []);
+            $fileNames = $request->input('files_names', []);
+
+            // Types of extensions for different file types
+            $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
+            $audio_extensions = ['mp3', 'wav', 'flac'];
+
+            foreach ($files as $key => $singleFile) {
+                // Checking the file extension
+                $file_extension = $singleFile->getClientOriginalExtension();
+
+                // File type check
+                $custom_uri = '';
+                $is_valid_type = false;
+                $file_type = null;
+
+                if (in_array($file_extension, $video_extensions)) { // File is a video
+                    $custom_uri = 'videos/posts';
+                    $file_type = 'video';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
+                    $custom_uri = 'photos/posts';
+                    $file_type = 'photo';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
+                    $custom_uri = 'audios/posts';
+                    $file_type = 'audio';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $document_extensions)) { // File is a document
+                    $custom_uri = 'documents/posts';
+                    $file_type = 'document';
+                    $is_valid_type = true;
+                }
+
+                // If the extension does not match any valid type
+                if (!$is_valid_type) {
+                    return $this->handleError(__('notifications.type_is_not_file'));
+                }
+
+                // Generate a unique path for the file
+                $filename = $singleFile->getClientOriginalName();
+                $file_url =  $custom_uri . '/' . $post->id . '/' . $filename;
+
+                // Upload file
+                try {
+                    $singleFile->storeAs($custom_uri . '/' . $post->id, $filename, 'public');
+
+                } catch (\Throwable $th) {
+                    return $this->handleError($th, __('notifications.create_work_file_500'), 500);
+                }
+
+                // Creating the database record for the file
+                File::create([
+                    'file_name' => trim($fileNames[$key] ?? $filename),
+                    'file_url' => getWebURL() . '/storage/' . $file_url,
+                    'file_type' => $file_type,
+                    'post_id' => $post->id
+                ]);
+            }
+        }
+
+        if ($post->type == 'comment') {
+            $parent_post = Post::find($post->answered_for);
+
+            /*
+                NOTIFICATION MANAGEMENT
+            */
+            if (!is_null($parent_post)) {
+                Notification::create([
+                    'type' => 'post_answered',
+                    'is_read' => 0,
+                    'from_user_id' => Auth::id(),
+                    'to_user_id' => $parent_post->user_id,
+                    'post_id' => $parent_post->id
+                ]);
+            }
+        }
+
+        return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+    }
+
+    /**
+     * POST: Add a project
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addProject(Request $request)
+    {
+        $project = Project::create([
+            'projects_description' => $request->projects_description,
+            'company_name' => $request->company_name,
+            'rccm' => $request->rccm,
+            'id_nat' => $request->id_nat,
+            'tax_number' => $request->tax_number,
+            'creation_year' => $request->creation_year,
+            'company_address' => $request->company_address,
+            'company_email' => $request->company_email,
+            'company_phone' => $request->company_phone,
+            'website_url' => $request->website_url,
+            'is_tenant' => $request->is_tenant,
+            'tenant_monthly_rental' => $request->tenant_monthly_rental,
+            'is_owner' => $request->is_owner,
+            'field_experience' => $request->field_experience,
+            'employees_count' => $request->employees_count,
+            'is_funded_by_self' => $request->is_funded_by_self,
+            'is_funded_by_credit' => $request->is_funded_by_credit,
+            'is_funded_by_grant' => $request->is_funded_by_grant,
+            'other_funding_sources' => $request->other_funding_sources,
+            'funding_amount' => $request->funding_amount,
+            'annual_turnover' => $request->annual_turnover,
+            'last_year_net_profit' => $request->last_year_net_profit,
+            'last_year_net_loss' => $request->last_year_net_loss,
+            'forecast_turnover' => $request->forecast_turnover,
+            'business_model' => $request->business_model,
+            'swot_analysis' => $request->swot_analysis,
+            'category_id' => $request->category_id,
+            'user_id' => Auth::id(),
+        ]);
+
+        // Valid file types for photos and documents
+        $validExtensions = [
+            'photo' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+            'document' => ['pdf', 'doc', 'docx', 'txt']
+        ];
+
+        // Generic method of uploading files
+        if ($request->hasFile('owner_title_deed_url')) {
+            $file = $request->file('owner_title_deed_url');
+            $fileExtension = $file->getClientOriginalExtension();
+            $customUri = in_array($fileExtension, $validExtensions['photo']) ? 'photos/projects' : 'documents/projects';
+
+            // File path
+            $filename = $file->getClientOriginalName();
+            $cleanedFilename = sanitizeFileName($filename);
+            $filePath = $customUri . '/' . $project->id . '/' . $cleanedFilename;
+
+            // File upload
+            Storage::disk('public')->put($filePath, file_get_contents($file->getRealPath()));
+
+            // Updating the file URL in the database
+            $project->update([
+                'owner_title_deed_url' => Storage::url($filePath)
+            ]);
+        }
+
+        if ($request->filled('is_land_owner_agriculture')) {
+            ProjectActivity::create([
+                'is_land_owner_agriculture' => $request->is_land_owner_agriculture,
+                'land_area' => $request->land_area_agriculture,
+                'land_yield_per_hectare' => $request->land_yield_per_hectare,
+                'agriculture_type' => $request->agriculture_type,
+                'agriculture_type_content' => $request->agriculture_type_content,
+                'agriculture_type_content_period' => $request->agriculture_type_content_period,
+                'agriculture_type_content_quantity' => $request->agriculture_type_content_quantity,
+                'project_id' => $project->id,
+            ]);
+        }
+
+        if ($request->filled('is_land_owner_breeding')) {
+            ProjectActivity::create([
+                'is_land_owner_breeding' => $request->is_land_owner_breeding,
+                'breeding_type' => $request->breeding_type,
+                'breeding_type_content' => $request->breeding_type_content,
+                'breeding_type_fish_pond_capacity' => $request->breeding_type_fish_pond_capacity,
+                'breeding_type_fish_cage_capacity' => $request->breeding_type_fish_cage_capacity,
+                'breeding_type_fish_bin_capacity' => $request->breeding_type_fish_bin_capacity,
+                'breeding_type_animals_total_number' => $request->breeding_type_animals_total_number,
+                'breeding_type_cattle_kind' => $request->breeding_type_cattle_kind,
+                'project_id' => $project->id,
+            ]);
+        }
+
+        if ($request->segments_names != null) {
+            foreach ($request->segments_names as $key => $segment_name) {
+                MarketSegment::create([
+                    'segment_name' => $segment_name,
+                    'is_qualitative' => $request->is_qualitative[$key],
+                    'project_id' => $project->id,
+                ]);
+            }
+        }
+
+        /*
+            NOTIFICATION MANAGEMENT
+        */
+        $administrators = User::whereHas('roles', function ($query) {
+                                    $query->where('role_name->fr', 'Administrateur');
+                                })->get();
+
+        foreach ($administrators as $admin) {
+            Notification::create([
+                'type' => 'project_shared',
+                'is_read' => 0,
+                'from_user_id' => Auth::id(),
+                'to_user_id' => $admin->id,
+                'project_id' => $project->id
+            ]);
+        }
+
+        return redirect()->route('account.entity.datas', ['entity' => 'projects', 'id' => $project->id])->with('success_message', __('notifications.create_project_success'));
+    }
+
+    /**
      * POST: Update account
      *
      * @param  \Illuminate\Http\Request  $request
@@ -1258,247 +1619,6 @@ class PublicController extends Controller
         return $request->expectsJson()
             ? response()->json(['success' => true, 'message' => __('notifications.updated_data'), 'avatar_url' => $user->avatar_url ?? null])
             : back()->with('success_message', __('notifications.updated_data'));
-    }
-
-    /**
-     * POST: Add a product entity
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $entity
-     * @throws \Illuminate\Http\RedirectResponse
-     */
-    public function addProductEntity(Request $request, $entity)
-    {
-        if ($entity == 'category') {
-            // $request->validate([
-            //     'category_name.en' => 'required|string|max:255',
-            //     'category_name.fr' => 'required|string|max:255',
-            //     'category_description.en' => 'nullable|string',
-            //     'category_description.fr' => 'nullable|string',
-            //     'alias' => 'required|string|unique:categories,alias',
-            //     'for_service' => 'nullable|boolean',
-            // ]);
-
-            $category = Category::create([
-                'category_name' => [
-                    'en' => $request->category_name_en,
-                    'fr' => $request->category_name_fr
-                ],
-                'category_description' => [
-                    'en' => $request->category_description_en,
-                    'fr' => $request->category_description_fr
-                ],
-                'for_service' => $request->filled('for_service') ? $request->for_service : 0,
-                'alias' => $request->alias,
-                'created_by' => Auth::check() ? Auth::id() : null,
-            ]);
-
-            if (isset($request->image_64)) {
-                // $extension = explode('/', explode(':', substr($request->image_64, 0, strpos($request->image_64, ';')))[1])[1];
-                $replace = substr($request->image_64, 0, strpos($request->image_64, ',') + 1);
-                // Find substring from replace here eg: data:image/png;base64,
-                $image = str_replace($replace, '', $request->image_64);
-                $image = str_replace(' ', '+', $image);
-                // Create image URL
-                $image_path = 'images/categories/' . $category->id . '/' . Str::random(50) . '.png';
-
-                // Upload image
-                Storage::disk('public')->put($image_path, base64_decode($image));
-
-                $category->update([
-                    'image_url' => Storage::url($image_path),
-                    'updated_at' => now()
-                ]);
-            }
-
-            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
-        }
-
-        if ($entity == 'project' OR $entity == 'product' OR $entity == 'service') {
-            // $request->validate([
-            //     'product_name' => ['required', 'string', 'max:255'],
-            //     'price' => ['required', 'float'],
-            //     'quantity' => ['required', 'integer', 'min:1'],
-            // ], [
-            //     'product_name.required' => __('validation.required'),
-            //     'price' => __('validation.required'),
-            //     'quantity' => __('validation.required'),
-            // ]);
-
-            $product = Product::create([
-                'product_name' => $request->product_name,
-                'product_description' => $request->product_description,
-                'quantity' => $request->quantity,
-                'price' => $request->price,
-                'currency' => $request->currency,
-                'type' => $request->filled('type') ? $request->type : 'product',
-                'action' => $request->filled('action') ? $request->action : 'sell',
-                'is_shared' => $request->filled('is_shared') ? $request->is_shared : 0,
-                'category_id' => $request->category_id,
-                'user_id' => Auth::id(),
-                'created_by' => Auth::check() ? Auth::id() : null,
-            ]);
-
-            // If image files exist
-            if ($request->hasFile('files_urls')) {
-                $files = $request->file('files_urls', []);
-                $fileNames = $request->input('files_names', []);
-
-                // Types of extensions for different file types
-                $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-                $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-                $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
-                $audio_extensions = ['mp3', 'wav', 'flac'];
-
-                foreach ($files as $key => $singleFile) {
-                    // Checking the file extension
-                    $file_extension = $singleFile->getClientOriginalExtension();
-
-                    // File type check
-                    $custom_uri = '';
-                    $is_valid_type = false;
-                    $file_type = null;
-
-                    if (in_array($file_extension, $video_extensions)) { // File is a video
-                        $custom_uri = 'videos/products';
-                        $file_type = 'video';
-                        $is_valid_type = true;
-
-                    } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
-                        $custom_uri = 'photos/products';
-                        $file_type = 'photo';
-                        $is_valid_type = true;
-
-                    } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
-                        $custom_uri = 'audios/products';
-                        $file_type = 'audio';
-                        $is_valid_type = true;
-
-                    } elseif (in_array($file_extension, $document_extensions)) { // File is a document
-                        $custom_uri = 'documents/products';
-                        $file_type = 'video';
-                        $is_valid_type = true;
-                    }
-
-                    // If the extension does not match any valid type
-                    if (!$is_valid_type) {
-                        return $this->handleError(__('notifications.type_is_not_file'));
-                    }
-
-                    // Generate a unique path for the file
-                    $filename = $singleFile->getClientOriginalName();
-                    $file_url =  $custom_uri . '/' . $product->id . '/' . $filename;
-
-                    // Upload file
-                    try {
-                        $singleFile->storeAs($custom_uri . '/' . $product->id, $filename, 'public');
-
-                    } catch (\Throwable $th) {
-                        return $this->handleError($th, __('notifications.create_work_file_500'), 500);
-                    }
-
-                    // Creating the database record for the file
-                    File::create([
-                        'file_name' => trim($fileNames[$key] ?? $filename),
-                        'file_url' => getWebURL() . '/storage/' . $file_url,
-                        'file_type' => $file_type,
-                        'product_id' => $product->id
-                    ]);
-                }
-            }
-
-            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
-        }
-    }
-
-    /**
-     * POST: Add a post
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function addDiscussion(Request $request)
-    {
-        $post = Post::create([
-            'posts_title' => $request->posts_title,
-            'posts_content' => $request->posts_content,
-            'event_start_at' => $request->event_start_at,
-            'event_end_at' => $request->event_end_at,
-            'answered_for' => $request->answered_for,
-            'type' => $request->type,
-            'for_category_id' => $request->for_category_id,
-            'user_id' => Auth::id(),
-        ]);
-
-        // If image files exist
-        if ($request->hasFile('files_urls')) {
-            $files = $request->file('files_urls', []);
-            $fileNames = $request->input('files_names', []);
-
-            // Types of extensions for different file types
-            $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-            $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
-            $audio_extensions = ['mp3', 'wav', 'flac'];
-
-            foreach ($files as $key => $singleFile) {
-                // Checking the file extension
-                $file_extension = $singleFile->getClientOriginalExtension();
-
-                // File type check
-                $custom_uri = '';
-                $is_valid_type = false;
-                $file_type = null;
-
-                if (in_array($file_extension, $video_extensions)) { // File is a video
-                    $custom_uri = 'videos/posts';
-                    $file_type = 'video';
-                    $is_valid_type = true;
-
-                } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
-                    $custom_uri = 'photos/posts';
-                    $file_type = 'photo';
-                    $is_valid_type = true;
-
-                } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
-                    $custom_uri = 'audios/posts';
-                    $file_type = 'audio';
-                    $is_valid_type = true;
-
-                } elseif (in_array($file_extension, $document_extensions)) { // File is a document
-                    $custom_uri = 'documents/posts';
-                    $file_type = 'document';
-                    $is_valid_type = true;
-                }
-
-                // If the extension does not match any valid type
-                if (!$is_valid_type) {
-                    return $this->handleError(__('notifications.type_is_not_file'));
-                }
-
-                // Generate a unique path for the file
-                $filename = $singleFile->getClientOriginalName();
-                $file_url =  $custom_uri . '/' . $post->id . '/' . $filename;
-
-                // Upload file
-                try {
-                    $singleFile->storeAs($custom_uri . '/' . $post->id, $filename, 'public');
-
-                } catch (\Throwable $th) {
-                    return $this->handleError($th, __('notifications.create_work_file_500'), 500);
-                }
-
-                // Creating the database record for the file
-                File::create([
-                    'file_name' => trim($fileNames[$key] ?? $filename),
-                    'file_url' => getWebURL() . '/storage/' . $file_url,
-                    'file_type' => $file_type,
-                    'post_id' => $post->id
-                ]);
-            }
-
-            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
-        }
     }
 
     /**
@@ -1709,97 +1829,14 @@ class PublicController extends Controller
     }
 
     /**
-     * POST: Add a post
+     * POST: Update a project
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function addProject(Request $request)
+    public function updateProject(Request $request, $id)
     {
-        // Valid file types for photos and documents
-        $validExtensions = [
-            'photo' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-            'document' => ['pdf', 'doc', 'docx', 'txt']
-        ];
-
-        // Validation and upload of files
-        $files = [
-            'company_id_document_url' => __('miscellaneous.admin.project_writing.data.rccm'),
-            'land_status_property_deed_url' => __('miscellaneous.admin.project_writing.data.land_status.owner.property_deed')
-        ];
-
-        foreach ($files as $field => $errorMessage) {
-            if ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $fileExtension = $file->getClientOriginalExtension();
-
-                // File type check
-                if (!in_array($fileExtension, array_merge($validExtensions['photo'], $validExtensions['document']))) {
-                    return redirect('/')->with('error_message', __('notifications.type_is_not_document') . __('miscellaneous.colon_after_word') . ' ' . $errorMessage);
-                }
-            }
-        }
-
-        // Retrieve checkbox values
-        $marketSegments = $request->input('market_segments_or_target', []); // This will return an empty array if no checkbox is selected.
-        // Retrieve the value of the 'others' input
-        $others = $request->input('others', '');
-        // Merge the two datasets
-        $allValues = array_merge($marketSegments, [$others]);
-        // Convert to string with commas
-        $marketSegmentsData = implode(', ', array_filter($allValues));
-
-        $project = Project::create([
-            'projects_description' => $request->projects_description,
-            'company_name' => $request->company_name,
-            'rccm' => $request->rccm,
-            'id_nat' => $request->id_nat,
-            'tax_number' => $request->tax_number,
-            'company_address' => $request->company_address,
-            'company_email' => $request->company_email,
-            'company_phone' => $request->company_phone,
-            'website_url' => $request->website_url,
-            'field_experience' => $request->field_experience,
-            'activity_orientation' => $request->activity_orientation,
-            'activity_orientation_content' => $request->activity_orientation_content,
-            'processing_transformation_quantity' => $request->processing_transformation_quantity,
-            'processing_transformation_period' => $request->processing_transformation_period,
-            'market_segments_or_target' => $marketSegmentsData,
-            'physical_and_land_organization' => $request->physical_and_land_organization,
-            'physical_and_land_organization_size' => $request->physical_and_land_organization_size,
-            'physical_and_land_organization_yield' => $request->physical_and_land_organization_yield,
-            'land_status' => $request->land_status,
-            'land_status_amount' => $request->land_status_amount,
-            'accounting_synthesis' => $request->accounting_synthesis,
-            'accounting_synthesis_number_of_employees' => $request->accounting_synthesis_number_of_employees,
-            'accounting_synthesis_turnover_value' => $request->accounting_synthesis_turnover_value,
-            'strategic_synthesis' => $request->strategic_synthesis,
-            'category_id' => $request->category_id,
-            'user_id' => Auth::id(),
-        ]);
-
-        // Generic method of uploading files
-        foreach ($files as $field => $errorMessage) {
-            if ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $fileExtension = $file->getClientOriginalExtension();
-                $customUri = in_array($fileExtension, $validExtensions['photo']) ? 'photos/projects' : 'documents/projects';
-
-                // Chemin du fichier
-                $filename = $file->getClientOriginalName();
-                $cleanedFilename = sanitizeFileName($filename);
-                $filePath = $customUri . '/' . $project->id . '/' . $cleanedFilename;
-
-                // Upload du fichier
-                Storage::disk('public')->put($filePath, file_get_contents($file->getRealPath()));
-
-                // Mise à jour de l'URL du fichier dans la base de données
-                $project->update([
-                    $field => Storage::url($filePath)
-                ]);
-            }
-        }
-
-        return redirect()->route('account.entity', ['entity' => 'projects'])->with('success_message', __('notifications.create_project_success'));
+        // TODO update project
     }
 }

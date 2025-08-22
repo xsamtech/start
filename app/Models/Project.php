@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @author Xanders
@@ -39,5 +40,23 @@ class Project extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * MANY-TO-ONE
+     * Several project_activities for a project
+     */
+    public function project_activities(): HasMany
+    {
+        return $this->hasMany(ProjectActivity::class);
+    }
+
+    /**
+     * MANY-TO-ONE
+     * Several market_segments for a project
+     */
+    public function market_segments(): HasMany
+    {
+        return $this->hasMany(MarketSegment::class);
     }
 }

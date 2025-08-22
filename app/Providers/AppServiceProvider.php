@@ -8,6 +8,7 @@ use App\Http\Resources\Product as ResourcesProduct;
 use App\Http\Resources\ProjectSector as ResourcesProjectSector;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Category;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\ProjectSector;
@@ -46,8 +47,10 @@ class AppServiceProvider extends ServiceProvider
             if (Auth::check()) {
                 $current_user = new ResourcesUser(Auth::user());
                 $user_orders = $current_user->unpaidOrders();
+                $unread_notifications = Notification::where('to_user_id', $current_user->id)->where('is_read', 0)->orderByDesc('created_at')->get();
 
                 $view->with('user_orders', $user_orders);
+                $view->with('unread_notifications', $unread_notifications);
             }
 
             $members_disabled = User::where('status', 'disabled')->whereHas('roles', function ($query) {

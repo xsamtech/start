@@ -87,9 +87,9 @@ if (!function_exists('getArrayKeys')) {
 if (!function_exists('explicitMonth')) {
     function explicitMonth($month)
     {
-        setlocale(LC_ALL, app()->getLocale());
+        Carbon::setLocale(app()->getLocale());
 
-        return utf8_encode(strftime("%B", strtotime(date('F', mktime(0, 0, 0, $month, 10)))));
+        return Carbon::createFromFormat('m', $month)->translatedFormat('F');
     }
 }
 
@@ -97,9 +97,9 @@ if (!function_exists('explicitMonth')) {
 if (!function_exists('explicitDayMonth')) {
     function explicitDayMonth($date)
     {
-        setlocale(LC_ALL, app()->getLocale());
+        Carbon::setLocale(app()->getLocale());
 
-        return utf8_encode(Carbon::parse($date)->formatLocalized('%A %d %B'));
+        return Carbon::parse($date)->translatedFormat('l d F');
     }
 }
 
@@ -107,10 +107,9 @@ if (!function_exists('explicitDayMonth')) {
 if (!function_exists('explicitDate')) {
     function explicitDate($date)
     {
-        setlocale(LC_ALL, app()->getLocale());
+        Carbon::setLocale(app()->getLocale());
 
-        return utf8_encode(Carbon::parse($date)->formatLocalized('%d %B %Y'));
-        // return utf8_encode(Carbon::parse($date)->formatLocalized('%A %d %B %Y'));
+        return Carbon::parse($date)->translatedFormat('l d F Y');
     }
 }
 
@@ -186,41 +185,68 @@ if (!function_exists('getExchangeRate')) {
 if (!function_exists('showCountries')) {
     function showCountries()
     {
-        $response = Http::get('https://restcountries.com/v3.1/all?fields=cca2,idd,flags,name');
+        // $response = Http::get('https://restcountries.com/v3.1/all?fields=cca2,idd,flags,name');
 
-        if (!$response->successful()) {
-            return [];
-        }
+        // if (!$response->successful()) {
+        //     return [];
+        // }
 
-        $countriesRaw = $response->json();
-        $phoneCodes = [];
+        // $countriesRaw = $response->json();
+        // $phoneCodes = [];
 
-        return collect($countriesRaw)
-                ->map(function ($country) use (&$phoneCodes) {
-                    $root = $country['idd']['root'] ?? '';
-                    $suffix = $country['idd']['suffixes'][0] ?? '';
-                    $fullPhoneCode = $root . $suffix;
+        // return collect($countriesRaw)
+        //         ->map(function ($country) use (&$phoneCodes) {
+        //             $root = $country['idd']['root'] ?? '';
+        //             $suffix = $country['idd']['suffixes'][0] ?? '';
+        //             $fullPhoneCode = $root . $suffix;
 
-                    if (empty($fullPhoneCode) || in_array($fullPhoneCode, $phoneCodes)) {
-                        return null;
-                    }
+        //             if (empty($fullPhoneCode) || in_array($fullPhoneCode, $phoneCodes)) {
+        //                 return null;
+        //             }
 
-                    $phoneCodes[] = $fullPhoneCode;
+        //             $phoneCodes[] = $fullPhoneCode;
 
-                    return [
-                        'value' => $fullPhoneCode,
-                        'name' => $country['name']['common'] ?? '',
-                        'code' => $country['cca2'] ?? '',
-                        'phone' => $fullPhoneCode,
-                        'flag' => $country['flags']['png'] ?? '',
-                        'label' => ($country['cca2'] ?? '') . ' (' . $fullPhoneCode . ')',
-                    ];
-                })
-                ->filter()
-                ->sortBy('label')
-                ->values();
+        //             return [
+        //                 'value' => $fullPhoneCode,
+        //                 'name' => $country['name']['common'] ?? '',
+        //                 'code' => $country['cca2'] ?? '',
+        //                 'phone' => $fullPhoneCode,
+        //                 'flag' => $country['flags']['png'] ?? '',
+        //                 'label' => ($country['cca2'] ?? '') . ' (' . $fullPhoneCode . ')',
+        //             ];
+        //         })
+        //         ->filter()
+        //         ->sortBy('label')
+        //         ->values();
 
-        return abort(500, 'Erreur lors du chargement des pays');
+        // return abort(500, 'Erreur lors du chargement des pays');
+
+        return [
+            [
+                'value' => '243',
+                'name' => 'DR Congo',
+                'code' => 'CD',
+                'phone' => '+243',
+                'flag' => '',
+                'label' => 'CD (+243)',
+            ],
+            [
+                'value' => '33',
+                'name' => 'France',
+                'code' => 'FR',
+                'phone' => '+33',
+                'flag' => '',
+                'label' => 'FR (+33)',
+            ],
+            [
+                'value' => '1',
+                'name' => 'United State',
+                'code' => 'US',
+                'phone' => '+1',
+                'flag' => '',
+                'label' => 'US (+1)',
+            ],
+        ];
     }
 }
 

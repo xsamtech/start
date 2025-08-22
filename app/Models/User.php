@@ -86,6 +86,15 @@ class User extends Authenticatable
     }
 
     /**
+     * MANY-TO-ONE
+     * Several projects for a user
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    /**
      * Selected role
      */
     public function getSelectedRoleAttribute()
@@ -371,6 +380,20 @@ class User extends Authenticatable
 
             // 8. Decrement the product quantity by the ordered quantity
             $product->decrement('quantity', $quantity);
+
+            // 9. Send notification if stock has been emptied after order
+            if ($product->quantity <= 500) {
+                /*
+                    NOTIFICATION MANAGEMENT
+                */
+                Notification::create([
+                    'type' => 'stock_emptied',
+                    'is_read' => 0,
+                    'from_user_id' => $this->id,
+                    'to_user_id' => $product->user_id,
+                    'product_id' => $product->id
+                ]);
+            }
 
             return $existingOrder;
         });

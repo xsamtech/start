@@ -79,6 +79,10 @@
             .title-desc a:hover { color: #72a51a; }
             .custom-link { color: #732f0b; }
             .custom-link:hover { color: #72a51a; }
+            #top-links li:first-child a { padding-left: 20px!important; }
+            #top-links li:nth-child(2) a { padding-left: 5px!important; }
+            #top-links li:first-child a:hover, #top-links li:nth-child(2) a:hover { text-decoration: underline; }
+            .badge-notify { font-size: 10px; background:red; position: absolute; top: -8px; left: 12px; }
             .breadcrumb li a, .breadcrumb li { font-size: 1.5rem; }
             #showPassword i, #showConfirmPassword i, #showNewPassword i, #showConfirmNewPassword i { font-size: 2rem; }
             .item .item-image-container { position: relative; width: 100%; padding-top: 139.91%; overflow: hidden; }
@@ -575,7 +579,21 @@
                                         <li><a href="{{ route('cart') }}" title="@lang('miscellaneous.menu.account.cart')"><i class="bi bi-cart3" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.cart')</span></a></li>
 @endsession
 @if (!empty($current_user))
-                                        <li><a href="{{ route('account.home') }}" title="@lang('miscellaneous.menu.account.title')"><i class="bi bi-person" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.title')</span></a></li>
+                                        <li>
+                                            <a href="{{ route('account.home') }}" title="@lang('miscellaneous.menu.account.title')"><i class="bi bi-person" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.title')</span></a>
+                                        </li>
+                                        <li id="userNotifications">
+                                            <a href="{{ route('account.entity', ['entity' => 'notifications']) }}" title="@lang('miscellaneous.menu.notifications')">
+    @if (count($unread_notifications) > 0)
+                                                <i class="bi bi-bell-fill" style="color: #6e9e1a; margin-right: 0.5rem!important;"></i>
+                                                <span class="badge badge-notify">14</span>
+                                                <span class="hide-for-xs">@lang('miscellaneous.menu.notifications')</span>
+    @else
+                                                <i class="bi bi-bell" style="margin-right: 0.5rem!important;"></i>
+                                                <span class="hide-for-xs">@lang('miscellaneous.menu.notifications')</span>
+    @endif
+                                            </a>
+                                        </li>
                                         <li>
                                             <form action="{{ route('logout') }}" method="post">
                                                 <button class="btn btn-link" style="color: #777;"><i class="bi bi-power" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.logout')</span></button>

@@ -333,25 +333,44 @@ return [
     'delete_payment_success' => 'Paiement supprimé',
 
     // ===== PUBLIC NOTIFICATIONS
-    // Partnership
-    'one_partner' => '<strong><a href="/:from_username">:from_user_names</a></strong> est maintenant votre partenaire.',
-    'two_partners' => '<strong><a href="/:from_username">:from_user_names</a></strong> et une autre personne sont maintenant vos partenaires.',
-    'many_partners' => '<strong><a href="/:from_username">:from_user_names</a></strong> and :requests_count autres sont maintenant vos partenaires.',
-    // Sponsoring
-    'one_sponsoring_act' => '<strong><a href="/:from_username">:from_user_names</a></strong> vient de vous sponsoriser.',
-    'two_sponsoring_acts' => '<strong><a href="/:from_username">:from_user_names</a></strong> et une autre personne viennent de vous sponsoriser.',
-    'many_sponsoring_acts' => '<strong><a href="/:from_username">:from_user_names</a></strong> and :requests_count autres viennent de vous sponsoriser.',
-    // Consulting
-    'one_consulting_act' => '<strong><a href="/:from_username">:from_user_names</a></strong> vient de consulter votre <strong><a href="/:to_username/works/:work_id">:work_type</a></strong>.',
-    'two_consulting_acts' => '<strong><a href="/:from_username">:from_user_names</a></strong> et une autre personne viennent de consulter votre <strong><a href="/:to_username/works/:work_id">:work_type</a></strong>.',
-    'many_consulting_acts' => '<strong><a href="/:from_username">:from_user_names</a></strong> and :requests_count autres viennent de consulter votre <strong><a href="/:to_username/works/:work_id">:work_type</a></strong>.',
-    // Subscriptions
-    'one_subscription' => '<strong><a href="/:from_username">:from_user_names</a></strong> a souscrit à votre <strong><a href="/:to_username/works/:work_id">:work_type</a></strong>.',
-    'two_subscriptions' => '<strong><a href="/:from_username">:from_user_names</a></strong> et une autre persone ont souscrit à votre <strong><a href="/:to_username/works/:work_id">:work_type</a></strong>.',
-    'many_subscriptions' => '<strong><a href="/:from_username">:from_user_names</a></strong> et :requests_count autres ont souscrit à votre <strong><a href="/:to_username/works/:work_id">:work_type</a></strong>.',
-    // Payment
-    'payment_done' => 'Vous avez effectué un paiement avec le code <strong>:code</strong>. Veuillez cliquer ici pour voir les détails du paiement.',
-    // Miscellaneous
-    'welcome' => 'Bienvenue <strong><a href="/users/:to_user_id">:to_user_names</a></strong>. Cliquez ici pour lire nos conditions d\'utilisation.',
-    'welcome_back' => 'Bon retour <strong><a href="/users/:to_user_id">:to_user_names</a></strong>. Cliquez ici pour voir les nouveautés de la plateforme.',
+    // Product stock emptied
+    'one_product_stock_emptied' => 'Le stock est presque terminé pour votre produit « <strong>:product_name</strong> ».',
+    'two_products_stock_emptied' => 'Le stock est presque terminé pour votre produit « <strong>:product_name</strong> » et un autre.',
+    'many_products_stock_emptied' => 'Le stock est presque terminé pour :count de vos produits.',
+    // Product shared
+    'one_product_shared' => 'Votre :product_type « <strong>:product_name</strong> » est maintenant visible par tous.',
+    'two_products_shared' => 'Votre :product_type « <strong>:product_name</strong> » et un autre sont maintenant visibles par tous.',
+    'many_products_shared' => 'Votre :product_type « <strong>:product_name</strong> » et :count autres sont maintenant visibles par tous.',
+    // Product blocked
+    'one_product_blocked' => 'Votre :product_type « <strong>:product_name</strong> » a été bloqué par l’administrateur.',
+    'two_products_blocked' => 'Votre :product_type « <strong>:product_name</strong> » et un autre ont été bloqués par l’administrateur.',
+    'many_products_blocked' => 'Votre :product_type « <strong>:product_name</strong> » et :count autres ont été bloqués par l’administrateur.',
+    // Project shared
+    'one_project_shared' => 'Votre project » est maintenant visible par tous.',
+    'two_projects_shared' => 'Votre project » et un autre sont maintenant visibles par tous.',
+    'many_projects_shared' => 'Votre project » et :count autres sont maintenant visibles par tous.',
+    // Project blocked
+    'one_project_blocked' => 'Votre project a été bloqué par l’administrateur.',
+    'two_projects_blocked' => 'Votre project et un autre ont été bloqués par l’administrateur.',
+    'many_projects_blocked' => 'Votre project et :count autres ont été bloqués par l’administrateur.',
+    // Customer feedback
+    'one_customer_feedback_one_product' => '<strong>:user_name</strong> a réagi à votre :product_type « <strong>:product_name</strong> ».',
+    'two_customers_feedback_one_product' => '<strong>:user_name</strong> et un autre membre ont réagi à votre :product_type « <strong>:product_name</strong> ».',
+    'many_customers_feedback_one_product' => '<strong>:user_name</strong> et :count autres membres ont réagi à votre :product_type « <strong>:product_name</strong> ».',
+    'one_customer_feedback_many_products' => '<strong>:user_name</strong> a réagi à vos produits.',
+    'two_customers_feedback_many_products' => '<strong>:user_name</strong> et un autre membre ont réagi à vos produits.',
+    'many_customers_feedback_many_products' => '<strong>:user_name</strong> et :count autres membres ont réagi à vos produits.',
+    // News sent
+    'one_news_sent' => 'START a publié une nouvelle actualité.',
+    'many_news_sent' => 'START a publié :count nouvelles actualités.',
+    // Complaint sent
+    'one_complaint_sent' => 'Vous avez reçu une nouvelle plainte.',
+    'many_complaints_sent' => 'Vous avez reçu :count nouvelles plaintes.',
+    // Post answered
+    'one_post_answered_one_parent' => '<strong>:user_name</strong> a commenté votre <strong>:post_type</strong>.',
+    'two_posts_answered_one_parent' => '<strong>:user_name</strong> et un autre membre ont commenté votre <strong>:post_type</strong>.',
+    'many_posts_answered_one_parent' => '<strong>:user_name</strong> et :count autres membres ont commenté votre <strong>:post_type</strong>.',
+    'one_post_answered_many_parents' => '<strong>:user_name</strong> a commenté vos posts.',
+    'two_posts_answered_many_parents' => '<strong>:user_name</strong> et un autre membre ont commenté vos posts.',
+    'many_posts_answered_many_parents' => '<strong>:user_name</strong> et :count autres membres ont commenté vos posts.',
 ];

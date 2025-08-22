@@ -78,6 +78,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/category/{entity}', [AdminController::class, 'addCategoryEntity']);
     Route::get('/dashboard/category/{entity}/{id}', [AdminController::class, 'categoryEntityDatas'])->whereNumber('id')->name('dashboard.category.entity.datas');
     Route::post('/dashboard/category/{entity}/{id}', [AdminController::class, 'updateCategoryEntity'])->whereNumber('id');
+    // News
+    Route::get('/dashboard/news', [AdminController::class, 'news'])->name('dashboard.news.home');
+    Route::post('/dashboard/news', [AdminController::class, 'addNews']);
+    Route::get('/dashboard/news/{id}', [AdminController::class, 'newsDatas'])->whereNumber('id')->name('dashboard.news.datas');
+    Route::post('/dashboard/news/{id}', [AdminController::class, 'updateNews'])->whereNumber('id');
     // Complaints
     Route::get('/dashboard/complaints', [AdminController::class, 'complaints'])->name('dashboard.complaints.home');
     Route::post('/dashboard/complaints', [AdminController::class, 'answerComplaints']);

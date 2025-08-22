@@ -776,6 +776,18 @@ return [
                 'company_email' => 'E-mail de l’entreprise',
                 'company_phone' => 'N° de tél. de l’entreprise',
                 'website_url' => 'URL du site web',
+                'sheet_url' => 'URL du Fichier Google sheet',
+                'land_status' => [
+                    'title' => 'Statut foncier',
+                    'tenant' => [
+                        'title' => 'Locataire',
+                        'monthly_rental' => 'Indiquez le montant de l’allocation mensuelle (en USD)',
+                    ],
+                    'owner' => [
+                        'title' => 'Propriétaire',
+                        'property_deed' => 'Télécharger votre acte de propriété',
+                    ],
+                ],
                 'field_experience' => [
                     'title' => 'Expérience dans le domaine agricole',
                     'junior' => 'Junior (0 à 2 ans)',
@@ -783,86 +795,120 @@ return [
                     'experienced' => 'Expérimenté (6 à 10 ans)',
                     'expert' => 'Expert (plus de 10 ans)',
                 ],
-                'activity_orientation' => [
-                    'title' => 'Orientation de l’activité agricole',
-                    'seed_producer_distributor' => [
-                        'title' => 'Producteur et/ou distributeur de semences',
-                        'info' => 'Indiquez la marque du produit et la catégorie juridique (Ex. : OGM, Bio, hybrides, etc.)',
+                'activity_description' => [
+                    'title' => 'Description de l’activité',
+                    'sector' => 'Dans quel secteur d’activité travaillez-vous ?',
+                    'agriculture' => [
+                        'is_land_owner' => 'Êtes-vous détenteur d’une plantation ?',
+                        'land_area' => 'Taille de votre plantation en hectares',
+                        'land_yield_per_hectare' => 'Rendement par tonne à l’hectare',
+                        'culture_type' => [
+                            'title' => 'Type de culture',
+                            'transformation' => [
+                                'title' => 'Transformation',
+                                'processed_products' => 'Produits transformés',
+                                'processing_unit_capacity' => 'Capacité de l’unité de transformation',
+                            ],
+                            'selling' => 'Commercialisation',
+                            'inputs_supply' => 'Fournitures d’intrants',
+                            'equipment_supply' => 'Fournitures d’équipements',
+                            'supply_content' => 'Indiquez la marque du produit et la catégorie juridique (Ex.: OGM, Bio, Hybrides, …)',
+                        ],
                     ],
-                    'farmer' => [
-                        'title' => 'Agriculteur',
-                        'info' => 'Précisez le type de culture (Ex. : Tomates, Arachides, Maïs, etc.)',
-                    ],
-                    'processing_transformation_unit' => [
-                        'title' => 'Unité de traitement et de transformation agricole',
-                        'data_1' => 'Produits transformés',
-                        'info_1' => 'Type de culture traitées (Ex. : Tomates, Arachides, Maïs, etc.)',
-                        'data_2' => [
-                            'title' => 'Capacité de l’unité',
-                            'quantity' => 'Quantité (en tonnes)',
-                            'period' => [
-                                'title' => 'Période',
-                                'daily' => 'Journalière',
-                                'weekly' => 'Hebdomadaire',
-                                'monthly' => 'Mensuelle',
-                                'quarterly' => 'Trimestrielle',
-                                'biannual' => 'Semestrielle',
-                                'annual' => 'Annuelle',
+                    'breeding' => [
+                        'is_land_owner' => 'Êtes-vous détenteur d’une ferme ?',
+                        'land_area' => 'Taille de votre enclos en hectares',
+                        'breeding_type' => [
+                            'title' => 'Type d’élevage',
+                            'fish' => [
+                                'title' => 'Piscicole (Poissons)',
+                                'fish_species' => 'Espèce de poissons',
+                                'pond_capacity' => 'Capacité de vos étangs',
+                                'cage_capacity' => 'Capacité de vos cages',
+                                'bin_capacity' => 'Capacité de vos bacs',
+                            ],
+                            'poultry' => [
+                                'title' => 'Avicole (Volailles)',
+                                'animals_total_number' => 'Effectif du cheptel',
+                            ],
+                            'pig' => [
+                                'title' => 'Porcin (Porcs)',
+                                'animals_total_number' => 'Effectif du cheptel',
+                            ],
+                            'rabbit' => [
+                                'title' => 'Cunicole (Lapins)',
+                                'animals_total_number' => 'Effectif du cheptel',
+                            ],
+                            'cattle' => [
+                                'title' => 'Bovin',
+                                'animals_total_number' => 'Effectif du cheptel',
+                                'kind' => [
+                                    'meat' => 'Viande',
+                                    'milk' => 'Lait',
+                                ],
+                            ],
+                            'sheep' => [
+                                'title' => 'Ovin (Moutons, Chèvres)',
+                                'animals_total_number' => 'Effectif du cheptel',
                             ],
                         ],
-                        'info_2' => 'Quantité transformée par tonnes (journalière ? mensuelle ?)',
                     ],
-                    'marketing_agency' => 'Agence de marketing',
-                    'food_distribution' => 'Etablissement de distribution alimentaire',
                 ],
                 'market_segments_or_target' => [
-                    'title' => 'Segments de marchés ou cible',
-                    'farmers' => 'Agriculteurs',
-                    'ngo_research' => 'ONG internationales et organismes de recherche',
-                    'agro_dealers' => 'Agro-dealers et autres opérateurs du secteurs privés',
-                    'consumers' => 'Consommateurs',
-                    'others' => 'Autres (Préciser)',
-                ],
-                'physical_and_land_organization' => [
-                    'title' => 'Organisation physique et foncière',
-                    'info' => 'Etes-vous détenteur d’une plantation ?',
-                    'yes' => [
-                        'title' => 'Oui',
-                        'info' => 'Précisez la taille de votre plantation en hectares et le rendement par tonne à l’hectare',
-                        'size' => 'Taille (en hectares)',
-                        'yield' => 'Rendement par tonne à l’hectare',
+                    'title' => 'Quels sont les segments du marchés ou les cibles de votre projet ?',
+                    'quantitative' => [
+                        'title' => 'Quantitatif',
+                        'wholesale' => 'Vente de gros',
+                        'retail_sale' => 'Vente de détails',
                     ],
-                    'no' => 'Non',
-                ],
-                'land_status' => [
-                    'title' => 'Statut foncier',
-                    'tenant' => [
-                        'title' => 'Locataire',
-                        'info' => 'Indiquez le montant de l’allocation mensuelle (en USD)',
-                    ],
-                    'owner' => [
-                        'title' => 'Propriétaire',
-                        'info' => 'Télécharger votre acte de propriété',
-                        'property_deed' => 'Acte de propriété',
+                    'qualitative' => [
+                        'title' => 'Qualitatif',
+                        'farmers' => 'Agriculteurs',
+                        'ngos_and_research_organizations' => 'ONG internationales et organismes de recherche',
+                        'agro_dealers_and_other_private_operators' => 'Agro-dealers et autres opérateurs du secteurs privés',
+                        'consumers' => 'Consommateurs',
+                        'others' => 'Autres (Préciser)',
                     ],
                 ],
-                'accounting_synthesis' => [
-                    'effective' => [
-                        'title' => 'Effectif',
-                        'info' => 'Indiquez le nombre de personnes employées',
+                'accounting_summary' => [
+                    'title' => 'Synthèse comptable',
+                    'employees_count' => 'Nombre de personnes employées actuellement',
+                    'funding_sources' => [
+                        'title' => 'Sources de financement',
+                        'is_funded_by_self' => [
+                            'title' => 'Fonds propres',
+                            'amount' => 'Montant de votre capital ou fonds de commerce',
+                        ],
+                        'is_funded_by_credit' => [
+                            'title' => 'Emprunts, crédits',
+                            'amount' => 'Montant du prêt',
+                            'interest_rate' => 'Taux d’intérêt',
+                            'repayment_deadline' => 'Echéance de remboursement',
+                        ],
+                        'is_funded_by_grant' => [
+                            'title' => 'Subventions',
+                            'amount' => 'Montant de la subvention',
+                        ],
+                        'other_funding_sources' => 'Autres (Préciser)',
                     ],
-                    'annual_turnover' => [
-                        'title' => 'Chiffre d’affaires annuel',
-                        'info' => 'Indiquez la valeur en USD ou en CDF',
+                    'annual_turnover' => 'Chiffre d’affaires annuel',
+                    'last_year_net' => [
+                        'title' => 'Résultat de pour le dernier exercice comptable écoulé',
+                        'profit' => 'Bénéfice net réalisé',
+                        'loss' => 'Perte net réalisé',
                     ],
-                    'projected_turnover' => [
-                        'title' => 'Chiffre d’affaires projeté',
-                        'info' => 'Indiquez la valeur en USD ou en CDF des recettes attendues grâce au financement obtenu',
-                    ],
+                    'forecast_turnover' => 'Chiffre d’affaires prévisionnel',
                 ],
                 'strategic_synthesis' => [
                     'title' => 'Synthèse stratégique',
-                    'info' => 'Décrire en quelques lignes votre modèle économique ou ce que vous proposez à votre clientèle, votre cible, vos sources de revenus, les coûts de productions, vos ressources et partenariats et la structure de vos charges',
+                    'business_model' => [
+                        'title' => 'Modèle économique',
+                        'info' => 'Indiquez en quelques lignes ce que vous proposez à votre clientèle, votre cible, vos sources de revenus',
+                    ],
+                    'swot_analysis' => [
+                        'title' => 'Analyse SWOT',
+                        'info' => 'Indiquez en quelques lignes quelles sont vos atouts en termes de ressources ou de partenariats, les difficultés ou les risques que vous rencontrez dans votre activité et enfin les solutions pour les résoudre ou les opportunités liées à votre activité',
+                    ],
                 ],
             ],
         ],

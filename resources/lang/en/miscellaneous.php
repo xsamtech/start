@@ -766,103 +766,149 @@ return [
             'search' => 'Search a project',
             'list' => 'Projects list',
             'data' => [
-                'profile' => 'Profil',
-                'description' => 'Activity description',
-                'company_name' => 'Company name',
+                'profile' => 'Profile',
+                'description' => 'Activity Description',
+                'company_name' => 'Company Name',
                 'rccm' => 'RCCM',
                 'id_nat' => 'NAT ID',
-                'tax_number' => 'Taxe number',
-                'company_address' => 'Head office address',
-                'company_email' => 'Company email',
-                'company_phone' => 'Company phone number',
+                'tax_number' => 'Tax Number',
+                'company_address' => 'Company Headquarters Address',
+                'company_email' => 'Company Email',
+                'company_phone' => 'Company Phone Number',
                 'website_url' => 'Website URL',
-                'field_experience' => [
-                    'title' => 'Experience in the agricultural field',
-                    'junior' => 'Junior (0 to 2 years)',
-                    'intermediate' => 'Intermediate (3 to 5 years)',
-                    'experienced' => 'Experienced (6 to 10 years)',
-                    'expert' => 'Expert (more than 10 years)',
-                ],
-                'activity_orientation' => [
-                    'title' => 'Orientation of agricultural activity',
-                    'seed_producer_distributor' => [
-                        'title' => 'Seed producer and/or distributor',
-                        'info' => 'Indicate the product brand and legal category (e.g. GMO, organic, hybrid, etc.)',
-                    ],
-                    'farmer' => [
-                        'title' => 'Farmer',
-                        'info' => 'Specify the type of crop (Ex: Tomatoes, Peanuts, Corn, etc.)',
-                    ],
-                    'processing_transformation_unit' => [
-                        'title' => 'Agricultural processing and transformation unit',
-                        'data_1' => 'Processed products',
-                        'info_1' => 'Type of crop treated (Ex: Tomatoes, Peanuts, Corn, etc.)',
-                        'data_2' => [
-                            'title' => 'Unit capacity',
-                            'quantity' => 'Quantity (in tons)',
-                            'period' => [
-                                'title' => 'Period',
-                                'daily' => 'Daily',
-                                'weekly' => 'Weekly',
-                                'monthly' => 'Monthly',
-                                'quarterly' => 'Quarterly',
-                                'biannual' => 'Biannual',
-                                'annual' => 'Annual',
-                            ],
-                        ],
-                        'info_2' => 'Quantity processed in tonnes (daily? monthly?)',
-                    ],
-                    'marketing_agency' => 'Marketing agency',
-                    'food_distribution' => 'Food distribution establishment',
-                ],
-                'market_segments_or_target' => [
-                    'title' => 'Market segments or target',
-                    'farmers' => 'Farmers',
-                    'ngo_research' => 'International NGOs and research organizations',
-                    'agro_dealers' => 'Agro-dealers and other private sector operators',
-                    'consumers' => 'Consumers',
-                    'others' => 'Others (Specify)',
-                ],
-                'physical_and_land_organization' => [
-                    'title' => 'Physical and land organization',
-                    'info' => 'Do you own a plantation?',
-                    'yes' => [
-                        'title' => 'Yes',
-                        'info' => 'Specify the size of your plantation in hectares and the yield per tonne per hectare',
-                        'size' => 'Size (in hectares)',
-                        'yield' => 'Yield per tonne per hectare',
-                    ],
-                    'no' => 'No',
-                ],
+                'sheet_url' => 'Google sheet file URL',
                 'land_status' => [
-                    'title' => 'Land status',
+                    'title' => 'Land Status',
                     'tenant' => [
                         'title' => 'Tenant',
-                        'info' => 'Indicate the amount of the monthly allowance (in USD)',
+                        'monthly_rental' => 'Enter the monthly rental amount (in USD)',
                     ],
                     'owner' => [
                         'title' => 'Owner',
-                        'info' => 'Download your property deed',
-                        'property_deed' => 'Property deed',
+                        'property_deed' => 'Upload your property deed',
                     ],
                 ],
-                'accounting_synthesis' => [
-                    'effective' => [
-                        'title' => 'Effective',
-                        'info' => 'Indicate the number of people employed',
+                'field_experience' => [
+                    'title' => 'Field Experience',
+                    'junior' => 'Junior (0 to 2 years)',
+                    'intermediate' => 'Intermediate (3 to 5 years)',
+                    'experienced' => 'Experienced (6 to 10 years)',
+                    'expert' => 'Expert (over 10 years)',
+                ],
+                'activity_description' => [
+                    'title' => 'Activity Description',
+                    'sector' => 'In which sector do you work?',
+                    'agriculture' => [
+                        'is_land_owner' => 'Do you own a plantation?',
+                        'land_area' => 'Size of your plantation in hectares',
+                        'land_yield_per_hectare' => 'Yield per ton per hectare',
+                        'culture_type' => [
+                            'title' => 'Crop Type',
+                            'transformation' => [
+                                'title' => 'Transformation',
+                                'processed_products' => 'Processed Products',
+                                'processing_unit_capacity' => 'Processing Unit Capacity',
+                            ],
+                            'selling' => 'Marketing',
+                            'inputs_supply' => 'Input Supply',
+                            'equipment_supply' => 'Equipment Supply',
+                            'supply_content' => 'Indicate the brand of the product and the legal category (e.g., GMO, Organic, Hybrids, etc.)',
+                        ],
                     ],
-                    'annual_turnover' => [
-                        'title' => 'Annual turnover',
-                        'info' => 'Indicate the value in USD or CDF',
+                    'breeding' => [
+                        'is_land_owner' => 'Do you own a farm?',
+                        'land_area' => 'Size of your enclosure in hectares',
+                        'breeding_type' => [
+                            'title' => 'Breeding Type',
+                            'fish' => [
+                                'title' => 'Pisciculture (Fish)',
+                                'fish_species' => 'Fish Species',
+                                'pond_capacity' => 'Pond Capacity',
+                                'cage_capacity' => 'Cage Capacity',
+                                'bin_capacity' => 'Bin Capacity',
+                            ],
+                            'poultry' => [
+                                'title' => 'Poultry (Birds)',
+                                'animals_total_number' => 'Total Number of Livestock',
+                            ],
+                            'pig' => [
+                                'title' => 'Pigs (Pork)',
+                                'animals_total_number' => 'Total Number of Livestock',
+                            ],
+                            'rabbit' => [
+                                'title' => 'Rabbit Farming',
+                                'animals_total_number' => 'Total Number of Livestock',
+                            ],
+                            'cattle' => [
+                                'title' => 'Cattle',
+                                'animals_total_number' => 'Total Number of Livestock',
+                                'kind' => [
+                                    'meat' => 'Meat',
+                                    'milk' => 'Milk',
+                                ],
+                            ],
+                            'sheep' => [
+                                'title' => 'Sheep (Sheep, Goats)',
+                                'animals_total_number' => 'Total Number of Livestock',
+                            ],
+                        ],
                     ],
-                    'projected_turnover' => [
-                        'title' => 'Projected turnover',
-                        'info' => 'Indicate the value in USD or CDF of the revenue expected from the financing obtained',
+                ],
+                'market_segments_or_target' => [
+                    'title' => 'What are the market segments or targets of your project?',
+                    'quantitative' => [
+                        'title' => 'Quantitative',
+                        'wholesale' => 'Wholesale',
+                        'retail_sale' => 'Retail Sale',
                     ],
+                    'qualitative' => [
+                        'title' => 'Qualitative',
+                        'farmers' => 'Farmers',
+                        'ngos_and_research_organizations' => 'International NGOs and Research Organizations',
+                        'agro_dealers_and_other_private_operators' => 'Agro-dealers and other private sector operators',
+                        'consumers' => 'Consumers',
+                        'others' => 'Others (Specify)',
+                    ],
+                ],
+                'accounting_summary' => [
+                    'title' => 'Accounting Summary',
+                    'employees_count' => 'Number of employees currently',
+                    'funding_sources' => [
+                        'title' => 'Funding Sources',
+                        'is_funded_by_self' => [
+                            'title' => 'Own Funds',
+                            'amount' => 'Amount of your capital or business funds',
+                        ],
+                        'is_funded_by_credit' => [
+                            'title' => 'Loans, Credit',
+                            'amount' => 'Loan Amount',
+                            'interest_rate' => 'Interest Rate',
+                            'repayment_deadline' => 'Repayment Deadline',
+                        ],
+                        'is_funded_by_grant' => [
+                            'title' => 'Grants',
+                            'amount' => 'Grant Amount',
+                        ],
+                        'other_funding_sources' => 'Other (Specify)',
+                    ],
+                    'annual_turnover' => 'Annual Turnover',
+                    'last_year_net' => [
+                        'title' => 'Result for the last fiscal year',
+                        'profit' => 'Net Profit',
+                        'loss' => 'Net Loss',
+                    ],
+                    'forecast_turnover' => 'Forecasted Turnover',
                 ],
                 'strategic_synthesis' => [
-                    'title' => 'Strategic synthesis',
-                    'info' => 'Describe in a few lines your business model or what you offer to your customers, your target, your sources of income, production costs, your resources and partnerships and the structure of your costs',
+                    'title' => 'Strategic Synthesis',
+                    'business_model' => [
+                        'title' => 'Business Model',
+                        'info' => 'Briefly describe what you offer to your customers, your target audience, and your revenue sources',
+                    ],
+                    'swot_analysis' => [
+                        'title' => 'SWOT Analysis',
+                        'info' => 'Briefly describe your strengths in terms of resources or partnerships, the challenges or risks you face in your business, and the solutions to resolve them or opportunities related to your business',
+                    ],
                 ],
             ],
         ],
@@ -1158,7 +1204,7 @@ return [
                             [
                                 'subtitle' => '',
                                 'content' => 'It is prohibited to:',
-                                'dashes' => 
+                                'dashes' =>
                                 [
                                     0 => 'Posting misleading, out-of-context, or offensive content;',
                                     1 => 'Selling illegal products (weapons, drugs, counterfeits, etc.);',
@@ -1181,7 +1227,7 @@ return [
                             [
                                 'subtitle' => '',
                                 'content' => 'Each user is fully responsible for the product information and content that they publish on the platform. They undertake:',
-                                'dashes' => 
+                                'dashes' =>
                                 [
                                     0 => 'Provide accurate, verifiable and legally compliant data;',
                                     1 => 'Do not publish fraudulent, misleading or illicit content;',
@@ -1213,7 +1259,7 @@ return [
                             [
                                 'subtitle' => '',
                                 'content' => 'In the event of a dispute between customers regarding a transaction made via the platform, we reserve the right to temporarily freeze the funds resulting from said transaction. This suspension will remain in effect until:',
-                                'dashes' => 
+                                'dashes' =>
                                 [
                                     0 => 'An amicable agreement is reached between the parties;',
                                     1 => 'That a decision be made by a competent authority;',
@@ -1358,7 +1404,7 @@ return [
                             [
                                 'subtitle' => '',
                                 'content' => 'When using our platform, we collect the following data:',
-                                'dashes' => 
+                                'dashes' =>
                                 [
                                     0 => 'Identification or contact data/Registration information (including name, email address, postal address, and, where applicable, telephone number);',
                                     1 => 'Transaction data: connection between actors, product and service catalog, transaction management (payment information managed by a secure provider), logistics monitoring, investment space);',
@@ -1380,7 +1426,7 @@ return [
                             [
                                 'subtitle' => '',
                                 'content' => 'The data is used for:',
-                                'dashes' => 
+                                'dashes' =>
                                 [
                                     0 => 'Create and manage your account: Your account has many settings that you can use to manage your account;',
                                     1 => 'Facilitate transactions between buyers and sellers, investors and other stakeholders;',
@@ -1399,20 +1445,20 @@ return [
                             [
                                 'subtitle' => '',
                                 'content' => 'Based on mutual trust with our customers, we maintain the confidentiality of all personal data collected at all times. However, we may share your personal data with actors in the agricultural value chain in the DRC and internationally under the following conditions:',
-                                'dashes' => 
+                                'dashes' =>
                                 [
-                                    0 => 
+                                    0 =>
                                     [
                                         'title' => 'Consent Agreement:',
-                                        'subdashes' => 
+                                        'subdashes' =>
                                         [
                                             0 => 'If you authorize us to share your personal data;',
                                         ],
                                     ],
-                                    1 => 
+                                    1 =>
                                     [
                                         'title' => 'Achieving the platform’s objectives with the consent agreement:',
-                                        'subdashes' => 
+                                        'subdashes' =>
                                         [
                                             0 => 'To improve commercial exchanges between producers, processors, suppliers, investors and buyers, thanks to automated and intelligent networking;',
                                             1 => 'To increase access to agricultural resources by providing a centralized platform where users can find seeds, equipment, as well as financing opportunities;',
@@ -1421,10 +1467,10 @@ return [
                                             4 => 'To adapt the platform to local realities, offering a digital solution that works effectively in rural areas with poor connectivity, while remaining scalable and adaptable to future changes.',
                                         ],
                                     ],
-                                    2 => 
+                                    2 =>
                                     [
                                         'title' => 'For legal reasons:',
-                                        'subdashes' => 
+                                        'subdashes' =>
                                         [
                                             0 => 'Comply with applicable laws and regulations;',
                                             1 => 'Enforce applicable Terms of Use, including investigating potential violations thereof;',
@@ -1483,7 +1529,7 @@ return [
                             [
                                 'subtitle' => '',
                                 'content' => 'You can, at any time:',
-                                'dashes' => 
+                                'dashes' =>
                                 [
                                     0 => '<strong>Accessing your personal data</strong>: You have the right to request a copy of the personal data that START-AFRICA holds about you.',
                                     1 => '<strong>Request rectification or deletion</strong>: You have the right to request rectification of your personal information if it is inaccurate. If the information we hold about you needs to be updated or if you believe it is inaccurate, you can contact us. You also have the right to request deletion of your personal data that we hold. However, the termination of the contract with us must precede this deletion.',
