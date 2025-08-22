@@ -11,6 +11,7 @@ use App\Http\Resources\User as ResourcesUser;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Crowdfunding;
+use App\Models\CustomerFeedback;
 use App\Models\CustomerOrder;
 use App\Models\File;
 use App\Models\MarketSegment;
@@ -79,6 +80,21 @@ class PublicController extends Controller
         $user->update(['currency' => $currency]);
 
         return redirect()->back();
+    }
+
+    /**
+     * GET: Get notification badge
+     *
+     * @param  int  $user_id
+     * @param  string  $language
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getNotificationBadge()
+    {
+        $unread_notifications = Notification::where('to_user_id', Auth::user()->id)->where('is_read', 0)->orderByDesc('created_at')->get();
+
+        // Retourner la partie HTML du badge avec les notifications non lues
+        return view('partials.notifications-badge', compact('unread_notifications'));
     }
 
     /**
@@ -366,7 +382,271 @@ class PublicController extends Controller
         if ($entity == 'notifications') {
             $entity_title = __('miscellaneous.menu.notifications');
             // Get user notifications
-            $items = Notification::where('to_user_id', $current_user->id)->orderByDesc('created_at')->paginate(12)->appends($request->query());
+            $unreadNotifications  = Notification::where('to_user_id', $current_user->id)->where('is_read', 0)->orderByDesc('created_at')->paginate(12)->appends($request->query());
+            $readNotifications = Notification::where('to_user_id', $current_user->id)->where('is_read', 1)->orderByDesc('created_at')->paginate(12)->appends($request->query());
+
+            $formattedUnreadNotifications = [];
+            $formattedReadNotifications = [];
+
+            foreach ($unreadNotifications as $notification) {
+                // We retrieve the notification type and the ID of the associated object
+                $type = $notification->type;
+                $product = $notification->product; // Product relationship if it exists
+                $project = $notification->project; // Project relationship if it exists
+                $post = $notification->post; // Post relationship if it exists
+
+                $fromUserName = optional($notification->from_user)->firstname . ' ' . optional($notification->from_user)->lastname; // Name of the user who generated the notification
+
+                // Dynamic text creation based on the type and number of notifications
+                $message = '';
+                $route = '';
+                $count = $unreadNotifications->count(); // The number of unread notifications
+
+                switch ($type) {
+                    case 'stock_emptied':
+                        if ($count === 1) {
+                            $message = __('notifications.one_product_stock_emptied', ['product_name' => $product->product_name]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_products_stock_emptied', ['product_name' => $product->product_name]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+
+                        } else {
+                            $message = __('notifications.many_products_stock_emptied', ['count' => $count]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+                        }
+                    break;
+
+                    case 'product_shared':
+                        if ($count === 1) {
+                            $message = __('notifications.one_product_shared', ['product_type' => $product->type, 'product_name' => $product->product_name]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_products_shared', ['product_type' => $product->type, 'product_name' => $product->product_name]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+
+                        } else {
+                            $message = __('notifications.many_products_shared', ['product_type' => $product->type, 'product_name' => $product->product_name, 'count' => $count]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+                        }
+                        break;
+
+                    case 'product_blocked':
+                        if ($count === 1) {
+                            $message = __('notifications.one_product_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_products_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+
+                        } else {
+                            $message = __('notifications.many_products_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name, 'count' => $count]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+                        }
+                        break;
+
+                    case 'project_shared':
+                        // Project Shared
+                        if ($count === 1) {
+                            $message = __('notifications.one_project_shared');
+                            $route = route('crowdfunding.datas', ['id' => $project->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_projects_shared');
+                            $route = route('account.entity', ['entity' => 'projects']);
+
+                        } else {
+                            $message = __('notifications.many_projects_shared', ['count' => $count]);
+                            $route = route('account.entity', ['entity' => 'projects']);
+                        }
+                        break;
+
+                    case 'project_blocked':
+                        // Project Blocked
+                        if ($count === 1) {
+                            $message = __('notifications.one_project_blocked');
+                            $route = route('crowdfunding.datas', ['id' => $project->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_projects_blocked');
+                            $route = route('account.entity', ['entity' => 'projects']);
+
+                        } else {
+                            $message = __('notifications.many_projects_blocked', ['count' => $count]);
+                            $route = route('account.entity', ['entity' => 'projects']);
+                        }
+                        break;
+
+                    case 'customer_feedback':
+                        // Customer feedbacks
+                        if ($count === 1) {
+                            $message = __('notifications.one_customer_feedback_one_product', ['user_name' => $fromUserName, 'product_name' => $product->product_name, 'product_type' => $product->type]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+
+                        } elseif ($count > 1) {
+                            $message = __('notifications.many_customers_feedback_one_product', ['user_name' => $fromUserName, 'count' => $count]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+                        }
+                        break;
+
+                    case 'post_answered':
+                        // Post answer
+                        if ($count === 1) {
+                            $message = __('notifications.one_post_answered_one_parent', ['user_name' => $fromUserName, 'post_type' => $post->type]);
+                            $route = route('discussion.datas', ['id' => $post->id]);
+
+                        } elseif ($count > 1) {
+                            $message = __('notifications.many_posts_answered_one_parent', ['user_name' => $fromUserName, 'count' => $count]);
+                            $route = route('discussion.datas', ['id' => $post->id]);
+                        }
+                    break;
+
+                    // Add more cases as needed
+                }
+
+                $formattedUnreadNotifications[] = [
+                    'id' => $notification->id,
+                    'message' => $message,
+                    'route' => $route,
+                    'is_read' => $notification->is_read,
+                    'created_at' => explicitDate($notification->created_at),
+                ];
+            }
+
+            foreach ($readNotifications as $notification) {
+                // We retrieve the notification type and the ID of the associated object
+                $type = $notification->type;
+                $product = $notification->product; // Product relationship if it exists
+                $project = $notification->project; // Project relationship if it exists
+                $post = $notification->post; // Post relationship if it exists
+
+                $fromUserName = optional($notification->from_user)->firstname . ' ' . optional($notification->from_user)->lastname; // Name of the user who generated the notification
+
+                // Dynamic text creation based on the type and number of notifications
+                $message = '';
+                $route = '';
+                $count = $readNotifications->count(); // The number of notifications read
+
+                switch ($type) {
+                    case 'stock_emptied':
+                        if ($count === 1) {
+                            $message = __('notifications.one_product_stock_emptied', ['product_name' => $product->product_name]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_products_stock_emptied', ['product_name' => $product->product_name]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+
+                        } else {
+                            $message = __('notifications.many_products_stock_emptied', ['count' => $count]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+                        }
+                    break;
+
+                    case 'product_shared':
+                        if ($count === 1) {
+                            $message = __('notifications.one_product_shared', ['product_type' => $product->type, 'product_name' => $product->product_name]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_products_shared', ['product_type' => $product->type, 'product_name' => $product->product_name]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+
+                        } else {
+                            $message = __('notifications.many_products_shared', ['product_type' => $product->type, 'product_name' => $product->product_name, 'count' => $count]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+                        }
+                        break;
+
+                    case 'product_blocked':
+                        if ($count === 1) {
+                            $message = __('notifications.one_product_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_products_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+
+                        } else {
+                            $message = __('notifications.many_products_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name, 'count' => $count]);
+                            $route = route('account.entity', ['entity' => $product->type . 's']);
+                        }
+                        break;
+
+                    case 'project_shared':
+                        // Project Shared
+                        if ($count === 1) {
+                            $message = __('notifications.one_project_shared');
+                            $route = route('crowdfunding.datas', ['id' => $project->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_projects_shared');
+                            $route = route('account.entity', ['entity' => 'projects']);
+
+                        } else {
+                            $message = __('notifications.many_projects_shared', ['count' => $count]);
+                            $route = route('account.entity', ['entity' => 'projects']);
+                        }
+                        break;
+
+                    case 'project_blocked':
+                        // Project Blocked
+                        if ($count === 1) {
+                            $message = __('notifications.one_project_blocked');
+                            $route = route('crowdfunding.datas', ['id' => $project->id]);
+
+                        } elseif ($count === 2) {
+                            $message = __('notifications.two_projects_blocked');
+                            $route = route('account.entity', ['entity' => 'projects']);
+
+                        } else {
+                            $message = __('notifications.many_projects_blocked', ['count' => $count]);
+                            $route = route('account.entity', ['entity' => 'projects']);
+                        }
+                        break;
+
+                    case 'customer_feedback':
+                        // Customer feedbacks
+                        if ($count === 1) {
+                            $message = __('notifications.one_customer_feedback_one_product', ['user_name' => $fromUserName, 'product_name' => $product->product_name, 'product_type' => $product->type]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+
+                        } elseif ($count > 1) {
+                            $message = __('notifications.many_customers_feedback_one_product', ['user_name' => $fromUserName, 'count' => $count]);
+                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
+                        }
+                        break;
+
+                    case 'post_answered':
+                        // Post answer
+                        if ($count === 1) {
+                            $message = __('notifications.one_post_answered_one_parent', ['user_name' => $fromUserName, 'post_type' => $post->type]);
+                            $route = route('discussion.datas', ['id' => $post->id]);
+
+                        } elseif ($count > 1) {
+                            $message = __('notifications.many_posts_answered_one_parent', ['user_name' => $fromUserName, 'count' => $count]);
+                            $route = route('discussion.datas', ['id' => $post->id]);
+                        }
+                    break;
+
+                    // Add more cases as needed
+                }
+
+                $formattedReadNotifications[] = [
+                    'id' => $notification->id,
+                    'message' => $message,
+                    'route' => $route,
+                    'is_read' => $notification->is_read,
+                    'created_at' => explicitDate($notification->created_at),
+                ];
+            }
+
+            // Combiner les notifications non lues et lues
+            $formattedNotifications = array_merge($formattedUnreadNotifications, $formattedReadNotifications);
+            $items = $formattedNotifications;
         }
 
         if ($entity == 'customers') {
@@ -1133,16 +1413,6 @@ class PublicController extends Controller
     public function addProductEntity(Request $request, $entity)
     {
         if ($entity == 'product' OR $entity == 'service') {
-            // $request->validate([
-            //     'product_name' => ['required', 'string', 'max:255'],
-            //     'price' => ['required', 'float'],
-            //     'quantity' => ['required', 'integer', 'min:1'],
-            // ], [
-            //     'product_name.required' => __('validation.required'),
-            //     'price' => __('validation.required'),
-            //     'quantity' => __('validation.required'),
-            // ]);
-
             $product = Product::create([
                 'product_name' => $request->product_name,
                 'product_description' => $request->product_description,
@@ -1243,6 +1513,25 @@ class PublicController extends Controller
             }
 
             return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+        }
+
+        if ($entity == 'feedback') {
+            $customer_feedback = CustomerFeedback::create([
+                'for_product_id' => $request->for_product_id,
+                'rating' => $request->rating,
+                'comment' => $request->comment,
+                'user_id' => Auth::id(),
+            ]);
+
+            $current_product = Product::find($customer_feedback->for_product_id);
+
+            Notification::create([
+                'type' => 'customer_feedback',
+                'is_read' => 0,
+                'from_user_id' => Auth::id(),
+                'to_user_id' => $current_product->user_id,
+                'product_id' => $current_product->id
+            ]);
         }
     }
 
@@ -1398,7 +1687,7 @@ class PublicController extends Controller
             'document' => ['pdf', 'doc', 'docx', 'txt']
         ];
 
-        // Generic method of uploading files
+        // Upload owner title deed
         if ($request->hasFile('owner_title_deed_url')) {
             $file = $request->file('owner_title_deed_url');
             $fileExtension = $file->getClientOriginalExtension();
@@ -1418,22 +1707,17 @@ class PublicController extends Controller
             ]);
         }
 
-        if ($request->filled('is_land_owner_agriculture')) {
+        if ($request->filled('is_land_owner_agriculture') || $request->filled('is_land_owner_breeding')) {
             ProjectActivity::create([
                 'is_land_owner_agriculture' => $request->is_land_owner_agriculture,
-                'land_area' => $request->land_area_agriculture,
+                'land_area_agriculture' => $request->land_area_agriculture,
                 'land_yield_per_hectare' => $request->land_yield_per_hectare,
                 'agriculture_type' => $request->agriculture_type,
                 'agriculture_type_content' => $request->agriculture_type_content,
                 'agriculture_type_content_period' => $request->agriculture_type_content_period,
                 'agriculture_type_content_quantity' => $request->agriculture_type_content_quantity,
-                'project_id' => $project->id,
-            ]);
-        }
-
-        if ($request->filled('is_land_owner_breeding')) {
-            ProjectActivity::create([
                 'is_land_owner_breeding' => $request->is_land_owner_breeding,
+                'land_area_breeding' => $request->land_area_breeding,
                 'breeding_type' => $request->breeding_type,
                 'breeding_type_content' => $request->breeding_type_content,
                 'breeding_type_fish_pond_capacity' => $request->breeding_type_fish_pond_capacity,

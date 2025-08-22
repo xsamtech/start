@@ -93,11 +93,13 @@
             #personalInfo tr { border-bottom: 1px #ccc solid; }
             #personalInfo td { text-align: left; padding: 1rem 0.5rem; border: 0!important; }
             .d-none { display: none; }
+            .bg-light { background-color: #f5f5f5; }
             #paymentMethod, #phoneNumberForMoney { margin-bottom: 10px; }
             .article .article-meta-date { background: #732f0b; }
             .article-author-image img { width: 145px; height: 145px; }
             .comment img { width: 70px; height: 70px; }
             #flexItemsCenter p:first-child { font-size: 2rem; line-height: 25px; }
+            #notificationItem { padding: 7px 10px; }
             @media screen and (min-width: 500px) {
                 .d-xs-none { display: inline-block; }
                 .d-lg-none { display: none; }
@@ -105,6 +107,7 @@
                 #paymentMethod { text-align: center; }
                 #flexItemsCenter { display: flex; align-items: center; }
                 #flexItemsCenter p:first-child { font-size: 3rem; line-height: 34px; }
+                #notificationItem { display: flex; justify-content: space-between; align-items: center;}
             }
             @media screen and (max-width: 500px) {
                 .d-xs-none { display: none; }
@@ -582,18 +585,7 @@
                                         <li>
                                             <a href="{{ route('account.home') }}" title="@lang('miscellaneous.menu.account.title')"><i class="bi bi-person" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.title')</span></a>
                                         </li>
-                                        <li id="userNotifications">
-                                            <a href="{{ route('account.entity', ['entity' => 'notifications']) }}" title="@lang('miscellaneous.menu.notifications')">
-    @if (count($unread_notifications) > 0)
-                                                <i class="bi bi-bell-fill" style="color: #6e9e1a; margin-right: 0.5rem!important;"></i>
-                                                <span class="badge badge-notify">14</span>
-                                                <span class="hide-for-xs">@lang('miscellaneous.menu.notifications')</span>
-    @else
-                                                <i class="bi bi-bell" style="margin-right: 0.5rem!important;"></i>
-                                                <span class="hide-for-xs">@lang('miscellaneous.menu.notifications')</span>
-    @endif
-                                            </a>
-                                        </li>
+    @include('partials.notifications-badge')
                                         <li>
                                             <form action="{{ route('logout') }}" method="post">
                                                 <button class="btn btn-link" style="color: #777;"><i class="bi bi-power" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.logout')</span></button>
@@ -1011,6 +1003,23 @@
         <script type="text/javascript" src="https://cdn.tiny.cloud/1/1jb70lfiyigr5qfhgclx0pv2t9fnl4uco3cs1xk50eqdz73i/tinymce/5/tinymce.min.js"></script>
         <script type="text/javascript" src="{{ asset('assets/js/scripts.custom.js') }}"></script>
 
+@if (Auth::check())
+        <script type="text/javascript">
+            /**
+             * Notifications
+             */
+            // Fonction pour mettre à jour la zone des notifications
+            const updateNotifications = () => {
+                $('#userNotifications').load('{{ route('notifications.badge') }}');
+            };
+
+            // Actualiser les notifications toutes les 1 secondes
+            const notificationIntervalId = setInterval(updateNotifications, 1000);
+
+            // Pour arrêter l'intervalle lorsque c'est nécessaire
+            clearInterval(notificationIntervalId);
+        </script>
+@endif
 @if (Route::is('register') || Route::is('account.entity') && $entity == 'update')
         <script type="text/javascript">
             /**
@@ -1075,11 +1084,33 @@
             /**
              * Switch between inputs and blocks
              */
+            const agriculture = document.getElementById('agriculture');
+            const breeding = document.getElementById('breeding');
             const radioYes = document.getElementById('physical_and_land_organization1');
             const radioTenant = document.getElementById('land_status1');
             const radioOwner = document.getElementById('land_status2');
             const radios = document.querySelectorAll('input[type="radio"][name="activity_orientation"]');
             const spans = document.querySelectorAll('span[data-value]');
+
+            // Function to manage the display of input
+            function toggleActivity() {
+                const blocAgriculture = document.getElementById('blocAgriculture');
+                const blocBreeding = document.getElementById('blocBreeding');
+
+                if (agriculture.checked) {
+                    blocAgriculture.classList.remove('d-none');
+
+                } else {
+                    blocAgriculture.classList.add('d-none');
+                }
+
+                if (breeding.checked) {
+                    blocBreeding.classList.remove('d-none');
+
+                } else {
+                    blocBreeding.classList.add('d-none');
+                }
+            }
 
             // Function to manage the display of input
             function toggleYes() {
@@ -1142,6 +1173,38 @@
                 }
             }
 
+            function agricultureTypeChange(element) {
+                const selectElement = document.getElementById(element);
+                const selectedValue = selectElement.value; // Get the value of the selected option
+
+                // Use a switch statement to handle different cases based on the selected value
+                switch (selectedValue) {
+                    case 'production':
+                        // Code to execute when Option 1 is selected
+                        alert('Option 1 selected');
+                        break;
+                    case 'transformation':
+                        // Code to execute when Option 2 is selected
+                        alert('Option 2 selected');
+                        break;
+                    case 'selling':
+                        // Code to execute when Option 3 is selected
+                        alert('Option 3 selected');
+                        break;
+                    case 'inputs_supply':
+                        // Code to execute when Option 3 is selected
+                        alert('Option 3 selected');
+                        break;
+                    case 'equipment_supply':
+                        // Code to execute when Option 3 is selected
+                        alert('Option 3 selected');
+                        break;
+                    default:
+                        // Code to execute if no matching option is found (optional)
+                        alert('No specific option matched');
+                }
+            }
+
             // Added event listeners for each radio input
             radios.forEach(radio => {
                 radio.addEventListener('change', function() {
@@ -1154,6 +1217,7 @@
             toggleLandStatus();
             toggleYes();
             toggleSpans();
+            toggleActivity()
         </script>
 @endif
 @if (Route::is('register'))

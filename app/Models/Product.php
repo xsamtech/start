@@ -83,6 +83,15 @@ class Product extends Model
     }
 
     /**
+     * MANY-TO-ONE
+     * Several notifications for a product
+     */
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'product_id');
+    }
+
+    /**
      * Get photo files
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

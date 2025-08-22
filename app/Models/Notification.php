@@ -66,4 +66,26 @@ class Notification extends Model
     {
         return $this->belongsTo(Crowdfunding::class, 'crowdfunding_id');
     }
+
+    /**
+     * ONE-TO-MANY
+     * One project for several notifications
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    /**
+     * ONE-TO-MANY
+     * One post for several notifications
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'post_id');
+    }
 }

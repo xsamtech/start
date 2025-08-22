@@ -21,7 +21,7 @@
 @if (!empty($current_user))
 							<form action="{{ route('crowdfunding.home') }}" method="POST">
 								<div class="row">
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+									<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 										<div class="panel panel-default text-center" style="background-color: #f2f2f2;">
 											<div class="panel-body">
 												<img src="{{ $current_user->avatar_url }}" alt="{{ $current_user->firstname . ' ' . $current_user->lastname }}" width="100" height="100" class="img-thumbnail" style="border-radius: 50%; margin: 0 auto;">
@@ -69,7 +69,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+									<div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
 										<fieldset>
 											<!-- Project description -->
                                             <div class="input-group textarea-container" style="z-index: 3; margin-bottom: 5px;">
@@ -169,143 +169,61 @@
 													</label>
 												</div>
                                             </div>
+
+											<!-- Activity description -->
+                                            <div class="panel panel-default" style="margin: 0 0 5px 0;">
+												<div class="panel-heading">
+													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.activity_description.title')</p>
+												</div>
+												<div class="panel-body">
+													<label style="cursor: pointer;" onclick="toggleActivity();">
+														<input type="checkbox" id="agriculture">
+														<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+															@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.title')
+														</span>
+													</label><br>
+													<label style="margin-top: 5px; margin-left: 0; cursor: pointer;" onclick="toggleActivity();">
+														<input type="checkbox" id="breeding">
+														<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+															@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.title')
+														</span>
+													</label><br>
+												</div>
+											</div>
+
+											<!-- Agriculture -->
+                                            <div id="blocAgriculture" class="panel panel-default d-none" style="margin: 0 0 5px 0;">
+												<div class="panel-heading">
+													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.title')</p>
+												</div>
+												<div class="panel-body">
+													<div class="form-group">
+														<label for="mySelect">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.title')</label>
+														<select class="form-control" id="agricultureType" name="agriculture_type" onchange="agricultureTypeChange('agricultureType')">
+															<option value="production">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.production')</option>
+															<option value="transformation">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.title')</option>
+															<option value="selling">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.selling')</option>
+															<option value="inputs_supply">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.inputs_supply')</option>
+															<option value="equipment_supply">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.equipment_supply')</option>
+														</select>
+													</div>
+
+												</div>
+											</div>
+
+											<!-- Breeding -->
+                                            <div id="blocBreeding" class="panel panel-default d-none" style="margin: 0 0 5px 0;">
+												<div class="panel-heading">
+													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.title')</p>
+												</div>
+												<div class="panel-body">
+
+												</div>
+											</div>
+
 										</fieldset>
 									</div>
-									<div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
-										<fieldset>
-                                            <!-- Activity orientation -->
-                                            <div class="panel panel-default" style="margin: 0 0 5px 0;">
-												<div class="panel-heading">
-													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.activity_orientation.title')</p>
-												</div>
-												<div class="panel-body">
-													<label class="radio-inline">
-														<input type="radio" name="activity_orientation" id="activity_orientation1" value="seed_producer_distributor"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.activity_orientation.seed_producer_distributor.title')</span>
-													</label><br>
-													<label class="radio-inline" style="margin-top: 5px; margin-left: 0;">
-														<input type="radio" name="activity_orientation" id="activity_orientation2" value="farmer"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.activity_orientation.farmer.title')</span>
-													</label><br>
-													<label class="radio-inline" style="margin-top: 5px; margin-left: 0;">
-														<input type="radio" name="activity_orientation" id="activity_orientation3" value="processing_transformation_unit"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.title')</span>
-													</label><br>
-													<label class="radio-inline" style="margin-top: 5px; margin-left: 0;">
-														<input type="radio" name="activity_orientation" id="activity_orientation4" value="marketing_agency"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.activity_orientation.marketing_agency')</span>
-													</label><br>
-													<label class="radio-inline" style="margin-top: 5px; margin-left: 0;">
-														<input type="radio" name="activity_orientation" id="activity_orientation5" value="food_distribution"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.activity_orientation.food_distribution')</span>
-													</label>
-												</div>
-												<div class="panel-body" style="padding-top: 0; padding-bottom: 0;">
-													<span data-value="seed_producer_distributor" class="d-none">
-														<p style="font-size: 1.3rem; margin-bottom: 5px; line-height: 20px;">@lang('miscellaneous.admin.project_writing.data.activity_orientation.seed_producer_distributor.info')</p>
-														<input type="text" name="activity_orientation_content" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_orientation.seed_producer_distributor.info')" style="margin-bottom: 20px;">
-													</span>
-													<span data-value="farmer" class="d-none">
-														<p style="font-size: 1.3rem; margin-bottom: 5px; line-height: 20px;">@lang('miscellaneous.admin.project_writing.data.activity_orientation.farmer.info')</p>
-														<input type="text" name="activity_orientation_content" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_orientation.farmer.info')" style="margin-bottom: 20px;">
-													</span>
-													<span data-value="processing_transformation_unit" class="d-none">
-														<p style="font-size: 1.3rem; margin-bottom: 5px; line-height: 20px;">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.info_1')</p>
-														<input type="text" name="processing_transformation_quantity" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.info_1')" style="margin-bottom: 10px;">
-
-														<p style="font-size: 1.3rem; margin-bottom: 5px; line-height: 20px;">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.info_2')</p>
-														<select name="processing_transformation_period" class="form-control" style="margin-bottom: 20px;">
-															<option selected>- - - - - - - - - -</option>
-															<option value="daily">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.data_2.period.daily')</option>
-															<option value="weekly">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.data_2.period.weekly')</option>
-															<option value="monthly">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.data_2.period.monthly')</option>
-															<option value="quarterly">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.data_2.period.quarterly')</option>
-															<option value="biannual">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.data_2.period.biannual')</option>
-															<option value="annual">@lang('miscellaneous.admin.project_writing.data.activity_orientation.processing_transformation_unit.data_2.period.annual')</option>
-														</select>
-													</span>
-												</div>
-                                            </div>
-
-                                            <!-- Market segments or target -->
-                                            <div class="panel panel-default" style="margin: 0 0 5px 0;">
-												<div class="panel-heading">
-													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.title')</p>
-												</div>
-												<div class="panel-body">
-													<label for="market_segments_or_target1" style="font-weight: normal;">
-														<input type="checkbox" name="market_segments_or_target[]" value="@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.farmers')" id="market_segments_or_target1"> @lang('miscellaneous.admin.project_writing.data.market_segments_or_target.farmers')
-													</label><br>
-
-													<label for="market_segments_or_target2" style="font-weight: normal;">
-														<input type="checkbox" name="market_segments_or_target[]" value="@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.ngo_research')" id="market_segments_or_target2"> @lang('miscellaneous.admin.project_writing.data.market_segments_or_target.ngo_research')
-													</label><br>
-
-													<label for="market_segments_or_target3" style="font-weight: normal;">
-														<input type="checkbox" name="market_segments_or_target[]" value="@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.agro_dealers')" id="market_segments_or_target3"> @lang('miscellaneous.admin.project_writing.data.market_segments_or_target.agro_dealers')
-													</label><br>
-
-													<label for="market_segments_or_target4" style="font-weight: normal;">
-														<input type="checkbox" name="market_segments_or_target[]" value="@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.consumers')" id="market_segments_or_target4"> @lang('miscellaneous.admin.project_writing.data.market_segments_or_target.consumers')
-													</label><br>
-
-													<label for="others" style="font-weight: normal; margin-top: 5px;">@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.others')</label>
-													<input type="text" name="others" class="form-control" id="others" placeholder="@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.others')">
-												</div>
-                                            </div>
-
-                                            <!-- Physical and land organization -->
-                                            <div class="panel panel-default" style="margin: 0 0 5px 0;">
-												<div class="panel-heading">
-													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.title')</p>
-												</div>
-
-												<div class="panel-body" onclick="toggleYes();">
-													<p>@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.info')</p>
-													<label class="radio-inline">
-														<input type="radio" name="physical_and_land_organization" id="physical_and_land_organization1" value="yes"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.yes.title')</span>
-													</label>
-													<label class="radio-inline" style="margin-left: 10px;">
-														<input type="radio" name="physical_and_land_organization" id="physical_and_land_organization2" value="no" checked><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.no')</span>
-													</label>
-												</div>
-
-												<div id="yesHaveLand" class="panel-body" style="padding-top: 0;" class="d-none">
-													<span>
-														<p style="font-size: 1.3rem; text-align: center; line-height: 16px;">@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.yes.info')</p>
-
-														<p style="margin-bottom: 5px;">@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.yes.size')</p>
-														<input type="text" name="processing_transformation_quantity" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.yes.size')" style="margin-bottom: 10px;">
-
-														<p style="margin-bottom: 5px;">@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.yes.yield')</p>
-														<input type="text" name="processing_transformation_quantity" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.physical_and_land_organization.yes.yield')" style="margin-bottom: 0;">
-													</span>
-												</div>
-                                            </div>
-
-                                            <!-- Land status -->
-                                            <div class="panel panel-default" style="margin: 0 0 5px 0;">
-												<div class="panel-heading">
-													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.land_status.title')</p>
-												</div>
-
-												<div class="panel-body" onclick="toggleLandStatus();">
-													<label class="radio-inline">
-														<input type="radio" name="land_status" id="land_status1" value="tenant"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.land_status.tenant.title')</span>
-													</label>
-													<label class="radio-inline" style="margin-left: 10px;">
-														<input type="radio" name="land_status" id="land_status2" value="owner"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.land_status.owner.title')</span>
-													</label>
-												</div>
-
-												<div class="panel-body" style="padding-top: 0; padding-bottom: 0;">
-													<span id="landStatusTenant" class="d-none">
-														<p style="margin-bottom: 5px;">@lang('miscellaneous.admin.project_writing.data.land_status.tenant.info')</p>
-														<input type="number" name="land_status_amount" class="form-control input-lg" placeholder="@lang('miscellaneous.amount')" style="margin-bottom: 10px;">
-													</span>
-													<span id="landStatusOwner" class="d-none">
-														<p style="margin-bottom: 5px;">@lang('miscellaneous.admin.project_writing.data.land_status.owner.info')</p>
-														<input type="file" name="land_status_property_deed_url" class="form-control input-lg" placeholder="@lang('miscellaneous.upload.upload_document')" style="margin-bottom: 10px;">
-													</span>
-												</div>
-                                            </div>
-
-										</fieldset>
+									<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 									</div>
 								</div>
 								<div class="row">

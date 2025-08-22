@@ -59,4 +59,13 @@ class Project extends Model
     {
         return $this->hasMany(MarketSegment::class);
     }
+
+    /**
+     * MANY-TO-ONE
+     * Several notifications for a project
+     */
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'project_id');
+    }
 }

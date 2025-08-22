@@ -43,6 +43,7 @@ Route::delete('/delete/{entity}/{id}', [PublicController::class, 'removeData'])-
 
 Route::middleware('auth')->group(function () {
     Route::get('/change-currency/{currency}', [PublicController::class, 'changeCurrency'])->name('change_currency');
+    Route::get('/notifications/badge', [PublicController::class, 'getNotificationBadge'])->name('notifications.badge');
     Route::get('/generate-sheet/{user_id}/{language}', [PublicController::class, 'generateSheet'])->whereNumber('user_id')->name('generate_sheet');
 
     // Products

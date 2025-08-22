@@ -51,6 +51,15 @@ class Post extends Model
     }
 
     /**
+     * MANY-TO-ONE
+     * Several notifications for a post
+     */
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'post_id');
+    }
+
+    /**
      * Compter le nombre de commentaires pour ce post
      */
     public function countComments()

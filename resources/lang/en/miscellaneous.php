@@ -799,11 +799,13 @@ return [
                     'title' => 'Activity Description',
                     'sector' => 'In which sector do you work?',
                     'agriculture' => [
+                        'title' => 'Agriculture',
                         'is_land_owner' => 'Do you own a plantation?',
                         'land_area' => 'Size of your plantation in hectares',
                         'land_yield_per_hectare' => 'Yield per ton per hectare',
                         'culture_type' => [
                             'title' => 'Crop Type',
+                            'production' => 'Production',
                             'transformation' => [
                                 'title' => 'Transformation',
                                 'processed_products' => 'Processed Products',
@@ -816,6 +818,7 @@ return [
                         ],
                     ],
                     'breeding' => [
+                        'title' => 'Breeding',
                         'is_land_owner' => 'Do you own a farm?',
                         'land_area' => 'Size of your enclosure in hectares',
                         'breeding_type' => [

@@ -57,7 +57,7 @@ class Crowdfunding extends Model
      */
     public function notifications(): HasMany
     {
-        return $this->hasMany(Notification::class);
+        return $this->hasMany(Notification::class, 'crowdfunding_id');
     }
 
     /**

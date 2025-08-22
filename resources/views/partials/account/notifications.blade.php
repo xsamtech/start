@@ -20,6 +20,18 @@
 @if (count($items) > 0)
 							<div class="row">
 								<div class="col-md-12">
+									<div class="list-group">
+	@foreach ($items as $notification)
+										<a href="{{ $notification['route'] . '?notif_id=' . $notification['id'] }}" class="list-group-item list-group-item-action{{ $notification['is_read'] == 0 ? ' bg-light' : '' }}" style="padding: 10px 5px;">
+											<div id="notificationItem">
+												<p style="margin-bottom: 0;">
+													{!! $notification['message'] !!}
+												</p>
+												<small class="text-muted">{{ ucfirst($notification['created_at']) }}</small>
+											</div>
+										</a>
+	@endforeach
+									</div>
 								</div><!-- End .col-md-12 -->
 							</div><!-- End .row -->
 	

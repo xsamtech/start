@@ -346,13 +346,13 @@ return [
     'two_products_blocked' => 'Votre :product_type « <strong>:product_name</strong> » et un autre ont été bloqués par l’administrateur.',
     'many_products_blocked' => 'Votre :product_type « <strong>:product_name</strong> » et :count autres ont été bloqués par l’administrateur.',
     // Project shared
-    'one_project_shared' => 'Votre project » est maintenant visible par tous.',
-    'two_projects_shared' => 'Votre project » et un autre sont maintenant visibles par tous.',
-    'many_projects_shared' => 'Votre project » et :count autres sont maintenant visibles par tous.',
+    'one_project_shared' => 'Votre projet » est maintenant visible par tous.',
+    'two_projects_shared' => 'Votre projet » et un autre sont maintenant visibles par tous.',
+    'many_projects_shared' => 'Votre projet » et :count autres sont maintenant visibles par tous.',
     // Project blocked
-    'one_project_blocked' => 'Votre project a été bloqué par l’administrateur.',
-    'two_projects_blocked' => 'Votre project et un autre ont été bloqués par l’administrateur.',
-    'many_projects_blocked' => 'Votre project et :count autres ont été bloqués par l’administrateur.',
+    'one_project_blocked' => 'Votre projet a été bloqué par l’administrateur.',
+    'two_projects_blocked' => 'Votre projet et un autre ont été bloqués par l’administrateur.',
+    'many_projects_blocked' => 'Votre projet et :count autres ont été bloqués par l’administrateur.',
     // Customer feedback
     'one_customer_feedback_one_product' => '<strong>:user_name</strong> a réagi à votre :product_type « <strong>:product_name</strong> ».',
     'two_customers_feedback_one_product' => '<strong>:user_name</strong> et un autre membre ont réagi à votre :product_type « <strong>:product_name</strong> ».',

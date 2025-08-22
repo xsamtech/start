@@ -799,11 +799,13 @@ return [
                     'title' => 'Description de l’activité',
                     'sector' => 'Dans quel secteur d’activité travaillez-vous ?',
                     'agriculture' => [
+                        'title' => 'Agriculture',
                         'is_land_owner' => 'Êtes-vous détenteur d’une plantation ?',
                         'land_area' => 'Taille de votre plantation en hectares',
                         'land_yield_per_hectare' => 'Rendement par tonne à l’hectare',
                         'culture_type' => [
                             'title' => 'Type de culture',
+                            'production' => 'Production',
                             'transformation' => [
                                 'title' => 'Transformation',
                                 'processed_products' => 'Produits transformés',
@@ -816,6 +818,7 @@ return [
                         ],
                     ],
                     'breeding' => [
+                        'title' => 'Elevage',
                         'is_land_owner' => 'Êtes-vous détenteur d’une ferme ?',
                         'land_area' => 'Taille de votre enclos en hectares',
                         'breeding_type' => [
