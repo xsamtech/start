@@ -1686,6 +1686,7 @@ class PublicController extends Controller
             $files = $request->file('files_urls', []);
             $fileNames = $request->input('files_names', []);
 
+            dd($files);
             // Types of extensions for different file types
             $validExtensions = [
                 'video' => ['mp4', 'avi', 'mov', 'mkv', 'webm'],
