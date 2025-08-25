@@ -53,7 +53,7 @@ class AdminController extends Controller
     public function index()
     {
         $products_unshared = Product::where('type', 'product')->where('is_shared', 0)->orderByDesc('created_at')->paginate(5)->appends(request()->query());
-        $products = Product::where('type', 'product')->orderByDesc('created_at')->paginate(5)->appends(request()->query());
+        $products = Product::where('type', 'product')->orderByDesc('created_at')->paginate(5)->appends(request()->query())
         $services_unshared = Product::where('type', 'service')->where('is_shared', 0)->orderByDesc('created_at')->paginate(5)->appends(request()->query());
         $services = Product::where('type', 'service')->orderByDesc('created_at')->paginate(5)->appends(request()->query());
 
