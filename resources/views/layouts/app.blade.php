@@ -1059,6 +1059,25 @@
 @if (Route::is('crowdfunding.home') && !empty($current_user))
         <script type="text/javascript">
             /**
+             * Inputs number always numeric
+             */
+            const numberInputs = document.querySelectorAll('input[type="number"]');
+
+            numberInputs.forEach(input => {
+                input.addEventListener('input', function(event) {
+                    let value = event.target.value;
+                    // Supprime tous les caractères non numériques (sauf si c'est une virgule ou un point)
+                    value = value.replace(/[^0-9.,]/g, '');
+
+                    // Permet la virgule ou le point comme seul séparateur décimal
+                    value = value.replace(/(\.)(?=.*\.)/, '').replace(/(,)(?=.*,)/, ''); // Autoriser un seul point ou une seule virgule
+                    value = value.replace(/^([^.,]*[,.])/g, '$1'); // S'assurer que le premier caractère est un nombre si ce n'est pas un chiffre
+
+                    event.target.value = value;
+                });
+            });
+
+            /**
              * Limit words in the textarea
              */
             const textarea = document.getElementById('limitWords');
@@ -1084,140 +1103,422 @@
             /**
              * Switch between inputs and blocks
              */
+            // Agriculture
             const agriculture = document.getElementById('agriculture');
+            const blocAgriculture = document.getElementById('blocAgriculture');
+            const radioIsLandOwnerAgricultureYes = document.getElementById('is_land_owner_agriculture_yes');
+            const radioIsLandOwnerAgricultureNo = document.getElementById('is_land_owner_agriculture_no');
+            // Breeding
             const breeding = document.getElementById('breeding');
-            const radioYes = document.getElementById('physical_and_land_organization1');
-            const radioTenant = document.getElementById('land_status1');
-            const radioOwner = document.getElementById('land_status2');
-            const radios = document.querySelectorAll('input[type="radio"][name="activity_orientation"]');
-            const spans = document.querySelectorAll('span[data-value]');
+            const blocBreeding = document.getElementById('blocBreeding');
+            const radioIsLandOwnerBreedingYes = document.getElementById('is_land_owner_breeding_yes');
+            const radioIsLandOwnerBreedingNo = document.getElementById('is_land_owner_breeding_no');
 
-            // Function to manage the display of input
+            // TOGGLE AGRICULTURE AND BREEDING
             function toggleActivity() {
-                const blocAgriculture = document.getElementById('blocAgriculture');
-                const blocBreeding = document.getElementById('blocBreeding');
+                // Agriculture
+                const productionAgriculture = document.getElementById('productionAgriculture');
+                const transformationAgriculture = document.getElementById('transformationAgriculture');
+                const inputsSupplyAgriculture = document.getElementById('inputsSupplyAgriculture');
+                const equipmentSupplyAgriculture = document.getElementById('equipmentSupplyAgriculture');
+                // Breeding
+                const fishBreeding = document.getElementById('fishBreeding');
+                const poultryBreeding = document.getElementById('poultryBreeding');
+                const pigBreeding = document.getElementById('pigBreeding');
+                const rabbitBreeding = document.getElementById('rabbitBreeding');
+                const cattleBreeding = document.getElementById('cattleBreeding');
+                const sheepBreeding = document.getElementById('sheepBreeding');
 
                 if (agriculture.checked) {
                     blocAgriculture.classList.remove('d-none');
 
                 } else {
+                    productionAgriculture.checked = false;
+                    transformationAgriculture.checked = false;
+                    inputsSupplyAgriculture.checked = false;
+                    equipmentSupplyAgriculture.checked = false;
+
                     blocAgriculture.classList.add('d-none');
+                    resetAgriProduction();
+                    resetAgriTransformation();
+                    resetAgriInputsSupply();
+                    resetAgriEquipmentSupply();
                 }
 
                 if (breeding.checked) {
                     blocBreeding.classList.remove('d-none');
 
                 } else {
+                    fishBreeding.checked = false;
+                    poultryBreeding.checked = false;
+                    pigBreeding.checked = false;
+                    rabbitBreeding.checked = false;
+                    cattleBreeding.checked = false;
+                    sheepBreeding.checked = false;
+
                     blocBreeding.classList.add('d-none');
+                    resetBreedFish();
+                    resetBreedPoultry();
+                    resetBreedPig();
+                    resetBreedRabbit();
+                    resetBreedCattle();
+                    resetBreedSheep();
                 }
             }
 
-            // Function to manage the display of input
-            function toggleYes() {
-                const yesHaveLand = document.getElementById('yesHaveLand');
+            // AGRICULTURE : Reset owner data
+            function resetAgricultureDataNotOwner() {
+                const landAreaYieldAgriculture = document.getElementById('landAreaYieldAgriculture');
+                const isLandOwnerAgriculture = document.getElementById('isLandOwnerAgriculture');
+                const inputsOwner = isLandOwnerAgriculture.querySelectorAll('input[type="text"], input[type="number"]');
 
-                if (radioYes.checked) {
-                    yesHaveLand.classList.remove('d-none');
+                radioIsLandOwnerAgricultureNo.checked = true;
+
+                landAreaYieldAgriculture.classList.add('d-none');
+                inputsOwner.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // BREEDING : Reset owner data
+            function resetBreedingDataNotOwner() {
+                const landAreaBreeding = document.getElementById('landAreaBreeding');
+                const inputsOwner = landAreaBreeding.querySelectorAll('input[type="text"], input[type="number"]');
+
+                radioIsLandOwnerBreedingNo.checked = true;
+
+                landAreaBreeding.classList.add('d-none');
+                inputsOwner.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TYPE-AGRI : Reset production type data
+            function resetAgriProduction() {
+                const landAreaYieldAgriculture = document.getElementById('landAreaYieldAgriculture');
+                const productionData = document.getElementById('productionData');
+                const inputsProductionData = productionData.querySelectorAll('input[type="text"], input[type="number"]');
+
+                radioIsLandOwnerAgricultureNo.checked = true;
+
+                landAreaYieldAgriculture.classList.add('d-none');
+                productionData.classList.add('d-none');
+                inputsProductionData.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TYPE-AGRI : Reset transformation type data
+            function resetAgriTransformation() {
+                const transformationData = document.getElementById('transformationData');
+                const inputsTransformationData = transformationData.querySelectorAll('input[type="text"], input[type="number"]');
+
+                transformationData.classList.add('d-none');
+                inputsTransformationData.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TYPE-AGRI : Reset inputs-supply type data
+            function resetAgriInputsSupply() {
+                const inputsSupplyingData = document.getElementById('inputsSupplyingData');
+                const inputsInputsSupplyingData = inputsSupplyingData.querySelectorAll('input[type="text"]');
+
+                inputsSupplyingData.classList.add('d-none');
+                inputsInputsSupplyingData.forEach(input => {
+                    input.value = ''; // Reset text inputs to an empty string
+                });
+            }
+
+            // TYPE-AGRI : Reset equipment-supply type data
+            function resetAgriEquipmentSupply() {
+                const equipmentSupplyingData = document.getElementById('equipmentSupplyingData');
+                const inputsEquipmentSupplyingData = equipmentSupplyingData.querySelectorAll('input[type="text"]');
+
+                equipmentSupplyingData.classList.add('d-none');
+                inputsEquipmentSupplyingData.forEach(input => {
+                    input.value = ''; // Reset text inputs to an empty string
+                });
+            }
+
+            // TYPE-BREED : Reset fish type data
+            function resetBreedFish() {
+                const fishData = document.getElementById('fishData');
+                const inputsFishData = fishData.querySelectorAll('input[type="text"], input[type="number"]');
+
+                fishData.classList.add('d-none');
+                inputsFishData.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TYPE-BREED : Reset poultry type data
+            function resetBreedPoultry() {
+                const poultryData = document.getElementById('poultryData');
+                const inputsPoultryData = poultryData.querySelectorAll('input[type="text"], input[type="number"]');
+
+                poultryData.classList.add('d-none');
+                inputsPoultryData.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TYPE-BREED : Reset pig type data
+            function resetBreedPig() {
+                const pigData = document.getElementById('pigData');
+                const inputsPigData = pigData.querySelectorAll('input[type="text"], input[type="number"]');
+
+                pigData.classList.add('d-none');
+                inputsPigData.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TYPE-BREED : Reset rabbit type data
+            function resetBreedRabbit() {
+                const rabbitData = document.getElementById('rabbitData');
+                const inputsRabbitData = rabbitData.querySelectorAll('input[type="text"], input[type="number"]');
+
+                rabbitData.classList.add('d-none');
+                inputsRabbitData.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TYPE-BREED : Reset cattle type data
+            function resetBreedCattle() {
+                const cattleData = document.getElementById('cattleData');
+                const inputsCattleData = cattleData.querySelectorAll('input[type="text"], input[type="number"]');
+
+                cattleData.classList.add('d-none');
+                inputsCattleData.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TYPE-BREED : Reset sheep type data
+            function resetBreedSheep() {
+                const sheepData = document.getElementById('sheepData');
+                const inputsSheepData = cattleData.querySelectorAll('input[type="text"], input[type="number"]');
+
+                sheepData.classList.add('d-none');
+                inputsSheepData.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = ''; // Reset text inputs to an empty string
+
+                    } else if (input.type === 'number') {
+                        input.value = ''; // Reset number inputs to an empty string to clear them
+                    }
+                });
+            }
+
+            // TOGGLE TYPES FOR AGRICULTURE OR BREEDING
+            function toggleType() {
+                // Agriculture
+                const productionAgriculture = document.getElementById('productionAgriculture');
+                const productionData = document.getElementById('productionData');
+                const transformationAgriculture = document.getElementById('transformationAgriculture');
+                const transformationData = document.getElementById('transformationData');
+                const inputsSupplyAgriculture = document.getElementById('inputsSupplyAgriculture');
+                const inputsSupplyingData = document.getElementById('inputsSupplyingData');
+                const equipmentSupplyAgriculture = document.getElementById('equipmentSupplyAgriculture');
+                const equipmentSupplyingData = document.getElementById('equipmentSupplyingData');
+                // Breeding
+                const fishBreeding = document.getElementById('fishBreeding');
+                const fishData = document.getElementById('fishData');
+                const poultryBreeding = document.getElementById('poultryBreeding');
+                const poultryData = document.getElementById('poultryData');
+                const pigBreeding = document.getElementById('pigBreeding');
+                const pigData = document.getElementById('pigData');
+                const rabbitBreeding = document.getElementById('rabbitBreeding');
+                const rabbitData = document.getElementById('rabbitData');
+                const cattleBreeding = document.getElementById('cattleBreeding');
+                const cattleData = document.getElementById('cattleData');
+                const sheepBreeding = document.getElementById('sheepBreeding');
+                const sheepData = document.getElementById('sheepData');
+
+                // Agriculture
+                if (productionAgriculture.checked) {
+                    productionData.classList.remove('d-none');
 
                 } else {
-                    yesHaveLand.classList.add('d-none');
+                    productionData.classList.add('d-none');
+                    resetAgriProduction();
                 }
-            }
 
-            function toggleLandStatus() {
-                const landStatusTenant = document.getElementById('landStatusTenant');
-                const landStatusOwner = document.getElementById('landStatusOwner');
-
-                if (radioTenant.checked) {
-                    landStatusTenant.classList.remove('d-none');
-                    landStatusOwner.classList.add('d-none');
-
-                } else if (radioOwner.checked) {
-                    landStatusTenant.classList.add('d-none');
-                    landStatusOwner.classList.remove('d-none');
-                }
-            }
-
-            // Function to reset input:text fields and select
-            function resetTextInputs() {
-                // All input:text
-                document.querySelectorAll('span[data-value] input[type="text"]').forEach(input => {
-                    input.value = '';  // Reset the value
-                });
-                // All select
-                document.querySelectorAll('span[data-value] select').forEach(select => {
-                    select.selectedIndex = 0;  // Reset to first item (default option)
-                });
-            }
-
-            // Function to manage the display of spans
-            function toggleSpans() {
-                const checkedValue = document.querySelector('input[type="radio"][name="activity_orientation"]:checked')?.value;
-
-                // If a radio is checked
-                if (checkedValue) {
-                    spans.forEach(span => {
-                        if (span.getAttribute('data-value') === checkedValue) {
-                            span.classList.remove('d-none');  // Afficher le span correspondant
-
-                        } else {
-                            span.classList.add('d-none');  // Cacher les autres spans
-                        }
-                    });
+                if (transformationAgriculture.checked) {
+                    transformationData.classList.remove('d-none');
 
                 } else {
-                    // If nothing is checked, all spans are hidden
-                    spans.forEach(span => {
-                        span.classList.add('d-none');
-                    });
+                    transformationData.classList.add('d-none');
+                    resetAgriTransformation();
+                }
+
+                if (inputsSupplyAgriculture.checked) {
+                    inputsSupplyingData.classList.remove('d-none');
+
+                } else {
+                    inputsSupplyingData.classList.add('d-none');
+                    resetAgriInputsSupply();
+                }
+
+                if (equipmentSupplyAgriculture.checked) {
+                    equipmentSupplyingData.classList.remove('d-none');
+
+                } else {
+                    equipmentSupplyingData.classList.add('d-none');
+                    resetAgriEquipmentSupply();
+                }
+
+                // Breeding
+                if (fishBreeding.checked) {
+                    fishData.classList.remove('d-none');
+
+                } else {
+                    fishData.classList.add('d-none');
+                    resetBreedFish();
+                }
+
+                if (poultryBreeding.checked) {
+                    poultryData.classList.remove('d-none');
+
+                } else {
+                    poultryData.classList.add('d-none');
+                    resetBreedPoultry();
+                }
+
+                if (pigBreeding.checked) {
+                    pigData.classList.remove('d-none');
+
+                } else {
+                    pigData.classList.add('d-none');
+                    resetBreedPig();
+                }
+
+                if (rabbitBreeding.checked) {
+                    rabbitData.classList.remove('d-none');
+
+                } else {
+                    rabbitData.classList.add('d-none');
+                    resetBreedRabbit();
+                }
+
+                if (cattleBreeding.checked) {
+                    cattleData.classList.remove('d-none');
+
+                } else {
+                    cattleData.classList.add('d-none');
+                    resetBreedCattle();
+                }
+
+                if (sheepBreeding.checked) {
+                    sheepData.classList.remove('d-none');
+
+                } else {
+                    sheepData.classList.add('d-none');
+                    resetBreedSheep();
                 }
             }
 
-            function agricultureTypeChange(element) {
-                const selectElement = document.getElementById(element);
-                const selectedValue = selectElement.value; // Get the value of the selected option
+            function isLandOwnerAgriculture() {
+                const landAreaYieldAgriculture = document.getElementById('landAreaYieldAgriculture');
 
-                // Use a switch statement to handle different cases based on the selected value
-                switch (selectedValue) {
-                    case 'production':
-                        // Code to execute when Option 1 is selected
-                        alert('Option 1 selected');
-                        break;
-                    case 'transformation':
-                        // Code to execute when Option 2 is selected
-                        alert('Option 2 selected');
-                        break;
-                    case 'selling':
-                        // Code to execute when Option 3 is selected
-                        alert('Option 3 selected');
-                        break;
-                    case 'inputs_supply':
-                        // Code to execute when Option 3 is selected
-                        alert('Option 3 selected');
-                        break;
-                    case 'equipment_supply':
-                        // Code to execute when Option 3 is selected
-                        alert('Option 3 selected');
-                        break;
-                    default:
-                        // Code to execute if no matching option is found (optional)
-                        alert('No specific option matched');
+                if (radioIsLandOwnerAgricultureYes.checked) {
+                    landAreaYieldAgriculture.classList.remove('d-none');
+
+                } else {
+                    landAreaYieldAgriculture.classList.add('d-none');
+                    resetAgricultureDataNotOwner();
+                }
+
+                if (radioIsLandOwnerAgricultureNo.checked) {
+                    landAreaYieldAgriculture.classList.add('d-none');
+                    resetAgricultureDataNotOwner();
+
+                } else {
+                    landAreaYieldAgriculture.classList.remove('d-none');
                 }
             }
 
-            // Added event listeners for each radio input
-            radios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    toggleSpans();  // Manage the display of spans
-                    resetTextInputs();  // Reset text fields
-                });
-            });
+            function isLandOwnerBreeding() {
+                const landAreaBreeding = document.getElementById('landAreaBreeding');
+
+                if (radioIsLandOwnerBreedingYes.checked) {
+                    landAreaBreeding.classList.remove('d-none');
+
+                } else {
+                    landAreaBreeding.classList.add('d-none');
+                    resetBreedingDataNotOwner();
+                }
+
+                if (radioIsLandOwnerBreedingNo.checked) {
+                    landAreaBreeding.classList.add('d-none');
+                    resetBreedingDataNotOwner();
+
+                } else {
+                    landAreaBreeding.classList.remove('d-none');
+                }
+            }
 
             // Initialize display on load
-            toggleLandStatus();
-            toggleYes();
-            toggleSpans();
-            toggleActivity()
+            document.addEventListener('DOMContentLoaded', () => {
+                isLandOwnerAgriculture();
+                isLandOwnerBreeding();
+                toggleActivity();
+                toggleType();
+
+                agriculture.addEventListener('change', toggleActivity);
+                radioIsLandOwnerAgricultureYes.addEventListener('change', isLandOwnerAgriculture);
+                radioIsLandOwnerAgricultureNo.addEventListener('change', isLandOwnerAgriculture);
+                breeding.addEventListener('change', toggleActivity);
+                radioIsLandOwnerBreedingYes.addEventListener('change', isLandOwnerBreeding);
+                radioIsLandOwnerBreedingNo.addEventListener('change', isLandOwnerBreeding);
+            });
         </script>
 @endif
 @if (Route::is('register'))
@@ -1238,6 +1539,24 @@
             }
 
             checkTermsAccept();
+        </script>
+@endif
+@if (Route::is('discussion.home') || Route::is('discussion.datas'))
+        <script type="text/javascript">
+            /**
+             * TinyMCE : Custom textarea
+             */
+            tinymce.init({
+                selector: '#posts_content',
+                // plugins: 'lists link image',
+                // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
+                // setup: function (editor) {
+                //     editor.on('change', function () {
+                //         let content = editor.getContent();  // Texte avec les balises HTML
+                //         document.getElementById('posts_content').value = content;
+                //     });
+                // }
+            });
         </script>
 @endif
         <script type="text/javascript">
@@ -1313,21 +1632,6 @@
                     // Format MySQL avant l'envoi (automatique au submit)
                     instance.input.value = selectedDates[0].toISOString().split('T')[0]; // YYYY-MM-DD
                 }
-            });
-
-            /**
-             * TinyMCE : Custom textarea
-             */
-            tinymce.init({
-                selector: '#posts_content',
-                // plugins: 'lists link image',
-                // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
-                // setup: function (editor) {
-                //     editor.on('change', function () {
-                //         let content = editor.getContent();  // Texte avec les balises HTML
-                //         document.getElementById('posts_content').value = content;
-                //     });
-                // }
             });
 
             /**

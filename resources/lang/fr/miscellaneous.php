@@ -39,6 +39,8 @@ return [
     'menu_toggle' => 'Menu',
     'description' => 'Description',
     'color' => 'Couleur',
+    'size' => 'Taille',
+    'yield' => 'Rendement',
     'payment_method' => 'Mode de paiement',
     'active' => 'Actif',
     'inactive' => 'Inactif',
@@ -217,6 +219,30 @@ return [
     'data_updated' => 'Données mises à jour',
     'recto' => 'Recto',
     'verso' => 'Verso',
+    'period' => [
+        'expression' => [
+            'daily' => 'Par jour',
+            'weekly' => 'Par semaine',
+            'monthly' => 'Par mois',
+            'quarterly' => 'Par trimestre',
+            'half_yearly' => 'Par semestre',
+            'yearly' => 'Par an',
+        ],
+        'adjectif' => [
+            'daily_masculine' => 'Journalier',
+            'daily_feminine' => 'Journalière',
+            'weekly_masculine' => 'Hebdomadaire',
+            'weekly_feminine' => 'Hebdomadaire',
+            'monthly_masculine' => 'Mensuel',
+            'monthly_feminine' => 'Mensuelle',
+            'quarterly_masculine' => 'Trimestriel',
+            'quarterly_feminine' => 'Trimestrielle',
+            'half_yearly_masculine' => 'Semestriel',
+            'half_yearly_feminine' => 'Semestrielle',
+            'yearly_masculine' => 'Annuel',
+            'yearly_feminine' => 'Annuelle',
+        ],
+    ],
     'day' => [
         'complete' => [
             'sunday' => 'Dimanche',
@@ -765,6 +791,8 @@ return [
             'edit' => 'Editer le projet',
             'search' => 'Rechercher un projet',
             'list' => 'Liste des projets',
+            'my_other_projects' => 'Mes autres projets',
+            'associate_image' => 'Associer des photos au projet',
             'data' => [
                 'profile' => 'Profile',
                 'description' => 'Description de l’activité',
@@ -805,11 +833,22 @@ return [
                         'land_yield_per_hectare' => 'Rendement par tonne à l’hectare',
                         'culture_type' => [
                             'title' => 'Type de culture',
-                            'production' => 'Production',
+                            'production' => [
+                                'title' => 'Production',
+                                'cultivated_products' => [
+                                    'title' => 'Produit(s) cultivé(s)',
+                                    'description' => 'Précisez le type de culture : (Ex. : Tomates, Arachides, Maïs, …)',
+                                ],
+                            ],
                             'transformation' => [
                                 'title' => 'Transformation',
-                                'processed_products' => 'Produits transformés',
                                 'processing_unit_capacity' => 'Capacité de l’unité de transformation',
+                                'processed_products' => [
+                                    'title' => 'Produit(s) transformé(s)',
+                                    'description' => 'Précisez le type de culture : (Ex. : Tomates, Arachides, Maïs, …)',
+                                ],
+                                'quantity_processed' => 'Quantité transformée',
+                                'choose_period' => 'Choisir une période',
                             ],
                             'selling' => 'Commercialisation',
                             'inputs_supply' => 'Fournitures d’intrants',
@@ -848,6 +887,7 @@ return [
                                 'kind' => [
                                     'meat' => 'Viande',
                                     'milk' => 'Lait',
+                                    'both' => 'Viande et lait',
                                 ],
                             ],
                             'sheep' => [

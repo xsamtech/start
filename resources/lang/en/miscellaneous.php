@@ -39,6 +39,8 @@ return [
     'menu_toggle' => 'Menu',
     'description' => 'Description',
     'color' => 'Color',
+    'size' => 'Size',
+    'yield' => 'Yield',
     'payment_method' => 'Payment method',
     'active' => 'Active',
     'inactive' => 'Inactive',
@@ -217,6 +219,30 @@ return [
     'data_updated' => 'Data updated',
     'recto' => 'Recto',
     'verso' => 'Verso',
+    'period' => [
+        'expression' => [
+            'daily' => 'Per day',
+            'weekly' => 'Per week',
+            'monthly' => 'Per month',
+            'quarterly' => 'Per quarter',
+            'half_yearly' => 'Per semester',
+            'yearly' => 'Per year',
+        ],
+        'adjectif' => [
+            'daily_masculine' => 'Daily',
+            'daily_feminine' => 'Daily',
+            'weekly_masculine' => 'Weekly',
+            'weekly_feminine' => 'Weekly',
+            'monthly_masculine' => 'Monthly',
+            'monthly_feminine' => 'Monthly',
+            'quarterly_masculine' => 'Quarterly',
+            'quarterly_feminine' => 'Quarterly',
+            'half_yearly_masculine' => 'Half-yearly',
+            'half_yearly_feminine' => 'Half-yearly',
+            'yearly_masculine' => 'Yearly',
+            'yearly_feminine' => 'Yearly',
+        ],
+    ],
     'day' => [
         'complete' => [
             'sunday' => 'Sunday',
@@ -765,6 +791,8 @@ return [
             'edit' => 'Edit the project',
             'search' => 'Search a project',
             'list' => 'Projects list',
+            'my_other_projects' => 'My other projects',
+            'associate_image' => 'Associate photos to project',
             'data' => [
                 'profile' => 'Profile',
                 'description' => 'Activity Description',
@@ -805,16 +833,27 @@ return [
                         'land_yield_per_hectare' => 'Yield per ton per hectare',
                         'culture_type' => [
                             'title' => 'Crop Type',
-                            'production' => 'Production',
+                            'production' => [
+                                'title' => 'Production',
+                                'cultivated_products' => [
+                                    'title' => 'Cultivated product(s)',
+                                    'description' => 'Specify the type of crop: (E.g.: Tomatoes, Peanuts, Corn, etc.)',
+                                ],
+                            ],
                             'transformation' => [
                                 'title' => 'Transformation',
-                                'processed_products' => 'Processed Products',
                                 'processing_unit_capacity' => 'Processing Unit Capacity',
+                                'processed_products' => [
+                                    'title' => 'Processed product(s)',
+                                    'description' => 'Specify the type of crop: (E.g.: Tomatoes, Peanuts, Corn, etc.)'
+                                ],
+                                'quantity_processed' => 'Quantity processed',
+                                'choose_period' => 'Choose period',
                             ],
                             'selling' => 'Marketing',
                             'inputs_supply' => 'Input Supply',
                             'equipment_supply' => 'Equipment Supply',
-                            'supply_content' => 'Indicate the brand of the product and the legal category (e.g., GMO, Organic, Hybrids, etc.)',
+                            'supply_content' => 'Indicate the brand of the product and the legal category (E.g., GMO, Organic, Hybrids, etc.)',
                         ],
                     ],
                     'breeding' => [
@@ -848,6 +887,7 @@ return [
                                 'kind' => [
                                     'meat' => 'Meat',
                                     'milk' => 'Milk',
+                                    'both' => 'Meat & milk',
                                 ],
                             ],
                             'sheep' => [

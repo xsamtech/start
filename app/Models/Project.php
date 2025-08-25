@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,6 +59,55 @@ class Project extends Model
     public function market_segments(): HasMany
     {
         return $this->hasMany(MarketSegment::class);
+    }
+
+    /**
+     * MANY-TO-ONE
+     * Several files for a product
+     */
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class, 'project_id');
+    }
+
+    /**
+     * Get photo files
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function photos(): HasMany
+    {
+        return $this->hasMany(File::class)->where('file_type', 'photo');
+    }
+
+    public function getPhotosList(): Collection
+    {
+        return $this->photos;
+    }
+
+    /**
+     * Get video files
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function videos(): HasMany
+    {
+        return $this->hasMany(File::class)->where('file_type', 'video');
+    }
+
+    public function getVideosList(): Collection
+    {
+        return $this->videos;
+    }
+
+    /**
+     * Get audio files
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function audios(): HasMany
+    {
+        return $this->hasMany(File::class)->where('file_type', 'audio');
     }
 
     /**

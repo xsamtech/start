@@ -1681,14 +1681,83 @@ class PublicController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        // Valid file types for photos and documents
-        $validExtensions = [
-            'photo' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-            'document' => ['pdf', 'doc', 'docx', 'txt']
-        ];
+        // If image files exist
+        if ($request->hasFile('files_urls')) {
+            $files = $request->file('files_urls', []);
+            $fileNames = $request->input('files_names', []);
+
+            // Types of extensions for different file types
+            $validExtensions = [
+                'video' => ['mp4', 'avi', 'mov', 'mkv', 'webm'],
+                'photo' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+                'document' => ['pdf', 'doc', 'docx', 'txt'],
+                'audio' => ['mp3', 'wav', 'flac']
+            ];
+
+            foreach ($files as $key => $singleFile) {
+                // Checking the file extension
+                $file_extension = $singleFile->getClientOriginalExtension();
+
+                // File type check
+                $custom_uri = '';
+                $is_valid_type = false;
+                $file_type = null;
+
+                if (in_array($file_extension, $validExtensions['video'])) { // File is a video
+                    $custom_uri = 'videos/projects';
+                    $file_type = 'video';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $validExtensions['photo'])) { // File is a photo
+                    $custom_uri = 'photos/projects';
+                    $file_type = 'photo';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $validExtensions['audio'])) { // File is an audio
+                    $custom_uri = 'audios/projects';
+                    $file_type = 'audio';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $validExtensions['document'])) { // File is a document
+                    $custom_uri = 'documents/projects';
+                    $file_type = 'video';
+                    $is_valid_type = true;
+                }
+
+                // If the extension does not match any valid type
+                if (!$is_valid_type) {
+                    return $this->handleError(__('notifications.type_is_not_file'));
+                }
+
+                // Generate a unique path for the file
+                $filename = $singleFile->getClientOriginalName();
+                $file_url =  $custom_uri . '/' . $project->id . '/' . $filename;
+
+                // Upload file
+                try {
+                    $singleFile->storeAs($custom_uri . '/' . $project->id, $filename, 'public');
+
+                } catch (\Throwable $th) {
+                    return $this->handleError($th, __('notifications.create_work_file_500'), 500);
+                }
+
+                // Creating the database record for the file
+                File::create([
+                    'file_name' => trim($fileNames[$key] ?? $filename),
+                    'file_url' => getWebURL() . '/storage/' . $file_url,
+                    'file_type' => $file_type,
+                    'project_id' => $project->id
+                ]);
+            }
+        }
 
         // Upload owner title deed
         if ($request->hasFile('owner_title_deed_url')) {
+            // Valid file types for photos and documents
+            $validExtensions = [
+                'photo' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+                'document' => ['pdf', 'doc', 'docx', 'txt']
+            ];
             $file = $request->file('owner_title_deed_url');
             $fileExtension = $file->getClientOriginalExtension();
             $customUri = in_array($fileExtension, $validExtensions['photo']) ? 'photos/projects' : 'documents/projects';
@@ -1707,24 +1776,39 @@ class PublicController extends Controller
             ]);
         }
 
-        if ($request->filled('is_land_owner_agriculture') || $request->filled('is_land_owner_breeding')) {
+        $agricultureType = $request->has('agriculture_types') ? implode(',', $request->input('agriculture_types')) : '';
+        $breedingType = $request->has('breeding_types') ? implode(',', $request->input('breeding_types')) : '';
+
+        if ($request->filled('land_area_agriculture') || $request->filled('land_area_breeding')) {
             ProjectActivity::create([
                 'is_land_owner_agriculture' => $request->is_land_owner_agriculture,
                 'land_area_agriculture' => $request->land_area_agriculture,
                 'land_yield_per_hectare' => $request->land_yield_per_hectare,
-                'agriculture_type' => $request->agriculture_type,
-                'agriculture_type_content' => $request->agriculture_type_content,
-                'agriculture_type_content_period' => $request->agriculture_type_content_period,
-                'agriculture_type_content_quantity' => $request->agriculture_type_content_quantity,
+                'agriculture_type' => $agricultureType,
+                'agriculture_type_production_content' => $request->agriculture_type_production_content,
+                'agriculture_type_transformation_content' => $request->agriculture_type_transformation_content,
+                'agriculture_type_transformation_period' => $request->agriculture_type_transformation_period,
+                'agriculture_type_transformation_quantity' => $request->agriculture_type_transformation_quantity,
+                'agriculture_type_inputs_content' => $request->agriculture_type_inputs_content,
+                'agriculture_type_equipment_content' => $request->agriculture_type_equipment_content,
                 'is_land_owner_breeding' => $request->is_land_owner_breeding,
                 'land_area_breeding' => $request->land_area_breeding,
-                'breeding_type' => $request->breeding_type,
-                'breeding_type_content' => $request->breeding_type_content,
+                'breeding_type' => $breedingType,
+                'breeding_type_fish_content' => $request->breeding_type_fish_content,
                 'breeding_type_fish_pond_capacity' => $request->breeding_type_fish_pond_capacity,
                 'breeding_type_fish_cage_capacity' => $request->breeding_type_fish_cage_capacity,
                 'breeding_type_fish_bin_capacity' => $request->breeding_type_fish_bin_capacity,
-                'breeding_type_animals_total_number' => $request->breeding_type_animals_total_number,
+                'breeding_type_poultry_content' => $request->breeding_type_poultry_content,
+                'breeding_type_poultry_total_number' => $request->breeding_type_poultry_total_number,
+                'breeding_type_pig_content' => $request->breeding_type_pig_content,
+                'breeding_type_pig_total_number' => $request->breeding_type_pig_total_number,
+                'breeding_type_rabbit_content' => $request->breeding_type_rabbit_content,
+                'breeding_type_rabbit_total_number' => $request->breeding_type_rabbit_total_number,
+                'breeding_type_cattle_content' => $request->breeding_type_cattle_content,
+                'breeding_type_cattle_total_number' => $request->breeding_type_cattle_total_number,
                 'breeding_type_cattle_kind' => $request->breeding_type_cattle_kind,
+                'breeding_type_sheep_content' => $request->breeding_type_sheep_content,
+                'breeding_type_sheep_total_number' => $request->breeding_type_sheep_total_number,
                 'project_id' => $project->id,
             ]);
         }
@@ -1756,7 +1840,7 @@ class PublicController extends Controller
             ]);
         }
 
-        return redirect()->route('account.entity.datas', ['entity' => 'projects', 'id' => $project->id])->with('success_message', __('notifications.create_project_success'));
+        return redirect()->back()->with('success_message', __('notifications.create_project_success'));
     }
 
     /**

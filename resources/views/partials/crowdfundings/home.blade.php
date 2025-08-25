@@ -21,45 +21,46 @@
 @if (!empty($current_user))
 							<form action="{{ route('crowdfunding.home') }}" method="POST">
 								<div class="row">
-									<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-										<div class="panel panel-default text-center" style="background-color: #f2f2f2;">
-											<div class="panel-body">
+									<div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
+										<!-- Profile -->
+										<div class="panel panel-default text-center">
+											<div class="panel-heading" style="border-bottom: 0;">
 												<img src="{{ $current_user->avatar_url }}" alt="{{ $current_user->firstname . ' ' . $current_user->lastname }}" width="100" height="100" class="img-thumbnail" style="border-radius: 50%; margin: 0 auto;">
 
 												<table id="personalInfo" class="table text-left" style="margin-bottom: 15px; border: 0;">
 													<!-- First name -->
 													<tr class="small">
-														<td><strong>@lang('miscellaneous.firstname')</strong></td>
-														<td>@lang('miscellaneous.colon_after_word')</td>
-														<td>{{ !empty($current_user->firstname) ? $current_user->firstname : '- - - - - -' }}</td>
+														<td style="width: 100px;"><strong>@lang('miscellaneous.firstname')</strong></td>
+														<td style="width: 10px;">@lang('miscellaneous.colon_after_word')</td>
+														<td class="text-left">{{ !empty($current_user->firstname) ? $current_user->firstname : '- - - - - -' }}</td>
 													</tr>
 
 													<!-- Last name -->
 													<tr class="small">
-														<td><strong>@lang('miscellaneous.lastname')</strong></td>
-														<td>@lang('miscellaneous.colon_after_word')</td>
-														<td class="text-uppercase">{{ !empty($current_user->lastname) ? $current_user->lastname : '- - - - - -' }}</td>
+														<td style="width: 100px;"><strong>@lang('miscellaneous.lastname')</strong></td>
+														<td style="width: 10px;">@lang('miscellaneous.colon_after_word')</td>
+														<td class="text-uppercase text-left">{{ !empty($current_user->lastname) ? $current_user->lastname : '- - - - - -' }}</td>
 													</tr>
 
 													<!-- Surname -->
 													<tr class="small">
-														<td><strong>@lang('miscellaneous.surname')</strong></td>
-														<td>@lang('miscellaneous.colon_after_word')</td>
-														<td class="text-uppercase">{{ !empty($current_user->surname) ? $current_user->surname : '- - - - - -' }}</td>
+														<td style="width: 100px;"><strong>@lang('miscellaneous.surname')</strong></td>
+														<td style="width: 10px;">@lang('miscellaneous.colon_after_word')</td>
+														<td class="text-uppercase text-left">{{ !empty($current_user->surname) ? $current_user->surname : '- - - - - -' }}</td>
 													</tr>
 
 													<!-- Gender -->
 													<tr class="small">
-														<td><strong>@lang('miscellaneous.gender_title')</strong></td>
-														<td>@lang('miscellaneous.colon_after_word')</td>
-														<td>{{ !empty($current_user->gender) ? ($current_user->gender == 'F' ? __('miscellaneous.gender2') : __('miscellaneous.gender1')) : '- - - - - -' }}</td>
+														<td style="width: 100px;"><strong>@lang('miscellaneous.gender_title')</strong></td>
+														<td style="width: 10px;">@lang('miscellaneous.colon_after_word')</td>
+														<td class="text-left">{{ !empty($current_user->gender) ? ($current_user->gender == 'F' ? __('miscellaneous.gender2') : __('miscellaneous.gender1')) : '- - - - - -' }}</td>
 													</tr>
 
 													<!-- Nationality -->
 													<tr class="small">
-														<td><strong>@lang('miscellaneous.nationality')</strong></td>
-														<td>@lang('miscellaneous.colon_after_word')</td>
-														<td>{{ !empty($current_user->nationality) ? $current_user->nationality : '- - - - - -' }}</td>
+														<td style="width: 100px;"><strong>@lang('miscellaneous.nationality')</strong></td>
+														<td style="width: 10px;">@lang('miscellaneous.colon_after_word')</td>
+														<td class="text-left">{{ !empty($current_user->nationality) ? $current_user->nationality : '- - - - - -' }}</td>
 													</tr>
 												</table>
 
@@ -68,8 +69,19 @@
 												</a>
 											</div>
 										</div>
+
+										<!-- Project photos -->
+										<div class="panel panel-default text-center">
+											<div class="panel-body">
+												<div class="form-group">
+													<label for="files_urls">@lang('miscellaneous.admin.project_writing.associate_image')</label>
+													<input type="file" id="files_urls" name="files_urls[]" class="form-control" multiple>
+												</div>
+												<div id="image-preview-container" class="mt-2"></div> <!-- Conteneur pour les vignettes -->
+											</div>
+										</div>
 									</div>
-									<div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
+									<div class="col-lg-5 col-md-7 col-sm-7 col-xs-12">
 										<fieldset>
 											<!-- Project description -->
                                             <div class="input-group textarea-container" style="z-index: 3; margin-bottom: 5px;">
@@ -98,7 +110,7 @@
                                                 <span class="input-group-addon">
                                                     <span class="input-text">@lang('miscellaneous.admin.project_writing.data.rccm')</span>
                                                 </span>
-                                                <input type="text" name="rccm" required id="rccm" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.rccm')">
+                                                <input type="text" name="rccm" id="rccm" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.rccm')">
                                             </div><!-- End .input-group -->
 
 											<!-- NAT ID -->
@@ -130,7 +142,7 @@
                                                 <span class="input-group-addon">
                                                     <span class="input-text">@lang('miscellaneous.admin.project_writing.data.company_email')</span>
                                                 </span>
-                                                <input type="email" name="company_email" required id="company_email" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.company_email')">
+                                                <input type="email" name="company_email" id="company_email" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.company_email')">
                                             </div><!-- End .input-group -->
 
 											<!-- Company phone -->
@@ -182,7 +194,7 @@
 															@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.title')
 														</span>
 													</label><br>
-													<label style="margin-top: 5px; margin-left: 0; cursor: pointer;" onclick="toggleActivity();">
+													<label style="margin-top: 3px; margin-left: 0; cursor: pointer;" onclick="toggleActivity();">
 														<input type="checkbox" id="breeding">
 														<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
 															@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.title')
@@ -198,16 +210,128 @@
 												</div>
 												<div class="panel-body">
 													<div class="form-group">
-														<label for="mySelect">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.title')</label>
-														<select class="form-control" id="agricultureType" name="agriculture_type" onchange="agricultureTypeChange('agricultureType')">
-															<option value="production">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.production')</option>
-															<option value="transformation">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.title')</option>
-															<option value="selling">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.selling')</option>
-															<option value="inputs_supply">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.inputs_supply')</option>
-															<option value="equipment_supply">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.equipment_supply')</option>
-														</select>
+														<label style="margin-bottom: 10px;">
+															@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.title')
+														</label><br>
+														<label style="cursor: pointer;">
+															<input type="checkbox" name="agriculture_types[]" id="productionAgriculture" value="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.production.title')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.production.title')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="agriculture_types[]" id="transformationAgriculture" value="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.title')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.title')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="agriculture_types[]" id="sellingAgriculture" value="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.selling')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.selling')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="agriculture_types[]" id="inputsSupplyAgriculture" value="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.inputs_supply')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.inputs_supply')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-bottom: 0; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="agriculture_types[]" id="equipmentSupplyAgriculture" value="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.equipment_supply')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.equipment_supply')
+															</span>
+														</label>
 													</div>
 
+                                                    <!-- Production data -->
+                                                    <div id="productionData" class="panel panel-default d-none">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.production.title')</div>
+														<div class="panel-body">
+															<!-- Is land owner -->
+															<div id="isLandOwnerAgriculture" class="form-group">
+																<p style="margin-bottom: 0;">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.is_land_owner')</p>
+
+																<label class="radio-inline" style="margin-top: 5px;">
+																	<input type="radio" name="is_land_owner_agriculture" id="is_land_owner_agriculture_yes" value="1"><span class="text-muted">@lang('miscellaneous.yes')</span>
+																</label><br>
+																<label class="radio-inline" style="margin-top: 5px;">
+																	<input type="radio" name="is_land_owner_agriculture" id="is_land_owner_agriculture_no" checked value="0"><span class="text-muted">@lang('miscellaneous.no')</span>
+																</label>
+															</div>
+
+															<!-- Land area and yield -->
+															<div id="landAreaYieldAgriculture" class="form-group d-none">
+																<label for="land_area_agriculture" style="font-weight: normal;">
+																	@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.land_area')
+																</label>
+																<input type="number" name="land_area_agriculture" id="land_area_agriculture" class="form-control input-lg" placeholder="@lang('miscellaneous.size')">
+
+																<label for="land_yield_per_hectare" style="font-weight: normal; margin-top: 8px;">
+																	@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.land_yield_per_hectare')
+																</label>
+																<input type="number" name="land_yield_per_hectare" id="land_yield_per_hectare" class="form-control input-lg" placeholder="@lang('miscellaneous.yield')">
+															</div>
+
+															<!-- Cultivated products -->
+															<label for="agriculture_type_production_content" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.production.cultivated_products.title')
+															</label>
+															<input type="text" name="agriculture_type_production_content" id="agriculture_type_production_content" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.production.cultivated_products.description')">
+														</div>
+                                                    </div>
+
+                                                    <!-- Transformation data -->
+													<div id="transformationData" class="panel panel-default d-none" style="margin-top: 8px;">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.title')</div>
+														<div class="panel-body">
+															<label style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.processing_unit_capacity')
+															</label>
+															<div class="row">
+																<div class="col-lg-6 col-sm-6 col-xs-6" style="padding-right: 0;">
+																	<input type="text" name="agriculture_type_content_quantity" id="agricultureTypeContentQuantity" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.quantity_processed')">
+																</div>
+																<div class="col-lg-6 col-sm-6 col-xs-6">
+																	<select class="form-control input-lg" id="agricultureTypeContentPeriod" name="agriculture_type_content_period">
+																		<option class="small" selected disabled>@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.choose_period')</option>
+																		<option value="daily">@lang('miscellaneous.period.expression.daily')</option>
+																		<option value="monthly">@lang('miscellaneous.period.expression.monthly')</option>
+																		<option value="yearly">@lang('miscellaneous.period.expression.yearly')</option>
+																	</select>
+																</div>
+															</div>
+
+															<!-- Processed products -->
+															<label for="agriculture_type_transformation_content" style="font-weight: normal; margin-top: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.processed_products.title')
+															</label>
+															<input type="text" name="agriculture_type_transformation_content" id="agriculture_type_transformation_content" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.transformation.processed_products.description')">
+														</div>
+													</div>
+
+                                                    <!-- Inputs supplying data -->
+													<div id="inputsSupplyingData" class="panel panel-default d-none" style="margin-top: 8px;">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.inputs_supply')</div>
+														<div class="panel-body">
+															<label for="agriculture_type_equipment_content" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.supply_content')
+															</label>
+															<input type="text" name="agriculture_type_equipment_content" id="agriculture_type_equipment_content" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.supply_content')">
+														</div>
+													</div>
+
+                                                    <!-- Equipment supplying data -->
+													<div id="equipmentSupplyingData" class="panel panel-default d-none" style="margin-top: 8px;">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.equipment_supply')</div>
+														<div class="panel-body">
+															<label for="agriculture_type_content" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.supply_content')
+															</label>
+															<input type="text" name="agriculture_type_content" id="agriculture_type_content" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.supply_content')">
+														</div>
+													</div>
 												</div>
 											</div>
 
@@ -217,17 +341,203 @@
 													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.title')</p>
 												</div>
 												<div class="panel-body">
+													<div class="form-group">
+														<label style="margin-bottom: 10px;">
+															@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.title')
+														</label><br>
+														<label style="cursor: pointer;">
+															<input type="checkbox" name="breeding_types[]" id="fishBreeding" value="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.title')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.title')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="breeding_types[]" id="poultryBreeding" value="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.poultry.title')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.poultry.title')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="breeding_types[]" id="pigBreeding" value="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.pig.title')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.pig.title')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="breeding_types[]" id="rabbitBreeding" value="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.rabbit.title')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.rabbit.title')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="breeding_types[]" id="cattleBreeding" value="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.cattle.title')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.cattle.title')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="breeding_types[]" id="sheepBreeding" value="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.sheep.title')" onclick="toggleType();">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.sheep.title')
+															</span>
+														</label><br>
+													</div>
 
+                                                    <!-- Is Owner -->
+													<div class="panel panel-default">
+														<div class="panel-body">
+															<!-- Is land owner -->
+															<div id="isLandOwnerBreeding" class="form-group">
+																<p style="margin-bottom: 0;">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.is_land_owner')</p>
+
+																<label class="radio-inline" style="margin-top: 5px;">
+																	<input type="radio" name="is_land_owner_breeding" id="is_land_owner_breeding_yes" value="1"><span class="text-muted">@lang('miscellaneous.yes')</span>
+																</label><br>
+																<label class="radio-inline" style="margin-top: 5px;">
+																	<input type="radio" name="is_land_owner_breeding" id="is_land_owner_breeding_no" checked value="0"><span class="text-muted">@lang('miscellaneous.no')</span>
+																</label>
+															</div>
+
+															<!-- Land area -->
+															<div id="landAreaBreeding" class="form-group d-none">
+																<label for="land_area_breeding" style="font-weight: normal;">
+																	@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.land_area')
+																</label>
+																<input type="number" name="land_area_breeding" id="land_area_breeding" class="form-control input-lg" placeholder="@lang('miscellaneous.size')">
+															</div>
+														</div>
+													</div>
+
+                                                    <!-- Fish data -->
+                                                    <div id="fishData" class="panel panel-default d-none">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.title')</div>
+														<div class="panel-body">
+															<!-- Species -->
+															<label for="breeding_type_fish_content" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.fish_species')
+															</label>
+															<input type="text" name="breeding_type_fish_content" id="breeding_type_fish_content" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.fish_species')">
+
+															<!-- Pond capacity -->
+															<label for="breeding_type_fish_pond_capacity" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.pond_capacity')
+															</label>
+															<input type="text" name="breeding_type_fish_pond_capacity" id="breeding_type_fish_pond_capacity" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.pond_capacity')">
+
+															<!-- Cage capacity -->
+															<label for="breeding_type_fish_cage_capacity" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.cage_capacity')
+															</label>
+															<input type="text" name="breeding_type_fish_cage_capacity" id="breeding_type_fish_cage_capacity" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.cage_capacity')">
+
+															<!-- Cage capacity -->
+															<label for="breeding_type_fish_bin_capacity" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.bin_capacity')
+															</label>
+															<input type="text" name="breeding_type_fish_bin_capacity" id="breeding_type_fish_bin_capacity" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.fish.bin_capacity')">
+														</div>
+                                                    </div>
+
+                                                    <!-- Poultry data -->
+                                                    <div id="poultryData" class="panel panel-default d-none">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.poultry.title')</div>
+														<div class="panel-body">
+															<!-- Total number -->
+															<label for="breeding_type_poultry_total_number" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.poultry.animals_total_number')
+															</label>
+															<input type="text" name="breeding_type_poultry_total_number" id="breeding_type_poultry_total_number" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.poultry.animals_total_number')">
+														</div>
+                                                    </div>
+
+                                                    <!-- Pig data -->
+                                                    <div id="pigData" class="panel panel-default d-none">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.pig.title')</div>
+														<div class="panel-body">
+															<!-- Total number -->
+															<label for="breeding_type_pig_total_number" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.pig.animals_total_number')
+															</label>
+															<input type="text" name="breeding_type_pig_total_number" id="breeding_type_pig_total_number" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.pig.animals_total_number')">
+														</div>
+                                                    </div>
+
+                                                    <!-- Rabbit data -->
+                                                    <div id="rabbitData" class="panel panel-default d-none">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.rabbit.title')</div>
+														<div class="panel-body">
+															<!-- Total number -->
+															<label for="breeding_type_rabbit_total_number" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.rabbit.animals_total_number')
+															</label>
+															<input type="text" name="breeding_type_rabbit_total_number" id="breeding_type_rabbit_total_number" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.rabbit.animals_total_number')">
+														</div>
+                                                    </div>
+
+                                                    <!-- Cattle data -->
+                                                    <div id="cattleData" class="panel panel-default d-none">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.cattle.title')</div>
+														<div class="panel-body">
+															<!-- Total number -->
+															<label for="breeding_type_rabbit_total_number" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.cattle.animals_total_number')
+															</label>
+															<input type="text" name="breeding_type_rabbit_total_number" id="breeding_type_rabbit_total_number" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.cattle.animals_total_number')">
+
+															<!-- Kind -->
+															<label class="radio-inline" style="margin-top: 8px;">
+																<input type="radio" name="breeding_type_cattle_kind" id="breeding_type_cattle_kind_meat" checked value="meat"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.cattle.kind.meat')</span>
+															</label><br>
+															<label class="radio-inline" style="margin-top: 5px;">
+																<input type="radio" name="breeding_type_cattle_kind" id="breeding_type_cattle_kind_milk" value="milk"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.cattle.kind.milk')</span>
+															</label><br>
+															<label class="radio-inline" style="margin-top: 5px;">
+																<input type="radio" name="breeding_type_cattle_kind" id="breeding_type_cattle_kind_both" value="both"><span class="text-muted">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.cattle.kind.both')</span>
+															</label>
+														</div>
+                                                    </div>
+
+                                                    <!-- Sheep data -->
+                                                    <div id="sheepData" class="panel panel-default d-none">
+														<div class="panel-heading">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.sheep.title')</div>
+														<div class="panel-body">
+															<!-- Total number -->
+															<label for="breeding_type_sheep_total_number" style="font-weight: normal;">
+																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.sheep.animals_total_number')
+															</label>
+															<input type="text" name="breeding_type_sheep_total_number" id="breeding_type_sheep_total_number" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.sheep.animals_total_number')">
+														</div>
+                                                    </div>
 												</div>
 											</div>
-
 										</fieldset>
+
+										<button type="submit" class="btn strt-btn-green" style="width: 100%;">@lang('miscellaneous.send')</button>
 									</div>
-									<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-12">
+									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+										<div class="panel panel-default">
+											<div class="panel-heading" style="background-color: transparent!important;">
+												<h5 class="h5-responsive" style="font-weight: 700; margin: 0;">@lang('miscellaneous.admin.project_writing.my_other_projects')</h5>
+											</div>
+	@if (count($user_projects) > 0)
+											<ul class="list-group list-group-flush">
+		@foreach ($user_projects as $project)
+												<li class="list-group-item clearfix">
+			@if (count($project->photos) > 0)
+													<img src="{{ $project->photos[0]->file_url }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
+			@endif
+													<p class="small" style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
+													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline; float: right;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
+												</li>
+		@endforeach
+											</ul>
+	@else
+											<div class="panel-body text-center">
+												<i class="bi bi-file-text" style="font-size: 7rem"></i>
+												<h5>@lang('miscellaneous.empty_list')</h5>
+											</div>
+	@endif
+										</div>
 									</div>
 								</div>
 							</form>

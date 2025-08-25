@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Post;
 use App\Models\Product;
+use App\Models\Project;
 use App\Models\ProjectSector;
 use App\Models\User;
 use App\Services\CartService;
@@ -47,9 +48,11 @@ class AppServiceProvider extends ServiceProvider
             if (Auth::check()) {
                 $current_user = new ResourcesUser(Auth::user());
                 $user_orders = $current_user->unpaidOrders();
+                $user_projects = Project::where('user_id', $current_user->id)->orderByDesc('created_at')->get();;
                 $unread_notifications = Notification::where('to_user_id', $current_user->id)->where('is_read', 0)->orderByDesc('created_at')->get();
 
                 $view->with('user_orders', $user_orders);
+                $view->with('user_projects', $user_projects);
                 $view->with('unread_notifications', $unread_notifications);
             }
 
