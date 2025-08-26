@@ -1628,10 +1628,10 @@
             flatpickr("#birthdate", {
                 dateFormat: "Y-m-d",  // Affiche la date comme "YYYY-mm-dd"
                 locale: locale,
-                onChange: function(selectedDates, dateStr, instance) {
-                    // Format MySQL avant l'envoi (automatique au submit)
-                    instance.input.value = selectedDates[0].toISOString().split('T')[0]; // YYYY-MM-DD
-                }
+                // onChange: function(selectedDates, dateStr, instance) {
+                //     // Format MySQL avant l'envoi (automatique au submit)
+                //     instance.input.value = selectedDates[0].toISOString().split('T')[0]; // YYYY-MM-DD
+                // }
             });
 
             /**
