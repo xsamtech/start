@@ -134,7 +134,7 @@
                                                             <span class="input-icon input-icon-country"></span>
                                                             <span class="input-text">@lang('miscellaneous.nationality')</span>
                                                         </span>
-                                                        <input type="text" name="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.nationality')" value="{{ $current_user->nationality }}">
+                                                        <input type="text" name="nationality" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.nationality')" value="{{ $current_user->nationality }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Gender -->
