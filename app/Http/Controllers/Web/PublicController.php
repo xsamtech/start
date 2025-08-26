@@ -17,6 +17,7 @@ use App\Models\File;
 use App\Models\MarketSegment;
 use App\Models\Notification;
 use App\Models\PaidFund;
+use App\Models\PasswordReset;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Project;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
+use Nette\Utils\Random;
 
 /**
  * @author Xanders
@@ -1852,137 +1854,365 @@ class PublicController extends Controller
      */
     public function updateAccount(Request $request)
     {
-        dd($request->all());
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        // Preparing dynamic rules
-        $rules = [];
+        // Get inputs
+        $inputs = [
+            'id' => $request->id,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'surname' => $request->surname,
+            'gender' => $request->gender,
+            'birthdate' => $request->birthdate,
+            'nationality' => $request->nationality,
+            'country' => $request->country,
+            'province' => $request->province,
+            'territory' => $request->territory,
+            'city' => $request->city,
+            'address_1' => $request->address_1,
+            'address_2' => $request->address_2,
+            'p_o_box' => $request->p_o_box,
+            'currency' => $request->currency,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'username' => $request->username,
+            'password' => $request->password,
+            'confirm_password' => $request->confirm_password,
+            'status' => $request->status,
+        ];
+        $users = User::all();
+        $current_user = User::find($inputs['id']);
 
-        if ($request->has('firstname')) {
-            $rules['firstname'] = ['required', 'string', 'max:255'];
+        if ($inputs['firstname'] != null) {
+            $user->update([
+                'firstname' => $inputs['firstname'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('lastname')) {
-            $rules['lastname'] = ['nullable', 'string', 'max:255'];
+        if ($inputs['lastname'] != null) {
+            $user->update([
+                'lastname' => $inputs['lastname'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('surname')) {
-            $rules['surname'] = ['nullable', 'string', 'max:255'];
+        if ($inputs['surname'] != null) {
+            $user->update([
+                'surname' => $inputs['surname'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('about_me')) {
-            $rules['about_me'] = ['nullable', 'string', 'max:300'];
+        if ($inputs['gender'] != null) {
+            $user->update([
+                'gender' => $inputs['gender'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('gender')) {
-            $rules['gender'] = ['nullable', Rule::in(['M', 'F'])];
+        if ($inputs['birthdate'] != null) {
+            $user->update([
+                'birthdate' => $inputs['birthdate'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('birthdate')) {
-            $rules['birthdate'] = ['nullable', 'date_format:d/m/Y'];
+        if ($inputs['nationality'] != null) {
+            $user->update([
+                'nationality' => $inputs['nationality'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('nationality')) {
-            $rules['nationality'] = ['nullable', 'string', 'max:255'];
+        if ($inputs['country'] != null) {
+            $user->update([
+                'country' => $inputs['country'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('country')) {
-            $rules['country'] = ['nullable', 'string', 'max:255'];
+        if ($inputs['province'] != null) {
+            $user->update([
+                'province' => $inputs['province'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('province')) {
-            $rules['province'] = ['nullable', 'string', 'max:255'];
+        if ($inputs['territory'] != null) {
+            $user->update([
+                'territory' => $inputs['territory'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('territory')) {
-            $rules['territory'] = ['nullable', 'string', 'max:255'];
+        if ($inputs['city'] != null) {
+            $user->update([
+                'city' => $inputs['city'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('city')) {
-            $rules['city'] = ['nullable', 'string', 'max:255'];
+        if ($inputs['address_1'] != null) {
+            $user->update([
+                'address_1' => $inputs['address_1'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('address_1')) {
-            $rules['address_1'] = ['nullable', 'string'];
+        if ($inputs['address_2'] != null) {
+            $user->update([
+                'address_2' => $inputs['address_2'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('address_2')) {
-            $rules['address_2'] = ['nullable', 'string'];
+        if ($inputs['p_o_box'] != null) {
+            $user->update([
+                'p_o_box' => $inputs['p_o_box'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('p_o_box')) {
-            $rules['p_o_box'] = ['nullable', 'string', 'max:45'];
+        if ($inputs['currency'] != null) {
+            $user->update([
+                'currency' => $inputs['currency'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('currency')) {
-            $rules['currency'] = ['nullable', 'string', 'max:45'];
+        if ($inputs['email'] != null) {
+            // Check if email already exists
+            foreach ($users as $another_user):
+                if (!empty($current_user->email)) {
+                    if ($current_user->email != $inputs['email']) {
+                        if ($another_user->email == $inputs['email']) {
+                            return back()->with('error_message', __('validation.custom.email.exists'));
+                        }
+                    }
+                }
+            endforeach;
+
+            if ($current_user->email != $inputs['email']) {
+                $user->update([
+                    'email' => $inputs['email'],
+                    'email_verified_at' => null,
+                    'updated_at' => now(),
+                ]);
+
+            } else {
+                $user->update([
+                    'email' => $inputs['email'],
+                    'updated_at' => now(),
+                ]);
+            }
+
+            if (!empty($current_user->phone)) {
+                $password_reset_by_phone = PasswordReset::where('phone', $current_user->phone)->first();
+                $random_int_stringified = (string) random_int(1000000, 9999999);
+
+                if ($password_reset_by_phone != null) {
+                    if (!empty($password_reset_by_phone->email)) {
+                        if ($password_reset_by_phone->email != $inputs['email']) {
+                            $password_reset_by_phone->update([
+                                'email' => $inputs['email'],
+                                'former_password' => $inputs['password'] != null ? $inputs['password'] : Random::generate(10, '0-9a-zA-Z'),
+                                'updated_at' => now(),
+                            ]);
+                        }
+                    }
+
+                    if (empty($password_reset_by_phone->email)) {
+                        $password_reset_by_phone->update([
+                            'email' => $inputs['email'],
+                            'former_password' => $inputs['password'] != null ? $inputs['password'] : Random::generate(10, '0-9a-zA-Z'),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+
+                if ($password_reset_by_phone == null) {
+                    $password_reset_by_email = PasswordReset::where('email', $inputs['email'])->first();
+
+                    if ($password_reset_by_email == null) {
+                        PasswordReset::create([
+                            'email' => $inputs['email'],
+                            'phone' => $current_user->phone,
+                            'token' => $random_int_stringified,
+                            'former_password' => $inputs['password'] != null ? $inputs['password'] : Random::generate(10, 'a-zA-Z'),
+                        ]);
+                    }
+                }
+
+            } else {
+                $random_int_stringified = (string) random_int(1000000, 9999999);
+
+                PasswordReset::create([
+                    'email' => $inputs['email'],
+                    'token' => $random_int_stringified,
+                    'former_password' => $inputs['password'] != null ? $inputs['password'] : Random::generate(10, 'a-zA-Z'),
+                ]);
+            }
         }
 
-        if ($request->has('phone')) {
-            $rules['phone'] = ['nullable', 'string', 'max:20'];
+        if ($inputs['phone'] != null) {
+            // Check if phone already exists
+            foreach ($users as $another_user):
+                if (!empty($current_user->phone)) {
+                    if ($current_user->phone != $inputs['phone']) {
+                        if ($another_user->phone == $inputs['phone']) {
+                            return back()->with('error_message', __('validation.custom.phone.exists'));
+                        }
+                    }
+                }
+            endforeach;
+
+            if ($current_user->phone != $inputs['phone']) {
+                $user->update([
+                    'phone' => $inputs['phone'],
+                    'phone_verified_at' => null,
+                    'updated_at' => now(),
+                ]);
+
+            } else {
+                $user->update([
+                    'phone' => $inputs['phone'],
+                    'updated_at' => now(),
+                ]);
+            }
+
+            if (!empty($current_user->email)) {
+                $password_reset_by_email = PasswordReset::where('email', $current_user->email)->first();
+                $random_int_stringified = (string) random_int(1000000, 9999999);
+
+                if ($password_reset_by_email != null) {
+                    if (!empty($password_reset_by_email->phone)) {
+                        if ($password_reset_by_email->phone != $inputs['phone']) {
+                            $password_reset_by_email->update([
+                                'phone' => $inputs['phone'],
+                                'former_password' => $inputs['password'] != null ? $inputs['password'] : Random::generate(10, '0-9a-zA-Z'),
+                                'updated_at' => now(),
+                            ]);
+                        }
+                    }
+
+                    if (empty($password_reset_by_email->phone)) {
+                        $password_reset_by_email->update([
+                            'phone' => $inputs['phone'],
+                            'former_password' => $inputs['password'] != null ? $inputs['password'] : Random::generate(10, '0-9a-zA-Z'),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+
+                if ($password_reset_by_email == null) {
+                    $password_reset_by_phone = PasswordReset::where('phone', $inputs['phone'])->first();
+
+                    if ($password_reset_by_email == null) {
+                        PasswordReset::create([
+                            'email' => $current_user->email,
+                            'phone' => $inputs['phone'],
+                            'token' => $random_int_stringified,
+                            'former_password' => $inputs['password'] != null ? $inputs['password'] : Random::generate(10, 'a-zA-Z'),
+                        ]);
+                    }
+                }
+
+            } else {
+                $random_int_stringified = (string) random_int(1000000, 9999999);
+
+                PasswordReset::create([
+                    'phone' => $inputs['phone'],
+                    'token' => $random_int_stringified,
+                    'former_password' => $inputs['password'] != null ? $inputs['password'] : Random::generate(10, 'a-zA-Z'),
+                ]);
+            }
         }
 
-        if ($request->has('email') && $request->input('email') !== $user->email) {
-            $rules['email'] = ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)];
+        if ($inputs['username'] != null) {
+            // Check if username already exists
+            foreach ($users as $another_user):
+                if (!empty($current_user->username)) {
+                    if ($current_user->username != $inputs['username']) {
+                        if ($another_user->username == $inputs['username']) {
+                            return back()->with('error_message', __('validation.custom.username.exists'));
+                        }
+                    }
+                }
+            endforeach;
+
+            $user->update([
+                'username' => $inputs['username'],
+                'updated_at' => now(),
+            ]);
         }
 
-        if ($request->has('username') && $request->input('username') !== $user->username) {
-            $rules['username'] = ['required', 'string', 'max:45', Rule::unique('users')->ignore($user->id)];
-        }
+        if ($inputs['password'] != null) {
+            if ($inputs['confirm_password'] != $inputs['password'] OR $inputs['confirm_password'] == null) {
+                return back()->with('error_message', __('notifications.confirm_password_error'));
+            }
 
-        if ($request->filled('password')) {
-            $rules['password'] = ['required', 'confirmed', Rules\Password::defaults()];
-        }
+            // if (preg_match('#^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$#', $inputs['password']) == 0) {
+            //     return $this->handleError($inputs['password'], __('miscellaneous.password.error'), 400);
+            // }
 
-        if ($request->has('image_64')) {
-            $rules['image_64'] = ['required', 'string', 'starts_with:data:image/'];
-        }
+            if (!empty($current_user->email)) {
+                $password_reset = PasswordReset::where('email', $current_user->email)->first();
+                $random_int_stringified = (string) random_int(1000000, 9999999);
 
-        // Validation of present fields only
-        $validated = $request->validate($rules);
+                // If password_reset exists, update it
+                if ($password_reset != null) {
+                    $password_reset->update([
+                        'token' => $random_int_stringified,
+                        'former_password' => $inputs['password'],
+                        'updated_at' => now(),
+                    ]);
+                }
 
-        // Password hash if present
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
+            } else {
+                if (!empty($current_user->phone)) {
+                    $password_reset = PasswordReset::where('phone', $current_user->phone)->first();
+                    $random_int_stringified = (string) random_int(1000000, 9999999);
+
+                    // If password_reset exists, update it
+                    if ($password_reset != null) {
+                        $password_reset->update([
+                            'token' => $random_int_stringified,
+                            'former_password' => $inputs['password'],
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+            }
+
+            $user->update([
+                'password' => Hash::make($inputs['password']),
+                'updated_at' => now(),
+            ]);
         }
 
         // Processing of the base64 image if present
-        if (isset($validated['image_64'])) {
-            $replace = substr($validated['image_64'], 0, strpos($validated['image_64'], ',') + 1);
-            $image = str_replace($replace, '', $validated['image_64']);
+        if ($request->image_64) {
+            $replace = substr($request->image_64, 0, strpos($request->image_64, ',') + 1);
+            $image = str_replace($replace, '', $request->image_64);
             $image = str_replace(' ', '+', $image);
 
             $image_path = 'images/users/' . $user->id . '/avatar/' . Str::random(50) . '.png';
 
+            // Upload image
             Storage::disk('public')->put($image_path, base64_decode($image));
 
-            $validated['avatar_url'] = Storage::url($image_path);
-
-            unset($validated['image_64']);
+            $user->update([
+                'avatar_url' => Storage::url($image_path),
+                'updated_at' => now()
+            ]);
         }
 
-        // Update user with valid fields
-        $user->update($validated);
-
-        // Update PasswordReset only if necessary
-        $password_reset = !empty($user->email)
-            ? \App\Models\PasswordReset::where('email', $user->email)->first()
-            : \App\Models\PasswordReset::where('phone', $user->phone)->first();
-
-        if ($password_reset) {
-            $updateData = [];
-
-            if ($request->filled('email')) {
-                $updateData['email'] = $request->email;
-            }
-
-            if ($request->filled('phone')) {
-                $updateData['phone'] = $request->phone;
-            }
-
-            $updateData['token'] = (string) random_int(1000000, 9999999);
-
-            $password_reset->update($updateData);
+        if ($inputs['status'] != null) {
+            $user->update([
+                'status' => $inputs['status'],
+                'updated_at' => now(),
+            ]);
         }
 
         // Conditional return: AJAX or HTML POST
