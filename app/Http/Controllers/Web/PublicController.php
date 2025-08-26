@@ -1852,6 +1852,7 @@ class PublicController extends Controller
      */
     public function updateAccount(Request $request)
     {
+        dd($request->all());
         /** @var \App\Models\User $user */
         $user = Auth::user();
         // Preparing dynamic rules
