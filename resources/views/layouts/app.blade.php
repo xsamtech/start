@@ -1626,7 +1626,7 @@
              * Flatpickr : DateTime picker
              */
             flatpickr("#birthdate", {
-                dateFormat: "d/m/Y",  // Affiche la date comme "DD/MM/YYYY"
+                dateFormat: "Y-m-d",  // Affiche la date comme "YYYY-mm-dd"
                 locale: locale,
                 onChange: function(selectedDates, dateStr, instance) {
                     // Format MySQL avant l'envoi (automatique au submit)
