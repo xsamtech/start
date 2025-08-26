@@ -134,7 +134,7 @@
                                                             <span class="input-icon input-icon-country"></span>
                                                             <span class="input-text">@lang('miscellaneous.nationality')</span>
                                                         </span>
-                                                        <input type="text" name="nationality" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.nationality')" value="{{ $current_user->nationality }}">
+                                                        <input type="text" name="nationality" id="nationality" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.nationality')" value="{{ $current_user->nationality }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Gender -->
@@ -203,7 +203,7 @@
                                                             <span class="input-icon input-icon-address"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.province')</span>
                                                         </span>
-                                                        <input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.province')" value="{{ $current_user->province }}">
+                                                        <input type="text" name="province" id="province" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.province')" value="{{ $current_user->province }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Territory -->
@@ -212,7 +212,7 @@
                                                             <span class="input-icon input-icon-address"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.territory')</span>
                                                         </span>
-                                                        <input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.territory')" value="{{ $current_user->territory }}">
+                                                        <input type="text" name="territory" id="territory" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.territory')" value="{{ $current_user->territory }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- City -->
@@ -221,7 +221,7 @@
                                                             <span class="input-icon input-icon-city"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.city')</span>
                                                         </span>
-                                                        <input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')" value="{{ $current_user->city }}">
+                                                        <input type="text" name="city" id="city" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')" value="{{ $current_user->city }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Country -->
