@@ -125,7 +125,7 @@
                                                             <span class="input-icon input-icon-region"></span>
                                                             <span class="input-text">@lang('miscellaneous.birth_date.label2') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="birthdate" required id="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.birth_date.label')" value="{{ !empty($current_user->birthdate) ? date('m/d/Y', strtotime($current_user->birthdate)) : '' }}">
+                                                        <input type="text" name="birthdate" required id="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.birth_date.label')" value="{{ !empty($current_user->birthdate) ? date('Y-m-d', strtotime($current_user->birthdate)) : '' }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Nationality -->
