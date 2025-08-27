@@ -49,9 +49,9 @@
 											<tr>
 												<td class="item-name-col"><img src="{{ $customer->avatar_url }}" alt="" width="50" style="border-radius: 50%;"></td>
 												<td class="item-name-col">{{ $customer->firstname }} {{ $customer->lastname }}</td>
-												<td class="item-name-col">{{ $customer->email }}</td>
+												<td class="item-name-col">{{ $customer->username }}</td>
 												<td class="item-name-col">{{ count($cart->customer_orders) }}</td>
-												<td class="item-name-col">{{ formatDecimalNumber($cart->totalConvertedAmountInPeriod($current_user->currency, $period)) }} {{ $current_user->currency == 'USD' ? '$' :$current_user->currency }}</td>
+												<td class="item-name-col">{{ formatDecimalNumber($cart->totalConvertedAmountInPeriod($current_user->currency, $period), 3) }} {{ $current_user->currency == 'USD' ? '$' :$current_user->currency }}</td>
 												<td class="item-name-col">{{ $cart->customer_orders[0]->created_at->format('d/m/Y H:i') }}</td>
 											</tr>
 		@endforeach

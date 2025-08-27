@@ -1059,6 +1059,39 @@
 @if (Route::is('crowdfunding.home') && !empty($current_user))
         <script type="text/javascript">
             /**
+             * Limit characters in the textarea
+             */
+            const textarea = document.getElementById('limitChars');
+            const charCountSpan = document.getElementById('charCount');
+            const maxLength = textarea.getAttribute('maxlength');
+
+            // Initial update on page load
+            updateCharCount();
+
+            // Add event listener for input changes
+            textarea.addEventListener('input', updateCharCount);
+
+            function updateCharCount() {
+                const currentLength = textarea.value.length;
+                const remaining = maxLength - currentLength;
+
+                charCountSpan.textContent = remaining;
+
+                // Optional: Add visual cues when approaching or exceeding limit
+                if (remaining <= 10 && remaining >= 0) {
+                    charCountSpan.style.color = 'orange'; // Warning color
+
+                } else if (remaining < 0) {
+                    charCountSpan.style.color = 'red'; // Exceeded limit color
+                    // Optionally, truncate the text if the maxlength attribute isn't strictly enforced
+                    // textarea.value = textarea.value.substring(0, maxLength);
+
+                } else {
+                    charCountSpan.style.color = 'initial'; // Reset color
+                }
+            }
+
+            /**
              * Inputs number always numeric
              */
             const numberInputs = document.querySelectorAll('input[type="number"]');

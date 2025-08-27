@@ -82,7 +82,7 @@
 										</div>
 									</div>
 									<div class="col-lg-5 col-md-7 col-sm-7 col-xs-12">
-										<fieldset>
+										<fieldset style="margin-bottom: 10px;">
 											<!-- Project description -->
                                             <div class="input-group textarea-container" style="z-index: 3; margin-bottom: 5px;">
                                                 <span class="input-group-addon clearfix">
@@ -593,7 +593,7 @@
 																	@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.title')
 																</label><br>
 
-																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_self').checked) { document.getElementById('fundingAmount').style.display = 'block'; } else { document.getElementById('fundingAmount').style.display = 'none'; }">
+																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_self').checked) { document.getElementById('fundingAmount').style.display = 'block'; } else { document.getElementById('fundingAmount').style.display = 'none'; document.getElementById('funding_amount').value = ''; }">
 																	<input type="checkbox" name="is_funded_by_self" id="is_funded_by_self" value="1">
 																	<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
 																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.title')
@@ -606,7 +606,7 @@
 																	<input type="text" name="funding_amount" id="funding_amount" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')">
 																</span>
 
-																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_credit').checked) { document.getElementById('creditAmount').style.display = 'block'; } else { document.getElementById('creditAmount').style.display = 'none'; }">
+																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_credit').checked) { document.getElementById('creditAmount').style.display = 'block'; } else { document.getElementById('creditAmount').style.display = 'none'; document.getElementById('funding_amount').value = 'credit_amount'; }">
 																	<input type="checkbox" name="is_funded_by_credit" id="is_funded_by_credit" value="1">
 																	<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
 																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_credit.title')
@@ -619,7 +619,7 @@
 																	<input type="text" name="credit_amount" id="credit_amount" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')">
 																</span>
 
-																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_grant').checked) { document.getElementById('grantAmount').style.display = 'block'; } else { document.getElementById('grantAmount').style.display = 'none'; }">
+																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_grant').checked) { document.getElementById('grantAmount').style.display = 'block'; } else { document.getElementById('grantAmount').style.display = 'none'; document.getElementById('grant_amount').value = 'credit_amount'; }">
 																	<input type="checkbox" name="is_funded_by_grant" id="is_funded_by_grant" value="1">
 																	<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
 																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_grant.title')
@@ -668,11 +668,43 @@
 														</div>
 													</div>
 
-													<!-- Annual turnover -->
+													<!-- Forecast turnover -->
 													<label for="forecast_turnover" style="font-weight: normal;">
 														@lang('miscellaneous.admin.project_writing.data.accounting_summary.forecast_turnover')
 													</label>
 													<input type="number" name="forecast_turnover" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.annual_turnover')">
+												</div>
+											</div>
+
+											<!-- Strategic synthesis -->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.strategic_synthesis.title')</p>
+												</div>
+
+												<!-- Business model -->
+												<div class="panel-body">
+													<!-- Business model -->
+													<div class="input-group textarea-container" style="z-index: 3; margin-bottom: 5px;">
+														<span class="input-group-addon clearfix">
+															<span style="float: left; display: inline-block; padding-top: 4px;">
+																<span class="input-text">@lang('miscellaneous.admin.project_writing.data.strategic_synthesis.business_model.title') <span class="text-danger">&#42;</span></span>
+															</span>
+															<span style="float: right; display: inline-block; padding-top: 5px;">
+																@lang('miscellaneous.characters_remaining') 
+																<span id="charCount" style="font-weight: 600;">500</span>
+															</span>
+														</span>
+														<textarea name="business_model" required id="limitChars" class="form-control" cols="30" rows="4" maxlength="500" placeholder="@lang('miscellaneous.admin.project_writing.data.strategic_synthesis.business_model.info')"></textarea>
+													</div><!-- End .input-group autofocus -->
+
+													<!-- SWOT analysis -->
+													<div class="input-group textarea-container" style="z-index: 3; margin-bottom: 5px;">
+														<span class="input-group-addon">
+															<span class="input-text">@lang('miscellaneous.admin.project_writing.data.strategic_synthesis.swot_analysis.title')</span>
+														</span>
+														<textarea name="swot_analysis" id="swot_analysis" class="form-control" cols="30" rows="4" maxlength="500" placeholder="@lang('miscellaneous.admin.project_writing.data.strategic_synthesis.swot_analysis.info')"></textarea>
+													</div><!-- End .input-group autofocus -->
 
 												</div>
 											</div>
