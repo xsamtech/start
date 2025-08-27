@@ -41,7 +41,7 @@
 										<tbody>
 	@php
 		foreach ($items as $item) {
-			$item->converted_price = formatDecimalNumber($item->convertPriceAtThatTime($current_user->currency));
+			$item->converted_price = formatDecimalNumber($item->convertPriceAtThatTime($current_user->currency), 3);
 			$item->subtotal_price = formatDecimalNumber($item->subtotalPrice($current_user->currency));
 		}
 

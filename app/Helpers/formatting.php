@@ -47,25 +47,25 @@ if (!function_exists("formatIntegerNumber")) {
 }
 
 if (!function_exists("formatDecimalNumber")) {
-    function formatDecimalNumber($number)
+    function formatDecimalNumber($number, $round = 2)
     {
         if (Session::has('locale')) {
             $sessionLocale = Session::get('locale');
 
             if ($sessionLocale !== 'fr') {
-                return number_format($number, 2, '.', ',');
+                return number_format($number, $round, '.', ',');
 
             } else {
-                return number_format($number, 2, ',', ' ');
+                return number_format($number, $round, ',', ' ');
             }
         } else {
             $appLocale = app()->getLocale();
 
             if ($appLocale !== 'fr') {
-                return number_format($number, 2, '.', ',');
+                return number_format($number, $round, '.', ',');
 
             } else {
-                return number_format($number, 2, ',', ' ');
+                return number_format($number, $round, ',', ' ');
             }
         }
     }

@@ -898,7 +898,8 @@ return [
                     ],
                 ],
                 'market_segments_or_target' => [
-                    'title' => 'What are the market segments or targets of your project?',
+                    'title' => 'Market segments / Project targets',
+                    'description' => 'What are the market segments or targets of your project?',
                     'quantitative' => [
                         'title' => 'Quantitative',
                         'wholesale' => 'Wholesale',
@@ -920,27 +921,27 @@ return [
                         'title' => 'Funding Sources',
                         'is_funded_by_self' => [
                             'title' => 'Own Funds',
-                            'amount' => 'Amount of your capital or business funds',
+                            'amount' => 'Amount (in USD) of your capital or business funds',
                         ],
                         'is_funded_by_credit' => [
                             'title' => 'Loans, Credit',
-                            'amount' => 'Loan Amount',
+                            'amount' => 'Loan Amount (in USD)',
                             'interest_rate' => 'Interest Rate',
                             'repayment_deadline' => 'Repayment Deadline',
                         ],
                         'is_funded_by_grant' => [
                             'title' => 'Grants',
-                            'amount' => 'Grant Amount',
+                            'amount' => 'Grant Amount (in USD)',
                         ],
                         'other_funding_sources' => 'Other (Specify)',
                     ],
-                    'annual_turnover' => 'Annual Turnover',
+                    'annual_turnover' => 'Annual Turnover (in USD)',
                     'last_year_net' => [
                         'title' => 'Result for the last fiscal year',
-                        'profit' => 'Net Profit',
-                        'loss' => 'Net Loss',
+                        'profit' => 'Net Profit (in USD)',
+                        'loss' => 'Net Loss (in USD)',
                     ],
-                    'forecast_turnover' => 'Forecasted Turnover',
+                    'forecast_turnover' => 'Forecasted Turnover (in USD)',
                 ],
                 'strategic_synthesis' => [
                     'title' => 'Strategic Synthesis',

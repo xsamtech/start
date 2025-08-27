@@ -168,7 +168,7 @@ class Product extends Model
         $conversionRate = getExchangeRate($this->currency, $userCurrency);
 
         // Calculate the converted price
-        return round($this->price * $conversionRate, 2);
+        return round($this->price * $conversionRate, 3);
     }
 
     /**

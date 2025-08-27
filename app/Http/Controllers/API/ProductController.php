@@ -107,7 +107,7 @@ class ProductController extends BaseController
         }
 
         // Get total prices in the cart
-        $total_to_pay = $cart->totalConvertedAmount($current_user->currency);
+        // $total_to_pay = $cart->totalConvertedAmount($current_user->currency);
 
         // Validations
         if ($request->transaction_type_id == null OR !is_numeric($request->transaction_type_id)) {
@@ -124,7 +124,7 @@ class ProductController extends BaseController
                 'type' => 1,
                 'phone' => $request->other_phone,
                 'reference' => $reference_code,
-                'amount' => $total_to_pay,
+                'amount' => $request->amount,
                 'currency' => $current_user->currency,
                 'callbackUrl' => getApiURL() . '/payment/store'
             );
@@ -164,7 +164,7 @@ class ProductController extends BaseController
                         $payment = Payment::create([
                             'reference' => $reference_code,
                             'order_number' => $jsonRes['orderNumber'],
-                            'amount' => round($total_to_pay),
+                            'amount' => $request->amount,
                             'phone' => $request->other_phone,
                             'currency' => $current_user->currency,
                             'channel' => $request->channel,
@@ -205,13 +205,13 @@ class ProductController extends BaseController
                 'authorization' => 'Bearer ' . config('services.flexpay.api_token'),
                 'merchant' => config('services.flexpay.merchant'),
                 'reference' => $reference_code,
-                'amount' => round($total_to_pay),
+                'amount' => $request->amount,
                 'currency' => $current_user->currency,
                 'description' => __('miscellaneous.bank_transaction_description'),
                 'callback_url' => getApiURL() . '/payment/store',
-                'approve_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/0/cart/' . $cart->id,
-                'cancel_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/1/cart/' . $cart->id,
-                'decline_url' => $request->app_url . '/paid/' . round($total_to_pay) . '/' . $current_user->currency . '/2/cart/' . $cart->id,
+                'approve_url' => $request->app_url . '/paid/' . $request->amount . '/' . $current_user->currency . '/0/cart/' . $cart->id,
+                'cancel_url' => $request->app_url . '/paid/' . $request->amount . '/' . $current_user->currency . '/1/cart/' . $cart->id,
+                'decline_url' => $request->app_url . '/paid/' . $request->amount . '/' . $current_user->currency . '/2/cart/' . $cart->id,
                 'home_url' => $request->app_url . '/account/cart?paid=done',
             ));
 
@@ -243,7 +243,7 @@ class ProductController extends BaseController
                         $payment = Payment::create([
                             'reference' => $reference_code,
                             'order_number' => $orderNumber,
-                            'amount' => round($total_to_pay),
+                            'amount' => $request->amount,
                             'phone' => $request->other_phone,
                             'currency' => $current_user->currency,
                             'channel' => $request->channel,

@@ -617,7 +617,7 @@ class PublicController extends Controller
                             $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
 
                         } elseif ($count > 1) {
-                            $message = __('notifications.many_customers_feedback_one_product', ['user_name' => $fromUserName, 'count' => $count]);
+                            $message = __('notifications.many_customers_feedback_one_product', ['user_name' => $fromUserName, 'count' => $count - 1]);
                             $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
                         }
                         break;
@@ -629,7 +629,7 @@ class PublicController extends Controller
                             $route = route('discussion.datas', ['id' => $post->id]);
 
                         } elseif ($count > 1) {
-                            $message = __('notifications.many_posts_answered_one_parent', ['user_name' => $fromUserName, 'count' => $count]);
+                            $message = __('notifications.many_posts_answered_one_parent', ['user_name' => $fromUserName, 'count' => $count - 1]);
                             $route = route('discussion.datas', ['id' => $post->id]);
                         }
                     break;
@@ -1333,7 +1333,7 @@ class PublicController extends Controller
      */
     public function runPay(Request $request)
     {
-        $paid_fund = null;
+        // $paid_fund = null;
 
         if ($request->transaction_type_id == null) {
             return redirect()->back()->with('error_message', __('notifications.transaction_type_error'));
@@ -1345,14 +1345,14 @@ class PublicController extends Controller
             }
         }
 
-        if (!empty($request->crowdfunding_id)) {
-            $paid_fund = PaidFund::create([
-                'crowdfunding_id' => $request->crowdfunding_id,
-                'user_id' => $request->user_id,
-                'amount' => $request->amount,
-                'currency' => $request->currency
-            ]);
-        }
+        // if (!empty($request->crowdfunding_id)) {
+        //     $paid_fund = PaidFund::create([
+        //         'crowdfunding_id' => $request->crowdfunding_id,
+        //         'user_id' => $request->user_id,
+        //         'amount' => $request->amount,
+        //         'currency' => $request->currency
+        //     ]);
+        // }
 
         if ($request->transaction_type_id != null) {
             $product_api = $this::$api_client_manager::call('POST', 
@@ -1360,26 +1360,28 @@ class PublicController extends Controller
                                                             null, [
                                                                 'transaction_type_id' => $request->transaction_type_id,
                                                                 'other_phone' => $request->other_phone_code . $request->other_phone_number,
+                                                                'amount' => $request->amount,
                                                                 'user_id' => $request->user_id,
                                                                 'cart_id' => $request->cart_id,
                                                                 'app_url' => $request->app_url
                                                             ]);
-            $paid_fund_api = $this::$api_client_manager::call('POST', 
-                                                                getApiURL() . '/paid_fund/pay/' . $paid_fund->id . '/' . $request->user_id, 
-                                                                null, [
-                                                                'transaction_type_id' => $request->transaction_type_id,
-                                                                'other_phone' => $request->other_phone_code . $request->other_phone_number,
-                                                                'user_id' => $request->user_id,
-                                                                'paid_fund_id' => $paid_fund->id,
-                                                                'app_url' => $request->app_url
-                                                            ]);
+            // $paid_fund_api = $this::$api_client_manager::call('POST', 
+            //                                                     getApiURL() . '/paid_fund/pay/' . $paid_fund->id . '/' . $request->user_id, 
+            //                                                     null, [
+            //                                                     'transaction_type_id' => $request->transaction_type_id,
+            //                                                     'other_phone' => $request->other_phone_code . $request->other_phone_number,
+            //                                                     'user_id' => $request->user_id,
+            //                                                     'paid_fund_id' => $paid_fund->id,
+            //                                                     'app_url' => $request->app_url
+            //                                                 ]);
 
             if ($request->transaction_type_id == 1) {
                 if ($request->other_phone_code == null or $request->other_phone_number == null) {
                     return redirect()->back()->with('error_message', __('validation.custom.phone.incorrect'));
                 }
 
-                $cart = !empty($request->crowdfunding_id) ? $paid_fund_api : $product_api;
+                // $cart = !empty($request->crowdfunding_id) ? $paid_fund_api : $product_api;
+                $cart = $product_api;
 
                 if ($cart->success) {
                     return redirect()->route('transaction.waiting', [
@@ -1393,7 +1395,8 @@ class PublicController extends Controller
             }
 
             if ($request->transaction_type_id == 2) {
-                $cart = !empty($request->crowdfunding_id) ? $paid_fund_api : $product_api;
+                // $cart = !empty($request->crowdfunding_id) ? $paid_fund_api : $product_api;
+                $cart = $product_api;
 
                 if ($cart->success) {
                     return redirect($cart->data->result_response->url)->with('order_number', $cart->data->result_response->order_number);
@@ -1506,7 +1509,7 @@ class PublicController extends Controller
 
             foreach ($administrators as $admin) {
                 Notification::create([
-                    'type' => 'product_shared',
+                    'type' => 'product_published',
                     'is_read' => 0,
                     'from_user_id' => Auth::id(),
                     'to_user_id' => $admin->id,
@@ -1663,16 +1666,18 @@ class PublicController extends Controller
             'company_email' => $request->company_email,
             'company_phone' => $request->company_phone,
             'website_url' => $request->website_url,
-            'is_tenant' => $request->is_tenant,
+            'is_tenant' => $request->is_tenant ?? 0,
             'tenant_monthly_rental' => $request->tenant_monthly_rental,
             'is_owner' => $request->is_owner,
             'field_experience' => $request->field_experience,
             'employees_count' => $request->employees_count,
-            'is_funded_by_self' => $request->is_funded_by_self,
-            'is_funded_by_credit' => $request->is_funded_by_credit,
-            'is_funded_by_grant' => $request->is_funded_by_grant,
+            'is_funded_by_self' => $request->is_funded_by_self ?? 0,
+            'is_funded_by_credit' => $request->is_funded_by_credit ?? 0,
+            'is_funded_by_grant' => $request->is_funded_by_grant ?? 0,
             'other_funding_sources' => $request->other_funding_sources,
             'funding_amount' => $request->funding_amount,
+            'grant_amount' => $request->grant_amount,
+            'credit_amount' => $request->credit_amount,
             'annual_turnover' => $request->annual_turnover,
             'last_year_net_profit' => $request->last_year_net_profit,
             'last_year_net_loss' => $request->last_year_net_loss,
@@ -1688,7 +1693,6 @@ class PublicController extends Controller
             $files = $request->file('files_urls', []);
             $fileNames = $request->input('files_names', []);
 
-            dd($files);
             // Types of extensions for different file types
             $validExtensions = [
                 'video' => ['mp4', 'avi', 'mov', 'mkv', 'webm'],
@@ -1782,39 +1786,37 @@ class PublicController extends Controller
         $agricultureType = $request->has('agriculture_types') ? implode(',', $request->input('agriculture_types')) : '';
         $breedingType = $request->has('breeding_types') ? implode(',', $request->input('breeding_types')) : '';
 
-        if ($request->filled('land_area_agriculture') || $request->filled('land_area_breeding')) {
-            ProjectActivity::create([
-                'is_land_owner_agriculture' => $request->is_land_owner_agriculture,
-                'land_area_agriculture' => $request->land_area_agriculture,
-                'land_yield_per_hectare' => $request->land_yield_per_hectare,
-                'agriculture_type' => $agricultureType,
-                'agriculture_type_production_content' => $request->agriculture_type_production_content,
-                'agriculture_type_transformation_content' => $request->agriculture_type_transformation_content,
-                'agriculture_type_transformation_period' => $request->agriculture_type_transformation_period,
-                'agriculture_type_transformation_quantity' => $request->agriculture_type_transformation_quantity,
-                'agriculture_type_inputs_content' => $request->agriculture_type_inputs_content,
-                'agriculture_type_equipment_content' => $request->agriculture_type_equipment_content,
-                'is_land_owner_breeding' => $request->is_land_owner_breeding,
-                'land_area_breeding' => $request->land_area_breeding,
-                'breeding_type' => $breedingType,
-                'breeding_type_fish_content' => $request->breeding_type_fish_content,
-                'breeding_type_fish_pond_capacity' => $request->breeding_type_fish_pond_capacity,
-                'breeding_type_fish_cage_capacity' => $request->breeding_type_fish_cage_capacity,
-                'breeding_type_fish_bin_capacity' => $request->breeding_type_fish_bin_capacity,
-                'breeding_type_poultry_content' => $request->breeding_type_poultry_content,
-                'breeding_type_poultry_total_number' => $request->breeding_type_poultry_total_number,
-                'breeding_type_pig_content' => $request->breeding_type_pig_content,
-                'breeding_type_pig_total_number' => $request->breeding_type_pig_total_number,
-                'breeding_type_rabbit_content' => $request->breeding_type_rabbit_content,
-                'breeding_type_rabbit_total_number' => $request->breeding_type_rabbit_total_number,
-                'breeding_type_cattle_content' => $request->breeding_type_cattle_content,
-                'breeding_type_cattle_total_number' => $request->breeding_type_cattle_total_number,
-                'breeding_type_cattle_kind' => $request->breeding_type_cattle_kind,
-                'breeding_type_sheep_content' => $request->breeding_type_sheep_content,
-                'breeding_type_sheep_total_number' => $request->breeding_type_sheep_total_number,
-                'project_id' => $project->id,
-            ]);
-        }
+        ProjectActivity::create([
+            'is_land_owner_agriculture' => $request->is_land_owner_agriculture,
+            'land_area_agriculture' => $request->land_area_agriculture,
+            'land_yield_per_hectare' => $request->land_yield_per_hectare,
+            'agriculture_type' => $agricultureType,
+            'agriculture_type_production_content' => $request->agriculture_type_production_content,
+            'agriculture_type_transformation_content' => $request->agriculture_type_transformation_content,
+            'agriculture_type_transformation_period' => $request->agriculture_type_transformation_period,
+            'agriculture_type_transformation_quantity' => $request->agriculture_type_transformation_quantity,
+            'agriculture_type_inputs_content' => $request->agriculture_type_inputs_content,
+            'agriculture_type_equipment_content' => $request->agriculture_type_equipment_content,
+            'is_land_owner_breeding' => $request->is_land_owner_breeding,
+            'land_area_breeding' => $request->land_area_breeding,
+            'breeding_type' => $breedingType,
+            'breeding_type_fish_content' => $request->breeding_type_fish_content,
+            'breeding_type_fish_pond_capacity' => $request->breeding_type_fish_pond_capacity,
+            'breeding_type_fish_cage_capacity' => $request->breeding_type_fish_cage_capacity,
+            'breeding_type_fish_bin_capacity' => $request->breeding_type_fish_bin_capacity,
+            'breeding_type_poultry_content' => $request->breeding_type_poultry_content,
+            'breeding_type_poultry_total_number' => $request->breeding_type_poultry_total_number,
+            'breeding_type_pig_content' => $request->breeding_type_pig_content,
+            'breeding_type_pig_total_number' => $request->breeding_type_pig_total_number,
+            'breeding_type_rabbit_content' => $request->breeding_type_rabbit_content,
+            'breeding_type_rabbit_total_number' => $request->breeding_type_rabbit_total_number,
+            'breeding_type_cattle_content' => $request->breeding_type_cattle_content,
+            'breeding_type_cattle_total_number' => $request->breeding_type_cattle_total_number,
+            'breeding_type_cattle_kind' => $request->breeding_type_cattle_kind,
+            'breeding_type_sheep_content' => $request->breeding_type_sheep_content,
+            'breeding_type_sheep_total_number' => $request->breeding_type_sheep_total_number,
+            'project_id' => $project->id,
+        ]);
 
         if ($request->segments_names != null) {
             foreach ($request->segments_names as $key => $segment_name) {
@@ -1835,7 +1837,7 @@ class PublicController extends Controller
 
         foreach ($administrators as $admin) {
             Notification::create([
-                'type' => 'project_shared',
+                'type' => 'project_published',
                 'is_read' => 0,
                 'from_user_id' => Auth::id(),
                 'to_user_id' => $admin->id,

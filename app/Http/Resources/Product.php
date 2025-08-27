@@ -26,7 +26,7 @@ class Product extends JsonResource
             'product_name' => $this->product_name,
             'product_description' => $this->product_description,
             'quantity' => $this->quantity,
-            'price' => formatDecimalNumber($this->price),
+            'price' => formatDecimalNumber($this->price, 3),
             'currency' => !empty($this->currency) ? ($this->currency == 'USD' ? '$' : 'FC') : null,
             'type' => $this->type,
             'action' => $this->action,

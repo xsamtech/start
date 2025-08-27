@@ -313,7 +313,7 @@
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
                                         <label for="price">@lang('miscellaneous.admin.product.data.price')</label>
-                                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                                        <input type="number" class="form-control" id="price" name="price" step="0.001" required>
                                     </div>
                                 </div>
 
@@ -429,7 +429,7 @@
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
                                         <label for="price">@lang('miscellaneous.admin.product.data.price')</label>
-                                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                                        <input type="number" class="form-control" id="price" name="price" step="0.001" required>
                                     </div>
                                 </div>
 
@@ -779,7 +779,7 @@
                                                                     </a>
                                                                 </p>
                                                                 <p>
-                                                                    {{ $item['quantity'] }}x <span class="item-price">{{ formatDecimalNumber($item['price']) . ' $' }}</span>
+                                                                    {{ $item['quantity'] }}x <span class="item-price">{{ formatDecimalNumber($item['price'], 3) . ' $' }}</span>
                                                                 </p>
                                                             </div><!-- End .dropdown-cart-details -->
                                                         </li>
@@ -822,7 +822,7 @@
                                                     <ul class="dropdown-cart-product-list">
         @php
             foreach ($user_orders as $item) {
-                $item->converted_price = formatDecimalNumber($item->convertPriceAtThatTime($current_user->currency));
+                $item->converted_price = formatDecimalNumber($item->convertPriceAtThatTime($current_user->currency), 3);
                 $item->subtotal_price = formatDecimalNumber($item->subtotalPrice($current_user->currency));
             }
 

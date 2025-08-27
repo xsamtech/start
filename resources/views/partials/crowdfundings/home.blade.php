@@ -19,7 +19,7 @@
 
 						<div class="col-md-12">
 @if (!empty($current_user))
-							<form action="{{ route('crowdfunding.home') }}" method="POST">
+							<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
 										<!-- Profile -->
@@ -209,6 +209,7 @@
 													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.title')</p>
 												</div>
 												<div class="panel-body">
+													<!-- Culture type -->
 													<div class="form-group">
 														<label style="margin-bottom: 10px;">
 															@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.culture_type.title')
@@ -270,6 +271,11 @@
 
 																<label for="land_yield_per_hectare" style="font-weight: normal; margin-top: 8px;">
 																	@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.land_yield_per_hectare')
+																</label>
+																<input type="number" name="land_yield_per_hectare" id="land_yield_per_hectare" class="form-control input-lg" placeholder="@lang('miscellaneous.yield')">
+
+																<label for="land_yield_per_hectare" style="font-weight: normal; margin-top: 8px;">
+																	@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.is_land_owner')
 																</label>
 																<input type="number" name="land_yield_per_hectare" id="land_yield_per_hectare" class="form-control input-lg" placeholder="@lang('miscellaneous.yield')">
 															</div>
@@ -341,6 +347,7 @@
 													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.title')</p>
 												</div>
 												<div class="panel-body">
+													<!-- Breeding type -->
 													<div class="form-group">
 														<label style="margin-bottom: 10px;">
 															@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.title')
@@ -380,7 +387,7 @@
 															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
 																@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.sheep.title')
 															</span>
-														</label><br>
+														</label>
 													</div>
 
                                                     <!-- Is Owner -->
@@ -508,6 +515,165 @@
 															<input type="text" name="breeding_type_sheep_total_number" id="breeding_type_sheep_total_number" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.activity_description.breeding.breeding_type.sheep.animals_total_number')">
 														</div>
                                                     </div>
+												</div>
+											</div>
+
+											<!-- Market segments -->
+											<div class="panel panel-default" style="margin: 0 0 5px 0;">
+												<div class="panel-heading">
+													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.title')</p>
+												</div>
+												<div class="panel-body">
+													<div class="form-group" style="margin-bottom: 0;">
+														<label style="font-weight: normal; margin-bottom: 10px;">
+															@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.description')
+														</label><br>
+
+														<label style="cursor: pointer;">
+															<input type="checkbox" name="segments_names[]" value="miscellaneous.admin.project_writing.data.market_segments_or_target.quantitative.retail_sale">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.quantitative.retail_sale')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="segments_names[]" value="miscellaneous.admin.project_writing.data.market_segments_or_target.quantitative.wholesale">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.quantitative.wholesale')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="segments_names[]" value="miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.farmers">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.farmers')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="segments_names[]" value="miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.ngos_and_research_organizations">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.ngos_and_research_organizations')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="segments_names[]" value="miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.agro_dealers_and_other_private_operators">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.agro_dealers_and_other_private_operators')
+															</span>
+														</label><br>
+														<label style="margin-top: 3px; margin-left: 0; cursor: pointer;">
+															<input type="checkbox" name="segments_names[]" value="miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.consumers">
+															<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.consumers')
+															</span>
+														</label><br>
+														<label for="land_area_breeding" class="d-none" style="font-weight: normal;">
+															@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.others')
+														</label>
+														<input type="text" name="segments_names[]" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.market_segments_or_target.qualitative.others')" style="margin-top: 5px;">
+													</div>
+												</div>
+											</div>
+
+											<!-- Accounting summary -->
+											<div class="panel panel-default" style="margin: 0 0 5px 0;">
+												<div class="panel-heading">
+													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.accounting_summary.title')</p>
+												</div>
+												<div class="panel-body">
+													<!-- Employees count -->
+													<label for="employees_count" style="font-weight: normal;">
+														@lang('miscellaneous.admin.project_writing.data.accounting_summary.employees_count')
+													</label>
+													<input type="number" name="employees_count" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.employees_count')">
+
+													<!-- Funding sources -->
+													<div class="panel panel-default" style="margin: 10px 0 7px 0;">
+														<div class="panel-body">
+															<div class="form-group" style="margin-bottom: 0;">
+																<label style="margin: 0 0 10px 0;">
+																	@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.title')
+																</label><br>
+
+																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_self').checked) { document.getElementById('fundingAmount').style.display = 'block'; } else { document.getElementById('fundingAmount').style.display = 'none'; }">
+																	<input type="checkbox" name="is_funded_by_self" id="is_funded_by_self" value="1">
+																	<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.title')
+																	</span>
+																</label><br>
+																<span id="fundingAmount" style="display: none; margin: 0 0 10px 0;">
+																	<label for="funding_amount" style="font-weight: normal;">
+																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')
+																	</label>
+																	<input type="text" name="funding_amount" id="funding_amount" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')">
+																</span>
+
+																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_credit').checked) { document.getElementById('creditAmount').style.display = 'block'; } else { document.getElementById('creditAmount').style.display = 'none'; }">
+																	<input type="checkbox" name="is_funded_by_credit" id="is_funded_by_credit" value="1">
+																	<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_credit.title')
+																	</span>
+																</label><br>
+																<span id="creditAmount" style="display: none; margin: 0 0 10px 0;">
+																	<label for="credit_amount" style="font-weight: normal;">
+																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')
+																	</label>
+																	<input type="text" name="credit_amount" id="credit_amount" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')">
+																</span>
+
+																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_grant').checked) { document.getElementById('grantAmount').style.display = 'block'; } else { document.getElementById('grantAmount').style.display = 'none'; }">
+																	<input type="checkbox" name="is_funded_by_grant" id="is_funded_by_grant" value="1">
+																	<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
+																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_grant.title')
+																	</span>
+																</label><br>
+																<span id="grantAmount" style="display: none; margin-bottom: 5px;">
+																	<label for="grant_amount" style="font-weight: normal;">
+																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')
+																	</label>
+																	<input type="text" name="grant_amount" id="grant_amount" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')">
+																</span>
+
+																<hr style="margin: 5px 0;">
+																<label for="other_funding_sources" style="font-weight: normal;">
+																	@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.other_funding_sources')
+																</label>
+																<input type="text" name="other_funding_sources" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.other_funding_sources')">
+															</div>
+														</div>
+													</div>
+
+													<!-- Annual turnover -->
+													<label for="annual_turnover" style="font-weight: normal;">
+														@lang('miscellaneous.admin.project_writing.data.accounting_summary.annual_turnover')
+													</label>
+													<input type="number" name="annual_turnover" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.annual_turnover')">
+
+													<!-- Last year net -->
+													<div class="panel panel-default" style="margin: 7px 0;">
+														<div class="panel-body">
+															<div class="form-group" style="margin-bottom: 0;">
+																<label style="margin: 0 0 10px 0;">
+																	@lang('miscellaneous.admin.project_writing.data.accounting_summary.last_year_net.title')
+																</label><br>
+
+																<label for="last_year_net_profit" style="font-weight: normal;">
+																	@lang('miscellaneous.admin.project_writing.data.accounting_summary.last_year_net.profit')
+																</label>
+																<input type="number" name="last_year_net_profit" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.last_year_net.profit')">
+
+																<label for="last_year_net_loss" style="font-weight: normal; margin-top: 5px;">
+																	@lang('miscellaneous.admin.project_writing.data.accounting_summary.last_year_net.loss')
+																</label>
+																<input type="number" name="last_year_net_loss" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.last_year_net.loss')">
+															</div>
+														</div>
+													</div>
+
+													<!-- Annual turnover -->
+													<label for="forecast_turnover" style="font-weight: normal;">
+														@lang('miscellaneous.admin.project_writing.data.accounting_summary.forecast_turnover')
+													</label>
+													<input type="number" name="forecast_turnover" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.annual_turnover')">
+
 												</div>
 											</div>
 										</fieldset>

@@ -337,6 +337,11 @@ return [
     'one_product_stock_emptied' => 'Le stock est presque terminé pour votre produit « <strong>:product_name</strong> ».',
     'two_products_stock_emptied' => 'Le stock est presque terminé pour votre produit « <strong>:product_name</strong> » et un autre.',
     'many_products_stock_emptied' => 'Le stock est presque terminé pour :count de vos produits.',
+    // Product published
+    'one_user_one_product_published' => '<strong>:user_name</strong> » a publié un :product_type.',
+    'one_user_many_products_published' => '<strong>:user_name</strong> » a publié :count produits.',
+    'two_users_products_published' => '<strong>:user_name</strong> » et un autre ont publié des produits.',
+    'many_users_products_published' => '<strong>:user_name</strong> » et :count autres ont publié des produits.',
     // Product shared
     'one_product_shared' => 'Votre :product_type « <strong>:product_name</strong> » est maintenant visible par tous.',
     'two_products_shared' => 'Votre :product_type « <strong>:product_name</strong> » et un autre sont maintenant visibles par tous.',
@@ -345,6 +350,11 @@ return [
     'one_product_blocked' => 'Votre :product_type « <strong>:product_name</strong> » a été bloqué par l’administrateur.',
     'two_products_blocked' => 'Votre :product_type « <strong>:product_name</strong> » et un autre ont été bloqués par l’administrateur.',
     'many_products_blocked' => 'Votre :product_type « <strong>:product_name</strong> » et :count autres ont été bloqués par l’administrateur.',
+    // Project published
+    'one_user_one_project_published' => '<strong>:user_name</strong> » a publié un projet.',
+    'one_user_many_projects_published' => '<strong>:user_name</strong> » a publié :count projets.',
+    'two_users_projects_published' => '<strong>:user_name</strong> » et un autre ont publié des projets.',
+    'many_users_projects_published' => '<strong>:user_name</strong> » et :count autres ont publié des projets.',
     // Project shared
     'one_project_shared' => 'Votre projet » est maintenant visible par tous.',
     'two_projects_shared' => 'Votre projet » et un autre sont maintenant visibles par tous.',

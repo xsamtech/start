@@ -97,7 +97,7 @@
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">{{ !empty($current_user) ? (formatDecimalNumber($product['converted_price']) . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }}</span>
+                                                            <span class="item-price">{{ !empty($current_user) ? (formatDecimalNumber($product['converted_price'], 3) . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }}</span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">

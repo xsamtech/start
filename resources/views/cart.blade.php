@@ -53,7 +53,7 @@
 													</ul>
 												</td>
 												<td class="item-price-col">
-													<span class="item-price-special">{{ formatDecimalNumber($item['price']) . ' $' }}</span>
+													<span class="item-price-special">{{ formatDecimalNumber($item['price'], 3) . ' $' }}</span>
 												</td>
 												<td>
 													<div class="custom-quantity-input">

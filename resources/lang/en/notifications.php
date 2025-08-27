@@ -337,6 +337,11 @@ return [
     'one_product_stock_emptied' => 'The stock is almost finished for your product “<strong>:product_name</strong>”.',
     'two_products_stock_emptied' => 'The stock is almost finished for your product “<strong>:product_name</strong>” and one other.',
     'many_products_stock_emptied' => 'The stock is almost finished for :count of your products.',
+    // Product published
+    'one_user_one_product_published' => '<strong>:user_name</strong> » has published a :product_type.',
+    'one_user_many_products_published' => '<strong>:user_name</strong> » has published :count products.',
+    'two_users_products_published' => '<strong>:user_name</strong> » and one other have published products.',
+    'many_users_products_published' => '<strong>:user_name</strong> » and :count others have published products.',
     // Product shared
     'one_product_shared' => 'Your :product_type “<strong>:product_name</strong>” is now visible to everyone.',
     'two_products_shared' => 'Your :product_type “<strong>:product_name</strong>” and one other are now visible to everyone.',
@@ -345,6 +350,11 @@ return [
     'one_product_blocked' => 'Your :product_type “<strong>:product_name</strong>” has been blocked by the administrator.',
     'two_products_blocked' => 'Your :product_type “<strong>:product_name</strong>” and one other have been blocked by the administrator.',
     'many_products_blocked' => 'Your :product_type “<strong>:product_name</strong>” and :count others have been blocked by the administrator.',
+    // Project published
+    'one_user_one_project_published' => '<strong>:user_name</strong> » has published a project.',
+    'one_user_many_projects_published' => '<strong>:user_name</strong> » has published :count projects.',
+    'two_users_projects_published' => '<strong>:user_name</strong> » and one other have published projects.',
+    'many_users_projects_published' => '<strong>:user_name</strong> » and :count others have published projects.',
     // Project shared
     'one_project_shared' => 'Your project is now visible to everyone.',
     'two_projects_shared' => 'Your project and one other are now visible to everyone.',

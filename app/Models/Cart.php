@@ -69,7 +69,7 @@ class Cart extends Model
      */
     public function totalAmount(): float
     {
-        return round($this->customer_orders->sum('price_at_that_time'), 2);
+        return round($this->customer_orders->sum('price_at_that_time'), 3);
     }
 
     /**
@@ -82,14 +82,14 @@ class Cart extends Model
         return $this->customer_orders->sum(function ($order) use ($userCurrency) {
             // Si la devise de l'ordre est la même que celle de l'utilisateur
             if ($order->currency == $userCurrency) {
-                return round($order->price_at_that_time, 2);
+                return round($order->price_at_that_time, 3);
             }
 
             // Si les devises sont différentes, on effectue la conversion
             $conversionRate = getExchangeRate($order->currency, $userCurrency);
 
             // Retourner le prix converti
-            return round($order->price_at_that_time * $conversionRate, 2);
+            return round($order->price_at_that_time * $conversionRate, 3);
         });
     }
 
@@ -157,14 +157,14 @@ class Cart extends Model
         return $orders->sum(function ($order) use ($userCurrency) {
             // Si la devise de l'ordre est la même que celle de l'utilisateur
             if ($order->currency == $userCurrency) {
-                return round($order->price_at_that_time, 2);
+                return round($order->price_at_that_time, 3);
             }
 
             // Si les devises sont différentes, on effectue la conversion
             $conversionRate = getExchangeRate($order->currency, $userCurrency);
 
             // Retourner le prix converti
-            return round($order->price_at_that_time * $conversionRate, 2) * $order->quantity;
+            return round($order->price_at_that_time * $conversionRate, 3) * $order->quantity;
         });
     }
 }

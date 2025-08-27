@@ -898,7 +898,8 @@ return [
                     ],
                 ],
                 'market_segments_or_target' => [
-                    'title' => 'Quels sont les segments du marchés ou les cibles de votre projet ?',
+                    'title' => 'Segments du marchés / Cibles de projet',
+                    'description' => 'Quels sont les segments du marchés ou les cibles de votre projet ?',
                     'quantitative' => [
                         'title' => 'Quantitatif',
                         'wholesale' => 'Vente de gros',
@@ -920,27 +921,27 @@ return [
                         'title' => 'Sources de financement',
                         'is_funded_by_self' => [
                             'title' => 'Fonds propres',
-                            'amount' => 'Montant de votre capital ou fonds de commerce',
+                            'amount' => 'Montant (en USD) de votre capital ou fonds de commerce',
                         ],
                         'is_funded_by_credit' => [
                             'title' => 'Emprunts, crédits',
-                            'amount' => 'Montant du prêt',
+                            'amount' => 'Montant (en USD) du prêt',
                             'interest_rate' => 'Taux d’intérêt',
                             'repayment_deadline' => 'Echéance de remboursement',
                         ],
                         'is_funded_by_grant' => [
                             'title' => 'Subventions',
-                            'amount' => 'Montant de la subvention',
+                            'amount' => 'Montant (en USD) de la subvention',
                         ],
                         'other_funding_sources' => 'Autres (Préciser)',
                     ],
-                    'annual_turnover' => 'Chiffre d’affaires annuel',
+                    'annual_turnover' => 'Chiffre d’affaires annuel (en USD)',
                     'last_year_net' => [
                         'title' => 'Résultat de pour le dernier exercice comptable écoulé',
-                        'profit' => 'Bénéfice net réalisé',
-                        'loss' => 'Perte net réalisé',
+                        'profit' => 'Bénéfice net réalisé (en USD)',
+                        'loss' => 'Perte net réalisé (en USD)',
                     ],
-                    'forecast_turnover' => 'Chiffre d’affaires prévisionnel',
+                    'forecast_turnover' => 'Chiffre d’affaires prévisionnel (en USD)',
                 ],
                 'strategic_synthesis' => [
                     'title' => 'Synthèse stratégique',

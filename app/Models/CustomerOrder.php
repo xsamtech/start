@@ -57,7 +57,7 @@ class CustomerOrder extends Model
         $conversionRate = getExchangeRate($this->currency, $userCurrency);
 
         // Calculate the converted price
-        return round($this->price_at_that_time * $conversionRate, 2);
+        return round($this->price_at_that_time * $conversionRate, 3);
     }
 
     /**

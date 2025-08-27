@@ -21,7 +21,7 @@ class CartService
 
         $conversionRate = getExchangeRate($productCurrency, $userCurrency);
 
-        return round($price * $conversionRate, 2);  // Return the converted price
+        return round($price * $conversionRate, 3);  // Return the converted price
     }
 
     /**
