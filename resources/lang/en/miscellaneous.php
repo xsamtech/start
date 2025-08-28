@@ -791,6 +791,10 @@ return [
             'edit' => 'Edit the project',
             'search' => 'Search a project',
             'list' => 'Projects list',
+            'my_projects' => [
+                'title' => 'My projects',
+                'info' => 'You cannot publish more than 3 projects',
+            ],
             'my_other_projects' => 'My other projects',
             'associate_image' => 'Associate photos to project',
             'data' => [

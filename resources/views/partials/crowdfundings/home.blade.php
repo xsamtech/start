@@ -19,6 +19,7 @@
 
 						<div class="col-md-12">
 @if (!empty($current_user))
+	@if (count($user_projects) < 3)
 							<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
@@ -271,11 +272,6 @@
 
 																<label for="land_yield_per_hectare" style="font-weight: normal; margin-top: 8px;">
 																	@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.land_yield_per_hectare')
-																</label>
-																<input type="number" name="land_yield_per_hectare" id="land_yield_per_hectare" class="form-control input-lg" placeholder="@lang('miscellaneous.yield')">
-
-																<label for="land_yield_per_hectare" style="font-weight: normal; margin-top: 8px;">
-																	@lang('miscellaneous.admin.project_writing.data.activity_description.agriculture.is_land_owner')
 																</label>
 																<input type="number" name="land_yield_per_hectare" id="land_yield_per_hectare" class="form-control input-lg" placeholder="@lang('miscellaneous.yield')">
 															</div>
@@ -606,7 +602,7 @@
 																	<input type="text" name="funding_amount" id="funding_amount" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')">
 																</span>
 
-																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_credit').checked) { document.getElementById('creditAmount').style.display = 'block'; } else { document.getElementById('creditAmount').style.display = 'none'; document.getElementById('funding_amount').value = 'credit_amount'; }">
+																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_credit').checked) { document.getElementById('creditAmount').style.display = 'block'; } else { document.getElementById('creditAmount').style.display = 'none'; document.getElementById('credit_amount').value = ''; }">
 																	<input type="checkbox" name="is_funded_by_credit" id="is_funded_by_credit" value="1">
 																	<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
 																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_credit.title')
@@ -619,7 +615,7 @@
 																	<input type="text" name="credit_amount" id="credit_amount" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_self.amount')">
 																</span>
 
-																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_grant').checked) { document.getElementById('grantAmount').style.display = 'block'; } else { document.getElementById('grantAmount').style.display = 'none'; document.getElementById('grant_amount').value = 'credit_amount'; }">
+																<label style="cursor: pointer;" onclick="if (document.getElementById('is_funded_by_grant').checked) { document.getElementById('grantAmount').style.display = 'block'; } else { document.getElementById('grantAmount').style.display = 'none'; document.getElementById('grant_amount').value = ''; }">
 																	<input type="checkbox" name="is_funded_by_grant" id="is_funded_by_grant" value="1">
 																	<span class="text-muted" style="font-weight: normal; display: inline-block; margin-right: 8px;">
 																		@lang('miscellaneous.admin.project_writing.data.accounting_summary.funding_sources.is_funded_by_grant.title')
@@ -717,28 +713,53 @@
 											<div class="panel-heading" style="background-color: transparent!important;">
 												<h5 class="h5-responsive" style="font-weight: 700; margin: 0;">@lang('miscellaneous.admin.project_writing.my_other_projects')</h5>
 											</div>
-	@if (count($user_projects) > 0)
+		@if (count($user_projects) > 0)
 											<ul class="list-group list-group-flush">
-		@foreach ($user_projects as $project)
+			@foreach ($user_projects as $project)
 												<li class="list-group-item clearfix">
-			@if (count($project->photos) > 0)
+				@if (count($project->photos) > 0)
 													<img src="{{ $project->photos[0]->file_url }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
-			@endif
+				@endif
 													<p class="small" style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
 													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline; float: right;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
 												</li>
-		@endforeach
+			@endforeach
 											</ul>
-	@else
+		@else
 											<div class="panel-body text-center">
 												<i class="bi bi-file-text" style="font-size: 7rem"></i>
 												<h5>@lang('miscellaneous.empty_list')</h5>
 											</div>
-	@endif
+		@endif
 										</div>
 									</div>
 								</div>
 							</form>
+	@else
+							<div class="row">
+								<div class="col-lg-12 text-center">
+									<h3 class="h3-responsive" style="font-weight: bold;; margin-bottom: 5px;">@lang('miscellaneous.admin.project_writing.my_projects.title')</h3>
+									<p style="margin-bottom: 20px;">@lang('miscellaneous.admin.project_writing.my_projects.info')</p>
+								</div>
+		@foreach ($user_projects as $project)
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="margin: 0 auto;">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-lg-4 col-sm-5 col-xs-12">
+													<img src="{{ count($project->photos) > 0 ? $project->photos[0]->file_url : asset('assets/img/undefined.png') }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
+												</div>
+												<div class="col-lg-8 col-sm-7 col-xs-12">
+													<p class="small" style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
+													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline; float: right;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+		@endforeach
+							</div>
+	@endif
 @else
 							<div class="row">
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">

@@ -1668,7 +1668,7 @@ class PublicController extends Controller
             'website_url' => $request->website_url,
             'is_tenant' => $request->is_tenant ?? 0,
             'tenant_monthly_rental' => $request->tenant_monthly_rental,
-            'is_owner' => $request->is_owner,
+            'is_owner' => $request->is_owner ?? 0,
             'field_experience' => $request->field_experience,
             'employees_count' => $request->employees_count,
             'is_funded_by_self' => $request->is_funded_by_self ?? 0,
@@ -1820,11 +1820,13 @@ class PublicController extends Controller
 
         if ($request->segments_names != null) {
             foreach ($request->segments_names as $key => $segment_name) {
-                MarketSegment::create([
-                    'segment_name' => $segment_name,
-                    'is_qualitative' => $request->is_qualitative[$key],
-                    'project_id' => $project->id,
-                ]);
+                if (trim($segment_name) != null) {
+                    MarketSegment::create([
+                        'segment_name' => $segment_name,
+                        'is_quantitative' => $request->is_quantitative[$key] ?? 0,
+                        'project_id' => $project->id,
+                    ]);
+                }
             }
         }
 

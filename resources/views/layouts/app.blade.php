@@ -1061,18 +1061,18 @@
             /**
              * Limit characters in the textarea
              */
-            const textarea = document.getElementById('limitChars');
+            const textareaChar = document.getElementById('limitChars');
             const charCountSpan = document.getElementById('charCount');
-            const maxLength = textarea.getAttribute('maxlength');
+            const maxLength = textareaChar.getAttribute('maxlength');
 
             // Initial update on page load
             updateCharCount();
 
             // Add event listener for input changes
-            textarea.addEventListener('input', updateCharCount);
+            textareaChar.addEventListener('input', updateCharCount);
 
             function updateCharCount() {
-                const currentLength = textarea.value.length;
+                const currentLength = textareaChar.value.length;
                 const remaining = maxLength - currentLength;
 
                 charCountSpan.textContent = remaining;
@@ -1084,7 +1084,7 @@
                 } else if (remaining < 0) {
                     charCountSpan.style.color = 'red'; // Exceeded limit color
                     // Optionally, truncate the text if the maxlength attribute isn't strictly enforced
-                    // textarea.value = textarea.value.substring(0, maxLength);
+                    // textareaChar.value = textareaChar.value.substring(0, maxLength);
 
                 } else {
                     charCountSpan.style.color = 'initial'; // Reset color
