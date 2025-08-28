@@ -808,7 +808,8 @@ return [
                 'company_email' => 'E-mail de l’entreprise',
                 'company_phone' => 'N° de tél. de l’entreprise',
                 'website_url' => 'URL du site web',
-                'sheet_url' => 'URL du Fichier Google sheet',
+                'sheet_url' => 'URL du fichier Excel détaillé',
+                'sheet_url_empty' => 'Générer un fichier Excel détaillé',
                 'land_status' => [
                     'title' => 'Statut foncier',
                     'tenant' => [

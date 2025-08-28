@@ -841,6 +841,8 @@ class PublicController extends Controller
     public function productDatas($entity, $id)
     {
         $entity_title = null;
+        $category = null;
+        $categories = null;
         $selected_product = Product::find($id);
 
         if (is_null($selected_product)) {
@@ -853,6 +855,35 @@ class PublicController extends Controller
 
         if ($entity == 'product') {
             $entity_title = __('miscellaneous.menu.public.products.about_product');
+            $entity_title = __('miscellaneous.menu.public.products.products');
+            $categories = Category::withCount('products')->where('for_service', 0)->get();
+
+            if ($categories->isEmpty()) {
+                Category::create([
+                    'category_name' => [
+                        'en' => 'Cash crops',
+                        'fr' => 'Cultures de rente'
+                    ],
+                    'category_description' => [
+                        'en' => 'Coffee, Oil palm, Rubber, Cocoa, Rice, Tea.',
+                        'fr' => 'Café, Palmier à huile, Caoutchouc, Cacao, Riz, Thé.'
+                    ],
+                    'for_service' => 0,
+                    'alias' => 'cash-crops',
+                ]);
+            }
+
+            $categories_ids = $categories->pluck('id')->toArray();
+
+            // If $categories_ids is empty, we have a problem
+            $categoryId = $request->category_id ?? ($categories_ids[0] ?? null);
+
+            if ($categoryId === null) {
+                return redirect()->route('home')->with('error_message', __('notifications.find_category_404'));
+            }
+
+            // Get the first category in the case user has not yet selected his category
+            $category = Category::where([['id', $categoryId], ['for_service', 0]])->first();
         }
 
         if ($entity == 'service') {
@@ -862,6 +893,8 @@ class PublicController extends Controller
         return view('products', [
             'entity_title' => $entity_title,
             'entity' => $entity,
+            'category' => $category,
+            'categories' => $categories,
             'selected_product' => $selected_product,
         ]);
     }
@@ -927,6 +960,7 @@ class PublicController extends Controller
      */
     public function investors()
     {
+        $projects = Project::orderByDesc('created_at')->paginate(12)->appends(request()->query());
         $investors = Auth::check() ? User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
                                             $query->where('role_name->fr', 'Investisseur');
                                         })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query())
@@ -953,6 +987,7 @@ class PublicController extends Controller
         $role_investor = Role::where('role_name->fr', 'Investisseur')->first();
 
         return view('investors', [
+            'projects' => $projects,
             'role_investor' => $role_investor,
             'investors' => ResourcesUser::collection($investors),
             'investors_req' => $investors,
@@ -1424,7 +1459,7 @@ class PublicController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price,
                 'currency' => $request->currency,
-                'type' => $request->filled('type') ? $request->type : 'product',
+                'type' => $request->filled('type') ? $request->type : $entity,
                 'action' => $request->filled('action') ? $request->action : 'sell',
                 'is_shared' => $request->filled('is_shared') ? $request->is_shared : 0,
                 'category_id' => $request->category_id,
@@ -2235,6 +2270,155 @@ class PublicController extends Controller
      */
     public function updateProductEntity(Request $request, $entity, $id)
     {
+        if ($entity == 'product' OR $entity == 'service') {
+            $inputs = [
+                'product_name' => $request->product_name,
+                'product_description' => $request->product_description,
+                'quantity' => $request->quantity,
+                'price' => $request->price,
+                'currency' => $request->currency,
+                'type' => $request->filled('type') ? $request->type : $entity,
+                'action' => $request->filled('action') ? $request->action : 'sell',
+                'is_shared' => $request->filled('is_shared') ? $request->is_shared : 0,
+                'category_id' => $request->category_id,
+            ];
+
+            $current_product = Product::find($id);
+
+            if ($inputs['product_name'] != null) {
+                $current_product->update([
+                    'product_name' => $inputs['product_name'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            if ($inputs['product_description'] != null) {
+                $current_product->update([
+                    'product_description' => $inputs['product_description'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            if ($inputs['quantity'] != null) {
+                $current_product->update([
+                    'quantity' => $inputs['quantity'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            if ($inputs['price'] != null) {
+                $current_product->update([
+                    'price' => $inputs['price'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            if ($inputs['currency'] != null) {
+                $current_product->update([
+                    'currency' => $inputs['currency'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            if ($inputs['type'] != null) {
+                $current_product->update([
+                    'type' => $inputs['type'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            if ($inputs['action'] != null) {
+                $current_product->update([
+                    'action' => $inputs['action'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            if ($inputs['is_shared'] != null) {
+                $current_product->update([
+                    'is_shared' => $inputs['is_shared'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            if ($inputs['category_id'] != null) {
+                $current_product->update([
+                    'category_id' => $inputs['category_id'],
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+            }
+
+            // If image files exist
+            if ($request->hasFile('files_urls')) {
+                $files = $request->file('files_urls', []);
+                $fileNames = $request->input('files_names', []);
+
+                // Types of extensions for different file types
+                $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+                $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
+                $audio_extensions = ['mp3', 'wav', 'flac'];
+
+                foreach ($files as $key => $singleFile) {
+                    // Checking the file extension
+                    $file_extension = $singleFile->getClientOriginalExtension();
+
+                    // File type check
+                    $custom_uri = '';
+                    $is_valid_type = false;
+                    $file_type = null;
+
+                    if (in_array($file_extension, $video_extensions)) { // File is a video
+                        $custom_uri = 'videos/products';
+                        $file_type = 'video';
+                        $is_valid_type = true;
+
+                    } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
+                        $custom_uri = 'photos/products';
+                        $file_type = 'photo';
+                        $is_valid_type = true;
+
+                    } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
+                        $custom_uri = 'audios/products';
+                        $file_type = 'audio';
+                        $is_valid_type = true;
+
+                    } elseif (in_array($file_extension, $document_extensions)) { // File is a document
+                        $custom_uri = 'documents/products';
+                        $file_type = 'video';
+                        $is_valid_type = true;
+                    }
+
+                    // If the extension does not match any valid type
+                    if (!$is_valid_type) {
+                        return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
+                    }
+
+                    // Generate a unique path for the file
+                    $filename = $singleFile->getClientOriginalName();
+                    $file_url =  $custom_uri . '/' . $current_product->id . '/' . $filename;
+
+                    // Upload file
+                    try {
+                        $singleFile->storeAs($custom_uri . '/' . $current_product->id, $filename, 'public');
+
+                    } catch (\Throwable $th) {
+                        return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
+                    }
+
+                    // Creating the database record for the file
+                    File::create([
+                        'file_name' => trim($fileNames[$key] ?? $filename),
+                        'file_url' => getWebURL() . '/storage/' . $file_url,
+                        'file_type' => $file_type,
+                        'product_id' => $current_product->id
+                    ]);
+                }
+            }
+
+            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+        }
+
         if ($entity == 'add-to-cart') {
             $request->validate([
                 'quantity' => 'required|integer|min:1',

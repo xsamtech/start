@@ -750,8 +750,27 @@
 													<img src="{{ count($project->photos) > 0 ? $project->photos[0]->file_url : asset('assets/img/undefined.png') }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
 												</div>
 												<div class="col-lg-8 col-sm-7 col-xs-12">
-													<p class="small" style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
-													<a href="#" class="small text-primary" style="text-decoration: underline; float: right;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
+													<p style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
+													<a href="#" class="small text-primary" style="text-decoration: underline;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
+													<div>
+			@if (!empty($project->sheet_url))
+														<a href="{{ $project->sheet_url }}">
+															<div class="panel panel-default">
+																<div class="panel-body">
+																	<p class="lead"><i class="bi bi-file-excel-fill" style="color: green; margin-right: 8px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
+																</div>
+															</div>
+														</a>
+			@else
+														<a href="{{ route('generate_sheet', ['language' => $current_locale, 'user_id' => $current_user->id]) }}" target="_blank">
+															<div class="panel panel-default">
+																<div class="panel-body">
+																	<p style="margin-bottom: 0;"><i class="bi bi-file-excel" style="color: green; margin-right: 8px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_empty')</p>
+																</div>
+															</div>
+														</a>
+			@endif
+													</div>
 												</div>
 											</div>
 										</div>

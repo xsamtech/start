@@ -808,7 +808,8 @@ return [
                 'company_email' => 'Company Email',
                 'company_phone' => 'Company Phone Number',
                 'website_url' => 'Website URL',
-                'sheet_url' => 'Google sheet file URL',
+                'sheet_url' => 'URL of the detailed Excel file',
+                'sheet_url_empty' => 'Generate a detailed Excel file',
                 'land_status' => [
                     'title' => 'Land Status',
                     'tenant' => [

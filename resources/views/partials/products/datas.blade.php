@@ -76,6 +76,9 @@
 													class="fa fa-angle-down"></i></a>
 										</div>
 										<button class="btn btn-custom-2">@lang('miscellaneous.public.add_to_cart')</button>
+	@if ($selected_product->user_id == $current_user->id)
+										<button class="btn btn-custom-1" data-toggle="modal" data-target="#updateProductModal">@lang('miscellaneous.update')</button>
+	@endif
 									</div><!-- .product-add -->
 								</div><!-- End .col-md-6 -->
 

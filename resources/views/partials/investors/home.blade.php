@@ -26,7 +26,26 @@
 
                         <div class="col-md-12">
 @if (!empty($current_user))
-
+							<div class="row">
+	@foreach ($projects as $project)
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-lg-4 col-sm-5 col-xs-12">
+													<img src="{{ count($project->photos) > 0 ? $project->photos[0]->file_url : asset('assets/img/undefined.png') }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
+												</div>
+												<div class="col-lg-8 col-sm-7 col-xs-12">
+													<p style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 200) !!}</p>
+													<a href="#" class="small text-primary" style="text-decoration: underline;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+	@endforeach
+							</div>
 @else
 							<div id="flexItemsCenter" class="row">
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
