@@ -2416,7 +2416,7 @@ class PublicController extends Controller
                 }
             }
 
-            return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+            return response()->json(['status' => 'success', 'message' => __('notifications.updated_data')]);
         }
 
         if ($entity == 'add-to-cart') {
