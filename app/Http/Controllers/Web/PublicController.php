@@ -1510,7 +1510,7 @@ class PublicController extends Controller
 
                     // If the extension does not match any valid type
                     if (!$is_valid_type) {
-                        return $this->handleError(__('notifications.type_is_not_file'));
+                        return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
                     }
 
                     // Generate a unique path for the file
@@ -1522,7 +1522,7 @@ class PublicController extends Controller
                         $singleFile->storeAs($custom_uri . '/' . $product->id, $filename, 'public');
 
                     } catch (\Throwable $th) {
-                        return $this->handleError($th, __('notifications.create_work_file_500'), 500);
+                        return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
                     }
 
                     // Creating the database record for the file
@@ -1583,6 +1583,10 @@ class PublicController extends Controller
      */
     public function addDiscussion(Request $request)
     {
+        if (trim($request->posts_content) == null) {
+            return response()->json(['status' => 'error', 'message' => __('notifications.required_fields')]);
+        }
+
         $post = Post::create([
             'posts_title' => $request->posts_title,
             'posts_content' => $request->posts_content,
@@ -1637,7 +1641,7 @@ class PublicController extends Controller
 
                 // If the extension does not match any valid type
                 if (!$is_valid_type) {
-                    return $this->handleError(__('notifications.type_is_not_file'));
+                    return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
                 }
 
                 // Generate a unique path for the file
@@ -1649,7 +1653,7 @@ class PublicController extends Controller
                     $singleFile->storeAs($custom_uri . '/' . $post->id, $filename, 'public');
 
                 } catch (\Throwable $th) {
-                    return $this->handleError($th, __('notifications.create_work_file_500'), 500);
+                    return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
                 }
 
                 // Creating the database record for the file
@@ -1768,7 +1772,7 @@ class PublicController extends Controller
 
                 // If the extension does not match any valid type
                 if (!$is_valid_type) {
-                    return $this->handleError(__('notifications.type_is_not_file'));
+                    return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
                 }
 
                 // Generate a unique path for the file
@@ -1780,7 +1784,7 @@ class PublicController extends Controller
                     $singleFile->storeAs($custom_uri . '/' . $project->id, $filename, 'public');
 
                 } catch (\Throwable $th) {
-                    return $this->handleError($th, __('notifications.create_work_file_500'), 500);
+                    return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
                 }
 
                 // Creating the database record for the file
@@ -2192,7 +2196,7 @@ class PublicController extends Controller
             }
 
             // if (preg_match('#^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$#', $inputs['password']) == 0) {
-            //     return $this->handleError($inputs['password'], __('miscellaneous.password.error'), 400);
+            //     return response()->json(['status' => 'error', 'message' => __('miscellaneous.password.error')]);
             // }
 
             if (!empty($current_user->email)) {

@@ -639,7 +639,7 @@
 
                             <!-- Post content -->
                             <div class="form-group">
-                                <label for="posts_content">@lang('miscellaneous.admin.post.data.posts_content')</label>
+                                <label for="posts_content">@lang('miscellaneous.admin.post.data.posts_content') <span class="text-danger">*</span></label>
                                 <textarea class="form-control" id="posts_content" name="posts_content" rows="2"></textarea>
                             </div>
 
