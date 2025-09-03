@@ -1694,16 +1694,18 @@
             /**
              * TinyMCE : Custom textarea
              */
-            tinymce.init({
-                selector: '#posts_content',
-                // plugins: 'lists link image',
-                // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
-                // setup: function (editor) {
-                //     editor.on('change', function () {
-                //         let content = editor.getContent();  // Texte avec les balises HTML
-                //         document.getElementById('posts_content').value = content;
-                //     });
-                // }
+            $('#newPostModal').on('shown.bs.modal', function () {
+                tinymce.init({
+                    selector: '#posts_content',
+                    // plugins: 'lists link image',
+                    // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
+                    // setup: function (editor) {
+                    //     editor.on('change', function () {
+                    //         let content = editor.getContent();  // Texte avec les balises HTML
+                    //         document.getElementById('posts_content').value = content;
+                    //     });
+                    // }
+                });
             });
         </script>
 @endif
