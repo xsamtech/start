@@ -1583,10 +1583,6 @@ class PublicController extends Controller
      */
     public function addDiscussion(Request $request)
     {
-        if (trim($request->posts_content) == null) {
-            return response()->json(['status' => 'error', 'message' => __('notifications.required_fields')]);
-        }
-
         $post = Post::create([
             'posts_title' => $request->posts_title,
             'posts_content' => $request->posts_content,
