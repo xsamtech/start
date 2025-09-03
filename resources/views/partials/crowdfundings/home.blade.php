@@ -130,6 +130,14 @@
                                                 <input type="text" name="tax_number" id="tax_number" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.tax_number')">
                                             </div><!-- End .input-group -->
 
+											<!-- Creation year -->
+											<div class="input-group" style="margin-bottom: 5px;">
+                                                <span class="input-group-addon">
+                                                    <span class="input-text">@lang('miscellaneous.admin.project_writing.data.creation_year')</span>
+                                                </span>
+                                                <input type="text" name="creation_year" id="creation_year" class="form-control input-lg" placeholder="@lang('miscellaneous.admin.project_writing.data.creation_year')">
+                                            </div><!-- End .input-group -->
+
 											<!-- Company address -->
                                             <div class="input-group textarea-container" style="z-index: 3; margin-bottom: 5px;">
                                                 <span class="input-group-addon">
@@ -183,7 +191,7 @@
 												</div>
                                             </div>
 
-											<!-- Activity description -->
+											<!-- Activity field -->
                                             <div class="panel panel-default" style="margin: 0 0 5px 0;">
 												<div class="panel-heading">
 													<p style="margin-bottom: 0">@lang('miscellaneous.admin.project_writing.data.activity_description.title')</p>
@@ -721,7 +729,7 @@
 													<img src="{{ $project->photos[0]->file_url }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
 				@endif
 													<p class="small" style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
-													<a href="#" class="small text-primary" style="text-decoration: underline; float: right;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
+													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline; float: right;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
 												</li>
 			@endforeach
 											</ul>
@@ -751,7 +759,7 @@
 												</div>
 												<div class="col-lg-8 col-sm-7 col-xs-12">
 													<p style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
-													<a href="#" class="small text-primary" style="text-decoration: underline;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
+													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
 													<div>
 			@if (!empty($project->sheet_url))
 														<a href="{{ $project->sheet_url }}">

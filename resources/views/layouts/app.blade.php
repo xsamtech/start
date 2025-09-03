@@ -60,6 +60,8 @@
             textarea { resize: none; }
             #header { background: transparent url({{ asset('assets/img/watermak.png') }}) repeat center center / cover; }
             #content { background: transparent url({{ asset('assets/img/watermak.png') }}) repeat center center / contain; }
+            #aboutProject a { color: #72a51a; }
+            #aboutProject a:hover { text-decoration: underline; }
             #tableOfContent h4 { margin: 0; }
             #tableOfContent ul, #termsContent ul, #privacyContent ul { padding-left: 30px; }
             #tableOfContent ul li { list-style-type: decimal-leading-zero; margin-top: 10px; }
@@ -104,6 +106,7 @@
                 .d-xs-none { display: inline-block; }
                 .d-lg-none { display: none; }
                 .d-sm-none { display: none; }
+                .table-label { width: 200px; }
                 #paymentMethod { text-align: center; }
                 #flexItemsCenter { display: flex; align-items: center; }
                 #flexItemsCenter p:first-child { font-size: 3rem; line-height: 34px; }

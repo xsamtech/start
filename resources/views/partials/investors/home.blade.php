@@ -37,7 +37,7 @@
 												</div>
 												<div class="col-lg-8 col-sm-7 col-xs-12">
 													<p style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 200) !!}</p>
-													<a href="#" class="small text-primary" style="text-decoration: underline;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
+													<a href="{{ route('investor.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
 													</div>
 												</div>
 											</div>

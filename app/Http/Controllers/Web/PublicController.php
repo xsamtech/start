@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Crowdfunding as ResourcesCrowdfunding;
 use App\Http\Resources\Post as ResourcesPost;
 use App\Http\Resources\Product as ResourcesProduct;
+use App\Http\Resources\Project as ResourcesProject;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Cart;
 use App\Models\Category;
@@ -1006,20 +1007,15 @@ class PublicController extends Controller
     public function investorDatas($id)
     {
         $entity_title = __('miscellaneous.admin.investor.details');
-        $investor_role_id = Role::where('role_name->fr', 'Investisseur')->first()->id;
-        $selected_investor = User::find($id);
+        $selected_project = Project::find($id);
 
-        if (is_null($selected_investor)) {
-            return redirect('/')->with('error_message', __('notifications.find_investor_404'));
-        }
-
-        if (!$selected_investor->roles->contains('id', $investor_role_id)) {
-            return redirect('/')->with('error_message', __('notifications.find_error'));
+        if (is_null($selected_project)) {
+            return redirect('/project-writing')->with('error_message', __('notifications.find_error'));
         }
 
         return view('investors', [
             'entity_title' => $entity_title,
-            'selected_investor' => $selected_investor,
+            'selected_project' => new ResourcesProject($selected_project),
         ]);
     }
 
@@ -1055,15 +1051,16 @@ class PublicController extends Controller
     public function crowdfundingDatas($id)
     {
         $entity_title = __('miscellaneous.admin.crowdfunding.details');
-        $selected_crowdfunding = Crowdfunding::find($id);
+        $selected_project = Project::find($id);
 
-        if (is_null($selected_crowdfunding)) {
-            return redirect('/crowdfunding')->with('error_message', __('notifications.find_error'));
+        if (is_null($selected_project)) {
+            return redirect('/project-writing')->with('error_message', __('notifications.find_error'));
         }
 
+        // dd((new ResourcesProject($selected_project))->resolve());
         return view('crowdfundings', [
             'entity_title' => $entity_title,
-            'selected_crowdfunding' => (new ResourcesCrowdfunding($selected_crowdfunding))->resolve(),
+            'selected_project' => new ResourcesProject($selected_project),
             'countries' => showCountries(),
         ]);
     }

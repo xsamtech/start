@@ -800,10 +800,12 @@ return [
             'data' => [
                 'profile' => 'Profile',
                 'description' => 'Activity Description',
+                'about_company' => 'About company',
                 'company_name' => 'Company Name',
                 'rccm' => 'RCCM',
                 'id_nat' => 'NAT ID',
                 'tax_number' => 'Tax Number',
+                'creation_year' => 'Creation year',
                 'company_address' => 'Company Headquarters Address',
                 'company_email' => 'Company Email',
                 'company_phone' => 'Company Phone Number',
@@ -829,7 +831,7 @@ return [
                     'expert' => 'Expert (over 10 years)',
                 ],
                 'activity_description' => [
-                    'title' => 'Activity Description',
+                    'title' => 'Activity field',
                     'sector' => 'In which sector do you work?',
                     'agriculture' => [
                         'title' => 'Agriculture',
@@ -1057,6 +1059,7 @@ return [
                 'link' => 'Log in to see',
             ],
             'request' => 'Request an investment',
+            'finance' => 'Finance the project',
         ],
 
         // Project writing
