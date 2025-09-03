@@ -1697,6 +1697,11 @@
             $('#newPostModal').on('shown.bs.modal', function () {
                 tinymce.init({
                     selector: '#posts_content',
+                    setup: function (editor) {
+                        editor.on('init', function () {
+                            editor.focus(false); // Empêche de prendre le focus immédiatement
+                        });
+                    }
                     // plugins: 'lists link image',
                     // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
                     // setup: function (editor) {
