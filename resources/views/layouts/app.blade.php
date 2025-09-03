@@ -614,7 +614,7 @@
 @endif
 @if (Route::is('discussion.home'))
         <!-- ### Add product ### -->
-        <div class="modal fade" id="newPostModal" tabindex="-1" role="dialog" onkeyup="checkPostContent();">
+        <div class="modal fade" id="newPostModal" tabindex="-1" role="dialog"">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header" style="padding: 5px; border: 0;">
@@ -1697,6 +1697,10 @@
             $('#newPostModal').on('shown.bs.modal', function () {
                 tinymce.init({
                     selector: '#posts_content'
+                });
+
+                $(this).keyup(function (e) { 
+                    checkPostContent();
                 });
             });
 
