@@ -2055,7 +2055,22 @@
                         contentType: false,
                         processData: false,
                         success: function (response) {
-                            if (response.status = 'success') {
+                            if (response.status = 'error') {
+                                // Cacher l'animation de chargement
+                                $('#loading-icon').hide();
+
+                                // Afficher une alerte d'erreur
+                                $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                    <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                        ${response.message || '{{ __("notifications.error_while_processing") }}'}
+                                                                    </div>
+                                                                </div>`);
+
+                            } else {
                                 // Cacher l'animation de chargement
                                 $('#loading-icon').hide();
 
@@ -2080,21 +2095,6 @@
                                 $('#files_urls').val(null);
 
                                 location.reload();
-
-                            } else {
-                                // Cacher l'animation de chargement
-                                $('#loading-icon').hide();
-
-                                // Afficher une alerte d'erreur
-                                $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                    <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
-                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                        <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                        ${response.message || '{{ __("notifications.error_while_processing") }}'}
-                                                                    </div>
-                                                                </div>`);
                             }
                         },
                         error: function (error) {
