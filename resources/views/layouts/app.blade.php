@@ -631,19 +631,16 @@
     @csrf
                             <input type="hidden" name="type" value="post">
 
-                            <!-- Post title -->
                             <div class="form-group">
                                 <label for="posts_title">@lang('miscellaneous.admin.post.data.posts_title')</label>
                                 <input type="text" class="form-control" id="posts_title" name="posts_title" required>
                             </div>
 
-                            <!-- Post content -->
                             <div class="form-group">
                                 <label for="posts_content">@lang('miscellaneous.admin.post.data.posts_content')</label>
                                 <textarea class="form-control" id="posts_content" name="posts_content" rows="2" required></textarea>
                             </div>
 
-                            <!-- Category -->
                             <div class="form-group">
                                 <label for="for_category_id">@lang('miscellaneous.admin.product.data.category')</label>
                                 <select class="form-control" id="for_category_id" name="for_category_id">
@@ -668,7 +665,7 @@
                                 <input type="file" id="files_urls" name="files_urls[]" class="form-control" multiple>
                             </div>
 
-                            <div id="image-preview-container" class="mt-2"></div> <!-- Conteneur pour les vignettes -->
+                            <div id="image-preview-container" class="mt-2"></div>
 
                             <hr>
                             <div style="display: flex; justify-content: flex-start;">
