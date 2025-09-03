@@ -2055,7 +2055,7 @@
                         contentType: false,
                         processData: false,
                         success: function (response) {
-                            if (response.success) {
+                            if (response.status = 'success') {
                                 // Cacher l'animation de chargement
                                 $('#loading-icon').hide();
 
