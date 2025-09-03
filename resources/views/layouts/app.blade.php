@@ -1702,6 +1702,8 @@
                 $(this).keyup(function (e) { 
                     checkPostContent();
                 });
+
+                checkPostContent();
             });
 
             /**
