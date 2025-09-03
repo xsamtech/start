@@ -1583,104 +1583,104 @@ class PublicController extends Controller
      */
     public function addDiscussion(Request $request)
     {
-        $post = Post::create([
-            'posts_title' => $request->posts_title,
-            'posts_content' => $request->posts_content,
-            'event_start_at' => $request->event_start_at,
-            'event_end_at' => $request->event_end_at,
-            'answered_for' => $request->answered_for,
-            'type' => $request->type,
-            'for_category_id' => $request->for_category_id,
-            'user_id' => Auth::id(),
-        ]);
+        // $post = Post::create([
+        //     'posts_title' => $request->posts_title,
+        //     'posts_content' => $request->posts_content,
+        //     'event_start_at' => $request->event_start_at,
+        //     'event_end_at' => $request->event_end_at,
+        //     'answered_for' => $request->answered_for,
+        //     'type' => $request->type,
+        //     'for_category_id' => $request->for_category_id,
+        //     'user_id' => Auth::id(),
+        // ]);
 
-        // If image files exist
-        if ($request->hasFile('files_urls')) {
-            $files = $request->file('files_urls', []);
-            $fileNames = $request->input('files_names', []);
+        // // If image files exist
+        // if ($request->hasFile('files_urls')) {
+        //     $files = $request->file('files_urls', []);
+        //     $fileNames = $request->input('files_names', []);
 
-            // Types of extensions for different file types
-            $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-            $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
-            $audio_extensions = ['mp3', 'wav', 'flac'];
+        //     // Types of extensions for different file types
+        //     $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+        //     $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        //     $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
+        //     $audio_extensions = ['mp3', 'wav', 'flac'];
 
-            foreach ($files as $key => $singleFile) {
-                // Checking the file extension
-                $file_extension = $singleFile->getClientOriginalExtension();
+        //     foreach ($files as $key => $singleFile) {
+        //         // Checking the file extension
+        //         $file_extension = $singleFile->getClientOriginalExtension();
 
-                // File type check
-                $custom_uri = '';
-                $is_valid_type = false;
-                $file_type = null;
+        //         // File type check
+        //         $custom_uri = '';
+        //         $is_valid_type = false;
+        //         $file_type = null;
 
-                if (in_array($file_extension, $video_extensions)) { // File is a video
-                    $custom_uri = 'videos/posts';
-                    $file_type = 'video';
-                    $is_valid_type = true;
+        //         if (in_array($file_extension, $video_extensions)) { // File is a video
+        //             $custom_uri = 'videos/posts';
+        //             $file_type = 'video';
+        //             $is_valid_type = true;
 
-                } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
-                    $custom_uri = 'photos/posts';
-                    $file_type = 'photo';
-                    $is_valid_type = true;
+        //         } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
+        //             $custom_uri = 'photos/posts';
+        //             $file_type = 'photo';
+        //             $is_valid_type = true;
 
-                } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
-                    $custom_uri = 'audios/posts';
-                    $file_type = 'audio';
-                    $is_valid_type = true;
+        //         } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
+        //             $custom_uri = 'audios/posts';
+        //             $file_type = 'audio';
+        //             $is_valid_type = true;
 
-                } elseif (in_array($file_extension, $document_extensions)) { // File is a document
-                    $custom_uri = 'documents/posts';
-                    $file_type = 'document';
-                    $is_valid_type = true;
-                }
+        //         } elseif (in_array($file_extension, $document_extensions)) { // File is a document
+        //             $custom_uri = 'documents/posts';
+        //             $file_type = 'document';
+        //             $is_valid_type = true;
+        //         }
 
-                // If the extension does not match any valid type
-                if (!$is_valid_type) {
-                    return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
-                }
+        //         // If the extension does not match any valid type
+        //         if (!$is_valid_type) {
+        //             return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
+        //         }
 
-                // Generate a unique path for the file
-                $filename = $singleFile->getClientOriginalName();
-                $file_url =  $custom_uri . '/' . $post->id . '/' . $filename;
+        //         // Generate a unique path for the file
+        //         $filename = $singleFile->getClientOriginalName();
+        //         $file_url =  $custom_uri . '/' . $post->id . '/' . $filename;
 
-                // Upload file
-                try {
-                    $singleFile->storeAs($custom_uri . '/' . $post->id, $filename, 'public');
+        //         // Upload file
+        //         try {
+        //             $singleFile->storeAs($custom_uri . '/' . $post->id, $filename, 'public');
 
-                } catch (\Throwable $th) {
-                    return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
-                }
+        //         } catch (\Throwable $th) {
+        //             return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
+        //         }
 
-                // Creating the database record for the file
-                File::create([
-                    'file_name' => trim($fileNames[$key] ?? $filename),
-                    'file_url' => getWebURL() . '/storage/' . $file_url,
-                    'file_type' => $file_type,
-                    'post_id' => $post->id
-                ]);
-            }
-        }
+        //         // Creating the database record for the file
+        //         File::create([
+        //             'file_name' => trim($fileNames[$key] ?? $filename),
+        //             'file_url' => getWebURL() . '/storage/' . $file_url,
+        //             'file_type' => $file_type,
+        //             'post_id' => $post->id
+        //         ]);
+        //     }
+        // }
 
-        if ($post->type == 'comment') {
-            $parent_post = Post::find($post->answered_for);
+        // if ($post->type == 'comment') {
+        //     $parent_post = Post::find($post->answered_for);
 
-            /*
-                NOTIFICATION MANAGEMENT
-            */
-            if (!is_null($parent_post)) {
-                Notification::create([
-                    'type' => 'post_answered',
-                    'is_read' => 0,
-                    'from_user_id' => Auth::id(),
-                    'to_user_id' => $parent_post->user_id,
-                    'post_id' => $parent_post->id
-                ]);
-            }
-        }
+        //     /*
+        //         NOTIFICATION MANAGEMENT
+        //     */
+        //     if (!is_null($parent_post)) {
+        //         Notification::create([
+        //             'type' => 'post_answered',
+        //             'is_read' => 0,
+        //             'from_user_id' => Auth::id(),
+        //             'to_user_id' => $parent_post->user_id,
+        //             'post_id' => $parent_post->id
+        //         ]);
+        //     }
+        // }
 
-        return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
-        // return response()->json(['status' => 'error', 'message' => $request->file('files_urls')]);
+        // return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+        return response()->json(['status' => 'error', 'message' => $request->posts_content]);
     }
 
     /**
