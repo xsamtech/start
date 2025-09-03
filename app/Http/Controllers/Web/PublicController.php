@@ -1684,7 +1684,7 @@ class PublicController extends Controller
         // }
 
         // return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
-        return response()->json(['status' => 'error', 'message' => $request->posts_content]);
+        return response()->json(['status' => 'error', 'message' => $request->file('files_urls')]);
     }
 
     /**
