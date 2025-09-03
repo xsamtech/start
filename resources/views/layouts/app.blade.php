@@ -2068,30 +2068,47 @@
                         contentType: false,
                         processData: false,
                         success: function (response) {
-                            // Cacher l'animation de chargement
-                            $('#loading-icon').hide();
+                            if (response.success) {
+                                // Cacher l'animation de chargement
+                                $('#loading-icon').hide();
 
-                            // Afficher une alerte de succès
-                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
-                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    ${response.message || 'Produit ajouté avec succès !'}
-                                                                </div>
-                                                            </div>`);
+                                // Afficher une alerte de succès
+                                $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                    <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                        ${response.message || 'Produit ajouté avec succès !'}
+                                                                    </div>
+                                                                </div>`);
 
-                            // Optionnellement, fermer le modal après un succès
-                            $('#newPostModal').modal('hide');
+                                // Optionnellement, fermer le modal après un succès
+                                $('#newPostModal').modal('hide');
 
-                            // Réinitialiser tous les champs du formulaire
-                            $('#postForm')[0].reset();
+                                // Réinitialiser tous les champs du formulaire
+                                $('#postForm')[0].reset();
 
-                            // Réinitialiser le champ de fichiers (images)
-                            $('#files_urls').val(null);
+                                // Réinitialiser le champ de fichiers (images)
+                                $('#files_urls').val(null);
 
-                            location.reload();
+                                location.reload();
+
+                            } else {
+                                // Cacher l'animation de chargement
+                                $('#loading-icon').hide();
+
+                                // Afficher une alerte d'erreur
+                                $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                    <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                        ${response.message || '{{ __("notifications.error_while_processing") }}'}
+                                                                    </div>
+                                                                </div>`);
+                            }
                         },
                         error: function (error) {
                             // Cacher l'animation de chargement
