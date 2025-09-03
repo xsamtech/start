@@ -1711,7 +1711,7 @@
                 const postsContent = document.getElementById('posts_content');
                 const submitPost = document.getElementById('submitPost');
 
-                if (postsContent.value !== '' && postsContent.value !== null && postsContent.value !== undefined) {
+                if (postsContent.value !== '' OR postsContent.value !== null OR postsContent.value !== undefined) {
                     submitPost.classList.remove('disabled');
 
                 } else {
