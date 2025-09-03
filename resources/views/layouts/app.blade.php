@@ -614,7 +614,7 @@
 @endif
 @if (Route::is('discussion.home'))
         <!-- ### Add product ### -->
-        <div class="modal fade" id="newPostModal" tabindex="-1" role="dialog"">
+        <div class="modal fade" id="newPostModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header" style="padding: 5px; border: 0;">
@@ -672,7 +672,7 @@
 
                             <hr>
                             <div style="display: flex; justify-content: flex-start;">
-                                <button type="submit" id="submitPost" class="btn btn-custom-2 disabled" style="width: 250px">
+                                <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
                                     <span style="color: #fff;">@lang('miscellaneous.register')</span>
                                 </button>
                                 <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
@@ -1698,30 +1698,7 @@
                 tinymce.init({
                     selector: '#posts_content'
                 });
-
-                $(this).keyup(function (e) { 
-                    checkPostContent();
-                });
-
-                checkPostContent();
             });
-
-            /**
-             * Activate submit on check terms accept
-             */
-            function checkPostContent() {
-                const postsContent = document.getElementById('posts_content');
-                const submitPost = document.getElementById('submitPost');
-
-                if (postsContent.value !== '' || postsContent.value !== null || postsContent.value !== undefined) {
-                    submitPost.classList.remove('disabled');
-
-                } else {
-                    submitPost.classList.add('disabled');
-                }
-            }
-
-            checkPostContent();
         </script>
 @endif
         <script type="text/javascript">
