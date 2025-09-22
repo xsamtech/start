@@ -41,6 +41,42 @@ return [
     'color' => 'Couleur',
     'size' => 'Taille',
     'yield' => 'Rendement',
+    'units_of_measurement' => [
+        'hectare' => [
+            'name' => [
+                'singular' => 'hectare',
+                'plural' => 'hectares',
+            ],
+            'symbol' => 'Ha',
+        ],
+        'square_meter' => [
+            'name' => [
+                'singular' => 'mètre carré',
+                'plural' => 'mètres carré',
+            ],
+            'symbol' => 'm<sup>2</sup>',
+        ],
+        'kilogram' => [
+            'name' => [
+                'singular' => 'kilogramme',
+                'plural' => 'kilogrammes',
+            ],
+            'symbol' => 'kg',
+        ],
+        'tonne' => [
+            'name' => [
+                'singular' => 'tonne',
+                'plural' => 'tonnes',
+            ],
+            'symbol' => 't',
+        ],
+        '100_kg_bag' => [
+            'name' => [
+                'singular' => 'sac de 100 kg',
+                'plural' => 'sacs de 100 kg',
+            ],
+        ],
+    ],
     'payment_method' => 'Mode de paiement',
     'active' => 'Actif',
     'inactive' => 'Inactif',
@@ -836,8 +872,39 @@ return [
                     'agriculture' => [
                         'title' => 'Agriculture',
                         'is_land_owner' => 'Êtes-vous détenteur d’une plantation ?',
-                        'land_area' => 'Taille de votre plantation en hectares',
+                        'land_area' => 'Taille de votre plantation',
                         'land_yield_per_hectare' => 'Rendement par tonne à l’hectare',
+                        'cultivated_land_area_last_season' => 'Estimez la superficie de la terre cultivée au cours de la dernière saison',
+                        'quantity_harvested_last_season' => 'Quelle quantité avez-vous récolté la saison dernière ?',
+                        'used_product_to_control_diseases' => 'Avez-vous eu recours à des produits ou des techniques de lutte contre les ravageurs et les maladies de cultures ?',
+                        'used_product_details' => 'Spécifiez les détails du ou des produits utilisés',
+                        'apply_fertilizers_last_season' => 'Avez-vous appliqué les fertilisants (engrais) organiques ou chimique dans votre champs la saison précédente ?',
+                        'apply_fertilizers_details' => 'Spécifiez les détails du ou des produits utilisés',
+                        'source_of_inputs_fertilizers_supply' => [
+                            'title' => 'Préciser la source d’approvisionnement de vos produits Intrants et fertilisants',
+                            'government_extension_agent' => 'Agent de vulgarisation du gouvernement',
+                            'ngo_staff' => 'Personnel d’ONG',
+                            'own_field' => 'Propre champ',
+                            'seed_multiplier' => 'Multiplicateur des semences',
+                            'local_market' => 'Marché local',
+                        ],
+                        'agriculture_training_received' => 'Avez-vous déjà reçu une formation en agriculture ?',
+                        'agriculture_training_list' => [
+                            'title1' => 'Précisez le champ de votre formation',
+                            'title2' => 'Précisez l’identité de votre encadreur technique',
+                            'crop_value_chain' => 'Chaîne de valeur des cultures (par exemple, plantation de semences, application d’engrais, transformation, distribution)',
+                            'diseases_control' => 'Lutte contre les ravageurs et les maladies des cultures',
+                            'improved_crop_storage' => 'Amélioration du stockage des récoltes',
+                            'nutritional_value_of_culture' => 'Valeur nutritionnelle de la culture',
+                            'isfm' => 'ISFM (gestion intégrée de la fertilité des sols)',
+                            'iita' => 'IITA',
+                            'africa_rice' => 'Africa Rice',
+                            'ngo' => 'ONG',
+                            'government_organization' => 'Organisation gouvernementale',
+                            'harvestplus' => 'HarvestPlus',
+                            'farmers_group' => 'Groupe d’agriculteurs',
+                            'other' => 'Autre (à spécifier)',
+                        ],
                         'culture_type' => [
                             'title' => 'Type de culture',
                             'production' => [

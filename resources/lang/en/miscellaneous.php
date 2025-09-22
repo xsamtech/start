@@ -41,6 +41,42 @@ return [
     'color' => 'Color',
     'size' => 'Size',
     'yield' => 'Yield',
+    'units_of_measurement' => [
+        'hectare' => [
+            'name' => [
+                'singular' => 'hectare',
+                'plural' => 'hectares',
+            ],
+            'symbol' => 'Ha',
+        ],
+        'square_meter' => [
+            'name' => [
+                'singular' => 'square meter',
+                'plural' => 'square meters',
+            ],
+            'symbol' => 'm<sup>2</sup>',
+        ],
+        'kilogram' => [
+            'name' => [
+                'singular' => 'kilogram',
+                'plural' => 'kilograms',
+            ],
+            'symbol' => 'kg',
+        ],
+        'tonne' => [
+            'name' => [
+                'singular' => 'tonne',
+                'plural' => 'tonnes',
+            ],
+            'symbol' => 't',
+        ],
+        '100_kg_bag' => [
+            'name' => [
+                'singular' => '100 kg bag',
+                'plural' => '100 kg bags',
+            ],
+        ],
+    ],
     'payment_method' => 'Payment method',
     'active' => 'Active',
     'inactive' => 'Inactive',
@@ -836,8 +872,39 @@ return [
                     'agriculture' => [
                         'title' => 'Agriculture',
                         'is_land_owner' => 'Do you own a plantation?',
-                        'land_area' => 'Size of your plantation in hectares',
+                        'land_area' => 'Size of your plantation',
                         'land_yield_per_hectare' => 'Yield per ton per hectare',
+                        'cultivated_land_area_last_season' => 'Estimate the area of land cultivated during the last season',
+                        'quantity_harvested_last_season' => 'How much did you harvest last season?',
+                        'used_product_to_control_diseases' => 'Have you used any products or techniques to control pests and crop diseases?',
+                        'used_product_details' => 'Specify details of the product(s) used',
+                        'apply_fertilizers_last_season' => 'Did you apply organic or chemical fertilizers to your fields last season?',
+                        'apply_fertilizers_details' => 'Specify details of the product(s) used',
+                        'source_of_inputs_fertilizers_supply' => [
+                            'title' => 'Specify the source of supply for your Inputs and Fertilizers products',
+                            'government_extension_agent' => 'Government extension agent',
+                            'ngo_staff' => 'NGO staff',
+                            'own_field' => 'Own field',
+                            'seed_multiplier' => 'Seed multiplier',
+                            'local_market' => 'Local market',
+                        ],
+                        'agriculture_training_received' => 'Have you ever received any training in agriculture?',
+                        'agriculture_training_list' => [
+                            'title1' => 'Specify the scope of your training',
+                            'title2' => 'Specify the identity of your technical supervisor',
+                            'crop_value_chain' => 'Crop value chain (e.g., seed planting, fertilizer application, processing, distribution)',
+                            'diseases_control' => 'Control of crop pests and diseases',
+                            'improved_crop_storage' => 'Improved crop storage',
+                            'nutritional_value_of_culture' => 'Nutritional value of culture',
+                            'isfm' => 'ISFM (integrated soil fertility management)',
+                            'iita' => 'IITA',
+                            'africa_rice' => 'Africa Rice',
+                            'ngo' => 'NGO',
+                            'government_organization' => 'Government organization',
+                            'harvestplus' => 'HarvestPlus',
+                            'farmers_group' => 'Farmers’ Group',
+                            'other' => 'Other (to be specified)',
+                        ],
                         'culture_type' => [
                             'title' => 'Crop Type',
                             'production' => [
