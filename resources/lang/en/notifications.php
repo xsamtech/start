@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
@@ -334,53 +335,58 @@ return [
 
     // ===== PUBLIC NOTIFICATIONS
     // Product stock emptied
-    'one_product_stock_emptied' => 'The stock is almost finished for your product “<strong>:product_name</strong>”.',
-    'two_products_stock_emptied' => 'The stock is almost finished for your product “<strong>:product_name</strong>” and one other.',
-    'many_products_stock_emptied' => 'The stock is almost finished for :count of your products.',
+    'stock_emptied' => [
+        'one' => 'Stock is running low for your product "<strong>:product_name</strong>".',
+        'many' => 'Stock is running low for :count of your products.',
+    ],
     // Product published
-    'one_user_one_product_published' => '<strong>:user_name</strong> » has published a :product_type.',
-    'one_user_many_products_published' => '<strong>:user_name</strong> » has published :count products.',
-    'two_users_products_published' => '<strong>:user_name</strong> » and one other have published products.',
-    'many_users_products_published' => '<strong>:user_name</strong> » and :count others have published products.',
+    'product_published' => [
+        'one' => '"<strong>:user_name</strong>" has published a :product_type.',
+        'many' => '"<strong>:user_name</strong>" has published :count offers.',
+    ],
     // Product shared
-    'one_product_shared' => 'Your :product_type “<strong>:product_name</strong>” is now visible to everyone.',
-    'two_products_shared' => 'Your :product_type “<strong>:product_name</strong>” and one other are now visible to everyone.',
-    'many_products_shared' => 'Your :product_type “<strong>:product_name</strong>” and :count others are now visible to everyone.',
+    'product_shared' => [
+        'one' => 'Your :product_type "<strong>:product_name</strong>" is now visible to everyone.',
+        'many' => ':count of your offers are now visible to everyone.',
+    ],
     // Product blocked
-    'one_product_blocked' => 'Your :product_type “<strong>:product_name</strong>” has been blocked by the administrator.',
-    'two_products_blocked' => 'Your :product_type “<strong>:product_name</strong>” and one other have been blocked by the administrator.',
-    'many_products_blocked' => 'Your :product_type “<strong>:product_name</strong>” and :count others have been blocked by the administrator.',
+    'product_blocked' => [
+        'one' => 'Your :product_type "<strong>:product_name</strong>" has been blocked by the administrator.',
+        'many' => ':count of your offers have been blocked by the administrator.',
+    ],
     // Project published
-    'one_user_one_project_published' => '<strong>:user_name</strong> » has published a project.',
-    'one_user_many_projects_published' => '<strong>:user_name</strong> » has published :count projects.',
-    'two_users_projects_published' => '<strong>:user_name</strong> » and one other have published projects.',
-    'many_users_projects_published' => '<strong>:user_name</strong> » and :count others have published projects.',
+    'project_published' => [
+        'one' => '"<strong>:user_name</strong>" has published a project.',
+        'many' => '"<strong>:user_name</strong>" and :count other members have published projects.',
+    ],
     // Project shared
-    'one_project_shared' => 'Your project is now visible to everyone.',
-    'two_projects_shared' => 'Your project and one other are now visible to everyone.',
-    'many_projects_shared' => 'Your project and :count others are now visible to everyone.',
+    'project_shared' => [
+        'one' => 'Your project is now visible to everyone.',
+        'many' => ':count of your projects are now visible to everyone.',
+    ],
     // Project blocked
-    'one_project_blocked' => 'Your project has been blocked by the administrator.',
-    'two_projects_blocked' => 'Your project and one other have been blocked by the administrator.',
-    'many_projects_blocked' => 'Your project and :count others have been blocked by the administrator.',
+    'project_blocked' => [
+        'one' => 'Your project has been blocked by the administrator.',
+        'many' => ':count of your projects have been blocked by the administrator.',
+    ],
     // Customer feedback
-    'one_customer_feedback_one_product' => '<strong>:user_name</strong> has commented on your :product_type “<strong>:product_name</strong>”.',
-    'two_customers_feedback_one_product' => '<strong>:user_name</strong> and one other member have commented on your :product_type “<strong>:product_name</strong>”.',
-    'many_customers_feedback_one_product' => '<strong>:user_name</strong> and :count other members have commented on your :product_type “<strong>:product_name</strong>”.',
-    'one_customer_feedback_many_products' => '<strong>:user_name</strong> has commented on your products.',
-    'two_customers_feedback_many_products' => '<strong>:user_name</strong> and one other member have commented on your products.',
-    'many_customers_feedback_many_products' => '<strong>:user_name</strong> and :count other members have commented on your products.',
+    'customer_feedback' => [
+        'one' => '<strong>:user_name</strong> reacted to your :product_type "<strong>:product_name</strong>".',
+        'many' => ':count members reacted to your :product_type "<strong>:product_name</strong>".',
+    ],
     // News sent
-    'one_news_sent' => 'START has published a new news.',
-    'many_news_sent' => 'START has published :count new news.',
+    'news_sent' => [
+        'one' => 'START has published a news update.',
+        'many' => 'START has published :count news updates.',
+    ],
     // Complaint sent
-    'one_complaint_sent' => 'You have received a new complaint.',
-    'many_complaints_sent' => 'You have received :count new complaints.',
+    'complaint_sent' => [
+        'one' => 'You have received a new complaint.',
+        'many' => 'You have received :count new complaints.',
+    ],
     // Post answered
-    'one_post_answered_one_parent' => '<strong>:user_name</strong> commented on your <strong>:post_type</strong>.',
-    'two_posts_answered_one_parent' => '<strong>:user_name</strong> and one other member commented on your <strong>:post_type</strong>.',
-    'many_posts_answered_one_parent' => '<strong>:user_name</strong> and :count other members commented on your <strong>:post_type</strong>.',
-    'one_post_answered_many_parents' => '<strong>:user_name</strong> commented on your posts.',
-    'two_posts_answered_many_parents' => '<strong>:user_name</strong> and one other member commented on your posts.',
-    'many_posts_answered_many_parents' => '<strong>:user_name</strong> and :count other members commented on your posts.',
+    'post_answered' => [
+        'one' => '"<strong>:user_name</strong>" commented on your <strong>:post_type</strong>.',
+        'many' => ':count members commented on your <strong>:post_type</strong>.',
+    ],
 ];

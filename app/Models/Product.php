@@ -220,6 +220,7 @@ class Product extends Model
 
                         }], DB::raw('price_at_that_time * quantity'))
                         ->where('products.type', $type)
+                        ->where('products.is_shared', 1)
                         ->orderByDesc('total_quantity_ordered')
                         ->take($limit)->get();
     }

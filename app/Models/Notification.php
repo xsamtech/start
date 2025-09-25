@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @author Xanders
@@ -87,5 +88,14 @@ class Notification extends Model
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class, 'post_id');
+    }
+
+    /**
+     * MANY-TO-ONE
+     * Several read_notifications for a notification
+     */
+    public function read_notifications(): HasMany
+    {
+        return $this->hasMany(ReadNotification::class, 'notification_id');
     }
 }

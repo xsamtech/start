@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Product as ResourcesProduct;
+use App\Http\Resources\Project as ResourcesProject;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Project;
 use App\Models\ProjectSector;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -53,9 +55,10 @@ class AdminController extends Controller
     public function index()
     {
         $products_unshared = Product::where('type', 'product')->where('is_shared', 0)->orderByDesc('created_at')->paginate(5)->appends(request()->query());
-        $products = Product::where('type', 'product')->orderByDesc('created_at')->paginate(5)->appends(request()->query())
+        $products = Product::where('type', 'product')->orderByDesc('created_at')->paginate(5)->appends(request()->query());
         $services_unshared = Product::where('type', 'service')->where('is_shared', 0)->orderByDesc('created_at')->paginate(5)->appends(request()->query());
         $services = Product::where('type', 'service')->orderByDesc('created_at')->paginate(5)->appends(request()->query());
+        $projects = Project::orderByDesc('created_at')->paginate(5)->appends(request()->query());
 
         return view('dashboard.home', [
             'products_unshared' => ResourcesProduct::collection($products_unshared)->resolve(),
@@ -66,6 +69,8 @@ class AdminController extends Controller
             'services_unshared_req' => $services_unshared,
             'services' => ResourcesProduct::collection($services)->resolve(),
             'services_req' => $services,
+            'projects' => ResourcesProject::collection($projects)->resolve(),
+            'projects_req' => $projects,
         ]);
     }
 
@@ -140,6 +145,11 @@ class AdminController extends Controller
         $entity_title = null;
         $items = null;
 
+        if ($entity == 'project') {
+            $entity_title = __('miscellaneous.menu.admin.categories.projects');
+            $items = Project::orderByDesc('created_at')->paginate(5)->appends(request()->query());
+        }
+
         if ($entity == 'product') {
             $entity_title = __('miscellaneous.menu.public.products.products');
             $items = Product::where('type', 'product')->orderByDesc('created_at')->paginate(5)->appends(request()->query());
@@ -153,7 +163,7 @@ class AdminController extends Controller
         return view('dashboard.categories', [
             'entity' => $entity,
             'entity_title' => $entity_title,
-            'items' => ResourcesProduct::collection($items)->resolve(),
+            'items' => $entity == 'project' ? ResourcesProject::collection($items)->resolve() : ResourcesProduct::collection($items)->resolve(),
             'items_req' => $items,
         ]);
     }

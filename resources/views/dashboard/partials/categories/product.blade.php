@@ -44,12 +44,26 @@
                                                     <p class="m-0" style="max-width: 280px; white-space: normal;">{{ $product['product_description'] }}</p>
                                                 </td>
                                                 <td>
-                                                    <a href="#">
+                                                    <a href="{{ route('product.entity.datas', ['entity' => $product['type'], 'id' => $product['id']]) }}" target="_blank">
                                                         @lang('miscellaneous.details')<i class="feather-chevrons-right ms-1"></i>
                                                     </a><br>
-                                                    <span class="d-inline-block mt-1 rounded-pill text-danger" href="#">
-                                                        <input type="checkbox" data-toggle="switchbutton">
-                                                    </span>
+    @if ($product['is_shared'] == 0)
+                                                    <form action="{{ route('product.entity.datas', ['entity' => 'product-sharing', 'id' => $product['id']]) }}" method="POST">
+        @csrf
+                                                        <input type="hidden" name="is_shared" value="1">
+                                                        <button class="btn btn-sm w-100 btn-outline-success mt-1 pb-1 rounded-pill">
+                                                            @lang('miscellaneous.share')
+                                                        </button>
+                                                    </form>
+    @else
+                                                    <form action="{{ route('product.entity.datas', ['entity' => 'product-sharing', 'id' => $product['id']]) }}" method="POST">
+        @csrf
+                                                        <input type="hidden" name="is_shared" value="0">
+                                                        <button class="btn btn-sm w-100 btn-outline-danger mt-1 pb-1 rounded-pill">
+                                                            @lang('miscellaneous.unshare')
+                                                        </button>
+                                                    </form>
+    @endif
                                                 </td>
                                             </tr>
 @empty

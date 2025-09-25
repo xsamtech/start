@@ -37,14 +37,14 @@
                                         <img src="{{ $category->image_url ?? getWebURL() . '/template/public/images/banner.png' }}" alt="Category banner" class="img-responsive" style="height: 300px; object-fit: cover; filter: brightness(50%);">
                                         <div class="category-title">
                                             <h2>{{ $category->category_name }}</h2>
-                                            <p>{{ $category->category_description }}</p>
+                                            <p style="max-width: 90%!important;">{{ $category->category_description }}</p>
                                         </div><!-- End .category-title -->
                                     </div><!-- End #category-header -->
 
                                     <div class="md-margin"></div><!-- space -->
 
                                     <div class="category-toolbar clearfix">
-                                        <div class="toolbox-filter clearfix">
+                                        {{-- <div class="toolbox-filter clearfix">
 
                                             <div class="sort-box">
                                                 <span class="separator">@lang('miscellaneous.sort_by')</span>
@@ -61,7 +61,7 @@
                                                 </div>
                                             </div>
 
-                                        </div><!-- End .toolbox-filter -->
+                                        </div><!-- End .toolbox-filter --> --}}
                                         <div class="toolbox-pagination clearfix">
 											{{ $items->links() }}
                                         </div><!-- End .toolbox-pagination -->
@@ -74,7 +74,7 @@
                                                 <div class="item item-hover">
                                                     <div class="item-image-wrapper">
                                                         <figure class="item-image-container">
-                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}">
+                                                            <a href="{{ route('product.entity.datas', ['entity' => 'service', 'id' => $product['id']]) }}">
                                                                 <img src="{{ count($product['photos']) > 0 ? $product['photos'][0]->file_url : getWebURL() . '/template/public/images/products/item6.jpg' }}" alt="item1" class="item-image">
                                                                 <img src="{{ count($product['photos']) > 0 ? (!empty($product['photos'][1]) ? $product['photos'][1]->file_url : $product['photos'][0]->file_url) : getWebURL() . '/template/public/images/products/item6-hover.jpg' }}" alt="item1  Hover" class="item-image-hover">
                                                             </a>
@@ -90,11 +90,11 @@
                                                             </div><!-- End .ratings -->
                                                         </div><!-- End .rating-container -->
                                                         <h3 class="item-name">
-                                                            <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}">
+                                                            <a href="{{ route('product.entity.datas', ['entity' => 'service', 'id' => $product['id']]) }}">
                                                                 {{ $product['product_name'] }}
                                                             </a>
                                                         </h3>
-                                                        <div id="product-{{ $product['id'] }}" class="item-action">
+                                                        {{-- <div id="product-{{ $product['id'] }}" class="item-action">
     @if (!empty($current_user))
         @if ($current_user->hasProductInUnpaidCart($product['id']))
                                                             <p class="btn btn-default disabled" style="margin: -2px;">
@@ -117,7 +117,7 @@
                                                                 <span class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
                                                             </a>
     @endif
-                                                        </div><!-- End .item-action -->
+                                                        </div><!-- End .item-action --> --}}
                                                     </div><!-- End .item-meta-container -->
                                                 </div><!-- End .item -->
                                             </div><!-- End .col-md-4 -->
@@ -163,7 +163,7 @@
 
                                             <div class="panel">
                                                 <div class="accordion-header">
-                                                    <div class="accordion-title"><span>@lang('miscellaneous.admin.product.data.price')</span></div><!-- End .accordion-title -->
+                                                    <div class="accordion-title"><span>@lang('miscellaneous.admin.product.data.service_price')</span></div><!-- End .accordion-title -->
                                                     <a class="accordion-btn opened" data-toggle="collapse" data-target="#category-list-3"></a>
                                                 </div><!-- End .accordion-header -->
 

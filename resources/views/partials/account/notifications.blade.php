@@ -17,20 +17,34 @@
 								<p class="title-desc"><i class="bi bi-person" style="font-size: 2.5rem; vertical-align: -3px"></i> {{ $current_user->firstname . ' ' . $current_user->lastname }}</p>
 							</header>
 
-@if (count($items) > 0)
+@if (count($items['unread']) > 0 || count($items['read']) > 0)
 							<div class="row">
 								<div class="col-md-12">
 									<div class="list-group">
-	@foreach ($items as $notification)
-										<a href="{{ $notification['route'] . '?notif_id=' . $notification['id'] }}" class="list-group-item list-group-item-action{{ $notification['is_read'] == 0 ? ' bg-light' : '' }}" style="padding: 10px 5px;">
+	@forelse ($items['unread'] as $notif)
+										<a href="{{ $notif['url'] }}" class="list-group-item list-group-item-action bg-light" style="color: #000;; padding: 10px 5px;">
 											<div id="notificationItem">
 												<p style="margin-bottom: 0;">
-													{!! $notification['message'] !!}
+													{!! $notif['text'] !!}
 												</p>
-												<small class="text-muted">{{ ucfirst($notification['created_at']) }}</small>
+												<small class="text-muted">{{ ucfirst(explicitDate($notif['created_at'])) }}</small>
 											</div>
 										</a>
-	@endforeach
+		
+	@empty
+	@endforelse
+	@forelse ($items['read'] as $notif)
+										<a href="{{ $notif['url'] }}" class="list-group-item list-group-item-action" style="color: #000;; padding: 10px 5px;">
+											<div id="notificationItem">
+												<p style="margin-bottom: 0;">
+													{!! $notif['text'] !!}
+												</p>
+												<small class="text-muted">{{ ucfirst(explicitDate($notif['created_at'])) }}</small>
+											</div>
+										</a>
+		
+	@empty
+	@endforelse
 									</div>
 								</div><!-- End .col-md-12 -->
 							</div><!-- End .row -->

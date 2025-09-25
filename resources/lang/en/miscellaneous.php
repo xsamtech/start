@@ -108,6 +108,8 @@ return [
     'write_new' => 'Register new project',
     'participate' => 'Participate',
     'publish' => 'Publish',
+    'share' => 'Share',
+    'unshare' => 'Unshare',
     'ask' => 'Ask',
     'answer' => 'Answer',
     'validated' => 'Validated',
@@ -657,7 +659,8 @@ return [
                 'product_name' => ':entity name',
                 'product_description' => 'Description',
                 'quantity' => 'Quantity',
-                'price' => 'Price (per kilo)',
+                'product_price' => 'Price (per kilo)',
+                'service_price' => 'Price',
                 'type' => 'Type',
                 'action' => [
                     'title' => 'What do you do',

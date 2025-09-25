@@ -15,6 +15,7 @@ use App\Models\Project;
 use App\Models\ProjectSector;
 use App\Models\User;
 use App\Services\CartService;
+use App\Services\NotificationService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -36,11 +37,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(CartService $cartService): void
+    public function boot(CartService $cartService, NotificationService $notificationService): void
     {
         Paginator::useBootstrap();
 
-        view()->composer('*', function ($view) use ($cartService) {
+        view()->composer('*', function ($view) use ($cartService, $notificationService) {
             // dd($cartService->getCartTotalFromSession());
             $sessionCartTotal = session()->has('cart') ? $cartService->getCartTotalFromSession() : 0;
             $current_user = null;
@@ -49,11 +50,11 @@ class AppServiceProvider extends ServiceProvider
                 $current_user = new ResourcesUser(Auth::user());
                 $user_orders = $current_user->unpaidOrders();
                 $user_projects = Project::where('user_id', $current_user->id)->orderByDesc('created_at')->get();;
-                $unread_notifications = Notification::where('to_user_id', $current_user->id)->where('is_read', 0)->orderByDesc('created_at')->get();
+                $unread_notifications = $notificationService->getUserNotifications($current_user->id);
 
                 $view->with('user_orders', $user_orders);
                 $view->with('user_projects', $user_projects);
-                $view->with('unread_notifications', $unread_notifications);
+                $view->with('unread_notifications', $unread_notifications['unread']);
             }
 
             $members_disabled = User::where('status', 'disabled')->whereHas('roles', function ($query) {

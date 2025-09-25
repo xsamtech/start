@@ -38,7 +38,7 @@ class Product extends JsonResource
             'videos' => File::collection($this->videos),
             'audios' => File::collection($this->audios),
             'documents' => File::collection($this->documents),
-            'categories' => Category::collection($this->categories),
+            // 'categories' => Category::collection($this->categories),
             'average_rating' => $this->averageRating() == null ? 0 : round($this->averageRating()),
             'feedbacks' => CustomerFeedback::collection($this->receivedFeedbacks),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),

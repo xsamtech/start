@@ -26,9 +26,11 @@ use App\Models\ProjectActivity;
 use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Lang;
@@ -245,7 +247,7 @@ class PublicController extends Controller
      * @param  string  $entity
      * @return \Illuminate\View\View
      */
-    public function accountEntity(Request $request, $entity)
+    public function accountEntity(Request $request, NotificationService $service, $entity)
     {
         $current_user = User::find(Auth::id());
         $entity_title = null;
@@ -383,273 +385,7 @@ class PublicController extends Controller
         }
 
         if ($entity == 'notifications') {
-            $entity_title = __('miscellaneous.menu.notifications');
-            // Get user notifications
-            $unreadNotifications  = Notification::where('to_user_id', $current_user->id)->where('is_read', 0)->orderByDesc('created_at')->paginate(12)->appends($request->query());
-            $readNotifications = Notification::where('to_user_id', $current_user->id)->where('is_read', 1)->orderByDesc('created_at')->paginate(12)->appends($request->query());
-
-            $formattedUnreadNotifications = [];
-            $formattedReadNotifications = [];
-
-            foreach ($unreadNotifications as $notification) {
-                // We retrieve the notification type and the ID of the associated object
-                $type = $notification->type;
-                $product = $notification->product; // Product relationship if it exists
-                $project = $notification->project; // Project relationship if it exists
-                $post = $notification->post; // Post relationship if it exists
-
-                $fromUserName = optional($notification->from_user)->firstname . ' ' . optional($notification->from_user)->lastname; // Name of the user who generated the notification
-
-                // Dynamic text creation based on the type and number of notifications
-                $message = '';
-                $route = '';
-                $count = $unreadNotifications->count(); // The number of unread notifications
-
-                switch ($type) {
-                    case 'stock_emptied':
-                        if ($count === 1) {
-                            $message = __('notifications.one_product_stock_emptied', ['product_name' => $product->product_name]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_products_stock_emptied', ['product_name' => $product->product_name]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-
-                        } else {
-                            $message = __('notifications.many_products_stock_emptied', ['count' => $count]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-                        }
-                    break;
-
-                    case 'product_shared':
-                        if ($count === 1) {
-                            $message = __('notifications.one_product_shared', ['product_type' => $product->type, 'product_name' => $product->product_name]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_products_shared', ['product_type' => $product->type, 'product_name' => $product->product_name]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-
-                        } else {
-                            $message = __('notifications.many_products_shared', ['product_type' => $product->type, 'product_name' => $product->product_name, 'count' => $count]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-                        }
-                        break;
-
-                    case 'product_blocked':
-                        if ($count === 1) {
-                            $message = __('notifications.one_product_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_products_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-
-                        } else {
-                            $message = __('notifications.many_products_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name, 'count' => $count]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-                        }
-                        break;
-
-                    case 'project_shared':
-                        // Project Shared
-                        if ($count === 1) {
-                            $message = __('notifications.one_project_shared');
-                            $route = route('crowdfunding.datas', ['id' => $project->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_projects_shared');
-                            $route = route('account.entity', ['entity' => 'projects']);
-
-                        } else {
-                            $message = __('notifications.many_projects_shared', ['count' => $count]);
-                            $route = route('account.entity', ['entity' => 'projects']);
-                        }
-                        break;
-
-                    case 'project_blocked':
-                        // Project Blocked
-                        if ($count === 1) {
-                            $message = __('notifications.one_project_blocked');
-                            $route = route('crowdfunding.datas', ['id' => $project->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_projects_blocked');
-                            $route = route('account.entity', ['entity' => 'projects']);
-
-                        } else {
-                            $message = __('notifications.many_projects_blocked', ['count' => $count]);
-                            $route = route('account.entity', ['entity' => 'projects']);
-                        }
-                        break;
-
-                    case 'customer_feedback':
-                        // Customer feedbacks
-                        if ($count === 1) {
-                            $message = __('notifications.one_customer_feedback_one_product', ['user_name' => $fromUserName, 'product_name' => $product->product_name, 'product_type' => $product->type]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-
-                        } elseif ($count > 1) {
-                            $message = __('notifications.many_customers_feedback_one_product', ['user_name' => $fromUserName, 'count' => $count]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-                        }
-                        break;
-
-                    case 'post_answered':
-                        // Post answer
-                        if ($count === 1) {
-                            $message = __('notifications.one_post_answered_one_parent', ['user_name' => $fromUserName, 'post_type' => $post->type]);
-                            $route = route('discussion.datas', ['id' => $post->id]);
-
-                        } elseif ($count > 1) {
-                            $message = __('notifications.many_posts_answered_one_parent', ['user_name' => $fromUserName, 'count' => $count]);
-                            $route = route('discussion.datas', ['id' => $post->id]);
-                        }
-                    break;
-
-                    // Add more cases as needed
-                }
-
-                $formattedUnreadNotifications[] = [
-                    'id' => $notification->id,
-                    'message' => $message,
-                    'route' => $route,
-                    'is_read' => $notification->is_read,
-                    'created_at' => explicitDate($notification->created_at),
-                ];
-            }
-
-            foreach ($readNotifications as $notification) {
-                // We retrieve the notification type and the ID of the associated object
-                $type = $notification->type;
-                $product = $notification->product; // Product relationship if it exists
-                $project = $notification->project; // Project relationship if it exists
-                $post = $notification->post; // Post relationship if it exists
-
-                $fromUserName = optional($notification->from_user)->firstname . ' ' . optional($notification->from_user)->lastname; // Name of the user who generated the notification
-
-                // Dynamic text creation based on the type and number of notifications
-                $message = '';
-                $route = '';
-                $count = $readNotifications->count(); // The number of notifications read
-
-                switch ($type) {
-                    case 'stock_emptied':
-                        if ($count === 1) {
-                            $message = __('notifications.one_product_stock_emptied', ['product_name' => $product->product_name]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_products_stock_emptied', ['product_name' => $product->product_name]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-
-                        } else {
-                            $message = __('notifications.many_products_stock_emptied', ['count' => $count]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-                        }
-                    break;
-
-                    case 'product_shared':
-                        if ($count === 1) {
-                            $message = __('notifications.one_product_shared', ['product_type' => $product->type, 'product_name' => $product->product_name]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_products_shared', ['product_type' => $product->type, 'product_name' => $product->product_name]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-
-                        } else {
-                            $message = __('notifications.many_products_shared', ['product_type' => $product->type, 'product_name' => $product->product_name, 'count' => $count]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-                        }
-                        break;
-
-                    case 'product_blocked':
-                        if ($count === 1) {
-                            $message = __('notifications.one_product_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_products_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-
-                        } else {
-                            $message = __('notifications.many_products_blocked', ['product_type' => $product->type, 'product_name' => $product->product_name, 'count' => $count]);
-                            $route = route('account.entity', ['entity' => $product->type . 's']);
-                        }
-                        break;
-
-                    case 'project_shared':
-                        // Project Shared
-                        if ($count === 1) {
-                            $message = __('notifications.one_project_shared');
-                            $route = route('crowdfunding.datas', ['id' => $project->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_projects_shared');
-                            $route = route('account.entity', ['entity' => 'projects']);
-
-                        } else {
-                            $message = __('notifications.many_projects_shared', ['count' => $count]);
-                            $route = route('account.entity', ['entity' => 'projects']);
-                        }
-                        break;
-
-                    case 'project_blocked':
-                        // Project Blocked
-                        if ($count === 1) {
-                            $message = __('notifications.one_project_blocked');
-                            $route = route('crowdfunding.datas', ['id' => $project->id]);
-
-                        } elseif ($count === 2) {
-                            $message = __('notifications.two_projects_blocked');
-                            $route = route('account.entity', ['entity' => 'projects']);
-
-                        } else {
-                            $message = __('notifications.many_projects_blocked', ['count' => $count]);
-                            $route = route('account.entity', ['entity' => 'projects']);
-                        }
-                        break;
-
-                    case 'customer_feedback':
-                        // Customer feedbacks
-                        if ($count === 1) {
-                            $message = __('notifications.one_customer_feedback_one_product', ['user_name' => $fromUserName, 'product_name' => $product->product_name, 'product_type' => $product->type]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-
-                        } elseif ($count > 1) {
-                            $message = __('notifications.many_customers_feedback_one_product', ['user_name' => $fromUserName, 'count' => $count - 1]);
-                            $route = route('product.entity.datas', ['entity' => $product->type, 'id' => $product->id]);
-                        }
-                        break;
-
-                    case 'post_answered':
-                        // Post answer
-                        if ($count === 1) {
-                            $message = __('notifications.one_post_answered_one_parent', ['user_name' => $fromUserName, 'post_type' => $post->type]);
-                            $route = route('discussion.datas', ['id' => $post->id]);
-
-                        } elseif ($count > 1) {
-                            $message = __('notifications.many_posts_answered_one_parent', ['user_name' => $fromUserName, 'count' => $count - 1]);
-                            $route = route('discussion.datas', ['id' => $post->id]);
-                        }
-                    break;
-
-                    // Add more cases as needed
-                }
-
-                $formattedReadNotifications[] = [
-                    'id' => $notification->id,
-                    'message' => $message,
-                    'route' => $route,
-                    'is_read' => $notification->is_read,
-                    'created_at' => explicitDate($notification->created_at),
-                ];
-            }
-
-            // Combiner les notifications non lues et lues
-            $formattedNotifications = array_merge($formattedUnreadNotifications, $formattedReadNotifications);
-            $items = $formattedNotifications;
+            $items = $service->getUserNotifications($current_user->id);
         }
 
         if ($entity == 'customers') {
@@ -726,7 +462,7 @@ class PublicController extends Controller
             // Get the first category in the case user has not yet selected his category
             $category = Category::where([['id', $categoryId], ['for_service', 0]])->first();
             // Get user products
-            $query = Product::where([['type', 'product'], ['category_id', $categoryId]]);
+            $query = Product::where([['type', 'product'], ['is_shared', 1], ['category_id', $categoryId]]);
 
             // Sort by "action" if needed
             $query->when($request->action, function ($query) use ($request) {
@@ -790,7 +526,7 @@ class PublicController extends Controller
             // Get the first category in the case user has not yet selected his category
             $category = Category::where([['id', $categoryId], ['for_service', 1]])->first();
             // Get user services
-            $query = Product::where([['type', 'service'], ['category_id', $categoryId]]);
+            $query = Product::where([['type', 'service'], ['is_shared', 1], ['category_id', $categoryId]]);
 
             // Sort by "action" if needed
             $query->when($request->action, function ($query) use ($request) {
@@ -841,55 +577,41 @@ class PublicController extends Controller
      */
     public function productDatas($entity, $id)
     {
-        $entity_title = null;
-        $category = null;
-        $categories = null;
         $selected_product = Product::find($id);
 
         if (is_null($selected_product)) {
             return redirect('/')->with('error_message', __('notifications.find_product_404'));
         }
 
-        if ($entity == 'project') {
-            $entity_title = __('miscellaneous.menu.public.products.about_project');
+        $entity_title = $entity == 'product' ? __('miscellaneous.menu.public.products.about_product') : __('miscellaneous.menu.public.products.about_service');
+        $categories = $entity == 'product' ? Category::withCount('products')->where('for_service', 0)->get() : Category::withCount('products')->where('for_service', 1)->get();
+
+        if ($categories->isEmpty()) {
+            Category::create([
+                'category_name' => [
+                    'en' => 'Cash crops',
+                    'fr' => 'Cultures de rente'
+                ],
+                'category_description' => [
+                    'en' => 'Coffee, Oil palm, Rubber, Cocoa, Rice, Tea.',
+                    'fr' => 'Café, Palmier à huile, Caoutchouc, Cacao, Riz, Thé.'
+                ],
+                'for_service' => 0,
+                'alias' => 'cash-crops',
+            ]);
         }
 
-        if ($entity == 'product') {
-            $entity_title = __('miscellaneous.menu.public.products.about_product');
-            $entity_title = __('miscellaneous.menu.public.products.products');
-            $categories = Category::withCount('products')->where('for_service', 0)->get();
+        $categories_ids = $categories->pluck('id')->toArray();
 
-            if ($categories->isEmpty()) {
-                Category::create([
-                    'category_name' => [
-                        'en' => 'Cash crops',
-                        'fr' => 'Cultures de rente'
-                    ],
-                    'category_description' => [
-                        'en' => 'Coffee, Oil palm, Rubber, Cocoa, Rice, Tea.',
-                        'fr' => 'Café, Palmier à huile, Caoutchouc, Cacao, Riz, Thé.'
-                    ],
-                    'for_service' => 0,
-                    'alias' => 'cash-crops',
-                ]);
-            }
+        // If $categories_ids is empty, we have a problem
+        $categoryId = $request->category_id ?? ($categories_ids[0] ?? null);
 
-            $categories_ids = $categories->pluck('id')->toArray();
-
-            // If $categories_ids is empty, we have a problem
-            $categoryId = $request->category_id ?? ($categories_ids[0] ?? null);
-
-            if ($categoryId === null) {
-                return redirect()->route('home')->with('error_message', __('notifications.find_category_404'));
-            }
-
-            // Get the first category in the case user has not yet selected his category
-            $category = Category::where([['id', $categoryId], ['for_service', 0]])->first();
+        if ($categoryId === null) {
+            return redirect()->route('home')->with('error_message', __('notifications.find_category_404'));
         }
 
-        if ($entity == 'service') {
-            $entity_title = __('miscellaneous.menu.public.products.about_service');
-        }
+        // Get the first category in the case user has not yet selected his category
+        $category = $entity == 'product' ? Category::where([['id', $categoryId], ['for_service', 0]])->first() : Category::where([['id', $categoryId], ['for_service', 1]])->first();
 
         return view('products', [
             'entity_title' => $entity_title,
@@ -1449,7 +1171,26 @@ class PublicController extends Controller
      */
     public function addProductEntity(Request $request, $entity)
     {
+        $current_user = User::find(Auth::id());
+
         if ($entity == 'product' OR $entity == 'service') {
+            $role_seller = null;
+            $role_seller_exists = Role::where('role_name->fr', 'Vendeur')->exists();
+
+            if (!$role_seller_exists) {
+                $role_seller = Role::create([
+                    'role_name' => [
+                        'en' => 'Seller',
+                        'fr' => 'Vendeur',
+                    ],
+                    'role_description' => [
+                        'en' => 'A person who sells or distributes products, or offers services.',
+                        'fr' => 'Personne qui vend ou distribue des produits, ou qui offre des services.',
+                    ]
+                ]);
+            }
+
+            $role_seller = Role::where('role_name->fr', 'Vendeur')->first();
             $product = Product::create([
                 'product_name' => $request->product_name,
                 'product_description' => $request->product_description,
@@ -1460,8 +1201,8 @@ class PublicController extends Controller
                 'action' => $request->filled('action') ? $request->action : 'sell',
                 'is_shared' => $request->filled('is_shared') ? $request->is_shared : 0,
                 'category_id' => $request->category_id,
-                'user_id' => Auth::id(),
-                'created_by' => Auth::check() ? Auth::id() : null,
+                'user_id' => $current_user->id,
+                'created_by' => $current_user->id,
             ]);
 
             // If image files exist
@@ -1529,6 +1270,22 @@ class PublicController extends Controller
                         'file_type' => $file_type,
                         'product_id' => $product->id
                     ]);
+                }
+            }
+
+            // Update user role to "Seller" if he doesn't have that role
+            if ($current_user->selected_role->id != $role_seller->id) {
+                DB::beginTransaction();
+
+                try {
+                    // 1. Update all other roles for this user and set is_selected to 0
+                    $current_user->roles()->updateExistingPivot($current_user->roles->pluck('id')->toArray(), ['is_selected' => 0]);
+                    // 2. Add the new role and set is_selected to 1
+                    $current_user->roles()->attach($role_seller->id, ['is_selected' => 1]);
+
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
                 }
             }
 
@@ -2268,6 +2025,17 @@ class PublicController extends Controller
      */
     public function updateProductEntity(Request $request, $entity, $id)
     {
+        if ($entity == 'product-sharing') {
+            $current_product = Product::find($id);
+
+            $current_product->update([
+                'is_shared' => $request->is_shared,
+                'updated_by' => Auth::check() ? Auth::id() : null,
+            ]);
+
+            return redirect()->back();
+        }
+
         if ($entity == 'product' OR $entity == 'service') {
             $inputs = [
                 'product_name' => $request->product_name,

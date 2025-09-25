@@ -137,8 +137,8 @@
                         <!-- [Projects] start -->
                         <div class="col-xxl-3 col-md-6">
     @php
-        $projects_req = 257836;
-        $projects_unshared_req = 19577;
+        $projects_req = 0;
+        $projects_unshared_req = 0;
     @endphp
                             <div class="card stretch stretch-full">
                                 <div class="card-body">

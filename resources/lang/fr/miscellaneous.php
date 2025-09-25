@@ -108,6 +108,8 @@ return [
     'write_new' => 'Enregistrer nouveau projet',
     'participate' => 'Participer',
     'publish' => 'Publier',
+    'share' => 'Partager',
+    'unshare' => 'Ne plus partager',
     'ask' => 'Demander',
     'answer' => 'Répondre',
     'validated' => 'Validé',
@@ -657,7 +659,8 @@ return [
                 'product_name' => 'Nom du :entity',
                 'product_description' => 'Description',
                 'quantity' => 'Quantité',
-                'price' => 'Prix (par kilo)',
+                'product_price' => 'Prix (par kilo)',
+                'service_price' => 'Prix',
                 'type' => 'Type',
                 'action' => [
                     'title' => 'Que faites-vous ?',

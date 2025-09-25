@@ -27,7 +27,7 @@
                         <div class="col-md-12">
 @if (!empty($current_user))
 							<div class="row">
-	@foreach ($projects as $project)
+	@forelse ($projects as $project)
 								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 									<div class="panel panel-default">
 										<div class="panel-body">
@@ -43,7 +43,14 @@
 										</div>
 									</div>
 								</div>
-	@endforeach
+	@empty
+								<div class="col-md-12">
+									<div style="display: flex; justify-content: center; align-items: flex-end; height: 140px;">
+										<i class="bi bi-file-text" style="font-size: 10rem"></i>
+									</div>
+									<h3 class="text-center">@lang('miscellaneous.empty_list')</h3>
+								</div><!-- End .col-md-12 -->
+	@endforelse
 							</div>
 @else
 							<div id="flexItemsCenter" class="row">

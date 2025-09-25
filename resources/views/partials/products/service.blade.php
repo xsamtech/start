@@ -15,7 +15,7 @@
                                         <img src="{{ $category->image_url ?? getWebURL() . '/template/public/images/banner.png' }}" alt="Category banner" class="img-responsive" style="height: 300px; object-fit: cover; filter: brightness(50%);">
                                         <div class="category-title">
                                             <h2>{{ $category->category_name }}</h2>
-                                            <p>{{ $category->category_description }}</p>
+                                            <p style="max-width: 90%!important;">{{ $category->category_description }}</p>
                                         </div><!-- End .category-title -->
                                     </div><!-- End #category-header -->
 
@@ -76,7 +76,7 @@
                                                                 {{ $product['product_name'] }}
                                                             </a>
                                                         </h3>
-                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
+                                                        {{-- <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
     @if (!empty($current_user))
         @if ($current_user->hasProductInUnpaidCart($product['id']))
                                                             <p class="btn btn-default disabled" style="margin: -2px;">
@@ -106,7 +106,7 @@
                                                             </button>
         @endif
     @endif
-                                                        </div><!-- End .item-action -->
+                                                        </div><!-- End .item-action --> --}}
                                                     </div><!-- End .item-meta-container -->
                                                 </div><!-- End .item -->
                                             </div><!-- End .col-md-4 -->
@@ -152,7 +152,7 @@
 
                                             <div class="panel">
                                                 <div class="accordion-header">
-                                                    <div class="accordion-title"><span>@lang('miscellaneous.admin.product.data.price')</span></div><!-- End .accordion-title -->
+                                                    <div class="accordion-title"><span>@lang('miscellaneous.admin.product.data.service_price')</span></div><!-- End .accordion-title -->
                                                     <a class="accordion-btn opened" data-toggle="collapse" data-target="#category-list-3"></a>
                                                 </div><!-- End .accordion-header -->
 

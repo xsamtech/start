@@ -430,7 +430,7 @@
                                 <!-- Price -->
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
-                                        <label for="price">@lang('miscellaneous.admin.product.data.price')</label>
+                                        <label for="price">@lang('miscellaneous.admin.product.data.product_price')</label>
                                         <input type="number" class="form-control" id="price" name="price" step="0.001" required>
                                     </div>
                                 </div>
@@ -461,7 +461,7 @@
                                         <label for="action">@lang('miscellaneous.admin.product.action.title')</label>
                                         <select class="form-control" id="action" name="action">
                                             <option value="sell">@lang('miscellaneous.admin.product.data.action.sell')</option>
-                                            <option value="rent">@lang('miscellaneous.admin.product.data.action.rent')</option>
+                                            {{-- <option value="rent">@lang('miscellaneous.admin.product.data.action.rent')</option> --}}
                                             <option value="distribute">@lang('miscellaneous.admin.product.data.action.distribute')</option>
                                         </select>
                                     </div>
@@ -522,9 +522,10 @@
                         <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.admin.product.add', ['entity' => __('miscellaneous.admin.product.entity.service.singular')])</h2>
                         <hr>
 
-                        <form id="projectForm" action="{{ route('product.entity', ['entity' => 'service']) }}" method="POST">
+                        <form id="productForm" action="{{ route('product.entity', ['entity' => 'service']) }}" method="POST">
         @csrf
                             <input type="hidden" name="type" value="service">
+                            <input type="hidden" id="action" name="action" value="sell">
 
                             <div class="row">
                                 <!-- Product name -->
@@ -546,7 +547,7 @@
                                 <!-- Price -->
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
-                                        <label for="price">@lang('miscellaneous.admin.product.data.price')</label>
+                                        <label for="price">@lang('miscellaneous.admin.product.data.service_price')</label>
                                         <input type="number" class="form-control" id="price" name="price" step="0.001" required>
                                     </div>
                                 </div>
@@ -559,18 +560,6 @@
                                             <option class="small" disabled>@lang('miscellaneous.currency')</option>
                                             <option>USD</option>
                                             <option>CDF</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Action -->
-                                <div class="col-md-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="action">@lang('miscellaneous.admin.product.action.title')</label>
-                                        <select class="form-control" id="action" name="action">
-                                            <option value="sell">@lang('miscellaneous.admin.product.data.action.sell')</option>
-                                            <option value="rent">@lang('miscellaneous.admin.product.data.action.rent')</option>
-                                            <option value="distribute">@lang('miscellaneous.admin.product.data.action.distribute')</option>
                                         </select>
                                     </div>
                                 </div>
