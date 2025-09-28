@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
  */
-class MarketSegment extends Model
+class ProjectAnswer extends Model
 {
     use HasFactory;
 
-    protected $table = 'market_segments';
+    protected $table = 'project_answers';
 
     /**
      * The attributes that are mass assignable.
@@ -25,10 +25,19 @@ class MarketSegment extends Model
 
     /**
      * ONE-TO-MANY
-     * One project for several market_segments
+     * One project for several project_answers
      */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * ONE-TO-MANY
+     * One project_question for several project_answers
+     */
+    public function project_question(): BelongsTo
+    {
+        return $this->belongsTo(ProjectQuestion::class);
     }
 }

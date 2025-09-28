@@ -35,30 +35,12 @@ class Project extends Model
     }
 
     /**
-     * ONE-TO-MANY
-     * One category for several projects
-     */
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    /**
      * MANY-TO-ONE
-     * Several project_activities for a project
+     * Several project_answers for a project
      */
-    public function project_activities(): HasMany
+    public function project_answers(): HasMany
     {
-        return $this->hasMany(ProjectActivity::class);
-    }
-
-    /**
-     * MANY-TO-ONE
-     * Several market_segments for a project
-     */
-    public function market_segments(): HasMany
-    {
-        return $this->hasMany(MarketSegment::class);
+        return $this->hasMany(ProjectAnswer::class, 'project_id');
     }
 
     /**
@@ -108,6 +90,41 @@ class Project extends Model
     public function audios(): HasMany
     {
         return $this->hasMany(File::class)->where('file_type', 'audio');
+    }
+
+    public function getAudiosList(): Collection
+    {
+        return $this->audios;
+    }
+
+    /**
+     * Get document files
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(File::class)->where('file_type', 'document');
+    }
+
+    public function getDocumentsList(): Collection
+    {
+        return $this->documents;
+    }
+
+    /**
+     * Get sheet files
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sheets(): HasMany
+    {
+        return $this->hasMany(File::class)->where('file_type', 'sheet');
+    }
+
+    public function getSheetsList(): Collection
+    {
+        return $this->sheets;
     }
 
     /**

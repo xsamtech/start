@@ -517,6 +517,12 @@ return [
                 'products' => 'Products',
                 'services' => 'Services'
             ],
+            'questionnaire' => [
+                'title' => 'Questionnaire',
+                'compose' => 'Compose a questionnaire',
+                'questions' => 'Questions',
+                'assertions' => 'Assertions',
+            ],
             'complaints' => 'Complaints',
         ],
         'public' => [

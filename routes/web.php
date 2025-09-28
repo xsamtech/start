@@ -79,6 +79,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/category/{entity}', [AdminController::class, 'addCategoryEntity']);
     Route::get('/dashboard/category/{entity}/{id}', [AdminController::class, 'categoryEntityDatas'])->whereNumber('id')->name('dashboard.category.entity.datas');
     Route::post('/dashboard/category/{entity}/{id}', [AdminController::class, 'updateCategoryEntity'])->whereNumber('id');
+    // Questionnaire
+    Route::get('/dashboard/questionnaire', [AdminController::class, 'questionnaire'])->name('dashboard.questionnaire.home');
+    Route::post('/dashboard/questionnaire', [AdminController::class, 'addQuestionnaire']);
+    Route::get('/dashboard/questionnaire/{id}', [AdminController::class, 'questionnaireDatas'])->whereNumber('id')->name('dashboard.questionnaire.datas');
+    Route::post('/dashboard/questionnaire/{id}', [AdminController::class, 'updateQuestionnaire'])->whereNumber('id');
+    Route::get('/dashboard/questionnaire/{entity}', [AdminController::class, 'questionnaireEntity'])->name('dashboard.questionnaire.entity.home');
+    Route::post('/dashboard/questionnaire/{entity}', [AdminController::class, 'addQuestionnaireEntity']);
+    Route::get('/dashboard/questionnaire/{entity}/{id}', [AdminController::class, 'questionnaireEntityDatas'])->whereNumber('id')->name('dashboard.questionnaire.entity.datas');
+    Route::post('/dashboard/questionnaire/{entity}/{id}', [AdminController::class, 'updateQuestionnaireEntity'])->whereNumber('id');
     // News
     Route::get('/dashboard/news', [AdminController::class, 'news'])->name('dashboard.news.home');
     Route::post('/dashboard/news', [AdminController::class, 'addNews']);

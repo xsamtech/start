@@ -154,6 +154,18 @@
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.category.entity.home', ['entity' => 'service']) }}">@lang('miscellaneous.menu.admin.categories.services')</a></li>
                             </ul>
                         </li>
+                        <!-- Questionnaire -->
+                        <li class="nxl-item nxl-hasmenu">
+                            <a href="javascript:void(0);" class="nxl-link">
+                                <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                                <span class="nxl-mtext">@lang('miscellaneous.menu.admin.questionnaire.title')</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                            </a>
+                            <ul class="nxl-submenu">
+                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.home') }}">@lang('miscellaneous.menu.admin.questionnaire.compose')</a></li>
+                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'question']) }}">@lang('miscellaneous.menu.admin.questionnaire.questions')</a></li>
+                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'assertion']) }}">@lang('miscellaneous.menu.admin.questionnaire.assertions')</a></li>
+                            </ul>
+                        </li>
                         <!-- Complaints -->
                         <li class="nxl-item">
                             <a class="nxl-link" href="{{ route('dashboard.complaints.home') }}">
@@ -501,8 +513,6 @@
         <script type="text/javascript" src="{{ asset('assets/addons/custom/autosize/js/autosize.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/addons/custom/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
         <script type="text/javascript">
-            // Custom switch
-            $('[data-toggle="switchbutton"]').bootstrapSwitchButton();
             // Common variables
             const navigator = window.navigator;
             const currentLanguage = $('html').attr('lang');
