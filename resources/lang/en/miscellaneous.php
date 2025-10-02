@@ -522,6 +522,7 @@ return [
             'questionnaire' => [
                 'title' => 'Questionnaire',
                 'compose' => 'Compose a questionnaire',
+                'empty_public_info' => 'The project creation form will be available soon.',
                 'questions' => [
                     'title' => 'Questions',
                     'add' => 'Add question',

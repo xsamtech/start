@@ -38,7 +38,8 @@
                                     </div>
                                     <div class="pt-4">
     @php
-        $percent = ($members_disabled_req->total() / $members_req->total()) * 100;
+        $memberTotal = $members_req->total() > 0 ? $members_req->total() : 1;
+        $percent = ($members_disabled_req->total() / $memberTotal) * 100;
     @endphp
                                         <div class="d-flex align-items-center justify-content-between">
                                             <a href="{{ route('dashboard.role.entity.home', ['entity' => 'members', 'status' => 'disabled']) }}" class="fs-12 fw-medium text-muted text-truncate-1-line">@lang('miscellaneous.admin.statistics.members.disabled.title') </a>

@@ -124,7 +124,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="card card-body">
+                            <div class="card card-body mb-4">
                                 <div class="card card-body shadow-0">
                                     <div class="d-flex">
                                         <img src="{{ asset('assets/addons/duralux/img/flags/4x3/fr.svg') }}" alt="" class="img-fluid wd-20 me-2" />
@@ -181,6 +181,9 @@
                                     @lang('miscellaneous.menu.admin.questionnaire.questions.data.measurment_units_required')@lang('miscellaneous.colon_after_word')
                                     <strong>{{ $selected_entity['readable_measurment_units_required'] ?? '' }}</strong>
                                 </h5>
+                            </div>
+
+                            <div class="card card-body">
                             </div>
                         </div>
 @endif

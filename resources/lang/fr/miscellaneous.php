@@ -522,6 +522,7 @@ return [
             'questionnaire' => [
                 'title' => 'Questionnaire',
                 'compose' => 'Composer un questionnaire',
+                'empty_public_info' => 'Le formulaire de création de projet sera bientôt disponible.',
                 'questions' => [
                     'title' => 'Questions',
                     'add' => 'Ajouter une question',

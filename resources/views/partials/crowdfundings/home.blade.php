@@ -20,12 +20,13 @@
 						<div class="col-md-12">
 @if (!empty($current_user))
 	@if (count($user_projects) < 3)
+		@if (count($questions) > 0)
 							<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-lg-7 col-md-6 col-sm-6 col-xs-12">
-		@csrf
+			@csrf
 
-		@foreach($questions as $question)
+			@foreach($questions as $question)
 										<div class="form-group question-block" id="question-{{ $question->id }}" @if($question->belongs_to) style="display:none;" @endif>
 											{{-- Question label --}}
 											<label>
@@ -33,7 +34,7 @@
 											</label>
 
 											{{-- Cas 1 : Units of measurement --}}
-			@if($question->measurment_units_required)
+				@if($question->measurment_units_required)
 											<select name="answers[{{ $question->id }}]" class="form-control">
 												<option class="small" disabled selected>{{ __('miscellaneous.units_of_measurement.title') }}</option>
 												<option value="{{ __('units_of_measurement.hectare.symbol') }}">
@@ -54,8 +55,8 @@
 											</select>
 
 								            {{-- Cas 2 : Input NULL => assertions --}}
-            @elseif(is_null($question->input))
-                @foreach($question->question_assertions as $assertion)
+        	    @elseif(is_null($question->input))
+            	    @foreach($question->question_assertions as $assertion)
 											<div class="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}">
 												<label>
 													<input type="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}"
@@ -66,24 +67,24 @@
 														{{ $assertion->assertion_content ?? $assertion->assertion_content }}
 												</label>
 											</div>
-                @endforeach
+        	        @endforeach
 
 											{{-- Cas 3 : Input spécifique --}}
-            @elseif($question->input === 'textarea')
+        	    @elseif($question->input === 'textarea')
 											<textarea name="answers[{{ $question->id }}]" class="form-control textarea-limit"
 													placeholder="{{ $question->question_description ?? '' }}"
 													@if($question->word_limit) data-word-limit="{{ $question->word_limit }}" @endif
 													@if($question->character_limit) data-character-limit="{{ $question->character_limit }}" @endif
 													rows="3"></textarea>
 
-            @elseif($question->input === 'input_file')
+	            @elseif($question->input === 'input_file')
 											<input type="file" name="answers[{{ $question->id }}][]" class="form-control" multiple>
 
-            @else
+    	        @else
 											<input type="{{ str_replace('input_', '', $question->input) }}" name="answers[{{ $question->id }}]" class="form-control" placeholder="{{ $question->question_description ?? '' }}">
-            @endif
+        	    @endif
 								        </div>
-	    @endforeach
+		    @endforeach
 
 										<button type="submit" class="btn strt-btn-green" style="width: 300px;">@lang('miscellaneous.register')</button>
 									</div>
@@ -93,28 +94,34 @@
 											<div class="panel-heading" style="background-color: transparent!important;">
 												<h5 class="h5-responsive" style="font-weight: 700; margin: 0;">@lang('miscellaneous.admin.project_writing.my_other_projects')</h5>
 											</div>
-		@if (count($user_projects) > 0)
+			@if (count($user_projects) > 0)
 											<ul class="list-group list-group-flush">
-			@foreach ($user_projects as $project)
+				@foreach ($user_projects as $project)
 												<li class="list-group-item clearfix">
-				@if (count($project->photos) > 0)
+					@if (count($project->photos) > 0)
 													<img src="{{ $project->photos[0]->file_url }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
-				@endif
+					@endif
 													<p class="small" style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
 													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline; float: right;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
 												</li>
-			@endforeach
+				@endforeach
 											</ul>
-		@else
+			@else
 											<div class="panel-body text-center">
 												<i class="bi bi-file-text" style="font-size: 7rem"></i>
 												<h5>@lang('miscellaneous.empty_list')</h5>
 											</div>
-		@endif
+			@endif
 										</div>
 									</div>
 								</div>
 							</form>
+		@else
+							<div style="display: flex; justify-content: center; align-items: flex-end; height: 160px;">
+								<i class="bi bi-file-text" style="font-size: 9rem"></i>
+							</div>
+							<h3 class="text-center">@lang('miscellaneous.menu.admin.questionnaire.empty_public_info')</h3>
+		@endif
 	@else
 							<div class="row">
 								<div class="col-lg-12 text-center">
