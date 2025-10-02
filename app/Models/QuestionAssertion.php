@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * @author Xanders
@@ -11,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class QuestionAssertion extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
 
     protected $table = 'question_assertions';
 
@@ -22,4 +24,19 @@ class QuestionAssertion extends Model
      */
     protected $guarded = [];
 
+    /**
+     * Translatable attributes.
+     *
+     * @var array<int, string>
+     */
+    protected $translatable = ['assertion_content'];
+
+    /**
+     * ONE-TO-MANY
+     * One project_question for several question_assertions
+     */
+    public function project_question(): BelongsTo
+    {
+        return $this->belongsTo(ProjectQuestion::class);
+    }
 }

@@ -42,6 +42,7 @@ return [
     'size' => 'Taille',
     'yield' => 'Rendement',
     'units_of_measurement' => [
+        'title' => 'Choisir une unité de mesure',
         'hectare' => [
             'name' => [
                 'singular' => 'hectare',
@@ -72,9 +73,10 @@ return [
         ],
         '100_kg_bag' => [
             'name' => [
-                'singular' => 'sac de 100 kg',
-                'plural' => 'sacs de 100 kg',
+                'singular' => 'sac de 100 kilos',
+                'plural' => 'sacs de 100 kilos',
             ],
+            'symbol' => 'sac de 100 kg',
         ],
     ],
     'payment_method' => 'Mode de paiement',
@@ -520,8 +522,51 @@ return [
             'questionnaire' => [
                 'title' => 'Questionnaire',
                 'compose' => 'Composer un questionnaire',
-                'questions' => 'Questions',
-                'assertions' => 'Assertions',
+                'questions' => [
+                    'title' => 'Questions',
+                    'add' => 'Ajouter une question',
+                    'edit' => 'Editer la question',
+                    'details' => 'Détails de la question',
+                    'data' => [
+                        'question_content' => 'Contenu de la question',
+                        'question_description' => 'Description',
+                        'multiple_answers_required' => 'Nécessite des réponses multiples',
+                        'input' => [
+                            'title' => 'Type de champ',
+                            'input_number' => 'Nombre',
+                            'input_email' => 'E-mail',
+                            'input_tel' => 'N° de téléphone',
+                            'input_file' => 'Fichier',
+                            'input_text' => 'Texte',
+                            'textarea' => 'Texte multiligne',
+                        ],
+                        'word_limit' => 'Limite des mots',
+                        'character_limit' => 'Limite des caractères',
+                        'belongs_to' => 'Est lié à la question',
+                        'measurment_units_required' => 'Nécessite une unité de mesure',
+                    ],
+                ],
+                'assertions' => [
+                    'title' => 'Assertions',
+                    'add' => 'Ajouter une assertion',
+                    'edit' => 'Editer l’assertion',
+                    'details' => 'Détails de l’assertion',
+                    'data' => [
+                        'assertion_content' => 'Contenu de l’assertion',
+                        'belongs_to_required' => 'Nécessite le lien à la question',
+                    ],
+                ],
+                'answers' => [
+                    'title' => 'Réponses',
+                    'add' => 'Ajouter une réponse',
+                    'edit' => 'Editer la réponse',
+                    'details' => 'Détails de la réponse',
+                    'data' => [
+                        'answer_content' => 'Contenu de la réponse',
+                        'current_question_content' => 'Contenu en cours de la réponse',
+                        'file_url' => 'URL du fichier',
+                    ],
+                ],
             ],
             'complaints' => 'Plaintes',
         ],

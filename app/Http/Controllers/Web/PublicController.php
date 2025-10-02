@@ -23,6 +23,7 @@ use App\Models\Post;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\ProjectActivity;
+use App\Models\ProjectQuestion;
 use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -746,21 +747,13 @@ class PublicController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function crowdfunding()
+    public function crowdfunding(Project $project)
     {
-        $crowdfundings = Crowdfunding::orderByDesc('created_at')->paginate(8)->appends(request()->query());
-
-        // Ajouter le taux de financement à chaque crowdfunding
-        $crowdfundings->getCollection()->transform(function ($crowdfunding) {
-            $currency = (Auth::check() ? Auth::user()->currency : $crowdfunding->currency);
-            $crowdfunding->financing_rate = $crowdfunding->financingRate($currency);
-
-            return $crowdfunding;
-        });
+        $questions = ProjectQuestion::with('question_assertions')->orderBy('id')->get();
 
         return view('crowdfundings', [
-            'crowdfundings' => ResourcesCrowdfunding::collection($crowdfundings)->resolve(),
-            'crowdfundings_req' => $crowdfundings,
+            'project' => $project,
+            'questions' => $questions,
         ]);
     }
 

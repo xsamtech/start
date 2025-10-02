@@ -42,6 +42,7 @@ return [
     'size' => 'Size',
     'yield' => 'Yield',
     'units_of_measurement' => [
+        'title' => 'Choose a unit of measurement',
         'hectare' => [
             'name' => [
                 'singular' => 'hectare',
@@ -72,9 +73,10 @@ return [
         ],
         '100_kg_bag' => [
             'name' => [
-                'singular' => '100 kg bag',
-                'plural' => '100 kg bags',
+                'singular' => '100 kilo bag',
+                'plural' => '100 kilo bags',
             ],
+            'symbol' => '100 kg bags',
         ],
     ],
     'payment_method' => 'Payment method',
@@ -520,8 +522,51 @@ return [
             'questionnaire' => [
                 'title' => 'Questionnaire',
                 'compose' => 'Compose a questionnaire',
-                'questions' => 'Questions',
-                'assertions' => 'Assertions',
+                'questions' => [
+                    'title' => 'Questions',
+                    'add' => 'Add question',
+                    'edit' => 'Edit the question',
+                    'details' => 'Question details',
+                    'data' => [
+                        'question_content' => 'Question content',
+                        'question_description' => 'Description',
+                        'multiple_answers_required' => 'Requires multiple answers',
+                        'input' => [
+                            'title' => 'Field type',
+                            'input_number' => 'Number',
+                            'input_email' => 'Email',
+                            'input_tel' => 'Phone number',
+                            'input_file' => 'File',
+                            'input_text' => 'Text',
+                            'textarea' => 'Multiline text',
+                        ],
+                        'word_limit' => 'Words limit',
+                        'character_limit' => 'Characters limit',
+                        'belongs_to' => 'Is related to the question',
+                        'measurment_units_required' => 'Requires a unit of measurement',
+                    ],
+                ],
+                'assertions' => [
+                    'title' => 'Assertions',
+                    'add' => 'Add assertion',
+                    'edit' => 'Edit the assertion',
+                    'details' => 'Assertion details',
+                    'data' => [
+                        'assertion_content' => 'Assertion content',
+                        'belongs_to_required' => 'Requires the link to the question',
+                    ],
+                ],
+                'answers' => [
+                    'title' => 'Answers',
+                    'add' => 'Add answer',
+                    'edit' => 'Edit the answer',
+                    'details' => 'Answer details',
+                    'data' => [
+                        'answer_content' => 'Content of the answer',
+                        'current_question_content' => 'Current content of the answer',
+                        'file_url' => 'File URL',
+                    ],
+                ],
             ],
             'complaints' => 'Complaints',
         ],

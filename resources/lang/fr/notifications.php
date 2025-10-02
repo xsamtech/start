@@ -321,6 +321,27 @@ return [
     'create_project_success' => 'Projet créé',
     'update_project_success' => 'Projet modifié',
     'delete_project_success' => 'Projet supprimé',
+    // ProjectQuestion
+    'find_all_projects_questions_success' => 'Questions de projets trouvées',
+    'find_project_question_success' => 'Question de projet trouvée',
+    'find_project_question_404' => 'Question de projet non trouvée',
+    'create_project_question_success' => 'Question de projet créée',
+    'update_project_question_success' => 'Question de projet modifiée',
+    'delete_project_question_success' => 'Question de projet supprimée',
+    // QuestionAssertion
+    'find_all_questions_assertions_success' => 'Assertions de questions trouvées',
+    'find_question_assertion_success' => 'Assertion de question trouvée',
+    'find_question_assertion_404' => 'Assertion de question non trouvée',
+    'create_question_assertion_success' => 'Assertion de question créée',
+    'update_question_assertion_success' => 'Assertion de question modifiée',
+    'delete_question_assertion_success' => 'Assertion de question supprimée',
+    // ProjectAnswer
+    'find_all_projects_answers_success' => 'Réponses de projets trouvées',
+    'find_project_answer_success' => 'Réponse de projet trouvée',
+    'find_project_answer_404' => 'Réponse de projet non trouvée',
+    'create_project_answer_success' => 'Réponse de projet créée',
+    'update_project_answer_success' => 'Réponse de projet modifiée',
+    'delete_project_answer_success' => 'Réponse de projet supprimée',
     // Payment
     'find_all_payments_success' => 'Paiements trouvés',
     'find_payment_success' => 'Paiement trouvé',

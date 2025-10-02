@@ -149,7 +149,6 @@
                             </a>
                             <ul class="nxl-submenu">
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.category.home') }}">@lang('miscellaneous.admin.group.category.link')</a></li>
-                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.category.entity.home', ['entity' => 'project']) }}">@lang('miscellaneous.menu.admin.categories.projects')</a></li>
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.category.entity.home', ['entity' => 'product']) }}">@lang('miscellaneous.menu.admin.categories.products')</a></li>
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.category.entity.home', ['entity' => 'service']) }}">@lang('miscellaneous.menu.admin.categories.services')</a></li>
                             </ul>
@@ -161,9 +160,9 @@
                                 <span class="nxl-mtext">@lang('miscellaneous.menu.admin.questionnaire.title')</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
                             </a>
                             <ul class="nxl-submenu">
-                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.home') }}">@lang('miscellaneous.menu.admin.questionnaire.compose')</a></li>
-                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'question']) }}">@lang('miscellaneous.menu.admin.questionnaire.questions')</a></li>
-                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'assertion']) }}">@lang('miscellaneous.menu.admin.questionnaire.assertions')</a></li>
+                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.home') }}">@lang('miscellaneous.menu.admin.questionnaire.questions.title')</a></li>
+                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'assertion']) }}">@lang('miscellaneous.menu.admin.questionnaire.assertions.title')</a></li>
+                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'project']) }}">@lang('miscellaneous.menu.admin.categories.projects')</a></li>
                             </ul>
                         </li>
                         <!-- Complaints -->
@@ -333,6 +332,11 @@
                     </div>
                     <!--! [End] nxl-search !-->
 
+                    <!--! [Start] ajax-loader !-->
+                    <div id="ajax-loader" class="d-none">
+                        <img src="{{ asset('assets/img/ajax-loading.gif') }}" alt="@lang('miscellaneous.loading')" width="32" height="32">
+                    </div>
+                    <!--! [End] ajax-loader !-->
                 </div>
                 <!--! [End] Header Left !-->
                 <!--! [Start] Header Right !-->
@@ -727,23 +731,16 @@
                  * Ajax to send
                  */
                 /* Product form */
-                $('#productForm').on('submit', function (e) {
+                $('#addQuestionForm').on('submit', function (e) {
                     e.preventDefault();
 
                     // Afficher l'animation de chargement
-                    $('#loading-icon').show();
+                    $('#ajax-loader').removeClass('d-none');
 
                     // Effacer les alertes précédentes
                     $('#ajax-alert-container').empty();
 
                     var formData = new FormData(this);
-
-                    // Ajouter les images à FormData (dans le cas où il y en a)
-                    var images = $('#files_urls')[0].files;
-
-                    for (var i = 0; i < images.length; i++) {
-                        formData.append('files_urls[' + i + ']', images[i]);
-                    }
 
                     $.ajax({
                         url: $(this).attr('action'),
@@ -753,42 +750,34 @@
                         processData: false,
                         success: function (response) {
                             // Cacher l'animation de chargement
-                            $('#loading-icon').hide();
+                            $('#ajax-loader').addClass('d-none');
 
                             // Afficher une alerte de succès
-                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
-                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    ${response.message || 'Produit ajouté avec succès !'}
+                            $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">
+                                                                <div class="col-lg-4 col-sm-6 mx-auto">
+                                                                    <div class="alert alert-success alert-dismissible fade show rounded-0" role="alert">
+                                                                        <i class="bi bi-info-circle me-2 fs-4" style="vertical-align: -3px;"></i> ${response.message || "__('notifications.added_data')"}
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                                                    </div>
                                                                 </div>
                                                             </div>`);
 
-                            // Optionnellement, fermer le modal après un succès
-                            $('#newProductModal').modal('hide');
-
                             // Réinitialiser tous les champs du formulaire
-                            $('#productForm')[0].reset();
-
-                            // Réinitialiser le champ de fichiers (images)
-                            $('#files_urls').val(null);
+                            $('#addQuestionForm')[0].reset();
 
                             location.reload();
                         },
                         error: function (error) {
                             // Cacher l'animation de chargement
-                            $('#loading-icon').hide();
+                            $('#ajax-loader').addClass('d-none');
 
                             // Afficher une alerte d'erreur
-                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
-                                                                <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
-                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                    <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                            $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">
+                                                                <div class="col-lg-4 col-sm-6 mx-auto">
+                                                                    <div class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+                                                                        <i class="bi bi-exclamation-triangle me-2 fs-4" style="vertical-align: -3px;"></i> {{ __('notifications.error_while_processing') }}
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                                                    </div>
                                                                 </div>
                                                             </div>`);
                         }

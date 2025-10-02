@@ -27,6 +27,7 @@ class Project extends JsonResource
             'audios' => File::collection($this->audios),
             'documents' => File::collection($this->documents),
             'sheets' => File::collection($this->sheets),
+            'project_answers' => ProjectAnswer::collection($this->project_answers),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'user_id' => $this->user_id

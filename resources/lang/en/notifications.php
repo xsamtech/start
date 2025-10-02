@@ -321,6 +321,27 @@ return [
     'create_project_success' => 'Project created',
     'update_project_success' => 'Project updated',
     'delete_project_success' => 'Project deleted',
+    // ProjectQuestion
+    'find_all_projects_questions_success' => 'Projects questions found',
+    'find_project_question_success' => 'Project question found',
+    'find_project_question_404' => 'Project question not found',
+    'create_project_question_success' => 'Project question created',
+    'update_project_question_success' => 'Project question updated',
+    'delete_project_question_success' => 'Project question deleted',
+    // QuestionAssertion
+    'find_all_questions_assertions_success' => 'Questions assertions found',
+    'find_question_assertion_success' => 'Question assertion found',
+    'find_question_assertion_404' => 'Question assertion not found',
+    'create_question_assertion_success' => 'Question assertion created',
+    'update_question_assertion_success' => 'Question assertion updated',
+    'delete_question_assertion_success' => 'Question assertion deleted',
+    // ProjectAnswer
+    'find_all_projects_answers_success' => 'Projects answers found',
+    'find_project_answer_success' => 'Project answer found',
+    'find_project_answer_404' => 'Project answer not found',
+    'create_project_answer_success' => 'Project answer created',
+    'update_project_answer_success' => 'Project answer updated',
+    'delete_project_answer_success' => 'Project answer deleted',
     // Payment
     'find_all_payments_success' => 'Payments found',
     'find_payment_success' => 'Payment found',

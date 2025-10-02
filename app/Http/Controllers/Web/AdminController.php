@@ -6,11 +6,15 @@ use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Product as ResourcesProduct;
 use App\Http\Resources\Project as ResourcesProject;
+use App\Http\Resources\ProjectQuestion as ResourcesProjectQuestion;
+use App\Http\Resources\QuestionAssertion as ResourcesQuestionAssertion;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\ProjectQuestion;
 use App\Models\ProjectSector;
+use App\Models\QuestionAssertion;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -102,7 +106,7 @@ class AdminController extends Controller
     }
 
     /**
-     * GET: Home page
+     * GET: Categories page
      *
      * @return \Illuminate\View\View
      */
@@ -114,7 +118,7 @@ class AdminController extends Controller
     }
 
     /**
-     * GET: Sector details page
+     * GET: Category details page
      *
      * @param  int $id
      * @return \Illuminate\View\View
@@ -135,7 +139,7 @@ class AdminController extends Controller
     }
 
     /**
-     * GET: Home page
+     * GET: Category entity page
      *
      * @param  string $entity
      * @return \Illuminate\View\View
@@ -168,6 +172,109 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * GET: Questionnaire page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function questionnaire()
+    {
+        $project_questions = ProjectQuestion::paginate(10)->appends(request()->query());
+        $project_questions_all = ProjectQuestion::all();
+
+        return view('dashboard.questionnaire', [
+            'project_questions' => ResourcesProjectQuestion::collection($project_questions)->resolve(),
+            'project_questions_req' => $project_questions,
+            'project_questions_all' => ResourcesProjectQuestion::collection($project_questions_all)->resolve(),
+        ]);
+    }
+
+    /**
+     * GET: Questionnaire entity datas page
+     *
+     * @param  string  $entity
+     * @return \Illuminate\View\View
+     */
+    public function questionnaireEntity($entity)
+    {
+        $entity_title = null;
+        $items = [];
+        $project_questions = ProjectQuestion::all();
+
+        if ($entity == 'assertion') {
+            $entity_title = __('miscellaneous.menu.admin.questionnaire.assertions.title');
+            $question_assertions = QuestionAssertion::paginate(10)->appends(request()->query());
+            $items = ResourcesQuestionAssertion::collection($question_assertions)->resolve();
+        }
+
+        if ($entity == 'project') {
+            $entity_title = __('miscellaneous.menu.admin.categories.projects');
+            $projects = Project::paginate(10)->appends(request()->query());
+            $items = ResourcesProject::collection($projects)->resolve();
+        }
+
+        return view('dashboard.questionnaire', [
+            'entity' => $entity,
+            'entity_title' => $entity_title,
+            'items' => $items,
+            'project_questions' => ResourcesProjectQuestion::collection($project_questions)->resolve(),
+        ]);
+    }
+
+    /**
+     * GET: Questionnaire entity datas page
+     *
+     * @param  string  $entity
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function questionnaireEntityDatas($entity, $id)
+    {
+        $entity_title = null;
+        $selected_entity = null;
+        $project_questions = ProjectQuestion::all();
+
+        if ($entity == 'question') {
+            $entity_title = __('miscellaneous.menu.admin.questionnaire.questions.details');
+            $project_question = ProjectQuestion::find($id);
+
+            if (is_null($project_question)) {
+                return redirect('/dashboard/questionnaire')->with('error_message', __('notifications.find_project_question_404'));
+            }
+
+            $selected_entity = (new ResourcesProjectQuestion($project_question))->resolve();
+        }
+
+        if ($entity == 'assertion') {
+            $entity_title = __('miscellaneous.menu.admin.questionnaire.assertion.details');
+            $question_assertion = QuestionAssertion::find($id);
+
+            if (is_null($question_assertion)) {
+                return redirect('/dashboard/questionnaire/assertion')->with('error_message', __('notifications.find_question_assertion_404'));
+            }
+
+            $selected_entity = (new ResourcesQuestionAssertion($question_assertion))->resolve();
+        }
+
+        if ($entity == 'project') {
+            $entity_title = __('miscellaneous.admin.project_writing.details');
+            $project = Project::find($id);
+
+            if (is_null($project)) {
+                return redirect('/dashboard/questionnaire/project')->with('error_message', __('notifications.find_project_404'));
+            }
+
+            $selected_entity = (new ResourcesProject($project))->resolve();
+        }
+
+        return view('dashboard.questionnaire', [
+            'entity' => $entity,
+            'entity_title' => $entity_title,
+            'selected_entity' => $selected_entity,
+            'project_questions' => ResourcesProjectQuestion::collection($project_questions)->resolve(),
+        ]);
+    }
+
     // ==================================== HTTP POST METHODS ====================================
     /**
      * POST: Add a sector
@@ -190,6 +297,48 @@ class AdminController extends Controller
 
         // return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
         return redirect()->back()->with('success_message', __('notifications.registered_data'));
+    }
+
+    /**
+     * POST: Add a sector
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @throws \Illuminate\Http\RedirectResponse
+     */
+    public function addQuestionnaireEntity(Request $request, $entity)
+    {
+        if ($entity == 'question') {
+            ProjectQuestion::create([
+                'question_content' => [
+                    'en' => $request->question_content_en,
+                    'fr' => $request->question_content_fr
+                ],
+                'question_description' => [
+                    'en' => $request->question_description_en,
+                    'fr' => $request->question_description_fr
+                ],
+                'multiple_answers_required' => $request->multiple_answers_required,
+                'input' => $request->input,
+                'word_limit' => $request->word_limit,
+                'character_limit' => $request->character_limit,
+                'belongs_to' => $request->belongs_to,
+                'measurment_units_required' => $request->measurment_units_required,
+            ]);
+        }
+
+        if ($entity == 'assertion') {
+            ProjectQuestion::create([
+                'assertion_content' => [
+                    'en' => $request->assertion_content_en,
+                    'fr' => $request->assertion_content_fr
+                ],
+                'belongs_to_required' => $request->belongs_to_required,
+                'project_question_id' => $request->project_question_id,
+            ]);
+        }
+
+        return response()->json(['status' => 'success', 'message' => __('notifications.registered_data')]);
+        // return redirect()->back()->with('success_message', __('notifications.registered_data'));
     }
 
     /**
