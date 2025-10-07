@@ -8,6 +8,7 @@ use App\Http\Resources\Product as ResourcesProduct;
 use App\Http\Resources\Project as ResourcesProject;
 use App\Http\Resources\ProjectQuestion as ResourcesProjectQuestion;
 use App\Http\Resources\QuestionAssertion as ResourcesQuestionAssertion;
+use App\Http\Resources\QuestionPart as ResourcesQuestionPart;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Category;
 use App\Models\Product;
@@ -15,6 +16,7 @@ use App\Models\Project;
 use App\Models\ProjectQuestion;
 use App\Models\ProjectSector;
 use App\Models\QuestionAssertion;
+use App\Models\QuestionPart;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -179,10 +181,12 @@ class AdminController extends Controller
      */
     public function questionnaire()
     {
+        $question_parts = QuestionPart::all();
         $project_questions = ProjectQuestion::paginate(10)->appends(request()->query());
         $project_questions_all = ProjectQuestion::all();
 
         return view('dashboard.questionnaire', [
+            'question_parts' => ResourcesQuestionPart::collection($question_parts)->resolve(),
             'project_questions' => ResourcesProjectQuestion::collection($project_questions)->resolve(),
             'project_questions_req' => $project_questions,
             'project_questions_all' => ResourcesProjectQuestion::collection($project_questions_all)->resolve(),

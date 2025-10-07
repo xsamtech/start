@@ -523,12 +523,25 @@ return [
                 'title' => 'Questionnaire',
                 'compose' => 'Compose a questionnaire',
                 'empty_public_info' => 'The project creation form will be available soon.',
+                'parts' => [
+                    'title' => 'Parts',
+                    'add' => 'Add a part',
+                    'edit' => 'Edit the part',
+                    'details' => 'Part details',
+                    'data' => [
+                        'part_name' => 'Part name',
+                        'part_description' => 'Description',
+                        'is_first_step' => 'Is the first step',
+                        'is_last_step' => 'Is the last step',
+                    ],
+                ],
                 'questions' => [
                     'title' => 'Questions',
                     'add' => 'Add question',
                     'edit' => 'Edit the question',
                     'details' => 'Question details',
                     'data' => [
+                        'question_part_id' => 'Is in part',
                         'question_content' => 'Question content',
                         'question_description' => 'Description',
                         'multiple_answers_required' => 'Requires multiple answers',

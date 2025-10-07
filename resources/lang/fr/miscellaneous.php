@@ -523,12 +523,25 @@ return [
                 'title' => 'Questionnaire',
                 'compose' => 'Composer un questionnaire',
                 'empty_public_info' => 'Le formulaire de création de projet sera bientôt disponible.',
+                'parts' => [
+                    'title' => 'Parties',
+                    'add' => 'Ajouter une partie',
+                    'edit' => 'Editer la partie',
+                    'details' => 'Détails de la partie',
+                    'data' => [
+                        'part_name' => 'Nom de la partie',
+                        'part_description' => 'Description',
+                        'is_first_step' => 'Est la première étape',
+                        'is_last_step' => 'Est la dernière étape',
+                    ],
+                ],
                 'questions' => [
                     'title' => 'Questions',
                     'add' => 'Ajouter une question',
                     'edit' => 'Editer la question',
                     'details' => 'Détails de la question',
                     'data' => [
+                        'question_part_id' => 'Est dans la partie',
                         'question_content' => 'Contenu de la question',
                         'question_description' => 'Description',
                         'multiple_answers_required' => 'Nécessite des réponses multiples',

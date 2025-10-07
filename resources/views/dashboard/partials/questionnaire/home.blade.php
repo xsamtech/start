@@ -78,7 +78,19 @@
                                 <div class="card-body">
                                     <form id="addQuestionForm" action="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'question']) }}" method="POST">
 @csrf
-                                        <!-- Category name -->
+                                        <!-- Part ID -->
+                                        <div class="mb-2 position-relative">
+                                            <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</label>
+                                            <select name="belongs_to" id="belongs_to" class="form-select">
+                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
+@foreach ($question_parts as $part)
+                                                <option value="{{ $question['id'] }}">{{ $question['question_content'] }}</option>
+@endforeach
+                                            </select>
+                                            <a role="button" class="btn btn-secondary p-1 position-absolute" style="top: 0.5rem; right: 0.5rem; width: 40px; height: 40px;"><i class="bi bi-plus"></i></a>
+                                        </div>
+
+                                        <!-- Question content -->
                                         <div class="mb-2">
                                             <label for="question_content_fr" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_content') (FR)</label>
                                             <input type="text" name="question_content_fr" class="form-control" id="question_content_fr">
@@ -146,7 +158,7 @@
                                             <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</label>
                                             <select name="belongs_to" id="belongs_to" class="form-select">
                                                 <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
-@foreach ($project_questions as $question)
+@foreach ($project_questions_all as $question)
                                                 <option value="{{ $question['id'] }}">{{ $question['question_content'] }}</option>
 @endforeach
                                             </select>
