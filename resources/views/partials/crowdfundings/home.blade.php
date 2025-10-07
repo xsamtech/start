@@ -81,7 +81,7 @@
 				            					</div>
         	@endforeach
 
-												<button type="submit" class="btn {{ $currentPart->is_last_step ? 'strt-bg-green' : 'strt-bg-chocolate-3' }} text-light">
+												<button type="submit" class="btn {{ $currentPart->is_last_step ? 'strt-bg-green' : 'strt-bg-chocolate-3' }} text-white" style="margin-top: 1rem;">
 													{!! $currentPart->is_last_step ? __('miscellaneous.register') : __('pagination.next') !!}
 												</button>
 											</form>
