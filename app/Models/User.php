@@ -539,6 +539,11 @@ class User extends Authenticatable
             // 5. Increment the stock of the product
             $product->increment('quantity', $existingOrder->quantity);
 
+            // 6. Check if the cart is empty and delete the cart if no orders left
+            if ($cart->customer_orders()->count() === 0) {
+                $cart->delete(); // Delete the cart if no orders are left
+            }
+
             return true; // Indicate success
         });
     }
