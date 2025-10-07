@@ -24,7 +24,7 @@
 							<h3>{{ $currentPart->part_name }}</h3>
 							<p>{{ $currentPart->part_description }}</p>
 
-							<form action="{{ route('projects.form.store') }}" method="POST" enctype="multipart/form-data">
+							<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
 	        @csrf
 								<input type="hidden" name="current_part_id" value="{{ $currentPart->id }}">
 	        @if($project)
