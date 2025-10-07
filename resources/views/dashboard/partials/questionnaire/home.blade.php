@@ -84,7 +84,7 @@
                                             <select name="belongs_to" id="belongs_to" class="form-select">
                                                 <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
 @foreach ($question_parts as $part)
-                                                <option value="{{ $question['id'] }}">{{ $question['question_content'] }}</option>
+                                                <option value="{{ $part['id'] }}">{{ $part['part_name'] }}</option>
 @endforeach
                                             </select>
                                             <a role="button" class="btn btn-light p-1 position-absolute" style="bottom: 0.3rem; right: 0.3rem; z-index: 9; width: 40px; height: 40px;" data-bs-toggle="modal" data-bs-target="#questionPartModal">

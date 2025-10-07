@@ -98,8 +98,10 @@ class ProjectQuestion extends JsonResource
             'belongs_to' => $this->belongs_to,
             'measurment_units_required' => $this->measurment_units_required,
             'readable_measurment_units_required' => $measurment_units_required,
+            'question_part' => QuestionPart::make($this->question_part),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at->format('Y-m-d H:i:s')
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+            'question_part_id' => $this->question_part_id
         ];
     }
 }

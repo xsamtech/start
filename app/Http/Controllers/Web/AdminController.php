@@ -242,6 +242,7 @@ class AdminController extends Controller
     {
         $entity_title = null;
         $selected_entity = null;
+        $question_parts = QuestionPart::all();
         $project_questions = ProjectQuestion::all();
 
         if ($entity == 'part') {
@@ -292,6 +293,7 @@ class AdminController extends Controller
             'entity' => $entity,
             'entity_title' => $entity_title,
             'selected_entity' => $selected_entity,
+            'question_parts' => ResourcesQuestionPart::collection($question_parts)->resolve(),
             'project_questions' => ResourcesProjectQuestion::collection($project_questions)->resolve(),
         ]);
     }
