@@ -80,8 +80,8 @@
 @csrf
                                         <!-- Part ID -->
                                         <div class="mb-2 position-relative">
-                                            <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</label>
-                                            <select name="belongs_to" id="belongs_to" class="form-select">
+                                            <label for="question_part_id" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</label>
+                                            <select name="question_part_id" id="question_part_id" class="form-select">
                                                 <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
 @foreach ($question_parts as $part)
                                                 <option value="{{ $part['id'] }}">{{ $part['part_name'] }}</option>

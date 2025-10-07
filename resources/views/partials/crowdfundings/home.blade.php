@@ -21,100 +21,65 @@
 @if (!empty($current_user))
 	@if (count($user_projects) < 3)
 		@if (count($questions) > 0)
-							<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
-								<div class="row">
-									<div class="col-lg-7 col-md-6 col-sm-6 col-xs-12">
-			@csrf
+							<h3>{{ $currentPart->part_name }}</h3>
+							<p>{{ $currentPart->part_description }}</p>
+
+							<form action="{{ route('projects.form.store') }}" method="POST" enctype="multipart/form-data">
+	        @csrf
+								<input type="hidden" name="current_part_id" value="{{ $currentPart->id }}">
+	        @if($project)
+								<input type="hidden" name="project_id" value="{{ $project->id }}">
+	        @endif
 
 			@foreach($questions as $question)
-										<div class="form-group question-block" id="question-{{ $question->id }}" @if($question->belongs_to) style="display:none;" @endif>
-											{{-- Question label --}}
-											<label>
-												{{ $question->question_content ?? '' }}
-											</label>
+								<div class="form-group question-block" id="question-{{ $question->id }}" 
+									data-belongs-to="{{ $question->belongs_to }}" @if($question->belongs_to) style="display:none;" @endif>
 
-											{{-- Cas 1 : Units of measurement --}}
-				@if($question->measurment_units_required)
-											<select name="answers[{{ $question->id }}]" class="form-control">
-												<option class="small" disabled selected>{{ __('miscellaneous.units_of_measurement.title') }}</option>
-												<option value="{{ __('units_of_measurement.hectare.symbol') }}">
-													{{ ucfirst(__('units_of_measurement.hectare.name.singular')) }}
-												</option>
-												<option value="{{ __('units_of_measurement.square_meter.symbol') }}">
-													{{ ucfirst(__('units_of_measurement.square_meter.name.singular')) }}
-												</option>
-												<option value="{{ __('units_of_measurement.kilogram.symbol') }}">
-													{{ ucfirst(__('units_of_measurement.kilogram.name.singular')) }}
-												</option>
-												<option value="{{ __('units_of_measurement.tonne.symbol') }}">
-													{{ ucfirst(__('units_of_measurement.tonne.name.singular')) }}
-												</option>
-												<option value="{{ __('units_of_measurement.100_kg_bag.symbol') }}">
-													{{ ucfirst(__('units_of_measurement.100_kg_bag.name.singular')) }}
-												</option>
-											</select>
+									<label>{{ $question->question_content }}</label>
 
-								            {{-- Cas 2 : Input NULL => assertions --}}
-        	    @elseif(is_null($question->input))
-            	    @foreach($question->question_assertions as $assertion)
-											<div class="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}">
-												<label>
-													<input type="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}"
-															name="answers[{{ $question->id }}]{{ $question->multiple_answers_required ? '[]' : '' }}"
-															value="{{ $assertion->assertion_content ?? $assertion->assertion_content }}"
-															data-belongs-required="{{ $assertion->belongs_to_required }}"
-															data-question-id="{{ $question->id }}">
-														{{ $assertion->assertion_content ?? $assertion->assertion_content }}
-												</label>
-											</div>
-        	        @endforeach
+									{{-- Cas 1: unités --}}
+                @if($question->measurment_units_required)
+									<select name="answers[{{ $question->id }}]" class="form-control">
+										<option value="">{{ __('Choisir...') }}</option>
+                    @foreach(['hectare', 'square_meter', 'kilogram', 'tonne', '100_kg_bag'] as $unit)
+										<option value="{{ __('units_of_measurement.'.$unit.'.symbol') }}">
+											{{ __('units_of_measurement.'.$unit.'.symbol') }}
+										</option>
+                    @endforeach
+									</select>
 
-											{{-- Cas 3 : Input spécifique --}}
-        	    @elseif($question->input === 'textarea')
-											<textarea name="answers[{{ $question->id }}]" class="form-control textarea-limit"
-													placeholder="{{ $question->question_description ?? '' }}"
-													@if($question->word_limit) data-word-limit="{{ $question->word_limit }}" @endif
-													@if($question->character_limit) data-character-limit="{{ $question->character_limit }}" @endif
-													rows="3"></textarea>
-
-	            @elseif($question->input === 'input_file')
-											<input type="file" name="answers[{{ $question->id }}][]" class="form-control" multiple>
-
-    	        @else
-											<input type="{{ str_replace('input_', '', $question->input) }}" name="answers[{{ $question->id }}]" class="form-control" placeholder="{{ $question->question_description ?? '' }}">
-        	    @endif
-								        </div>
-		    @endforeach
-
-										<button type="submit" class="btn strt-btn-green" style="width: 300px;">@lang('miscellaneous.register')</button>
+                					{{-- Cas 2: assertions --}}
+                @elseif(is_null($question->input))
+                    @foreach($question->assertions as $assertion)
+									<div class="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}">
+										<label>
+											<input type="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}"
+													name="answers[{{ $question->id }}]{{ $question->multiple_answers_required ? '[]' : '' }}"
+													value="{{ $assertion->assertion_content }}"
+													data-belongs-required="{{ $assertion->belongs_to_required }}"
+													data-question-id="{{ $question->id }}">
+                                			{{ $assertion->assertion_content }}
+										</label>
 									</div>
+                    @endforeach
 
-									<div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
-										<div class="panel panel-default">
-											<div class="panel-heading" style="background-color: transparent!important;">
-												<h5 class="h5-responsive" style="font-weight: 700; margin: 0;">@lang('miscellaneous.admin.project_writing.my_other_projects')</h5>
-											</div>
-			@if (count($user_projects) > 0)
-											<ul class="list-group list-group-flush">
-				@foreach ($user_projects as $project)
-												<li class="list-group-item clearfix">
-					@if (count($project->photos) > 0)
-													<img src="{{ $project->photos[0]->file_url }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
-					@endif
-													<p class="small" style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 100) !!}</p>
-													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline; float: right;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
-												</li>
-				@endforeach
-											</ul>
-			@else
-											<div class="panel-body text-center">
-												<i class="bi bi-file-text" style="font-size: 7rem"></i>
-												<h5>@lang('miscellaneous.empty_list')</h5>
-											</div>
-			@endif
-										</div>
-									</div>
-								</div>
+					                {{-- Cas 3: input spécifique --}}
+                @elseif($question->input === 'textarea')
+									<textarea class="form-control textarea-limit" name="answers[{{ $question->id }}]"
+										@if($question->word_limit) data-word-limit="{{ $question->word_limit }}" @endif
+										@if($question->character_limit) data-character-limit="{{ $question->character_limit }}" @endif rows="3"></textarea>
+
+					@elseif($question->input === 'input_file')
+									<input type="file" name="answers[{{ $question->id }}][]" class="form-control" multiple>
+					@else
+				                    <input type="{{ str_replace('input_', '', $question->input) }}" name="answers[{{ $question->id }}]" class="form-control">
+                @endif
+            					</div>
+        	@endforeach
+
+								<button type="submit" class="btn {{ $currentPart->is_last_step ? 'strt-bg-green' : 'strt-bg-chocolate-3' }}">
+									{{ $currentPart->is_last_step ? __('miscellaneous.register') : __('pagination.next') }}
+								</button>
 							</form>
 		@else
 							<div style="display: flex; justify-content: center; align-items: flex-end; height: 160px;">

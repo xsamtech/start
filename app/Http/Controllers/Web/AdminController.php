@@ -326,6 +326,7 @@ class AdminController extends Controller
      * POST: Add a sector
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  string $entity
      * @throws \Illuminate\Http\RedirectResponse
      */
     public function addQuestionnaireEntity(Request $request, $entity)
@@ -361,6 +362,7 @@ class AdminController extends Controller
                 'character_limit' => $request->character_limit,
                 'belongs_to' => $request->belongs_to,
                 'measurment_units_required' => $request->measurment_units_required,
+                'question_part_id' => $request->question_part_id,
             ]);
         }
 

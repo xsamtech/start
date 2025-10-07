@@ -1845,48 +1845,38 @@
                 /**
                  * All about project form
                  */
-                // === Gestion word/char limit ===
-                $('.textarea-limit').on('input', function() {
-                    let $this = $(this);
-                    let wordLimit = $this.data('word-limit');
-                    let charLimit = $this.data('character-limit');
-                    let text = $this.val();
+                // === Limite de mots ou caractères ===
+                $('.textarea-limit').on('input', function () {
+                    let $t = $(this);
+                    let wordLimit = $t.data('word-limit');
+                    let charLimit = $t.data('character-limit');
+                    let txt = $t.val();
 
                     if (wordLimit) {
-                        let words = text.trim().split(/\s+/);
+                        let words = txt.trim().split(/\s+/);
 
                         if (words.length > wordLimit) {
-                            $this.val(words.slice(0, wordLimit).join(" "));
+                            $t.val(words.slice(0, wordLimit).join(" "));
                         }
                     }
 
-                    if (charLimit && text.length > charLimit) {
-                        $this.val(text.substring(0, charLimit));
+                    if (charLimit && txt.length > charLimit) {
+                        $t.val(txt.substring(0, charLimit));
                     }
                 });
 
-                // === Gestion des belongs_to ===
-                $('input[data-belongs-required="1"]').on('change', function() {
+                // === Apparition des questions dépendantes ===
+                $('input[data-belongs-required="1"]').on('change', function () {
                     let questionId = $(this).data('question-id');
+                    let checked = $(this).is(':checked');
 
-                    // Cacher d'abord toutes les dépendantes
-                    $('.question-block').each(function() {
-                        let belongsTo = $(this).attr('id').replace('question-', '');
+                    $('.question-block').each(function () {
+                        let belongsTo = $(this).data('belongs-to');
 
-                        if ($(this).data('belongs-to') == questionId) {
-                            $(this).hide();
+                        if (belongsTo == questionId) {
+                            $(this).toggle(checked);
                         }
                     });
-
-                    if ($(this).is(':checked')) {
-                        $('[id^="question-"]').each(function() {
-                            let belongsTo = $(this).data('belongs-to');
-
-                            if (belongsTo == questionId) {
-                                $(this).show();
-                            }
-                        });
-                    }
                 });
             });
         </script>

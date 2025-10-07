@@ -23,7 +23,9 @@ use App\Models\Post;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\ProjectActivity;
+use App\Models\ProjectAnswer;
 use App\Models\ProjectQuestion;
+use App\Models\QuestionPart;
 use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -743,17 +745,31 @@ class PublicController extends Controller
     }
 
     /**
-     * GET: Crowdfundings page
+     * GET: Crowdfundings (Project writing) page
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function crowdfunding(Project $project)
+    public function crowdfunding(Request $request, Project $project = null)
     {
-        $questions = ProjectQuestion::with('question_assertions')->orderBy('id')->get();
+        // Étape actuelle
+        $stepRef = $request->get('step_ref');
+
+        // Si aucune étape spécifiée → on prend la première
+        $currentPart = $stepRef
+            ? QuestionPart::findOrFail($stepRef)
+            : QuestionPart::where('is_first_step', 1)->firstOrFail();
+
+        // Charger les questions de cette étape
+        $questions = ProjectQuestion::with('assertions')
+            ->where('question_part_id', $currentPart->id)
+            ->get();
 
         return view('crowdfundings', [
             'project' => $project,
             'questions' => $questions,
+            'currentPart' => $currentPart,
         ]);
     }
 
@@ -1438,180 +1454,36 @@ class PublicController extends Controller
      */
     public function addProject(Request $request)
     {
-        $project = Project::create([
-            'projects_description' => $request->projects_description,
-            'company_name' => $request->company_name,
-            'rccm' => $request->rccm,
-            'id_nat' => $request->id_nat,
-            'tax_number' => $request->tax_number,
-            'creation_year' => $request->creation_year,
-            'company_address' => $request->company_address,
-            'company_email' => $request->company_email,
-            'company_phone' => $request->company_phone,
-            'website_url' => $request->website_url,
-            'is_tenant' => $request->is_tenant ?? 0,
-            'tenant_monthly_rental' => $request->tenant_monthly_rental,
-            'is_owner' => $request->is_owner ?? 0,
-            'field_experience' => $request->field_experience,
-            'employees_count' => $request->employees_count,
-            'is_funded_by_self' => $request->is_funded_by_self ?? 0,
-            'is_funded_by_credit' => $request->is_funded_by_credit ?? 0,
-            'is_funded_by_grant' => $request->is_funded_by_grant ?? 0,
-            'other_funding_sources' => $request->other_funding_sources,
-            'funding_amount' => $request->funding_amount,
-            'grant_amount' => $request->grant_amount,
-            'credit_amount' => $request->credit_amount,
-            'annual_turnover' => $request->annual_turnover,
-            'last_year_net_profit' => $request->last_year_net_profit,
-            'last_year_net_loss' => $request->last_year_net_loss,
-            'forecast_turnover' => $request->forecast_turnover,
-            'business_model' => $request->business_model,
-            'swot_analysis' => $request->swot_analysis,
-            'category_id' => $request->category_id,
-            'user_id' => Auth::id(),
-        ]);
+        // 🔸 1. Création ou mise à jour du projet
+        $project = $request->has('project_id')
+            ? Project::findOrFail($request->project_id)
+            : Project::create(['user_id' => auth()->id()]);
 
-        // If image files exist
-        if ($request->hasFile('files_urls')) {
-            $files = $request->file('files_urls', []);
-            $fileNames = $request->input('files_names', []);
+        // 🔸 2. Enregistrement des réponses
+        foreach ($request->input('answers', []) as $questionId => $answer) {
+            $answerText = is_array($answer)
+                ? implode(', ', $answer)  // ⚙️ Checkbox => séparé par des virgules
+                : $answer;
 
-            // Types of extensions for different file types
-            $validExtensions = [
-                'video' => ['mp4', 'avi', 'mov', 'mkv', 'webm'],
-                'photo' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-                'document' => ['pdf', 'doc', 'docx', 'txt'],
-                'audio' => ['mp3', 'wav', 'flac']
-            ];
-
-            foreach ($files as $key => $singleFile) {
-                // Checking the file extension
-                $file_extension = $singleFile->getClientOriginalExtension();
-
-                // File type check
-                $custom_uri = '';
-                $is_valid_type = false;
-                $file_type = null;
-
-                if (in_array($file_extension, $validExtensions['video'])) { // File is a video
-                    $custom_uri = 'videos/projects';
-                    $file_type = 'video';
-                    $is_valid_type = true;
-
-                } elseif (in_array($file_extension, $validExtensions['photo'])) { // File is a photo
-                    $custom_uri = 'photos/projects';
-                    $file_type = 'photo';
-                    $is_valid_type = true;
-
-                } elseif (in_array($file_extension, $validExtensions['audio'])) { // File is an audio
-                    $custom_uri = 'audios/projects';
-                    $file_type = 'audio';
-                    $is_valid_type = true;
-
-                } elseif (in_array($file_extension, $validExtensions['document'])) { // File is a document
-                    $custom_uri = 'documents/projects';
-                    $file_type = 'video';
-                    $is_valid_type = true;
-                }
-
-                // If the extension does not match any valid type
-                if (!$is_valid_type) {
-                    return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
-                }
-
-                // Generate a unique path for the file
-                $filename = $singleFile->getClientOriginalName();
-                $file_url =  $custom_uri . '/' . $project->id . '/' . $filename;
-
-                // Upload file
-                try {
-                    $singleFile->storeAs($custom_uri . '/' . $project->id, $filename, 'public');
-
-                } catch (\Throwable $th) {
-                    return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
-                }
-
-                // Creating the database record for the file
-                File::create([
-                    'file_name' => trim($fileNames[$key] ?? $filename),
-                    'file_url' => getWebURL() . '/storage/' . $file_url,
-                    'file_type' => $file_type,
-                    'project_id' => $project->id
-                ]);
-            }
+            ProjectAnswer::updateOrCreate(
+                [
+                    'project_id' => $project->id,
+                    'project_question_id' => $questionId,
+                ],
+                ['answer_content' => $answerText]
+            );
         }
 
-        // Upload owner title deed
-        if ($request->hasFile('owner_title_deed_url')) {
-            // Valid file types for photos and documents
-            $validExtensions = [
-                'photo' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-                'document' => ['pdf', 'doc', 'docx', 'txt']
-            ];
-            $file = $request->file('owner_title_deed_url');
-            $fileExtension = $file->getClientOriginalExtension();
-            $customUri = in_array($fileExtension, $validExtensions['photo']) ? 'photos/projects' : 'documents/projects';
+        // 🔸 3. Gestion de l’étape suivante
+        $currentPart = QuestionPart::findOrFail($request->input('current_part_id'));
 
-            // File path
-            $filename = $file->getClientOriginalName();
-            $cleanedFilename = sanitizeFileName($filename);
-            $filePath = $customUri . '/' . $project->id . '/' . $cleanedFilename;
-
-            // File upload
-            Storage::disk('public')->put($filePath, file_get_contents($file->getRealPath()));
-
-            // Updating the file URL in the database
-            $project->update([
-                'owner_title_deed_url' => Storage::url($filePath)
-            ]);
+        if ($currentPart->is_last_step) {
+            // Dernière étape : rediriger vers les détails du projet
+            return redirect('/project-writing/' . $project->id)->with('success', __('notifications.create_project_success'));
         }
 
-        $agricultureType = $request->has('agriculture_types') ? implode(',', $request->input('agriculture_types')) : '';
-        $breedingType = $request->has('breeding_types') ? implode(',', $request->input('breeding_types')) : '';
-
-        ProjectActivity::create([
-            'is_land_owner_agriculture' => $request->is_land_owner_agriculture,
-            'land_area_agriculture' => $request->land_area_agriculture,
-            'land_yield_per_hectare' => $request->land_yield_per_hectare,
-            'agriculture_type' => $agricultureType,
-            'agriculture_type_production_content' => $request->agriculture_type_production_content,
-            'agriculture_type_transformation_content' => $request->agriculture_type_transformation_content,
-            'agriculture_type_transformation_period' => $request->agriculture_type_transformation_period,
-            'agriculture_type_transformation_quantity' => $request->agriculture_type_transformation_quantity,
-            'agriculture_type_inputs_content' => $request->agriculture_type_inputs_content,
-            'agriculture_type_equipment_content' => $request->agriculture_type_equipment_content,
-            'is_land_owner_breeding' => $request->is_land_owner_breeding,
-            'land_area_breeding' => $request->land_area_breeding,
-            'breeding_type' => $breedingType,
-            'breeding_type_fish_content' => $request->breeding_type_fish_content,
-            'breeding_type_fish_pond_capacity' => $request->breeding_type_fish_pond_capacity,
-            'breeding_type_fish_cage_capacity' => $request->breeding_type_fish_cage_capacity,
-            'breeding_type_fish_bin_capacity' => $request->breeding_type_fish_bin_capacity,
-            'breeding_type_poultry_content' => $request->breeding_type_poultry_content,
-            'breeding_type_poultry_total_number' => $request->breeding_type_poultry_total_number,
-            'breeding_type_pig_content' => $request->breeding_type_pig_content,
-            'breeding_type_pig_total_number' => $request->breeding_type_pig_total_number,
-            'breeding_type_rabbit_content' => $request->breeding_type_rabbit_content,
-            'breeding_type_rabbit_total_number' => $request->breeding_type_rabbit_total_number,
-            'breeding_type_cattle_content' => $request->breeding_type_cattle_content,
-            'breeding_type_cattle_total_number' => $request->breeding_type_cattle_total_number,
-            'breeding_type_cattle_kind' => $request->breeding_type_cattle_kind,
-            'breeding_type_sheep_content' => $request->breeding_type_sheep_content,
-            'breeding_type_sheep_total_number' => $request->breeding_type_sheep_total_number,
-            'project_id' => $project->id,
-        ]);
-
-        if ($request->segments_names != null) {
-            foreach ($request->segments_names as $key => $segment_name) {
-                if (trim($segment_name) != null) {
-                    MarketSegment::create([
-                        'segment_name' => $segment_name,
-                        'is_quantitative' => $request->is_quantitative[$key] ?? 0,
-                        'project_id' => $project->id,
-                    ]);
-                }
-            }
-        }
+        // Étape suivante
+        $nextPart = QuestionPart::where('id', '>', $currentPart->id)->first();
 
         /*
             NOTIFICATION MANAGEMENT
@@ -1630,7 +1502,8 @@ class PublicController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success_message', __('notifications.create_project_success'));
+        return redirect()->route('crowdfunding.home', ['project' => $project->id, 'step_ref' => $nextPart->id])
+                            ->with('success', __('notifications.update_project_success'));
     }
 
     /**
