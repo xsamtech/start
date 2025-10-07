@@ -81,7 +81,7 @@
 				            					</div>
         	@endforeach
 
-												<button type="submit" class="btn {{ $currentPart->is_last_step ? 'strt-bg-green' : 'strt-bg-chocolate-3' }}" style="color: white!important; margin-top: 1rem;">
+												<button type="submit" class="btn {{ $currentPart->is_last_step ? 'strt-bg-green' : 'strt-bg-chocolate-3' }}" style="color: white!important; width: 250px; margin-top: 1rem;">
 													{!! $currentPart->is_last_step ? __('miscellaneous.register') : __('pagination.next') !!}
 												</button>
 											</form>
@@ -92,7 +92,7 @@
 								<div class="col-lg-5 col-sm-4 col-xs-12">
 									<div class="panel panel-default">
 										<div class="panel-heading">
-											<h5 class="panel-title">@lang('miscellaneous.admin.project_writing.my_other_projects')</h5>
+											<h4 class="panel-title">@lang('miscellaneous.admin.project_writing.my_other_projects')</h4>
 										</div>
 										<div class="panel-body">
 			@forelse ($user_projects as $project)
@@ -108,8 +108,8 @@
 												</div>
 											</div>
 			@empty
-											<div style="display: flex; justify-content: center; align-items: flex-end; height: 120px;">
-												<i class="bi bi-file-text" style="font-size: 9rem"></i>
+											<div style="display: flex; justify-content: center; align-items: center; height: 160px;">
+												<i class="bi bi-file-text" style="font-size: 5rem"></i>
 											</div>
 											<p class="text-center">@lang('miscellaneous.empty_list')</p>
 			@endforelse
