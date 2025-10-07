@@ -87,7 +87,7 @@
                                                 <option value="{{ $question['id'] }}">{{ $question['question_content'] }}</option>
 @endforeach
                                             </select>
-                                            <a role="button" class="btn btn-secondary p-1 position-absolute" style="top: 0.5rem; right: 0.5rem; width: 40px; height: 40px;"><i class="bi bi-plus"></i></a>
+                                            <a role="button" class="btn btn-light p-1 position-absolute" style="bottom: 0.5rem; right: 0.5rem; width: 40px; height: 40px;"><i class="bi bi-plus-lg"></i></a>
                                         </div>
 
                                         <!-- Question content -->
