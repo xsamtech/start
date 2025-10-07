@@ -252,7 +252,7 @@ class AdminController extends Controller
                 return redirect('/dashboard/questionnaire')->with('error_message', __('notifications.find_question_part_404'));
             }
 
-            $selected_entity = (new ResourcesProjectQuestion($question_part))->resolve();
+            $selected_entity = (new ResourcesQuestionPart($question_part))->resolve();
         }
 
         if ($entity == 'question') {
@@ -328,6 +328,21 @@ class AdminController extends Controller
      */
     public function addQuestionnaireEntity(Request $request, $entity)
     {
+        if ($entity == 'part') {
+            QuestionPart::create([
+                'part_name' => [
+                    'en' => $request->part_name_en,
+                    'fr' => $request->part_name_fr
+                ],
+                'part_description' => [
+                    'en' => $request->part_description_en,
+                    'fr' => $request->part_description_fr
+                ],
+                'is_first_step' => $request->is_first_step,
+                'is_last_step' => $request->is_last_step,
+            ]);
+        }
+
         if ($entity == 'question') {
             ProjectQuestion::create([
                 'question_content' => [
