@@ -108,7 +108,7 @@
 												</div>
 											</div>
 			@empty
-											<div style="display: flex; justify-content: center; align-items: center; flex-direction: row; height: 140px;">
+											<div style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 140px;">
 												<i class="bi bi-file-text" style="font-size: 5rem"></i>
 												<p class="text-center">@lang('miscellaneous.empty_list')</p>
 											</div>
