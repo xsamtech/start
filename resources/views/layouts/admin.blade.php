@@ -105,7 +105,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="addPartForm" action="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'part']) }}" method="POST">
-                            <h5 class="mb-0 text-white">@lang('miscellaneous.menu.admin.questionnaire.parts.add')</h5>
+                            <h5 class="mb-0 text-center">@lang('miscellaneous.menu.admin.questionnaire.parts.add')</h5>
 
     @csrf
                             <!-- Part name -->
