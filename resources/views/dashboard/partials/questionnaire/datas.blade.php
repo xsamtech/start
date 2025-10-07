@@ -198,6 +198,7 @@
                             </div>
 
                             <div class="card card-body">
+                                <h3>Assertions</h3>
     @php
         $assertions = \App\Models\QuestionAssertion::where('project_question_id', $selected_entity['id'])->get();
     @endphp
@@ -240,7 +241,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn strt-btn-chocolate-3 w-100 mt-4 px-4 rounded-pill">{{ __('miscellaneous.update') }}</button>
+                                    <button type="submit" class="btn strt-btn-chocolate-3 w-100 mt-4 px-4 rounded-pill">{{ __('miscellaneous.register') }}</button>
                                 </form>
                             </div>
                         </div>
