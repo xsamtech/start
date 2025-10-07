@@ -21,66 +21,98 @@
 @if (!empty($current_user))
 	@if (count($user_projects) < 3)
 		@if (count($questions) > 0)
-							<h3>{{ $currentPart->part_name }}</h3>
-							<p>{{ $currentPart->part_description }}</p>
+							<div class="row">
+								<div class="col-lg-7 col-sm-8 col-xs-12">
+									<h3 class="text-center" style="margin-bottom: 5px;">{{ $currentPart->part_name }}</h3>
+									<p class="text-center text-muted" style="margin-bottom: 20px;">{{ $currentPart->part_description }}</p>
 
-							<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
+									<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
 	        @csrf
-								<input type="hidden" name="current_part_id" value="{{ $currentPart->id }}">
+										<input type="hidden" name="current_part_id" value="{{ $currentPart->id }}">
 	        @if($project)
-								<input type="hidden" name="project_id" value="{{ $project->id }}">
+										<input type="hidden" name="project_id" value="{{ $project->id }}">
 	        @endif
 
 			@foreach($questions as $question)
-								<div class="form-group question-block" id="question-{{ $question->id }}" 
-									data-belongs-to="{{ $question->belongs_to }}" @if($question->belongs_to) style="display:none;" @endif>
+										<div class="form-group question-block" id="question-{{ $question->id }}" 
+											data-belongs-to="{{ $question->belongs_to }}" @if($question->belongs_to) style="display:none;" @endif>
 
-									<label>{{ $question->question_content }}</label>
+											<label>{{ $question->question_content }}</label>
 
-									{{-- Cas 1: unités --}}
+											{{-- Cas 1: unités --}}
                 @if($question->measurment_units_required)
-									<select name="answers[{{ $question->id }}]" class="form-control">
-										<option value="">{{ __('Choisir...') }}</option>
+											<select name="answers[{{ $question->id }}]" class="form-control">
+												<option value="">{{ __('Choisir...') }}</option>
                     @foreach(['hectare', 'square_meter', 'kilogram', 'tonne', '100_kg_bag'] as $unit)
-										<option value="{{ __('units_of_measurement.'.$unit.'.symbol') }}">
-											{{ __('units_of_measurement.'.$unit.'.symbol') }}
-										</option>
+												<option value="{{ __('units_of_measurement.'.$unit.'.symbol') }}">
+													{{ __('units_of_measurement.'.$unit.'.symbol') }}
+												</option>
                     @endforeach
-									</select>
+											</select>
 
-                					{{-- Cas 2: assertions --}}
+											{{-- Cas 2: assertions --}}
                 @elseif(is_null($question->input))
                     @foreach($question->assertions as $assertion)
-									<div class="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}">
-										<label>
-											<input type="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}"
-													name="answers[{{ $question->id }}]{{ $question->multiple_answers_required ? '[]' : '' }}"
-													value="{{ $assertion->assertion_content }}"
-													data-belongs-required="{{ $assertion->belongs_to_required }}"
-													data-question-id="{{ $question->id }}">
-                                			{{ $assertion->assertion_content }}
-										</label>
-									</div>
+											<div class="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}">
+												<label>
+													<input type="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}"
+															name="answers[{{ $question->id }}]{{ $question->multiple_answers_required ? '[]' : '' }}"
+															value="{{ $assertion->assertion_content }}"
+															data-belongs-required="{{ $assertion->belongs_to_required }}"
+															data-question-id="{{ $question->id }}">
+													{{ $assertion->assertion_content }}
+												</label>
+											</div>
                     @endforeach
 
-					                {{-- Cas 3: input spécifique --}}
+							                {{-- Cas 3: input spécifique --}}
                 @elseif($question->input === 'textarea')
-									<textarea class="form-control textarea-limit" name="answers[{{ $question->id }}]"
-										@if($question->word_limit) data-word-limit="{{ $question->word_limit }}" @endif
-										@if($question->character_limit) data-character-limit="{{ $question->character_limit }}" @endif rows="3"></textarea>
+											<textarea class="form-control textarea-limit" name="answers[{{ $question->id }}]"
+												@if($question->word_limit) data-word-limit="{{ $question->word_limit }}" @endif
+												@if($question->character_limit) data-character-limit="{{ $question->character_limit }}" @endif rows="3"></textarea>
 
 					@elseif($question->input === 'input_file')
-									<input type="file" name="answers[{{ $question->id }}][]" class="form-control" multiple>
+											<input type="file" name="answers[{{ $question->id }}][]" class="form-control" multiple>
 					@else
-				                    <input type="{{ str_replace('input_', '', $question->input) }}" name="answers[{{ $question->id }}]" class="form-control">
+						                    <input type="{{ str_replace('input_', '', $question->input) }}" name="answers[{{ $question->id }}]" class="form-control">
                 @endif
-            					</div>
+		            					</div>
         	@endforeach
 
-								<button type="submit" class="btn {{ $currentPart->is_last_step ? 'strt-bg-green' : 'strt-bg-chocolate-3' }}">
-									{{ $currentPart->is_last_step ? __('miscellaneous.register') : __('pagination.next') }}
-								</button>
-							</form>
+										<button type="submit" class="btn {{ $currentPart->is_last_step ? 'strt-bg-green' : 'strt-bg-chocolate-3' }}">
+											{{ $currentPart->is_last_step ? __('miscellaneous.register') : __('pagination.next') }}
+										</button>
+									</form>
+								</div>
+
+								<div class="col-lg-5 col-sm-4 col-xs-12">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h5 class="panel-title">@lang('miscellaneous.admin.project_writing.my_other_projects')</h5>
+										</div>
+										<div class="panel-body">
+			@forelse ($user_projects as $project)
+											<div class="panel panel-default">
+												<div class="panel-body">
+				@forelse ($project->project_answers->take(3) as $answer)
+													<p style="margin: 0 0 5px 0;">{{ $answer->project_question }} : <strong>{{ $answer->answer_content }}</strong></p>
+				@empty
+				@endforelse
+												</div>
+												<div class="panel-footer">
+													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}">@lang('miscellaneous.details') &raquo;</a>
+												</div>
+											</div>
+			@empty
+											<div style="display: flex; justify-content: center; align-items: flex-end; height: 120px;">
+												<i class="bi bi-file-text" style="font-size: 9rem"></i>
+											</div>
+											<p class="text-center">@lang('miscellaneous.empty_list')</p>
+			@endforelse
+										</div>
+									</div>
+								</div>
+							</div>
 		@else
 							<div style="display: flex; justify-content: center; align-items: flex-end; height: 160px;">
 								<i class="bi bi-file-text" style="font-size: 9rem"></i>
