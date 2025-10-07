@@ -54,7 +54,7 @@
 
 													{{-- Cas 2: assertions --}}
                 @elseif(is_null($question->input))
-                    @foreach($question->assertions as $assertion)
+                    @foreach($question->question_assertions as $assertion)
 													<div class="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}">
 														<label>
 															<input type="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}"
