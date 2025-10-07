@@ -105,6 +105,8 @@
                     </div>
                     <div class="modal-body">
                         <form id="addPartForm" action="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'part']) }}" method="POST">
+                            <h5 class="mb-0 text-white">@lang('miscellaneous.menu.admin.questionnaire.parts.add')</h5>
+
     @csrf
                             <!-- Part name -->
                             <div class="mb-2">
@@ -126,43 +128,49 @@
                                 <textarea name="part_description_en" class="form-control" id="part_description_en"></textarea>
                             </div>
 
-                            <!-- Is the first step -->
-                            <div class="my-3 text-center">
-                                <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.is_first_step')</label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- Is the first step -->
+                                    <div class="my-3 text-center">
+                                        <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.is_first_step')</label>
 
-                                <div class="d-flex justify-content-center">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="is_first_step" id="is_first_step1" value="1">
-                                        <label role="button" class="form-check-label" for="is_first_step1">@lang('miscellaneous.yes')</label>
+                                        <div class="d-flex justify-content-center">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="is_first_step" id="is_first_step1" value="1">
+                                                <label role="button" class="form-check-label" for="is_first_step1">@lang('miscellaneous.yes')</label>
+                                            </div>
+
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="is_first_step" id="is_first_step0" value="0">
+                                                <label role="button" class="form-check-label" for="is_first_step0">@lang('miscellaneous.no')</label>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
 
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="is_first_step" id="is_first_step0" value="0">
-                                        <label role="button" class="form-check-label" for="is_first_step0">@lang('miscellaneous.no')</label>
+                                <div class="col-sm-6">
+                                    <!-- Is the last step -->
+                                    <div class="my-3 text-center">
+                                        <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.is_last_step')</label>
+
+                                        <div class="d-flex justify-content-center">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="is_last_step" id="is_last_step1" value="1">
+                                                <label role="button" class="form-check-label" for="is_last_step1">@lang('miscellaneous.yes')</label>
+                                            </div>
+
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="is_last_step" id="is_first_step0" value="0">
+                                                <label role="button" class="form-check-label" for="is_last_step0">@lang('miscellaneous.no')</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Is the last step -->
-                            <div class="my-3 text-center">
-                                <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.is_last_step')</label>
-
-                                <div class="d-flex justify-content-center">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="is_last_step" id="is_last_step1" value="1">
-                                        <label role="button" class="form-check-label" for="is_last_step1">@lang('miscellaneous.yes')</label>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="is_last_step" id="is_first_step0" value="0">
-                                        <label role="button" class="form-check-label" for="is_last_step0">@lang('miscellaneous.no')</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex-row">
+                            <div class="flex-column">
                                 <button type="button" class="btn strt-btn-chocolate-3 px-5 me-2 rounded-pill text-white">@lang('miscellaneous.register')</button>
-                                <div id="ajax-loader-modal" class="spinner-border text-success" role="status">
+                                <div id="ajax-loader-modal" class="spinner-border text-success d-none" role="status">
                                     <span class="visually-hidden">@lang('miscellaneous.loading')</span>
                                 </div>
                             </div>
