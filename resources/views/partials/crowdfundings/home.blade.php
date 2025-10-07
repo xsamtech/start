@@ -99,7 +99,7 @@
 											<div class="panel panel-default">
 												<div class="panel-body">
 				@forelse ($project->project_answers->take(3) as $answer)
-													<p style="margin: 0 0 5px 0;">{{ $answer->project_question }} : <strong>{{ $answer->answer_content }}</strong></p>
+													<p style="margin: 0 0 5px 0;">{{ $answer->project_question->question_content }} : <strong>{{ $answer->answer_content }}</strong></p>
 				@empty
 				@endforelse
 												</div>
