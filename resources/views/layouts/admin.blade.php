@@ -169,7 +169,7 @@
                             </div>
 
                             <div class="flex-column">
-                                <button type="submit" class="btn strt-btn-chocolate-3 px-5 me-2 rounded-pill text-white">@lang('miscellaneous.register')</button>
+                                <button type="submit" class="btn strt-btn-chocolate-3 px-5 me-2 rounded-pill text-white float-start">@lang('miscellaneous.register')</button>
                                 <div id="ajax-loader-modal" class="spinner-border text-success d-none" role="status">
                                     <span class="visually-hidden">@lang('miscellaneous.loading')</span>
                                 </div>
