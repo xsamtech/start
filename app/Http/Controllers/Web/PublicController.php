@@ -762,7 +762,7 @@ class PublicController extends Controller
             : QuestionPart::where('is_first_step', 1)->firstOrFail();
 
         // Charger les questions de cette étape
-        $questions = ProjectQuestion::with('assertions')
+        $questions = ProjectQuestion::with('question_assertions')
             ->where('question_part_id', $currentPart->id)
             ->get();
 
