@@ -95,6 +95,84 @@
                 </div>
             </div>
         </div>
+@if (Route::is('dashboard.questionnaire.home'))
+        <!-- ### Add a questions part ### -->
+        <div class="modal fade" id="questionPartModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header py-0 border-bottom-0">
+                        <button type="button" class="btn-close mt-1" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addPartForm" action="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'part']) }}" method="POST">
+    @csrf
+                            <!-- Part name -->
+                            <div class="mb-2">
+                                <label for="part_name_fr" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.part_name') (FR)</label>
+                                <input type="text" name="part_name_fr" class="form-control" id="part_name_fr">
+                            </div>
+                            <div class="mb-2">
+                                <label for="part_name_en" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.part_name') (EN)</label>
+                                <input type="text" name="part_name_en" class="form-control" id="part_name_en">
+                            </div>
+
+                            <!-- Description -->
+                            <div class="mb-2">
+                                <label for="part_description_fr" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.part_description') (FR)</label>
+                                <textarea name="part_description_fr" class="form-control" id="part_description_fr"></textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label for="part_description_en" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.part_description') (EN)</label>
+                                <textarea name="part_description_en" class="form-control" id="part_description_en"></textarea>
+                            </div>
+
+                            <!-- Is the first step -->
+                            <div class="my-3 text-center">
+                                <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.is_first_step')</label>
+
+                                <div class="d-flex justify-content-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="is_first_step" id="is_first_step1" value="1">
+                                        <label role="button" class="form-check-label" for="is_first_step1">@lang('miscellaneous.yes')</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="is_first_step" id="is_first_step0" value="0">
+                                        <label role="button" class="form-check-label" for="is_first_step0">@lang('miscellaneous.no')</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Is the last step -->
+                            <div class="my-3 text-center">
+                                <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.parts.data.is_last_step')</label>
+
+                                <div class="d-flex justify-content-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="is_last_step" id="is_last_step1" value="1">
+                                        <label role="button" class="form-check-label" for="is_last_step1">@lang('miscellaneous.yes')</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="is_last_step" id="is_first_step0" value="0">
+                                        <label role="button" class="form-check-label" for="is_last_step0">@lang('miscellaneous.no')</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <button type="button" class="btn strt-btn-green px-5 me-2 rounded-pill text-white">@lang('miscellaneous.register')</button>
+                                <div id="ajax-loader-modal" class="spinner-border text-warning" role="status">
+                                    <span class="visually-hidden">@lang('miscellaneous.loading')</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {{-- <div class="modal-footer p-0 border-0"></div> --}}
+                </div>
+            </div>
+        </div>
+@endif
         <!--! ================================================================ !-->
         <!--! [End]  Modals !-->
         <!--! ================================================================ !-->
@@ -730,7 +808,7 @@
                 /**
                  * Ajax to send
                  */
-                /* Product form */
+                /* Question form */
                 $('#addQuestionForm').on('submit', function (e) {
                     e.preventDefault();
 
@@ -770,6 +848,59 @@
                         error: function (error) {
                             // Cacher l'animation de chargement
                             $('#ajax-loader').addClass('d-none');
+
+                            // Afficher une alerte d'erreur
+                            $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">
+                                                                <div class="col-lg-4 col-sm-6 mx-auto">
+                                                                    <div class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+                                                                        <i class="bi bi-exclamation-triangle me-2 fs-4" style="vertical-align: -3px;"></i> {{ __('notifications.error_while_processing') }}
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`);
+                        }
+                    });
+                });
+                /* Part form */
+                $('#addPartForm').on('submit', function (e) {
+                    e.preventDefault();
+
+                    // Afficher l'animation de chargement
+                    $('#ajax-loader-modal').removeClass('d-none');
+
+                    // Effacer les alertes précédentes
+                    $('#ajax-alert-container').empty();
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            // Cacher l'animation de chargement
+                            $('#ajax-loader-modal').addClass('d-none');
+
+                            // Afficher une alerte de succès
+                            $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">
+                                                                <div class="col-lg-4 col-sm-6 mx-auto">
+                                                                    <div class="alert alert-success alert-dismissible fade show rounded-0" role="alert">
+                                                                        <i class="bi bi-info-circle me-2 fs-4" style="vertical-align: -3px;"></i> ${response.message || "__('notifications.added_data')"}
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`);
+
+                            // Réinitialiser tous les champs du formulaire
+                            $('#addPartForm')[0].reset();
+
+                            location.reload();
+                        },
+                        error: function (error) {
+                            // Cacher l'animation de chargement
+                            $('#ajax-loader-modal').addClass('d-none');
 
                             // Afficher une alerte d'erreur
                             $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">

@@ -321,6 +321,13 @@ return [
     'create_project_success' => 'Projet créé',
     'update_project_success' => 'Projet modifié',
     'delete_project_success' => 'Projet supprimé',
+    // QuestionPart
+    'find_all_questions_parts_success' => 'Parties des questions trouvées',
+    'find_question_part_success' => 'Partie des questions trouvée',
+    'find_question_part_404' => 'Partie des questions non trouvée',
+    'create_question_part_success' => 'Partie des questions créée',
+    'update_question_part_success' => 'Partie des questions modifiée',
+    'delete_question_part_success' => 'Partie des questions supprimée',
     // ProjectQuestion
     'find_all_projects_questions_success' => 'Questions de projets trouvées',
     'find_project_question_success' => 'Question de projet trouvée',

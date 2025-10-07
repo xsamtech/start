@@ -205,6 +205,12 @@ class AdminController extends Controller
         $items = [];
         $project_questions = ProjectQuestion::all();
 
+        if ($entity == 'part') {
+            $entity_title = __('miscellaneous.menu.admin.questionnaire.parts.title');
+            $question_parts = QuestionPart::paginate(10)->appends(request()->query());
+            $items = ResourcesQuestionPart::collection($question_parts)->resolve();
+        }
+
         if ($entity == 'assertion') {
             $entity_title = __('miscellaneous.menu.admin.questionnaire.assertions.title');
             $question_assertions = QuestionAssertion::paginate(10)->appends(request()->query());
@@ -237,6 +243,17 @@ class AdminController extends Controller
         $entity_title = null;
         $selected_entity = null;
         $project_questions = ProjectQuestion::all();
+
+        if ($entity == 'part') {
+            $entity_title = __('miscellaneous.menu.admin.questionnaire.parts.details');
+            $question_part = QuestionPart::find($id);
+
+            if (is_null($question_part)) {
+                return redirect('/dashboard/questionnaire')->with('error_message', __('notifications.find_question_part_404'));
+            }
+
+            $selected_entity = (new ResourcesProjectQuestion($question_part))->resolve();
+        }
 
         if ($entity == 'question') {
             $entity_title = __('miscellaneous.menu.admin.questionnaire.questions.details');

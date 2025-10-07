@@ -321,6 +321,13 @@ return [
     'create_project_success' => 'Project created',
     'update_project_success' => 'Project updated',
     'delete_project_success' => 'Project deleted',
+    // QuestionPart
+    'find_all_questions_parts_success' => 'Questions parts found',
+    'find_question_part_success' => 'Questions part found',
+    'find_question_part_404' => 'Questions part not found',
+    'create_question_part_success' => 'Questions part created',
+    'update_question_part_success' => 'Questions part updated',
+    'delete_question_part_success' => 'Questions part deleted',
     // ProjectQuestion
     'find_all_projects_questions_success' => 'Projects questions found',
     'find_project_question_success' => 'Project question found',
