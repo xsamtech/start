@@ -82,12 +82,12 @@
                                         <div class="mb-2 position-relative">
                                             <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</label>
                                             <select name="belongs_to" id="belongs_to" class="form-select">
-                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
+                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
 @foreach ($question_parts as $part)
                                                 <option value="{{ $question['id'] }}">{{ $question['question_content'] }}</option>
 @endforeach
                                             </select>
-                                            <a role="button" class="btn btn-light p-1 position-absolute" style="bottom: 0.5rem; right: 0.5rem; width: 40px; height: 40px;"><i class="bi bi-plus-lg"></i></a>
+                                            <a role="button" class="btn btn-light p-1 position-absolute" style="bottom: 0.3rem; right: 0.3rem; width: 40px; height: 40px;"><i class="bi bi-plus-lg"></i></a>
                                         </div>
 
                                         <!-- Question content -->
