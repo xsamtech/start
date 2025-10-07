@@ -216,11 +216,11 @@
                                     <!-- Assertion content -->
                                     <div class="mb-2">
                                         <label for="assertion_content_fr" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.assertion_content') (FR)</label>
-                                        <input type="text" name="assertion_content_fr" class="form-control" id="question_content_fr" value="{{ $selected_entity['question_content_fr'] }}">
+                                        <input type="text" name="assertion_content_fr" class="form-control" id="question_content_fr">
                                     </div>
                                     <div class="mb-2">
                                         <label for="assertion_content_en" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.assertion_content') (EN)</label>
-                                        <input type="text" name="assertion_content_en" class="form-control" id="question_content_en" value="{{ $selected_entity['question_content_en'] }}">
+                                        <input type="text" name="assertion_content_en" class="form-control" id="question_content_en">
                                     </div>
 
                                     <!-- Belongs to required -->
