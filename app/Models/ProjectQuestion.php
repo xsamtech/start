@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
@@ -30,6 +31,15 @@ class ProjectQuestion extends Model
      * @var array<int, string>
      */
     protected $translatable = ['question_content', 'question_description'];
+
+    /**
+     * ONE-TO-MANY
+     * One question_part for several project_questions
+     */
+    public function question_part(): BelongsTo
+    {
+        return $this->belongsTo(QuestionPart::class, 'question_part_id');
+    }
 
     /**
      * MANY-TO-ONE

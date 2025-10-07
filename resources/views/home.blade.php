@@ -154,13 +154,13 @@
                                     </div><!-- End #products-tabs-content -->
 
                                     <div class="row">
-                                        <div class="col-lg-5 col-xs-12">
+                                        <div class="col-lg-12 col-xs-12">
                                             <header class="content-title">
                                                 <h2 class="title">@lang('miscellaneous.welcome_about.mission.title')</h2>
                                             </header>
                                             <p class="lead">@lang('miscellaneous.welcome_about.mission.content')</p>
                                         </div><!-- End .col-md-7 -->
-                                        <div class="col-lg-7 col-xs-12">
+                                        <div class="col-lg-12 col-xs-12">
                                             <div class="sm-margin visible-xs"></div><!-- space -->
                                             <img src="{{ asset('assets/img/about/mission.png') }}" alt="Showcase Venedor" class="img-responsive">
                                         </div><!-- End .col-md-5 -->
