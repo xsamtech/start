@@ -182,7 +182,7 @@ class AdminController extends Controller
     public function questionnaire()
     {
         $question_parts = QuestionPart::all();
-        $project_questions = ProjectQuestion::paginate(10)->appends(request()->query());
+        $project_questions = ProjectQuestion::paginate(20)->appends(request()->query());
         $project_questions_all = ProjectQuestion::all();
 
         return view('dashboard.questionnaire', [
