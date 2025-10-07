@@ -160,7 +160,7 @@
                                             </div>
 
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="is_last_step" id="is_first_step0" value="0">
+                                                <input class="form-check-input" type="radio" name="is_last_step" id="is_last_step0" value="0">
                                                 <label role="button" class="form-check-label" for="is_last_step0">@lang('miscellaneous.no')</label>
                                             </div>
                                         </div>
