@@ -25,7 +25,7 @@
 								<div class="col-lg-7 col-sm-8 col-xs-12">
 									<div class="panel panel-default">
 										<div class="panel-body">
-											<h3 class="text-center" style="margin-bottom: 5px;">{{ $currentPart->part_name }}</h3>
+											<h2 class="text-center" style="margin-bottom: 5px;">{{ $currentPart->part_name }}</h2>
 											<p class="text-center text-muted" style="margin-bottom: 20px;">{{ $currentPart->part_description }}</p>
 
 											<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
@@ -108,10 +108,10 @@
 												</div>
 											</div>
 			@empty
-											<div style="display: flex; justify-content: center; align-items: center; height: 160px;">
+											<div style="display: flex; justify-content: center; align-items: center; height: 140px;">
 												<i class="bi bi-file-text" style="font-size: 5rem"></i>
+												<p class="text-center">@lang('miscellaneous.empty_list')</p>
 											</div>
-											<p class="text-center">@lang('miscellaneous.empty_list')</p>
 			@endforelse
 										</div>
 									</div>
