@@ -161,8 +161,8 @@
                             </div>
 
                             <div class="flex-row">
-                                <button type="button" class="btn strt-btn-green px-5 me-2 rounded-pill text-white">@lang('miscellaneous.register')</button>
-                                <div id="ajax-loader-modal" class="spinner-border text-warning" role="status">
+                                <button type="button" class="btn strt-btn-chocolate-3 px-5 me-2 rounded-pill text-white">@lang('miscellaneous.register')</button>
+                                <div id="ajax-loader-modal" class="spinner-border text-success" role="status">
                                     <span class="visually-hidden">@lang('miscellaneous.loading')</span>
                                 </div>
                             </div>
