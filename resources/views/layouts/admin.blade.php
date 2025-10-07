@@ -869,6 +869,59 @@
                         }
                     });
                 });
+                /* Assertion form */
+                $('#addAssertionForm').on('submit', function (e) {
+                    e.preventDefault();
+
+                    // Afficher l'animation de chargement
+                    $('#ajax-loader').removeClass('d-none');
+
+                    // Effacer les alertes précédentes
+                    $('#ajax-alert-container').empty();
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            // Cacher l'animation de chargement
+                            $('#ajax-loader').addClass('d-none');
+
+                            // Afficher une alerte de succès
+                            $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">
+                                                                <div class="col-lg-4 col-sm-6 mx-auto">
+                                                                    <div class="alert alert-success alert-dismissible fade show rounded-0" role="alert">
+                                                                        <i class="bi bi-info-circle me-2 fs-4" style="vertical-align: -3px;"></i> ${response.message || "__('notifications.added_data')"}
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`);
+
+                            // Réinitialiser tous les champs du formulaire
+                            $('#addAssertionForm')[0].reset();
+
+                            location.reload();
+                        },
+                        error: function (error) {
+                            // Cacher l'animation de chargement
+                            $('#ajax-loader').addClass('d-none');
+
+                            // Afficher une alerte d'erreur
+                            $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">
+                                                                <div class="col-lg-4 col-sm-6 mx-auto">
+                                                                    <div class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+                                                                        <i class="bi bi-exclamation-triangle me-2 fs-4" style="vertical-align: -3px;"></i> {{ __('notifications.error_while_processing') }}
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`);
+                        }
+                    });
+                });
                 /* Part form */
                 $('#addPartForm').on('submit', function (e) {
                     e.preventDefault();
