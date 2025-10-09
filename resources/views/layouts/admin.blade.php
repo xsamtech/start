@@ -975,6 +975,44 @@
                         }
                     });
                 });
+                /* When we change the "belongs_to" */
+                $('#belongs_to').on('change', function() {
+                    const questionId = $(this).val();
+
+                    if (!questionId) return;
+
+                    $('#belongsToAssertions').hide();
+                    $('#assertionsContainer').empty();
+
+                    // AJAX request
+                    $.ajax({
+                        url: currentHost + '/dashboard/questionnaire/assertions/' + questionId,
+                        type: 'GET',
+                        success: function(data) {
+                            if (data.length === 0) return;
+
+                            $('#belongsToAssertions').show();
+
+                            data.forEach(function(assertion) {
+                                const checkbox = `<div class="form-check">
+                                                    <input class="form-check-input assertion-checkbox" type="checkbox" value="${assertion.id}" id="assertion_${assertion.id}">
+                                                    <label class="form-check-label" for="assertion_${assertion.id}">
+                                                        ${assertion.assertion_content}
+                                                    </label>
+                                                </div>`;
+
+                                $('#assertionsContainer').append(checkbox);
+                            });
+
+                            // Updated the hidden "assertion" field
+                            $('.assertion-checkbox').on('change', function() {
+                                const selected = $('.assertion-checkbox:checked').map(function() { return $(this).val(); }).get().join(',');
+
+                                $('#assertion').val(selected);
+                            });
+                        }
+                    });
+                });
             });
         </script>
         <!--! END: Custom JS !-->

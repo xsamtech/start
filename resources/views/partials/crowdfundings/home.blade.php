@@ -36,8 +36,9 @@
 	        @endif
 
 			@foreach($questions as $question)
-												<div class="form-group question-block" id="question-{{ $question->id }}" 
-													data-belongs-to="{{ $question->belongs_to }}" @if($question->belongs_to) style="display:none;" @endif>
+												<div class="form-group question-block" id="question-{{ $question->id }}"
+													data-belongs-to="{{ $question->belongs_to }}"
+													data-assertions="{{ $question->assertion }}" @if($question->belongs_to) style="display:none;" @endif>
 
 													<label>{{ $question->question_content }}</label>
 

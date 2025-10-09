@@ -166,6 +166,15 @@
                                             </select>
                                         </div>
 
+                                        <!-- Assertions liées -->
+                                        <div id="belongsToAssertions" class="mb-3" style="display:none;">
+                                            <label class="form-label fw-bold">
+                                                @lang('miscellaneous.menu.admin.questionnaire.questions.data.assertions_linked')
+                                            </label>
+                                            <div id="assertionsContainer" class="border rounded p-2"></div>
+                                            <input type="hidden" name="assertion" id="assertion">
+                                        </div>
+
                                         <!-- Measurment units required -->
                                         <div class="my-3 text-center">
                                             <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.measurment_units_required')</label>

@@ -1867,14 +1867,36 @@
 
                 // === Apparition des questions dépendantes ===
                 $('input[data-belongs-required="1"]').on('change', function () {
+                    // ID de la question parent
                     let questionId = $(this).data('question-id');
-                    let checked = $(this).is(':checked');
 
+                    // Récupérer les assertions cochées pour cette question parent
+                    let checkedAssertions = $('input[data-question-id="' + questionId + '"]:checked').map(function() { return $(this).val().trim(); }).get();
+
+                    // Pour chaque question dépendante
                     $('.question-block').each(function () {
-                        let belongsTo = $(this).data('belongs-to');
+                        let $block = $(this);
+                        let belongsTo = $block.data('belongs-to');
+                        let assertionsRequired = $block.data('assertions'); // ex: "2,3"
 
                         if (belongsTo == questionId) {
-                            $(this).toggle(checked);
+                            if (!assertionsRequired) {
+                                // Si pas de condition particulière, on affiche
+                                $block.show();
+
+                                return;
+                            }
+
+                            // Vérifie si au moins une assertion requise est cochée
+                            let requiredArray = assertionsRequired.toString().split(',').map(s => s.trim());
+                            let intersection = requiredArray.filter(val => checkedAssertions.includes(val));
+
+                            if (intersection.length > 0) {
+                                $block.show();
+
+                            } else {
+                                $block.hide();
+                            }
                         }
                     });
                 });

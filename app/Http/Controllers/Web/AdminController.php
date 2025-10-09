@@ -367,7 +367,7 @@ class AdminController extends Controller
         }
 
         if ($entity == 'assertion') {
-            ProjectQuestion::create([
+            QuestionAssertion::create([
                 'assertion_content' => [
                     'en' => $request->assertion_content_en,
                     'fr' => $request->assertion_content_fr
@@ -415,6 +415,166 @@ class AdminController extends Controller
         $sector->save();
 
         return redirect()->back()->with('success_message', __('notifications.updated_data'));
+    }
+
+    /**
+     * POST: Add a sector
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string $entity
+     * @param  int $id
+     * @throws \Illuminate\Http\RedirectResponse
+     */
+    public function updateQuestionnaireEntity(Request $request, $entity, $id)
+    {
+        if ($entity == 'part') {
+            $inputs = [
+                'id' => $id,
+                'part_name' => [
+                    'en' => $request->part_name_en,
+                    'fr' => $request->part_name_fr
+                ],
+                'part_description' => [
+                    'en' => $request->part_description_en,
+                    'fr' => $request->part_description_fr
+                ],
+                'is_first_step' => $request->is_first_step,
+                'is_last_step' => $request->is_last_step,
+            ];
+            $current_part = QuestionPart::find($inputs['id']);
+
+            if ($inputs['part_name'] != null) {
+                $current_part->update([
+                    'part_name' => $inputs['part_name'],
+                ]);
+            }
+
+            if ($inputs['part_description'] != null) {
+                $current_part->update([
+                    'part_description' => $inputs['part_description'],
+                ]);
+            }
+
+            if ($inputs['is_first_step'] != null) {
+                $current_part->update([
+                    'is_first_step' => $inputs['is_first_step'],
+                ]);
+            }
+
+            if ($inputs['is_last_step'] != null) {
+                $current_part->update([
+                    'is_last_step' => $inputs['is_last_step'],
+                ]);
+            }
+        }
+
+        if ($entity == 'question') {
+            $inputs = [
+                'question_content' => [
+                    'en' => $request->question_content_en,
+                    'fr' => $request->question_content_fr
+                ],
+                'question_description' => [
+                    'en' => $request->question_description_en,
+                    'fr' => $request->question_description_fr
+                ],
+                'multiple_answers_required' => $request->multiple_answers_required,
+                'input' => $request->input,
+                'word_limit' => $request->word_limit,
+                'character_limit' => $request->character_limit,
+                'belongs_to' => $request->belongs_to,
+                'measurment_units_required' => $request->measurment_units_required,
+                'question_part_id' => $request->question_part_id,
+            ];
+            $current_question = ProjectQuestion::find($inputs['id']);
+
+            if ($inputs['question_content'] != null) {
+                $current_question->update([
+                    'question_content' => $inputs['question_content'],
+                ]);
+            }
+
+            if ($inputs['question_description'] != null) {
+                $current_question->update([
+                    'question_description' => $inputs['question_description'],
+                ]);
+            }
+
+            if ($inputs['multiple_answers_required'] != null) {
+                $current_question->update([
+                    'multiple_answers_required' => $inputs['multiple_answers_required'],
+                ]);
+            }
+
+            if ($inputs['input'] != null) {
+                $current_question->update([
+                    'input' => $inputs['input'],
+                ]);
+            }
+
+            if ($inputs['word_limit'] != null) {
+                $current_question->update([
+                    'word_limit' => $inputs['word_limit'],
+                ]);
+            }
+
+            if ($inputs['character_limit'] != null) {
+                $current_question->update([
+                    'character_limit' => $inputs['character_limit'],
+                ]);
+            }
+
+            if ($inputs['belongs_to'] != null) {
+                $current_question->update([
+                    'belongs_to' => $inputs['belongs_to'],
+                ]);
+            }
+
+            if ($inputs['measurment_units_required'] != null) {
+                $current_question->update([
+                    'measurment_units_required' => $inputs['measurment_units_required'],
+                ]);
+            }
+
+            if ($inputs['question_part_id'] != null) {
+                $current_question->update([
+                    'question_part_id' => $inputs['question_part_id'],
+                ]);
+            }
+        }
+
+        if ($entity == 'assertion') {
+            $inputs = [
+                'assertion_content' => [
+                    'en' => $request->assertion_content_en,
+                    'fr' => $request->assertion_content_fr
+                ],
+                'belongs_to_required' => $request->belongs_to_required,
+                'project_question_id' => $request->project_question_id,
+            ];
+            $current_assertion = QuestionAssertion::find($inputs['id']);
+
+            if ($inputs['assertion_content'] != null) {
+                $current_assertion->update([
+                    'assertion_content' => $inputs['assertion_content'],
+                ]);
+            }
+
+            if ($inputs['belongs_to_required'] != null) {
+                $current_assertion->update([
+                    'belongs_to_required' => $inputs['belongs_to_required'],
+                ]);
+            }
+
+            if ($inputs['project_question_id'] != null) {
+                $current_assertion->update([
+                    'project_question_id' => $inputs['project_question_id'],
+                ]);
+            }
+        }
+
+        return response()->json(['status' => 'success', 'message' => __('notifications.updated_data')]);
+        // return redirect()->back()->with('success_message', __('notifications.registered_data'));
     }
 
     /**

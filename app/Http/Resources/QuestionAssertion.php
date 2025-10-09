@@ -41,7 +41,7 @@ class QuestionAssertion extends JsonResource
             'assertion_content_fr' => $this->getTranslation('assertion_content', 'fr'),
             'assertion_content_en' => $this->getTranslation('assertion_content', 'en'),
             'belongs_to_required' => $this->belongs_to_required,
-            'readable_belongs_to_required' => $this->belongs_to_required,
+            'readable_belongs_to_required' => $belongs_to_required,
             'project_question' => ProjectQuestion::make($this->project_question),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),

@@ -7,6 +7,7 @@
 
 use App\Http\Controllers\Web\AdminController;
 use App\Http\Controllers\Web\PublicController;
+use App\Models\QuestionAssertion;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
@@ -88,6 +89,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/questionnaire/{entity}', [AdminController::class, 'addQuestionnaireEntity']);
     Route::get('/dashboard/questionnaire/{entity}/{id}', [AdminController::class, 'questionnaireEntityDatas'])->whereNumber('id')->name('dashboard.questionnaire.entity.datas');
     Route::post('/dashboard/questionnaire/{entity}/{id}', [AdminController::class, 'updateQuestionnaireEntity'])->whereNumber('id');
+    Route::get('/dashboard/questionnaire/assertions/{question}', function ($questionId) {
+        return QuestionAssertion::where('project_question_id', $questionId)->get();
+    });
     // News
     Route::get('/dashboard/news', [AdminController::class, 'news'])->name('dashboard.news.home');
     Route::post('/dashboard/news', [AdminController::class, 'addNews']);

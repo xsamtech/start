@@ -96,6 +96,7 @@ class ProjectQuestion extends JsonResource
             'word_limit' => $this->word_limit,
             'character_limit' => $this->character_limit,
             'belongs_to' => $this->belongs_to,
+            'assertion' => $this->assertion,
             'measurment_units_required' => $this->measurment_units_required,
             'readable_measurment_units_required' => $measurment_units_required,
             'question_part' => QuestionPart::make($this->question_part),

@@ -197,52 +197,60 @@
                                 </h5>
                             </div>
 
-                            <div class="card card-body">
-                                <h3>Assertions</h3>
+                            <div class="card overflow-hidden">
+                                <div class="card-header strt-bg-chocolate-3">
+                                    <h5 class="mb-0 text-white">Assertions</h5>
+                                </div>
     @php
-        $assertions = \App\Models\QuestionAssertion::where('project_question_id', $selected_entity['id'])->get();
+        $assertions_req = \App\Models\QuestionAssertion::where('project_question_id', $selected_entity['id'])->get();
+        $assertions = \App\Http\Resources\QuestionAssertion::collection($assertions_req)->resolve();
     @endphp
-                                <ul>
+                                <ul class="list-group list-group-flush border-bottom">
     @foreach ($assertions as $assertion)
-                                    <li>
-                                        <h3 style="margin-bottom: 5px;">{{ $assertion->assertion_content }}</h3>
+                                    <li class="list-group-item">
+                                        <h4>{{ $assertion['assertion_content'] }}</h4>
+                                        <p>@lang('miscellaneous.menu.admin.questionnaire.assertions.data.belongs_to_required')@lang('miscellaneous.colon_after_word') <strong>{{ $assertion['readable_belongs_to_required'] }}</strong></p>
                                     </li>
     @endforeach
                                 </ul>
 
-                                <form id="addAssertionForm" action="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'assertion']) }}" method="POST">
+                                <div class="card-body" style="background-color: #f9f9f9;">
+                                    <h5 class="mb-4">@lang('miscellaneous.menu.admin.questionnaire.assertions.add')</h5>
+
+                                    <form id="addAssertionForm" action="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'assertion']) }}" method="POST">
     @csrf
-                                    <input type="hidden" name="project_question_id" value="{{ $selected_entity['id'] }}">
+                                        <input type="hidden" name="project_question_id" value="{{ $selected_entity['id'] }}">
 
-                                    <!-- Assertion content -->
-                                    <div class="mb-2">
-                                        <label for="assertion_content_fr" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.assertion_content') (FR)</label>
-                                        <input type="text" name="assertion_content_fr" class="form-control" id="question_content_fr">
-                                    </div>
-                                    <div class="mb-2">
-                                        <label for="assertion_content_en" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.assertion_content') (EN)</label>
-                                        <input type="text" name="assertion_content_en" class="form-control" id="question_content_en">
-                                    </div>
+                                        <!-- Assertion content -->
+                                        <div class="mb-2">
+                                            <label for="assertion_content_fr" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.assertion_content') (FR)</label>
+                                            <input type="text" name="assertion_content_fr" class="form-control" id="question_content_fr">
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="assertion_content_en" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.assertion_content') (EN)</label>
+                                            <input type="text" name="assertion_content_en" class="form-control" id="question_content_en">
+                                        </div>
 
-                                    <!-- Belongs to required -->
-                                    <div class="my-3 text-center">
-                                        <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.belongs_to_required')</label>
+                                        <!-- Belongs to required -->
+                                        <div class="my-3 text-center">
+                                            <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.belongs_to_required')</label>
 
-                                        <div class="d-flex justify-content-center">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="belongs_to_required" id="belongs_to_required1" value="1">
-                                                <label role="button" class="form-check-label" for="belongs_to_required1">@lang('miscellaneous.yes')</label>
-                                            </div>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="belongs_to_required" id="belongs_to_required1" value="1">
+                                                    <label role="button" class="form-check-label" for="belongs_to_required1">@lang('miscellaneous.yes')</label>
+                                                </div>
 
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="belongs_to_required" id="belongs_to_required0" value="0">
-                                                <label role="button" class="form-check-label" for="belongs_to_required0">@lang('miscellaneous.no')</label>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="belongs_to_required" id="belongs_to_required0" value="0">
+                                                    <label role="button" class="form-check-label" for="belongs_to_required0">@lang('miscellaneous.no')</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <button type="submit" class="btn strt-btn-chocolate-3 w-100 mt-4 px-4 rounded-pill">{{ __('miscellaneous.register') }}</button>
-                                </form>
+                                        <button type="submit" class="btn strt-btn-green w-100 mt-4 px-4 rounded-pill">{{ __('miscellaneous.register') }}</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
 @endif
