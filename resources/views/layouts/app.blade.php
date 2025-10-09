@@ -1865,41 +1865,49 @@
                     }
                 });
 
-                // === Apparition des questions dépendantes ===
-                $('input[data-belongs-required="1"]').on('change', function () {
-                    // ID de la question parent
-                    let questionId = $(this).data('question-id');
+                // Fonction pour mettre à jour toutes les questions dépendantes
+                function updateDependentQuestions() {
+                    $('.question-block[data-belongs-to]').each(function () {
+                        const $question = $(this);
 
-                    // Récupérer les assertions cochées pour cette question parent
-                    let checkedAssertions = $('input[data-question-id="' + questionId + '"]:checked').map(function() { return $(this).val().trim(); }).get();
+                        // ID de la question parent
+                        const parentId = String($question.data('belongs-to'));
+                        if (!parentId) return;
 
-                    // Pour chaque question dépendante
-                    $('.question-block').each(function () {
-                        let $block = $(this);
-                        let belongsTo = $block.data('belongs-to');
-                        let assertionsRequired = $block.data('assertions'); // ex: "2,3"
+                        // Liste des assertions requises (toujours string)
+                        const rawAssertions = $question.data('assertions');
+                        const requiredAssertions = rawAssertions
+                            ? rawAssertions.toString().split(',').map(a => a.trim()).filter(a => a !== '')
+                            : [];
 
-                        if (belongsTo == questionId) {
-                            if (!assertionsRequired) {
-                                // Si pas de condition particulière, on affiche
-                                $block.show();
+                        // Liste des assertions cochées du parent
+                        const checkedAssertions = $(`.assertion-input[data-question="${parentId}"]:checked`)
+                            .toArray()
+                            .map(i => $(i).val().toString());
 
-                                return;
-                            }
+                        // Détermine si la question doit apparaître
+                        const shouldShow = requiredAssertions.length === 0
+                            ? false
+                            : requiredAssertions.some(a => checkedAssertions.includes(a.toString()));
 
-                            // Vérifie si au moins une assertion requise est cochée
-                            let requiredArray = assertionsRequired.toString().split(',').map(s => s.trim());
-                            let intersection = requiredArray.filter(val => checkedAssertions.includes(val));
+                        if (shouldShow) {
+                            $question.stop(true, true).slideDown(200);
+                        } else {
+                            $question.stop(true, true).slideUp(200);
 
-                            if (intersection.length > 0) {
-                                $block.show();
-
-                            } else {
-                                $block.hide();
-                            }
+                            // Nettoie les champs (input, textarea, select) si caché
+                            $question.find('input[type="text"], input[type="number"], input[type="email"], input[type="tel"], input[type="file"], textarea, select')
+                                .val('');
+                            $question.find('input[type="checkbox"], input[type="radio"]').prop('checked', false);
                         }
                     });
-                });
+                }
+
+                // Déclenche la mise à jour à chaque changement d'assertion
+                $(document).on('change', '.assertion-input', updateDependentQuestions);
+
+                // Initialisation au chargement (pour questions déjà cochées)
+                updateDependentQuestions();
             });
         </script>
     </body>

@@ -976,42 +976,71 @@
                     });
                 });
                 /* When we change the "belongs_to" */
-                $('#belongs_to').on('change', function() {
+                $('#belongs_to').on('change', function () {
                     const questionId = $(this).val();
+                    const baseUrl = $(this).data('assertions-url');
+                    const url = baseUrl.replace('QUESTION_ID', questionId);
 
-                    if (!questionId) return;
-
+                    // Cache and clear old content before loading
                     $('#belongsToAssertions').hide();
-                    $('#assertionsContainer').empty();
+                    $('#assertionsContainer').html(`<div class="spinner-border" role="status">
+                                                        <span class="visually-hidden">{{ __('miscellaneous.loading') }}</span>
+                                                    </div>`);
+                    $('#assertion').val('');
 
-                    // AJAX request
                     $.ajax({
-                        url: currentHost + '/dashboard/questionnaire/assertions/' + questionId,
+                        url: url,
                         type: 'GET',
-                        success: function(data) {
-                            if (data.length === 0) return;
+                        dataType: 'json',
+                        success: function (response) {
+                            let data = response.data || response;
 
+                            // Empty the container
+                            $('#assertionsContainer').empty();
+
+                            if (!data || data.length === 0) {
+                                $('#assertionsContainer').html(`<div class="text-danger small">{{ __('notifications.find_question_assertion_404') }}</div>`);
+                                $('#belongsToAssertions').show();
+
+                                return;
+                            }
+
+                            // Generate checkboxes dynamically
+                            data.forEach(function (assertion) {
+                                let assertionText = '';
+
+                                // The Resource returns multilingual JSON
+                                assertionText = assertion.assertion_content;
+
+                                $('#assertionsContainer').append(`<div class="form-check">
+                                                                        <input class="form-check-input assertion-checkbox" type="checkbox" value="${assertion.id}" id="assertion_${assertion.id}">
+                                                                        <label role="button" class="form-check-label" for="assertion_${assertion.id}">
+                                                                            ${assertionText}
+                                                                            </label>
+                                                                    </div>`);
+                            });
+
+                            // Afficher la zone des assertions
                             $('#belongsToAssertions').show();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('{{ __("notifications.error_while_processing") }}', error);
 
-                            data.forEach(function(assertion) {
-                                const checkbox = `<div class="form-check">
-                                                    <input class="form-check-input assertion-checkbox" type="checkbox" value="${assertion.id}" id="assertion_${assertion.id}">
-                                                    <label class="form-check-label" for="assertion_${assertion.id}">
-                                                        ${assertion.assertion_content}
-                                                    </label>
-                                                </div>`;
-
-                                $('#assertionsContainer').append(checkbox);
-                            });
-
-                            // Updated the hidden "assertion" field
-                            $('.assertion-checkbox').on('change', function() {
-                                const selected = $('.assertion-checkbox:checked').map(function() { return $(this).val(); }).get().join(',');
-
-                                $('#assertion').val(selected);
-                            });
+                            $('#assertionsContainer').html(`<div class="text-danger small">{{ __('notifications.error_while_processing') }}</div>`);
+                            $('#belongsToAssertions').show();
                         }
                     });
+                });
+
+                // 🔄 Updates the hidden "assertion" field with the selected IDs
+                $(document).on('change', '.assertion-checkbox', function () {
+                    const selected = $('.assertion-checkbox:checked').map(function () {
+
+                        return $(this).val();
+                    }).get();
+
+                    // We put a comma-separated list
+                    $('#linked_assertion').val(selected.join(','));
                 });
             });
         </script>

@@ -1454,17 +1454,29 @@ class PublicController extends Controller
      */
     public function addProject(Request $request)
     {
-        // 🔸 1. Création ou mise à jour du projet
-        $project = $request->has('project_id')
-            ? Project::findOrFail($request->project_id)
-            : Project::create(['user_id' => auth()->id()]);
+        // 1️⃣ Création ou récupération du projet
+        $project = $request->has('project_id') ? Project::findOrFail($request->project_id) : Project::create(['user_id' => auth()->id()]);
 
-        // 🔸 2. Enregistrement des réponses
+        // 2️⃣ Enregistrement des réponses
         foreach ($request->input('answers', []) as $questionId => $answer) {
-            $answerText = is_array($answer)
-                ? implode(', ', $answer)  // ⚙️ Checkbox => séparé par des virgules
-                : $answer;
+            // Cas 1 : c’est un champ composé (valeur + unité)
+            if (is_array($answer) && array_key_exists('value', $answer) && array_key_exists('unit', $answer)) {
+                $value = trim($answer['value'] ?? '');
+                $unit = trim($answer['unit'] ?? '');
+                $answerText = $value && $unit ? "{$value} {$unit}" : ($value ?: $unit);
+            }
 
+            // Cas 2 : c’est une liste (checkbox)
+            elseif (is_array($answer)) {
+                $answerText = implode(', ', $answer);
+            }
+
+            // Cas 3 : c’est un champ simple (texte, radio, etc.)
+            else {
+                $answerText = $answer;
+            }
+
+            // Sauvegarde / mise à jour
             ProjectAnswer::updateOrCreate(
                 [
                     'project_id' => $project->id,
@@ -1474,23 +1486,17 @@ class PublicController extends Controller
             );
         }
 
-        // 🔸 3. Gestion de l’étape suivante
+        // 3️⃣ Étape suivante ou fin
         $currentPart = QuestionPart::findOrFail($request->input('current_part_id'));
 
         if ($currentPart->is_last_step) {
-            // Dernière étape : rediriger vers les détails du projet
             return redirect('/project-writing/' . $project->id)->with('success', __('notifications.create_project_success'));
         }
 
-        // Étape suivante
         $nextPart = QuestionPart::where('id', '>', $currentPart->id)->first();
 
-        /*
-            NOTIFICATION MANAGEMENT
-        */
-        $administrators = User::whereHas('roles', function ($query) {
-                                    $query->where('role_name->fr', 'Administrateur');
-                                })->get();
+        // 4️⃣ Notifications (inchangées)
+        $administrators = User::whereHas('roles', fn($q) => $q->where('role_name->fr', 'Administrateur'))->get();
 
         foreach ($administrators as $admin) {
             Notification::create([
@@ -1502,9 +1508,9 @@ class PublicController extends Controller
             ]);
         }
 
-        return redirect()->route('crowdfunding.home', ['project' => $project->id, 'step_ref' => $nextPart->id])
-                            ->with('success', __('notifications.update_project_success'));
+        return redirect()->route('crowdfunding.home', ['project' => $project->id, 'step_ref' => $nextPart->id])->with('success', __('notifications.update_project_success'));
     }
+
 
     /**
      * POST: Update account

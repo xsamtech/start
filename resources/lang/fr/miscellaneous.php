@@ -558,6 +558,7 @@ return [
                         'character_limit' => 'Limite des caractères',
                         'belongs_to' => 'Est lié à la question',
                         'measurment_units_required' => 'Nécessite une unité de mesure',
+                        'assertions_linked' => 'Assertions liées',
                     ],
                 ],
                 'assertions' => [

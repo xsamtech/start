@@ -158,7 +158,7 @@
                                         <!-- Belongs to -->
                                         <div class="mb-2">
                                             <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</label>
-                                            <select name="belongs_to" id="belongs_to" class="form-select">
+                                            <select name="belongs_to" id="belongs_to" class="form-select" data-assertions-url="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertions-question', 'id' => 'QUESTION_ID']) }}">
                                                 <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
 @foreach ($project_questions_all as $question)
                                                 <option value="{{ $question['id'] }}">{{ $question['question_content'] }}</option>
@@ -172,7 +172,7 @@
                                                 @lang('miscellaneous.menu.admin.questionnaire.questions.data.assertions_linked')
                                             </label>
                                             <div id="assertionsContainer" class="border rounded p-2"></div>
-                                            <input type="hidden" name="assertion" id="assertion">
+                                            <input type="hidden" name="linked_assertion" id="linked_assertion">
                                         </div>
 
                                         <!-- Measurment units required -->

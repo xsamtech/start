@@ -278,6 +278,12 @@ class AdminController extends Controller
             $selected_entity = (new ResourcesQuestionAssertion($question_assertion))->resolve();
         }
 
+        if ($entity == 'assertions-question') {
+            $assertions = QuestionAssertion::where('project_question_id', $id)->get();
+
+            return ResourcesQuestionAssertion::collection($assertions);
+        }
+
         if ($entity == 'project') {
             $entity_title = __('miscellaneous.admin.project_writing.details');
             $project = Project::find($id);
@@ -361,6 +367,7 @@ class AdminController extends Controller
                 'word_limit' => $request->word_limit,
                 'character_limit' => $request->character_limit,
                 'belongs_to' => $request->belongs_to,
+                'linked_assertion' => $request->linked_assertion,
                 'measurment_units_required' => $request->measurment_units_required,
                 'question_part_id' => $request->question_part_id,
             ]);
@@ -483,6 +490,7 @@ class AdminController extends Controller
                 'word_limit' => $request->word_limit,
                 'character_limit' => $request->character_limit,
                 'belongs_to' => $request->belongs_to,
+                'linked_assertion' => $request->linked_assertion,
                 'measurment_units_required' => $request->measurment_units_required,
                 'question_part_id' => $request->question_part_id,
             ];
@@ -527,6 +535,12 @@ class AdminController extends Controller
             if ($inputs['belongs_to'] != null) {
                 $current_question->update([
                     'belongs_to' => $inputs['belongs_to'],
+                ]);
+            }
+
+            if ($inputs['linked_assertion'] != null) {
+                $current_question->update([
+                    'linked_assertion' => $inputs['linked_assertion'],
                 ]);
             }
 

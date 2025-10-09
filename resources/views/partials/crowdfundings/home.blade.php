@@ -37,32 +37,22 @@
 
 			@foreach($questions as $question)
 												<div class="form-group question-block" id="question-{{ $question->id }}"
-													data-belongs-to="{{ $question->belongs_to }}"
-													data-assertions="{{ $question->assertion }}" @if($question->belongs_to) style="display:none;" @endif>
+													@if($question->belongs_to) data-belongs-to="{{ $question->belongs_to }}" @endif
+													data-assertions="{{ $question->linked_assertion }}" @if($question->belongs_to) style="display:none;" @endif>
 
 													<label>{{ $question->question_content }}</label>
 
 													{{-- Cas 1: unités --}}
-                @if($question->measurment_units_required)
-													<select name="answers[{{ $question->id }}]" class="form-control">
-														<option value="">{{ __('Choisir...') }}</option>
-                    @foreach(['hectare', 'square_meter', 'kilogram', 'tonne', '100_kg_bag'] as $unit)
-														<option value="{{ __('units_of_measurement.'.$unit.'.symbol') }}">
-															{{ __('units_of_measurement.'.$unit.'.symbol') }}
-														</option>
-                    @endforeach
-													</select>
-
-													{{-- Cas 2: assertions --}}
-                @elseif(is_null($question->input))
+                @if(is_null($question->input))
                     @foreach($question->question_assertions as $assertion)
 													<div class="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}">
 														<label>
 															<input type="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}"
+																	class="assertion-input"
 																	name="answers[{{ $question->id }}]{{ $question->multiple_answers_required ? '[]' : '' }}"
-																	value="{{ $assertion->assertion_content }}"
-																	data-belongs-required="{{ $assertion->belongs_to_required }}"
-																	data-question-id="{{ $question->id }}">
+																	value="{{ $assertion->id }}"
+																	data-question="{{ $question->id }}">
+
 															{{ $assertion->assertion_content }}
 														</label>
 													</div>
@@ -77,8 +67,26 @@
 					@elseif($question->input === 'input_file')
 													<input type="file" name="answers[{{ $question->id }}][]" class="form-control" multiple>
 					@else
-								                    <input type="{{ str_replace('input_', '', $question->input) }}" name="answers[{{ $question->id }}]" class="form-control" placeholder="{{ $question->question_description }}">
-                @endif
+						@if ($question->measurment_units_required)
+													<div style="display: flex; flex-direction: row; align-items: flex-start;">
+														{{-- Champ de valeur --}}
+														<input type="{{ str_replace('input_', '', $question->input) }}" name="answers[{{ $question->id }}][value]" class="form-control" placeholder="{{ $question->question_description }}" style="width: 70%;">
+
+														{{-- Champ de l’unité --}}
+														<select name="answers[{{ $question->id }}][unit]" class="form-control" style="width: 29%; margin-left: 5px;">
+															<option class="small" selected disabled>{{ __('miscellaneous.units_of_measurement.title') }}</option>
+				            @foreach(['hectare', 'square_meter', 'kilogram', 'tonne', '100_kg_bag'] as $unit)
+															<option value="{{ __('miscellaneous.units_of_measurement.'.$unit.'.symbol') }}">
+																{!! __('miscellaneous.units_of_measurement.'.$unit.'.name.plural') !!}
+															</option>
+				            @endforeach
+														</select>
+												    </div>
+						@else
+													<input type="{{ str_replace('input_', '', $question->input) }}" name="answers[{{ $question->id }}]" class="form-control" placeholder="{{ $question->question_description }}">
+					@endif
+
+	                @endif
 				            					</div>
         	@endforeach
 
