@@ -477,6 +477,7 @@ class AdminController extends Controller
 
         if ($entity == 'question') {
             $inputs = [
+                'id' => $id,
                 'question_content' => [
                     'en' => $request->question_content_en,
                     'fr' => $request->question_content_fr
@@ -559,6 +560,7 @@ class AdminController extends Controller
 
         if ($entity == 'assertion') {
             $inputs = [
+                'id' => $id,
                 'assertion_content' => [
                     'en' => $request->assertion_content_en,
                     'fr' => $request->assertion_content_fr
