@@ -216,7 +216,9 @@
     @endphp
                                 <ul class="list-group list-group-flush border-bottom">
     @foreach ($assertions as $assertion)
-                                    <li class="list-group-item">
+                                    <li class="list-group-item clearfix">
+                                        <a role="button" class="btn strt-btn-chocolate-3 float-end" title="@lang('miscellaneous.change')" data-bs-toggle="tooltip"><i class="bi bi-x-lg"></i></a>
+                                        <a role="button" class="btn btn-danger me-2 float-end" title="@lang('miscellaneous.delete')" data-bs-toggle="tooltip"><i class="bi bi-x-lg"></i></a>
                                         <h4>{{ $assertion['assertion_content'] }}</h4>
                                         <p>@lang('miscellaneous.menu.admin.questionnaire.assertions.data.belongs_to_required')@lang('miscellaneous.colon_after_word') <strong>{{ $assertion['readable_belongs_to_required'] }}</strong></p>
                                     </li>
