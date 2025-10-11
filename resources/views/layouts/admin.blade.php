@@ -617,6 +617,68 @@
             let cropper;
 
             /**
+             * Perform action on element
+             */
+            function performAction(action, entity, entity_id) {
+                if (action === 'delete') {
+                    var entityId = parseInt(entity_id.split('-')[1]);
+
+                    Swal.fire({
+                        title: "<?= __('miscellaneous.alert.attention.delete') ?>",
+                        text: "<?= __('miscellaneous.alert.confirm.delete') ?>",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#04471a",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "<?= __('miscellaneous.alert.yes.delete') ?>",
+                        cancelButtonText: "<?= __('miscellaneous.cancel') ?>"
+
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                headers: headers,
+                                type: "DELETE",
+                                url: `${currentHost}/delete/${entity}/${entityId}`,
+                                contentType: false,
+                                processData: false,
+                                data: JSON.stringify({ "entity" : entity, "id" : entityId }),
+                                success: function (result) {
+                                    if (!result.success) {
+                                        Swal.fire({
+                                            title: "<?= __('miscellaneous.alert.oups') ?>",
+                                            text: result.message,
+                                            icon: "error"
+                                        });
+
+                                    } else {
+                                        Swal.fire({
+                                            title: "<?= __('miscellaneous.alert.perfect') ?>",
+                                            text: result.message,
+                                            icon: "success"
+                                        });
+                                        location.reload();
+                                    }
+                                },
+                                error: function (xhr, error, status_description) {
+                                    console.log(xhr.responseJSON);
+                                    console.log(xhr.status);
+                                    console.log(error);
+                                    console.log(status_description);
+                                }
+                            });
+
+                        } else {
+                            Swal.fire({
+                                title: "<?= __('miscellaneous.cancel') ?>",
+                                text: "<?= __('miscellaneous.alert.canceled.delete') ?>",
+                                icon: "error"
+                            });
+                        }
+                    });
+                }
+            }
+
+            /**
              * Toggle Password Visibility
              * 
              * @param string current

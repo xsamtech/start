@@ -25,6 +25,7 @@ use App\Models\Project;
 use App\Models\ProjectActivity;
 use App\Models\ProjectAnswer;
 use App\Models\ProjectQuestion;
+use App\Models\QuestionAssertion;
 use App\Models\QuestionPart;
 use App\Models\Role;
 use App\Models\User;
@@ -940,6 +941,84 @@ class PublicController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => __('notifications.delete_cart_success'),
+            ]);
+        }
+
+        if ($entity == 'part') {
+            $question_part = QuestionPart::find($id);
+
+            if (!$question_part) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_question_part_404'),
+                ], 404);
+            }
+
+            $project_questions = ProjectQuestion::where('question_part_id', $question_part->id)->get();
+
+            if (!$project_questions->isEmpty()) {
+                foreach ($project_questions as $project_question) {
+                    $question_assertions = QuestionAssertion::where('project_question_id', $project_question->id)->get();
+
+                    if (!$question_assertions->isEmpty()) {
+                        foreach ($question_assertions as $question_assertion) {
+                            $question_assertion->delete();
+                        }
+                    }
+
+                    $project_question->delete();
+                }
+            }
+
+            $question_part->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_question_part_success'),
+            ]);
+        }
+
+        if ($entity == 'question') {
+            $project_question = ProjectQuestion::find($id);
+
+            if (!$project_question) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_project_question_404'),
+                ], 404);
+            }
+
+            $question_assertions = QuestionAssertion::where('project_question_id', $project_question->id)->get();
+
+            if (!$question_assertions->isEmpty()) {
+                foreach ($question_assertions as $question_assertion) {
+                    $question_assertion->delete();
+                }
+            }
+
+            $project_question->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_project_question_success'),
+            ]);
+        }
+
+        if ($entity == 'assertion') {
+            $question_assertion = QuestionAssertion::find($id);
+
+            if (!$question_assertion) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_question_assertion_404'),
+                ], 404);
+            }
+
+            $question_assertion->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_question_assertion_success'),
             ]);
         }
     }
