@@ -217,8 +217,8 @@
                                 <ul class="list-group list-group-flush border-bottom">
     @foreach ($assertions as $assertion)
                                     <li class="list-group-item clearfix">
-                                        <a role="button" class="btn strt-btn-green p-1 float-end rounded-circle" title="@lang('miscellaneous.change')" data-bs-toggle="tooltip" style="width: 40px; height: 40;"><i class="bi bi-pencil"></i></a>
-                                        <a role="button" class="btn btn-danger me-2 p-1 float-end rounded-circle" title="@lang('miscellaneous.delete')" data-bs-toggle="tooltip" style="width: 40px; height: 40;"><i class="bi bi-x-lg"></i></a>
+                                        <a role="button" class="btn strt-btn-green py-1 px-0 float-end rounded-circle" title="@lang('miscellaneous.change')" data-bs-toggle="tooltip" style="width: 40px; height: 40;"><i class="bi bi-pencil"></i></a>
+                                        <a role="button" class="btn btn-danger me-2 py-1 px-0 float-end rounded-circle" title="@lang('miscellaneous.delete')" data-bs-toggle="tooltip" style="width: 40px; height: 40;"><i class="bi bi-x-lg"></i></a>
                                         <h4>{{ $assertion['assertion_content'] }}</h4>
                                         <p>@lang('miscellaneous.menu.admin.questionnaire.assertions.data.belongs_to_required')@lang('miscellaneous.colon_after_word') <strong>{{ $assertion['readable_belongs_to_required'] }}</strong></p>
                                     </li>
