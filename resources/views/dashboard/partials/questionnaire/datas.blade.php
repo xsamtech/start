@@ -19,11 +19,9 @@
                     <div class="row">
 @if ($entity == 'question')
                         <div class="col-lg-6">
-                            <div class="card card-body mb-2">
-                                <a href="{{ route('dashboard.questionnaire.home') }}" class="btn btn-link">
-                                    <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
-                                </a>
-                            </div>
+                            <a href="{{ route('dashboard.questionnaire.home') }}" class="btn btn-light mb-2">
+                                <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
+                            </a>
 
                             <div class="card overflow-hidden">
                                 <div class="card-header strt-bg-green-transparent">
@@ -285,11 +283,9 @@
 
 @if ($entity == 'assertion')
                         <div class="col-lg-6">
-                            <div class="card card-body mb-2">
-                                <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'entity' => $selected_entity['project_question_id']]) }}" class="btn btn-link">
-                                    <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
-                                </a>
-                            </div>
+                            <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'entity' => $selected_entity['project_question_id']]) }}" class="btn btn-light mb-2">
+                                <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
+                            </a>
 
                             <div class="card overflow-hidden">
                                 <div class="card-header strt-bg-green-transparent">
