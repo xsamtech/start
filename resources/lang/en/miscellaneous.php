@@ -88,6 +88,7 @@ return [
     'file_type' => 'File type',
     'your_language' => 'Your language',
     'your_activation_code' => 'Your activation code: ',
+    'back' => 'Return',
     'back_home' => 'Return to the home',
     'back_list' => 'Return to the list',
     'back_form' => 'Return to the form',

@@ -88,6 +88,7 @@ return [
     'file_type' => 'Type de fichier',
     'your_language' => 'Votre langue',
     'your_activation_code' => 'Votre code d’activation : ',
+    'back' => 'Retour',
     'back_home' => 'Retour à l’accueil',
     'back_list' => 'Retourner à la liste',
     'back_form' => 'Retourner au formulaire',

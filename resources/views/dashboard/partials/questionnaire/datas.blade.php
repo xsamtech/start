@@ -19,6 +19,12 @@
                     <div class="row">
 @if ($entity == 'question')
                         <div class="col-lg-6">
+                            <div class="card card-body mb-2">
+                                <a href="{{ route('dashboard.questionnaire.home') }}" class="btn btn-link">
+                                    <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
+                                </a>
+                            </div>
+
                             <div class="card overflow-hidden">
                                 <div class="card-header strt-bg-green-transparent">
                                     <h5 class="mb-0 text-white">@lang('miscellaneous.menu.admin.questionnaire.questions.edit')</h5>
@@ -122,7 +128,7 @@
                                             </label>
                                             <div id="assertionsContainer" class="border rounded p-2">
     @php
-        $question_assertions = \App\Models\QuestionAssertion::where(['project_question_id', $selected_entity['id']])->get();
+        $question_assertions = \App\Models\QuestionAssertion::where('project_question_id', $selected_entity['id'])->get();
     @endphp
     @forelse ($question_assertions as $assertion)
                                                 <div class="form-check">
@@ -279,6 +285,12 @@
 
 @if ($entity == 'assertion')
                         <div class="col-lg-6">
+                            <div class="card card-body mb-2">
+                                <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'entity' => $selected_entity['project_question_id']]) }}" class="btn btn-link">
+                                    <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
+                                </a>
+                            </div>
+
                             <div class="card overflow-hidden">
                                 <div class="card-header strt-bg-green-transparent">
                                     <h5 class="mb-0 text-white">@lang('miscellaneous.menu.admin.questionnaire.assertions.edit')</h5>
