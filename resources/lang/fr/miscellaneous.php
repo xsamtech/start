@@ -569,6 +569,7 @@ return [
                     'data' => [
                         'assertion_content' => 'Contenu de l’assertion',
                         'belongs_to_required' => 'Nécessite le lien à la question',
+                        'project_question_id' => 'Appartient à la question',
                     ],
                 ],
                 'answers' => [

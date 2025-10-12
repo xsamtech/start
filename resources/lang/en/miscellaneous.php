@@ -569,6 +569,7 @@ return [
                     'data' => [
                         'assertion_content' => 'Assertion content',
                         'belongs_to_required' => 'Requires the link to the question',
+                        'project_question_id' => 'Belongs to the question',
                     ],
                 ],
                 'answers' => [

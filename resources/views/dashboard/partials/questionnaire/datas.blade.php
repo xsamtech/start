@@ -267,7 +267,83 @@
 @endif
 
 @if ($entity == 'assertion')
+                        <div class="col-lg-6">
+                            <div class="card overflow-hidden">
+                                <div class="card-header strt-bg-green-transparent">
+                                    <h5 class="mb-0 text-white">@lang('miscellaneous.menu.admin.questionnaire.assertions.edit')</h5>
+                                </div>
 
+                                <div class="card-body">
+                                    <form id="addAssertionForm" action="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertion', 'id' => $selected_entity['id']]) }}" method="POST">
+    @csrf
+                                        <!-- Question ID -->
+                                        <div class="mb-2">
+                                            <label for="project_question_id" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.project_question_id')</label>
+                                            <select name="project_question_id" id="project_question_id" class="form-select">
+                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
+    @foreach ($project_questions as $question)
+                                                <option value="{{ $question['id'] }}" {{ $selected_entity['project_question_id'] == $question['id'] }}>{{ $question['question_content'] }}</option>
+    @endforeach
+                                            </select>
+                                        </div>
+
+                                        <!-- Assertion content -->
+                                        <div class="mb-2">
+                                            <label for="assertion_content_en" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.assertion_content') (FR)</label>
+                                            <input type="text" name="assertion_content_en" class="form-control" id="question_content_fr" value="{{ $selected_entity['assertion_content_fr'] }}">
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="assertion_content_fr" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.assertion_content') (EN)</label>
+                                            <input type="text" name="assertion_content_fr" class="form-control" id="question_content_en" value="{{ $selected_entity['assertion_content_en'] }}">
+                                        </div>
+
+                                        <!-- Belongs to required -->
+                                        <div class="my-3 text-center">
+                                            <label class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.belongs_to_required')</label>
+
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="belongs_to_required" id="belongs_to_required1" value="1" {{ $selected_entity['belongs_to_required'] == 1 ? 'checked' : '' }}>
+                                                    <label role="button" class="form-check-label" for="belongs_to_required1">@lang('miscellaneous.yes')</label>
+                                                </div>
+
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="belongs_to_required" id="belongs_to_required0" value="0" {{ $selected_entity['belongs_to_required'] == 0 ? 'checked' : '' }}>
+                                                    <label role="button" class="form-check-label" for="belongs_to_required0">@lang('miscellaneous.no')</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn strt-btn-chocolate-3 w-100 mt-4 px-4 rounded-pill">{{ __('miscellaneous.update') }}</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card card-body mb-4">
+                                <div class="card card-body shadow-0">
+                                    <div class="d-flex">
+                                        <img src="{{ asset('assets/addons/duralux/img/flags/4x3/fr.svg') }}" alt="" class="img-fluid wd-20 me-2" />
+                                        <strong>Français</strong>
+                                    </div>
+
+                                    <h3 class="mt-2">{{ $selected_entity['assertion_content_fr'] ?? '' }}</h3>
+                                </div>
+                                <div class="card card-body mb-3 shadow-0">
+                                    <div class="d-flex">
+                                        <img src="{{ asset('assets/addons/duralux/img/flags/4x3/us.svg') }}" alt="" class="img-fluid wd-20 me-2" />
+                                        <strong>English</strong>
+                                    </div>
+
+                                    <h3 class="mt-2">{{ $selected_entity['assertion_content_en'] ?? '' }}</h3>
+                                </div>
+
+                                <h5 class="my-2 fw-lighter">
+                                    @lang('miscellaneous.menu.admin.questionnaire.assertions.data.belongs_to_required')@lang('miscellaneous.colon_after_word')
+                                    <strong>{{ $selected_entity['readable_belongs_to_required'] ?? '' }}</strong>
+                                </h5>
+                            </div>
+                        </div>
 @endif
 
 @if ($entity == 'project')
