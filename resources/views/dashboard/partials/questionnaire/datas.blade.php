@@ -19,7 +19,7 @@
                     <div class="row">
 @if ($entity == 'question')
                         <div class="col-lg-6">
-                            <a href="{{ route('dashboard.questionnaire.home', ['page' => request()->get('page')]) }}" class="btn btn-light mb-2">
+                            <a href="{{ route('dashboard.questionnaire.home', ['page' => request()->get('from')]) }}" class="btn btn-light mb-2">
                                 <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
                             </a>
 
@@ -111,7 +111,7 @@
                                         <!-- Belongs to -->
                                         <div class="mb-2">
                                             <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</label>
-                                            <select name="belongs_to" id="belongs_to" class="form-select" data-assertions-url="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertions-question', 'id' => $selected_entity['id']]) }}">
+                                            <select name="belongs_to" id="belongs_to" class="form-select" data-assertions-url="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertions-question', 'id' => 'QUESTION_ID']) }}">
                                                 <option class="small" disabled {{ $selected_entity['input'] == null ? 'selected' : '' }}>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
     @foreach ($project_questions as $question)
                                                 <option value="{{ $question['id'] }}" {{ $selected_entity['belongs_to'] == $question['id']  ? 'selected' : '' }}>{{ $question['question_content'] }}</option>

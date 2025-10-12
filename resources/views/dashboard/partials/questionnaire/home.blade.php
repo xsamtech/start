@@ -47,7 +47,7 @@
     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'id' => $question['id']]) }}">
+                                                    <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'id' => $question['id'], 'from' => request()->get('from')]) }}">
                                                         @lang('miscellaneous.details')<i class="feather-chevrons-right ms-1"></i>
                                                     </a><br>
                                                     <a role="button" class="d-inline-block mt-1 rounded-pill text-danger" onclick="event.preventDefault(); performAction('delete', 'question', 'item-{{ $question['id'] }}')">
