@@ -33,7 +33,7 @@
                                             <select name="question_part_id" id="question_part_id" class="form-select">
                                                 <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
     @foreach ($question_parts as $part)
-                                                <option value="{{ $part['id'] }}" {{ $selected_entity['question_part_id'] == $part['id'] }}>{{ $part['part_name'] }}</option>
+                                                <option value="{{ $part['id'] }}" {{ $selected_entity['question_part_id'] == $part['id'] ? 'selected' : '' }}>{{ $part['part_name'] }}</option>
     @endforeach
                                             </select>
                                             <a role="button" class="btn btn-light p-1 position-absolute" style="bottom: 0.3rem; right: 0.3rem; z-index: 9; width: 40px; height: 40px;" data-bs-toggle="modal" data-bs-target="#questionPartModal">
@@ -280,9 +280,9 @@
                                         <div class="mb-2">
                                             <label for="project_question_id" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.project_question_id')</label>
                                             <select name="project_question_id" id="project_question_id" class="form-select">
-                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
+                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.assertions.data.project_question_id')</option>
     @foreach ($project_questions as $question)
-                                                <option value="{{ $question['id'] }}" {{ $selected_entity['project_question_id'] == $question['id'] }}>{{ $question['question_content'] }}</option>
+                                                <option value="{{ $question['id'] }}" {{ $selected_entity['project_question_id'] == $question['id'] ? 'selected' : '' }}>{{ $question['question_content'] }}</option>
     @endforeach
                                             </select>
                                         </div>
