@@ -232,7 +232,7 @@
                                 <ul class="list-group list-group-flush border-bottom">
     @foreach ($assertions as $assertion)
                                     <li class="list-group-item clearfix">
-                                        <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertion', 'id' => $assertion['id']]) }}" class="strt-btn-green float-end rounded-circle" title="@lang('miscellaneous.change')" data-bs-toggle="tooltip" style="width: 25px; height: 25px; padding: 0.25rem 0.3rem 0.25rem 0.3rem;"><i class="bi bi-pencil"></i></a>
+                                        <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertion', 'id' => $assertion['id'], 'from' => request()->get('from')]) }}" class="strt-btn-green float-end rounded-circle" title="@lang('miscellaneous.change')" data-bs-toggle="tooltip" style="width: 25px; height: 25px; padding: 0.25rem 0.3rem 0.25rem 0.3rem;"><i class="bi bi-pencil"></i></a>
                                         <a role="button" class="btn-danger mx-2 float-end rounded-circle" title="@lang('miscellaneous.delete')" data-bs-toggle="tooltip" style="width: 25px; height: 25px; padding: 0.25rem 0.3rem 0.25rem 0.3rem;" onclick="event.preventDefault(); performAction('delete', 'assertion', 'item-{{ $assertion['id'] }}')"><i class="bi bi-x-lg"></i></a>
                                         <h4>{{ $assertion['assertion_content'] }}</h4>
                                         <p>@lang('miscellaneous.menu.admin.questionnaire.assertions.data.belongs_to_required')@lang('miscellaneous.colon_after_word') <strong>{{ $assertion['readable_belongs_to_required'] }}</strong></p>
@@ -283,7 +283,7 @@
 
 @if ($entity == 'assertion')
                         <div class="col-lg-6">
-                            <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'id' => $selected_entity['project_question_id']]) }}" class="btn btn-light mb-2">
+                            <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'id' => $selected_entity['project_question_id'], 'from' => request()->get('from')]) }}" class="btn btn-light mb-2">
                                 <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
                             </a>
 
