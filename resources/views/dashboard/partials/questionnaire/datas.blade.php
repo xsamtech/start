@@ -19,7 +19,7 @@
                     <div class="row">
 @if ($entity == 'question')
                         <div class="col-lg-6">
-                            <a href="{{ route('dashboard.questionnaire.home') }}" class="btn btn-light mb-2">
+                            <a href="{{ route('dashboard.questionnaire.home', ['page' => request()->get('page')]) }}" class="btn btn-light mb-2">
                                 <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
                             </a>
 
