@@ -107,7 +107,7 @@
                                         <!-- Belongs to -->
                                         <div class="mb-2">
                                             <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</label>
-                                            <select name="belongs_to" id="belongs_to" class="form-select" data-assertions-url="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertions-question', 'id' => 'QUESTION_ID']) }}">
+                                            <select name="belongs_to" id="belongs_to" class="form-select" data-assertions-url="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertions-question', 'id' => $selected_entity['id']]) }}">
                                                 <option class="small" disabled {{ $selected_entity['input'] == null ? 'selected' : '' }}>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
     @foreach ($project_questions as $question)
                                                 <option value="{{ $question['id'] }}" {{ $selected_entity['belongs_to'] == $question['id']  ? 'selected' : '' }}>{{ $question['question_content'] }}</option>
@@ -120,7 +120,18 @@
                                             <label class="form-label fw-bold">
                                                 @lang('miscellaneous.menu.admin.questionnaire.questions.data.assertions_linked')
                                             </label>
-                                            <div id="assertionsContainer" class="border rounded p-2"></div>
+                                            <div id="assertionsContainer" class="border rounded p-2">
+    @php
+        $question_assertions = \App\Models\QuestionAssertions::where(['project_question_id', $selected_entity['id']])->get();
+    @endphp
+    @forelse ($question_assertions as $assertion)
+                                                <div class="form-check">
+                                                    <input class="form-check-input assertion-checkbox" type="checkbox" value="{{ $assertion['id'] }}" id="assertion_{{ $assertion['id'] }}" {{ $assertion['project_question_id'] == $selected_entity['id'] ? 'checked' : ''}}>
+                                                    <label role="button" class="form-check-label" for="assertion_{{ $assertion['id'] }}">{{ $assertion['assertion_content'] }}</label>
+                                                </div>
+    @empty
+    @endforelse
+                                            </div>
                                             <input type="hidden" name="linked_assertion" id="linked_assertion">
                                         </div>
 
