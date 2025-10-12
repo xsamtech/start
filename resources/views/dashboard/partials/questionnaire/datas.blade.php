@@ -122,7 +122,7 @@
                                             </label>
                                             <div id="assertionsContainer" class="border rounded p-2">
     @php
-        $question_assertions = \App\Models\QuestionAssertions::where(['project_question_id', $selected_entity['id']])->get();
+        $question_assertions = \App\Models\QuestionAssertion::where(['project_question_id', $selected_entity['id']])->get();
     @endphp
     @forelse ($question_assertions as $assertion)
                                                 <div class="form-check">
