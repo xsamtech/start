@@ -283,7 +283,7 @@
 
 @if ($entity == 'assertion')
                         <div class="col-lg-6">
-                            <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'entity' => $selected_entity['project_question_id']]) }}" class="btn btn-light mb-2">
+                            <a href="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'question', 'id' => $selected_entity['project_question_id']]) }}" class="btn btn-light mb-2">
                                 <i class="bi bi-chevron-double-left me-2"></i>@lang('miscellaneous.back')
                             </a>
 
