@@ -268,7 +268,7 @@ class AdminController extends Controller
         }
 
         if ($entity == 'assertion') {
-            $entity_title = __('miscellaneous.menu.admin.questionnaire.assertion.details');
+            $entity_title = __('miscellaneous.menu.admin.questionnaire.assertions.details');
             $question_assertion = QuestionAssertion::find($id);
 
             if (is_null($question_assertion)) {
