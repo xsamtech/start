@@ -1,4 +1,4 @@
-{{ dd($project_questions_req) }}
+
             <div class="nxl-content">
                 <!-- [ page-header ] start -->
                 <div class="page-header">
