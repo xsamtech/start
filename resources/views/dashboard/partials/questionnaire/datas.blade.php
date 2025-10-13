@@ -295,7 +295,7 @@
                                 <div class="card-body">
                                     <form id="addAssertionForm" action="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertion', 'id' => $selected_entity['id']]) }}" method="POST">
     @csrf
-                                        <!-- Question ID -->
+                                        <!-- Question ID --> 
                                         <div class="mb-2">
                                             <label for="project_question_id" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.project_question_id')</label>
                                             <select name="project_question_id" id="project_question_id" class="form-select">
