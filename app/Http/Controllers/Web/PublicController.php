@@ -783,17 +783,24 @@ class PublicController extends Controller
     public function crowdfundingDatas($id)
     {
         $entity_title = __('miscellaneous.admin.crowdfunding.details');
-        $selected_project = Project::find($id);
-
-        if (is_null($selected_project)) {
-            return redirect('/project-writing')->with('error_message', __('notifications.find_error'));
-        }
+        // 🔹 1. Charger le projet
+        $project = Project::with([
+            'project_answers' => function ($q) {
+                $q->whereNotNull('answer_content'); // seulement les réponses remplies
+            },
+            'project_answers.project_question.question_part' // on charge la question et sa partie associée
+        ])->findOrFail($id);
+    
+        // 🔹 2. Organiser les réponses par "partie" (QuestionPart)
+        $groupedByPart = $project->project_answers
+            ->filter(fn($a) => !empty(trim($a->answer_content))) // ignorer les réponses vides
+            ->groupBy(fn($a) => optional($a->project_question->question_part)->part_name ?? 'Autres');
 
         // dd((new ResourcesProject($selected_project))->resolve());
         return view('crowdfundings', [
             'entity_title' => $entity_title,
-            'selected_project' => new ResourcesProject($selected_project),
-            'countries' => showCountries(),
+            'groupedByPart' => $groupedByPart,
+            'selected_project' => $project,
         ]);
     }
 
@@ -1534,7 +1541,7 @@ class PublicController extends Controller
     public function addProject(Request $request)
     {
         // 1️⃣ Création ou récupération du projet
-        $project = $request->has('project_id') ? Project::findOrFail($request->project_id) : Project::create(['user_id' => auth()->id()]);
+        $project = $request->has('project_id') ? Project::findOrFail($request->project_id) : Project::create(['is_shared' => 0, 'user_id' => auth()->id()]);
 
         // 2️⃣ Enregistrement des réponses
         foreach ($request->input('answers', []) as $questionId => $answer) {
@@ -1566,28 +1573,29 @@ class PublicController extends Controller
         }
 
         // 3️⃣ Étape suivante ou fin
-        $currentPart = QuestionPart::findOrFail($request->input('current_part_id'));
+        $currentPart = QuestionPart::findOrFail($request->get('current_part_id'));
 
-        if ($currentPart->is_last_step) {
+        if ($currentPart->is_last_step == 0) {
+            $nextPart = QuestionPart::where('id', '>', $currentPart->id)->first();
+    
+            return redirect('/project-writing/?project=' . $project->id . '&step_ref=' . $nextPart->id)->with('success', __('notifications.update_project_success'));
+
+        } else {
+            // 4️⃣ Notifications (inchangées)
+            $administrators = User::whereHas('roles', fn($q) => $q->where('role_name->fr', 'Administrateur'))->get();
+    
+            foreach ($administrators as $admin) {
+                Notification::create([
+                    'type' => 'project_published',
+                    'is_read' => 0,
+                    'from_user_id' => Auth::id(),
+                    'to_user_id' => $admin->id,
+                    'project_id' => $project->id
+                ]);
+            }
+    
             return redirect('/project-writing/' . $project->id)->with('success', __('notifications.create_project_success'));
         }
-
-        $nextPart = QuestionPart::where('id', '>', $currentPart->id)->first();
-
-        // 4️⃣ Notifications (inchangées)
-        $administrators = User::whereHas('roles', fn($q) => $q->where('role_name->fr', 'Administrateur'))->get();
-
-        foreach ($administrators as $admin) {
-            Notification::create([
-                'type' => 'project_published',
-                'is_read' => 0,
-                'from_user_id' => Auth::id(),
-                'to_user_id' => $admin->id,
-                'project_id' => $project->id
-            ]);
-        }
-
-        return redirect()->route('crowdfunding.home', ['project' => $project->id, 'step_ref' => $nextPart->id])->with('success', __('notifications.update_project_success'));
     }
 
 

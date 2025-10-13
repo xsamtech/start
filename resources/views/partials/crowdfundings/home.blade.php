@@ -31,9 +31,9 @@
 											<form action="{{ route('crowdfunding.home') }}" method="POST" enctype="multipart/form-data">
 	        @csrf
 												<input type="hidden" name="current_part_id" value="{{ $currentPart->id }}">
-	        @if($project)
-												<input type="hidden" name="project_id" value="{{ $project->id }}">
-	        @endif
+			@if (request()->has('project'))
+								<input type="hidden" name="project_id" value="{{ request()->get('project') }}">
+			@endif
 
 			@foreach($questions as $question)
 												<div class="form-group question-block" id="question-{{ $question->id }}"
@@ -50,8 +50,9 @@
 															<input type="{{ $question->multiple_answers_required ? 'checkbox' : 'radio' }}"
 																	class="assertion-input"
 																	name="answers[{{ $question->id }}]{{ $question->multiple_answers_required ? '[]' : '' }}"
-																	value="{{ $assertion->id }}"
-																	data-question="{{ $question->id }}">
+																	value="{{ $assertion->assertion_content }}"
+																	data-question="{{ $question->id }}"
+																	data-assertion-id="{{ $assertion->id }}">
 
 															{{ $assertion->assertion_content }}
 														</label>
