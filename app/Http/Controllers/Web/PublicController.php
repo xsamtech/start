@@ -30,6 +30,7 @@ use App\Models\QuestionPart;
 use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\GoogleDriveService;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -109,18 +110,15 @@ class PublicController extends Controller
     /**
      * GET: Generate Google Sheet document
      *
+     * @param  GoogleDriveService  $driveService
      * @param  string  $language
      * @param  int  $user_id
      * @param  int  $project_id
      * @return \Illuminate\Http\RedirectResponse
      */
+    // public function generateSheet(GoogleDriveService $driveService, $language, $user_id, $project_id)
     public function generateSheet($language, $user_id, $project_id)
     {
-        $urlEN = 'https://script.googleapis.com/v1/scripts/AKfycbxhhZzPddr8B6RVOUeglKzNSKELum9IhQDorXImaZPdvZK1xWeTrlav1M2xgDh6vzv0bw:run';
-        $urlFR = 'https://script.googleapis.com/v1/scripts/AKfycbxRBewRecH8tWl0AyiXwMtj7KvNtTQYxCKy1r7ZFp2t5Eyld5a29pWgO3JNGeBlnhBwhQ:run';
-        // My Google AppScript URL
-        $scriptUrl = $language == 'en' ? $urlEN : $urlFR;
-        // Request
         $user = User::find($user_id);
 
         if (is_null($user)) {
@@ -133,24 +131,55 @@ class PublicController extends Controller
             return redirect()->back()->with('error_message', __('notifications.find_project_404'));
         }
 
-        $response = Http::get($scriptUrl, [
-            'userId' => $user->id
-        ]);
+        // $localPath = public_path('assets/docs/financial-projection-' . $language . '.xlsx'); // <-- ton fichier source
+        // $filename = 'Project_' . $project->id . '_' . now()->format('Ymd_His') . '.xlsx';
+        // $mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        // $folderId = '1eOgdv2m_9CadTp2yySuPdSxMoADRWRQz';
+        // // Envoyer le fichier
+        // $sheet_url = $driveService->uploadLocalFile($localPath, $filename, $mimeType, $folderId);
 
-        if ($response->successful()) {
-            $sheet_url = $response->body(); // Link to the copied Google Sheet
+        // if ($sheet_url) {
+        //     File::create([
+        //         'file_name' => __('miscellaneous.admin.project_writing.user_project', ['user' => $user->firstname]),
+        //         'file_url' => $sheet_url,
+        //         'file_type' => 'sheet',
+        //         'project_id' => $project->id
+        //     ]);
 
-            File::create([
-                'file_name' => __('miscellaneous.admin.project_writing.user_project', ['user' => $user->firstname]),
-                'file_url' => $sheet_url,
-                'file_type' => 'sheet',
-                'project_id' => $project->id
-            ]);
+        //     return redirect()->back()->with('success_message', __('notifications.create_file_success'));
+        // }
 
-            return redirect($sheet_url);
+        // return redirect()->back()->with('error_message', __('notifications.file_generation_error'));
+
+        // 1. Définir le chemin source basé sur la langue
+        $sourcePath = public_path("assets/docs/financial-projection-{$language}.xlsx");
+
+        // 2. Définir le nom de fichier de destination
+        $fileName = "user-project-{$user->id}-{$project->id}.xlsx";
+
+        // 3. Définir le chemin de destination (dans le disque "public")
+        $destinationPath = "sheets/{$fileName}";
+
+        // 4. Lire le contenu du fichier source
+        if (!file_exists($sourcePath)) {
+            return redirect()->back()->with('error_message', __('notifications.find_file_404') . ' - TEMPLATE');
         }
 
-        return redirect()->back()->with('error_message', __('notifications.file_generation_error'));
+        // 5. Copier dans le dossier de destination
+        Storage::disk('public')->put($destinationPath, file_get_contents($sourcePath));
+
+        // 6. Générer l'URL publique du fichier
+        $sheet_url = Storage::url($destinationPath); // e.g. /storage/sheets/user-project-1-1.xlsx
+
+        // 7. Enregistrer dans la base de données
+        File::create([
+            'file_name' => __('miscellaneous.admin.project_writing.user_project', ['user' => $user->firstname]),
+            'file_url' => $sheet_url,
+            'file_type' => 'sheet',
+            'project_id' => $project->id
+        ]);
+
+        return redirect()->back()->with('success_message', __('notifications.create_file_success'));
     }
 
     /**

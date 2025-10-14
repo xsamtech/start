@@ -145,16 +145,25 @@
 													</p>
 												</div>
 
-												<div class="panel-body" style="padding-bottom: 8px;">
 				@if (count($project->sheets) > 0)
+												<div class="panel-body" style="padding-bottom: 8px;">
 													<a href="{{ $project->sheets[0]->file_url }}" target="_blank">
-														<p class="lead"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
+														<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
 													</a>
-				@endif
 												</div>
+				@endif
 
-				@if (request()->has('project') && request()->get('project') != $project->id)
-												<div class="panel-footer clearfix">
+				@if (request()->has('project'))
+					@if (request()->get('project') != $project->id)
+												<div class="panel-footer clearfix" style="margin: 0;">
+													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" style="float: left; color: #6e9e1a;">@lang('miscellaneous.details') &raquo;</a>
+													<a class="float-right" style="float: right; color: red; cursor: pointer;" onclick="event.preventDefault(); performAction('delete', 'project', 'item-{{ $project->id }}')">
+														<i class="bi bi-trash2"></i> @lang('miscellaneous.delete')
+													</a>
+												</div>
+					@endif
+				@else
+												<div class="panel-footer clearfix" style="margin: 0;">
 													<a href="{{ route('crowdfunding.datas', ['id' => $project->id]) }}" style="float: left; color: #6e9e1a;">@lang('miscellaneous.details') &raquo;</a>
 													<a class="float-right" style="float: right; color: red; cursor: pointer;" onclick="event.preventDefault(); performAction('delete', 'project', 'item-{{ $project->id }}')">
 														<i class="bi bi-trash2"></i> @lang('miscellaneous.delete')
@@ -204,7 +213,7 @@
 												<p class="lead"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
 											</a>
 			@else
-											<a href="{{ route('generate_sheet', ['language' => $current_locale, 'user_id' => $current_user->id, 'project_id' => $project->id]) }}" target="_blank">
+											<a href="{{ route('generate_sheet', ['language' => $current_locale, 'user_id' => $current_user->id, 'project_id' => $project->id]) }}">
 												<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_empty')</p>
 											</a>
 			@endif
