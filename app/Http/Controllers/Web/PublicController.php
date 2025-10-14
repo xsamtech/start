@@ -109,11 +109,12 @@ class PublicController extends Controller
     /**
      * GET: Generate Google Sheet document
      *
-     * @param  int  $user_id
      * @param  string  $language
+     * @param  int  $user_id
+     * @param  int  $project_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function generateSheet($user_id, $language)
+    public function generateSheet($language, $user_id, $project_id)
     {
         $urlEN = 'https://script.googleapis.com/v1/scripts/AKfycbxhhZzPddr8B6RVOUeglKzNSKELum9IhQDorXImaZPdvZK1xWeTrlav1M2xgDh6vzv0bw:run';
         $urlFR = 'https://script.googleapis.com/v1/scripts/AKfycbxRBewRecH8tWl0AyiXwMtj7KvNtTQYxCKy1r7ZFp2t5Eyld5a29pWgO3JNGeBlnhBwhQ:run';
@@ -126,19 +127,25 @@ class PublicController extends Controller
             return redirect()->back()->with('error_message', __('notifications.find_user_404'));
         }
 
+        $project = Project::find($project_id);
+
+        if (is_null($project)) {
+            return redirect()->back()->with('error_message', __('notifications.find_project_404'));
+        }
+
         $response = Http::get($scriptUrl, [
             'userId' => $user->id
         ]);
 
         if ($response->successful()) {
             $sheet_url = $response->body(); // Link to the copied Google Sheet
-            $user_project = Project::where('user_id', $user->id)->latest('updated_at')->first(); // Get user project to update
 
-            if (is_null($user_project)) {
-                return redirect()->back()->with('error_message', __('notifications.find_project_404'));
-            }
-
-            $user_project->update(['sheet_url' => $sheet_url]);
+            File::create([
+                'file_name' => __('miscellaneous.admin.project_writing.user_project', ['user' => $user->firstname]),
+                'file_url' => $sheet_url,
+                'file_type' => 'sheet',
+                'project_id' => $project->id
+            ]);
 
             return redirect($sheet_url);
         }
@@ -951,6 +958,39 @@ class PublicController extends Controller
             ]);
         }
 
+        if ($entity == 'project') {
+            $project = Project::find($id);
+
+            if (!$project) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_project_404'),
+                ], 404);
+            }
+
+            $project_answers = ProjectAnswer::where('project_id', $project->id)->get();
+            $files = File::where('project_id', $project->id)->get();
+
+            if (!$project_answers->isEmpty()) {
+                foreach ($project_answers as $answer) {
+                    $answer->delete();
+                }
+            }
+
+            if (!$files->isEmpty()) {
+                foreach ($files as $file) {
+                    $file->delete();
+                }
+            }
+
+            $project->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_project_success'),
+            ]);
+        }
+
         if ($entity == 'part') {
             $question_part = QuestionPart::find($id);
 
@@ -1541,7 +1581,75 @@ class PublicController extends Controller
     public function addProject(Request $request)
     {
         // 1️⃣ Création ou récupération du projet
-        $project = $request->has('project_id') ? Project::findOrFail($request->project_id) : Project::create(['is_shared' => 0, 'user_id' => auth()->id()]);
+        $project = $request->has('project_id') ? Project::findOrFail($request->project_id) : Project::create(['is_shared' => 0, 'user_id' => auth()->id(), 'project_description' => $request->project_description]);
+
+        // If image files exist
+        if ($request->hasFile('files_urls')) {
+            $files = $request->file('files_urls', []);
+            $fileNames = $request->input('files_names', []);
+
+            // Types of extensions for different file types
+            $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
+            $audio_extensions = ['mp3', 'wav', 'flac'];
+
+            foreach ($files as $key => $singleFile) {
+                // Checking the file extension
+                $file_extension = $singleFile->getClientOriginalExtension();
+
+                // File type check
+                $custom_uri = '';
+                $is_valid_type = false;
+                $file_type = null;
+
+                if (in_array($file_extension, $video_extensions)) { // File is a video
+                    $custom_uri = 'videos/projects';
+                    $file_type = 'video';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $photo_extensions)) { // File is a photo
+                    $custom_uri = 'photos/projects';
+                    $file_type = 'photo';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $audio_extensions)) { // File is an audio
+                    $custom_uri = 'audios/projects';
+                    $file_type = 'audio';
+                    $is_valid_type = true;
+
+                } elseif (in_array($file_extension, $document_extensions)) { // File is a document
+                    $custom_uri = 'documents/projects';
+                    $file_type = 'document';
+                    $is_valid_type = true;
+                }
+
+                // If the extension does not match any valid type
+                if (!$is_valid_type) {
+                    return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
+                }
+
+                // Generate a unique path for the file
+                $filename = $singleFile->getClientOriginalName();
+                $file_url =  $custom_uri . '/' . $project->id . '/' . $filename;
+
+                // Upload file
+                try {
+                    $singleFile->storeAs($custom_uri . '/' . $project->id, $filename, 'public');
+
+                } catch (\Throwable $th) {
+                    return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
+                }
+
+                // Creating the database record for the file
+                File::create([
+                    'file_name' => trim($fileNames[$key] ?? $filename),
+                    'file_url' => getWebURL() . '/storage/' . $file_url,
+                    'file_type' => $file_type,
+                    'project_id' => $project->id
+                ]);
+            }
+        }
 
         // 2️⃣ Enregistrement des réponses
         foreach ($request->input('answers', []) as $questionId => $answer) {

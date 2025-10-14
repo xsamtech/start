@@ -17,7 +17,7 @@
 							</header>
                         </div>
 
-						<!-- Profile -->
+						<!-- User profile -->
 						<div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
 							<div class="panel panel-default text-center">
 								<div class="panel-body">
@@ -62,12 +62,48 @@
 								</div>
 							</div>
 
-							<div>
-                                SHEET URL
+							<div class="panel panel-default">
+								<div class="panel-body" style="padding: 5px 10px;">
+									<p style="margin: 0:">
+@if (count($selected_project->sheets) > 0)
+										<a href="{{ $selected_project->sheets[0]->file_url }}" target="_blank">
+											<p class="lead"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
+										</a>
+@else
+										<a href="{{ route('generate_sheet', ['language' => $current_locale, 'user_id' => $current_user->id, 'project_id' => $selected_project->id]) }}" target="_blank">
+											<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_empty')</p>
+										</a>
+@endif
+									</p>
+								</div>
 							</div>
 						</div>
 
 						<div class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
+							<div class="panel panel-default mt-4">
+@if (count($selected_project->photos) > 0)
+								<div class="panel-body" style="padding-bottom: 0;">
+									<div class="my-carousel" style="border-radius: 10px; overflow: hidden;">
+	@foreach ($selected_project->photos as $photo)
+										<div>
+											<img src="{{ $photo->file_url }}" class="d-block w-100" alt="Image {{ $loop->index + 1 }}" style="width: 100%; height: 300px; object-fit: cover;">
+										</div>
+	@endforeach
+									</div>
+								</div>
+@endif
+
+								<div class="panel-body" style="padding-bottom: 0;">
+									<h5 class="mb-1" style="font-weight: 600;">
+										<u>@lang('miscellaneous.admin.project_writing.data.description.label')</u>
+									</h5>
+									<pre style="background: transparent; padding: 5px 0 0 0; border: none; line-height: 16px;">
+{!! $selected_project->project_description !!}
+									</pre>
+								</div>
+							</div>
+
+
 @php
     // Petite fonction pour convertir un nombre en chiffre romain
     function toRoman($num) {
@@ -94,9 +130,9 @@
         $partName = $index; // la clé du groupBy = nom de la partie
         $romanIndex = toRoman($loop->iteration); // conversion en chiffre romain
     @endphp
-                            <div class="panel mt-4 shadow-sm">
+                            <div class="panel">
                                 <div class="panel-heading bg-secondary text-white">
-                                    <h2 class="mt-4 mb-0">{{ $romanIndex }}. {{ $partName }}</h2>
+                                    <h3 class="mt-4 mb-0">{{ $romanIndex }}. {{ $partName }}</h3>
                                 </div>
 
                                 <div class="panel-body" style="padding-top: 0;">

@@ -903,10 +903,14 @@ return [
                 'info' => 'You cannot publish more than 3 projects',
             ],
             'my_other_projects' => 'My other projects',
+            'user_project' => ':user\'s Projects',
             'associate_image' => 'Associate photos to project',
             'data' => [
                 'profile' => 'Profile',
-                'description' => 'Activity Description',
+                'description' => [
+                    'label' => 'Project description',
+                    'placeholder' => 'Describe your project in a few words',
+                ],
                 'about_company' => 'About company',
                 'company_name' => 'Company Name',
                 'rccm' => 'RCCM',

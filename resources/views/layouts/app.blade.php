@@ -1163,40 +1163,40 @@
             }
         </script>
 @endif
-@if (Route::is('crowdfunding.home') && !empty($current_user))
+@if (Route::is('crowdfunding.home') && !empty($current_user) && request()->missing('project'))
         <script type="text/javascript">
             /**
              * Limit characters in the textarea
              */
-            const textareaChar = document.getElementById('limitChars');
-            const charCountSpan = document.getElementById('charCount');
-            const maxLength = textareaChar.getAttribute('maxlength');
+            // const textareaChar = document.getElementById('limitChars');
+            // const charCountSpan = document.getElementById('charCount');
+            // const maxLength = textareaChar.getAttribute('maxlength');
 
-            // Initial update on page load
-            updateCharCount();
+            // // Initial update on page load
+            // updateCharCount();
 
-            // Add event listener for input changes
-            textareaChar.addEventListener('input', updateCharCount);
+            // // Add event listener for input changes
+            // textareaChar.addEventListener('input', updateCharCount);
 
-            function updateCharCount() {
-                const currentLength = textareaChar.value.length;
-                const remaining = maxLength - currentLength;
+            // function updateCharCount() {
+            //     const currentLength = textareaChar.value.length;
+            //     const remaining = maxLength - currentLength;
 
-                charCountSpan.textContent = remaining;
+            //     charCountSpan.textContent = remaining;
 
-                // Optional: Add visual cues when approaching or exceeding limit
-                if (remaining <= 10 && remaining >= 0) {
-                    charCountSpan.style.color = 'orange'; // Warning color
+            //     // Optional: Add visual cues when approaching or exceeding limit
+            //     if (remaining <= 10 && remaining >= 0) {
+            //         charCountSpan.style.color = 'orange'; // Warning color
 
-                } else if (remaining < 0) {
-                    charCountSpan.style.color = 'red'; // Exceeded limit color
-                    // Optionally, truncate the text if the maxlength attribute isn't strictly enforced
-                    // textareaChar.value = textareaChar.value.substring(0, maxLength);
+            //     } else if (remaining < 0) {
+            //         charCountSpan.style.color = 'red'; // Exceeded limit color
+            //         // Optionally, truncate the text if the maxlength attribute isn't strictly enforced
+            //         // textareaChar.value = textareaChar.value.substring(0, maxLength);
 
-                } else {
-                    charCountSpan.style.color = 'initial'; // Reset color
-                }
-            }
+            //     } else {
+            //         charCountSpan.style.color = 'initial'; // Reset color
+            //     }
+            // }
 
             /**
              * Inputs number always numeric
@@ -1880,10 +1880,10 @@
                             ? rawAssertions.toString().split(',').map(a => a.trim()).filter(a => a !== '')
                             : [];
 
-                        // Liste des assertions cochées du parent
+                        // Liste des IDs d'assertions cochées du parent
                         const checkedAssertions = $(`.assertion-input[data-question="${parentId}"]:checked`)
                             .toArray()
-                            .map(i => $(i).val().toString());
+                            .map(i => $(i).data('assertion-id').toString()); // 🔥 on utilise data-assertion-id ici
 
                         // Détermine si la question doit apparaître
                         const shouldShow = requiredAssertions.length === 0
@@ -1895,7 +1895,7 @@
                         } else {
                             $question.stop(true, true).slideUp(200);
 
-                            // Nettoie les champs (input, textarea, select) si caché
+                            // Nettoie les champs si caché
                             $question.find('input[type="text"], input[type="number"], input[type="email"], input[type="tel"], input[type="file"], textarea, select')
                                 .val('');
                             $question.find('input[type="checkbox"], input[type="radio"]').prop('checked', false);
