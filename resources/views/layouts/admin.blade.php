@@ -617,6 +617,68 @@
             let cropper;
 
             /**
+             * Change status
+             */
+            function changeIs(entity, element) {
+                var _this = document.getElementById(element.id);
+                var entity_id = parseInt(_this.id.split('-')[1]);
+                var isDelivered = parseInt(_this.getAttribute('data-is-delivered'));
+
+                Swal.fire({
+                    title: '{{ __("miscellaneous.alert.attention.presence_payment") }}',
+                    text: '{{ __("miscellaneous.alert.confirm.presence_payment") }}',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#04471a',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '{{ __("miscellaneous.alert.yes.presence_payment") }}',
+                    cancelButtonText: '{{ __("miscellaneous.cancel") }}'
+
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            headers: headers,
+                            type: "POST",
+                            url: `${currentHost}/products/${entity}/${entity_id}`,
+                            contentType: false,
+                            processData: false,
+                            data: JSON.stringify({ "entity" : entity, "id" : entityId, "is_delivered" : (isDelivered === 0 ? 1 : 0) }),
+                            success: function (result) {
+                                if (!result.success) {
+                                    Swal.fire({
+                                        title: '{{ __("miscellaneous.alert.oups") }}',
+                                        text: result.message,
+                                        icon: 'error'
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        title: '{{ __("miscellaneous.alert.perfect") }}',
+                                        text: result.message,
+                                        icon: 'success'
+                                    });
+                                    location.reload();
+                                }
+                            },
+                            error: function (xhr, error, status_description) {
+                                console.log(xhr.responseJSON);
+                                console.log(xhr.status);
+                                console.log(error);
+                                console.log(status_description);
+                            }
+                        });
+
+                    } else {
+                        Swal.fire({
+                            title: '{{ __("miscellaneous.cancel") }}',
+                            text: '{{ __("miscellaneous.alert.canceled.presence_payment") }}',
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+
+            /**
              * Perform action on element
              */
             function performAction(action, entity, entity_id) {
@@ -624,20 +686,20 @@
                     var entityId = parseInt(entity_id.split('-')[1]);
 
                     Swal.fire({
-                        title: "<?= __('miscellaneous.alert.attention.delete') ?>",
-                        text: "<?= __('miscellaneous.alert.confirm.delete') ?>",
-                        icon: "warning",
+                        title: '{{ __("miscellaneous.alert.attention.delete") }}',
+                        text: '{{ __("miscellaneous.alert.confirm.delete") }}',
+                        icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: "#04471a",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "<?= __('miscellaneous.alert.yes.delete') ?>",
-                        cancelButtonText: "<?= __('miscellaneous.cancel') ?>"
+                        confirmButtonColor: '#04471a',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '{{ __("miscellaneous.alert.yes.delete") }}',
+                        cancelButtonText: '{{ __("miscellaneous.cancel") }}'
 
                     }).then(function (result) {
                         if (result.isConfirmed) {
                             $.ajax({
                                 headers: headers,
-                                type: "DELETE",
+                                type: 'DELETE',
                                 url: `${currentHost}/delete/${entity}/${entityId}`,
                                 contentType: false,
                                 processData: false,
@@ -645,16 +707,16 @@
                                 success: function (result) {
                                     if (!result.success) {
                                         Swal.fire({
-                                            title: "<?= __('miscellaneous.alert.oups') ?>",
+                                            title: '{{ __("miscellaneous.alert.oups") }}',
                                             text: result.message,
-                                            icon: "error"
+                                            icon: 'error'
                                         });
 
                                     } else {
                                         Swal.fire({
-                                            title: "<?= __('miscellaneous.alert.perfect') ?>",
+                                            title: '{{ __("miscellaneous.alert.perfect") }}',
                                             text: result.message,
-                                            icon: "success"
+                                            icon: 'success'
                                         });
                                         location.reload();
                                     }
@@ -669,9 +731,9 @@
 
                         } else {
                             Swal.fire({
-                                title: "<?= __('miscellaneous.cancel') ?>",
-                                text: "<?= __('miscellaneous.alert.canceled.delete') ?>",
-                                icon: "error"
+                                title: '{{ __("miscellaneous.cancel") }}',
+                                text: '{{ __("miscellaneous.alert.canceled.delete") }}',
+                                icon: 'error'
                             });
                         }
                     });

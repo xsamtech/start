@@ -149,7 +149,7 @@
                                                 <h3 class="fs-13 fw-semibold text-truncate-1-line">{{ trans_choice('miscellaneous.admin.statistics.projects.title', $projects_req) }}</h3>
                                             </div>
                                         </div>
-                                        <a href="{{ route('dashboard.category.entity.home', ['entity' => 'project']) }}" class="">
+                                        <a href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'project']) }}" class="">
                                             <i class="feather-arrow-right"></i>
                                         </a>
                                     </div>
@@ -190,27 +190,27 @@
                                         <div class="col-lg-4">
                                             <div class="p-3 border border-dashed rounded">
                                                 <div class="fs-12 text-muted mb-1">@lang('miscellaneous.admin.statistics.payment.ongoing')</div>
-                                                <h6 class="fw-bold text-dark">$5,486</h6>
+                                                <h6 class="fw-bold text-dark">{{ number_format($statistics['ongoing']['amount'], 2) }} USD</h6>
                                                 <div class="progress mt-2 ht-3">
-                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 81%"></div>
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $statistics['ongoing']['percentage'] }}%"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="p-3 border border-dashed rounded">
                                                 <div class="fs-12 text-muted mb-1">@lang('miscellaneous.admin.statistics.payment.done')</div>
-                                                <h6 class="fw-bold text-dark">$9,275</h6>
+                                                <h6 class="fw-bold text-dark">{{ number_format($statistics['done']['amount'], 2) }} USD</h6>
                                                 <div class="progress mt-2 ht-3">
-                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 82%"></div>
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ $statistics['done']['percentage'] }}%"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="p-3 border border-dashed rounded">
                                                 <div class="fs-12 text-muted mb-1">@lang('miscellaneous.admin.statistics.payment.canceled')</div>
-                                                <h6 class="fw-bold text-dark">$3,868</h6>
+                                                <h6 class="fw-bold text-dark">{{ number_format($statistics['canceled']['amount'], 2) }} USD</h6>
                                                 <div class="progress mt-2 ht-3">
-                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 68%"></div>
+                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $statistics['canceled']['percentage'] }}%"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -248,7 +248,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-check form-switch pt-1 pb-0">
-                                                            <input type="checkbox" role="switch" name="is_delivered-{{ $payment->cart->id }}" id="is_delivered-{{ $payment->cart->id }}" class="form-check-input" onchange="changeIs('delivered', this)"{{ $payment->cart->is_delivered == 1 ? ' checked' : '' }}>
+                                                            <input type="checkbox" role="switch" name="is_delivered-{{ $payment->cart->id }}" id="is_delivered-{{ $payment->cart->id }}" class="form-check-input" data-is-delivered="{{ !empty($payment->cart->is_delivered) ? $payment->cart->is_delivered : 0 }}" onchange="changeIs('update-orders-delivery', this)"{{ $payment->cart->is_delivered == 1 ? ' checked' : '' }}>
                                                             <label class="form-check-label align-bottom text-{{ $payment->cart->is_delivered == 1 ? 'success' : 'danger' }}" for="is_delivered-{{ $payment->cart->id }}">
                                                                 <i class="bi bi-{{ $payment->cart->is_delivered == 1 ? 'check' : 'x' }}-circle position-relative" style="top: -1.65px;"></i>
                                                                 <small class="d-inline-block position-relative" style="top: -1.8px;">{{ $payment->cart->is_delivered == 1 ? __('miscellaneous.yes') : __('miscellaneous.no') }}</small>

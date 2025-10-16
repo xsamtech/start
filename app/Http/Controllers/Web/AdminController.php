@@ -93,6 +93,47 @@ class AdminController extends Controller
             $chartData['data'][] = $weekPayments->count(); // Compte le nombre de paiements pour chaque semaine
         }
 
+        // Si la collection est vide, initialiser les variables à 0
+        if ($payments->isEmpty()) {
+            $ongoingAmount = $doneAmount = $canceledAmount = $totalAmount = 0;
+            $ongoingPercentage = $donePercentage = $canceledPercentage = 0;
+
+        } else {
+            // Calculer les montants par statut
+            $ongoingAmount = $payments->first()->convertAmountSum(1);
+            $doneAmount = $payments->first()->convertAmountSum(0);
+            $canceledAmount = $payments->first()->convertAmountSum(2);
+
+            // Calculer le montant total du mois
+            $totalAmount = $payments->first()->convertAmountSum(null);  // Si tu veux le montant total sans statut spécifique
+
+            // Calculer les pourcentages pour les barres de progression
+            // On vérifie ici que le totalAmount n'est pas 0 pour éviter la division par zéro
+            if ($totalAmount > 0) {
+                $ongoingPercentage = ($ongoingAmount / $totalAmount) * 100;
+                $donePercentage = ($doneAmount / $totalAmount) * 100;
+                $canceledPercentage = ($canceledAmount / $totalAmount) * 100;
+            } else {
+                $ongoingPercentage = $donePercentage = $canceledPercentage = 0;
+            }
+        }
+
+        // Préparer les données pour la vue
+        $statistics = [
+            'ongoing' => [
+                'amount' => $ongoingAmount,
+                'percentage' => $ongoingPercentage
+            ],
+            'done' => [
+                'amount' => $doneAmount,
+                'percentage' => $donePercentage
+            ],
+            'canceled' => [
+                'amount' => $canceledAmount,
+                'percentage' => $canceledPercentage
+            ]
+        ];
+
         return view('dashboard.home', [
             'products_unshared' => ResourcesProduct::collection($products_unshared)->resolve(),
             'products_unshared_req' => $products_unshared,
@@ -108,6 +149,8 @@ class AdminController extends Controller
             'projects_req' => $projects,
             'payments' => $payments,
             'chartData' => $chartData,
+            'statistics' => $statistics,
+            'totalAmount' => $totalAmount,
         ]);
     }
 

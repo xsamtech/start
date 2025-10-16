@@ -2494,6 +2494,27 @@ class PublicController extends Controller
                 return response()->json(['message' => $e->getMessage()], 422);
             }
         }
+
+        if ($entity == 'update-orders-delivery') {
+            try {
+                // Get the product associated with the order
+                $current_cart = Cart::find($id);
+
+                if (!$current_cart) {
+                    return response()->json(['success' => false, 'message' => __('notifications.find_cart_404')], 404);
+                }
+
+                $current_cart->update([
+                    'is_delivered' => $request->is_delivered,
+                    'updated_by' => Auth::check() ? Auth::id() : null,
+                ]);
+
+                return response()->json(['success' => true, 'message' => __('notifications.updated_data')]);
+
+            } catch (\Exception $e) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+            }
+        }
     }
 
     /**
