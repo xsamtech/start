@@ -1166,7 +1166,7 @@
             const chartData = {
                 labels: @json($chartData['labels']), // Semaine 1, Semaine 2, ...
                 datasets: [{
-                    label: 'Paiements par semaine',
+                    label: '{{ __("miscellaneous.admin.statistics.payment.title") . " " . strtolower(__("miscellaneous.period.adjectif.weekly_masculine")) }}',
                     data: @json($chartData['data']), // Nombre de paiements par semaine
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
