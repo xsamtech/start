@@ -264,6 +264,10 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <div class="mt-3">
+                                        {{ $payments->links() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
