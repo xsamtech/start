@@ -41,6 +41,7 @@ class User extends JsonResource
             'api_token' => $this->api_token,
             'avatar_url' => $this->avatar_url != null ? $this->avatar_url : getWebURL() . '/assets/img/user.png',
             'status' => $this->status,
+            'selected_role' => $this->selected_role,
             'has_product_in_unpaid_cart' => $this->hasProductInUnpaidCart($request->get('product_id')),
             'average_rating' => round($this->averageRating(), 0),
             'feedbacks' => CustomerFeedback::collection($this->receivedFeedbacks),

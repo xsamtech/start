@@ -216,8 +216,7 @@
                             </a>
                             <ul class="nxl-submenu">
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.role.home') }}">@lang('miscellaneous.admin.role.link')</a></li>
-                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.role.entity.home', ['entity' => 'admins']) }}">@lang('miscellaneous.menu.admin.role.admins')</a></li>
-                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.role.entity.home', ['entity' => 'members']) }}">@lang('miscellaneous.menu.admin.role.membres')</a></li>
+                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.role.entity.home', ['entity' => 'users']) }}">@lang('miscellaneous.admin.users.link')</a></li>
                             </ul>
                         </li>
                         <!-- Sectors -->
@@ -247,7 +246,6 @@
                             </a>
                             <ul class="nxl-submenu">
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.home') }}">@lang('miscellaneous.menu.admin.questionnaire.questions.title')</a></li>
-                                <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'assertion']) }}">@lang('miscellaneous.menu.admin.questionnaire.assertions.title')</a></li>
                                 <li class="nxl-item"><a class="nxl-link" href="{{ route('dashboard.questionnaire.entity.home', ['entity' => 'project']) }}">@lang('miscellaneous.menu.admin.categories.projects')</a></li>
                             </ul>
                         </li>
@@ -599,6 +597,7 @@
         <!--! BEGIN: Custom JS  !-->
         <script type="text/javascript" src="{{ asset('assets/addons/custom/flatpickr/dist/flatpickr.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/addons/custom/flatpickr/dist/fr.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
         <script type="text/javascript" src="{{ asset('assets/addons/custom/cropper/js/cropper.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/addons/custom/autosize/js/autosize.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/addons/custom/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
@@ -610,6 +609,7 @@
             const currentUser = $('[name="strt-visitor"]').attr('content');
             const currentHost = $('[name="strt-url"]').attr('content');
             const apiHost = $('[name="strt-api-url"]').attr('content');
+            const headers = { 'Authorization': 'Bearer ' + $('[name="strt-ref"]').attr('content'), 'Accept': $('.mime-type').val(), 'X-localization': navigator.language };
             // Preview images
             const retrievedImageProfile = document.getElementById('retrieved_image_profile');
             const currentImageProfile = document.querySelector('#profileImageWrapper img');
@@ -878,6 +878,59 @@
                 /**
                  * Ajax to send
                  */
+                /* Role form */
+                $('#addRoleForm').on('submit', function (e) {
+                    e.preventDefault();
+
+                    // Afficher l'animation de chargement
+                    $('#ajax-loader').removeClass('d-none');
+
+                    // Effacer les alertes précédentes
+                    $('#ajax-alert-container').empty();
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            // Cacher l'animation de chargement
+                            $('#ajax-loader').addClass('d-none');
+
+                            // Afficher une alerte de succès
+                            $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">
+                                                                <div class="col-lg-4 col-sm-6 mx-auto">
+                                                                    <div class="alert alert-success alert-dismissible fade show rounded-0" role="alert">
+                                                                        <i class="bi bi-info-circle me-2 fs-4" style="vertical-align: -3px;"></i> ${response.message || "__('notifications.added_data')"}
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`);
+
+                            // Réinitialiser tous les champs du formulaire
+                            $('#addRoleForm')[0].reset();
+
+                            location.reload();
+                        },
+                        error: function (error) {
+                            // Cacher l'animation de chargement
+                            $('#ajax-loader').addClass('d-none');
+
+                            // Afficher une alerte d'erreur
+                            $('#ajax-alert-container').html(`<div class="row position-fixed w-100" style="opacity: 0.9; z-index: 99999;">
+                                                                <div class="col-lg-4 col-sm-6 mx-auto">
+                                                                    <div class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+                                                                        <i class="bi bi-exclamation-triangle me-2 fs-4" style="vertical-align: -3px;"></i> {{ __('notifications.error_while_processing') }}
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`);
+                        }
+                    });
+                });
                 /* Question form */
                 $('#addQuestionForm').on('submit', function (e) {
                     e.preventDefault();
@@ -1106,6 +1159,104 @@
                 });
             });
         </script>
+@if (Route::is('dashboard.home'))
+        <script type="text/javascript">
+            const ctx = document.getElementById('paymentsChart').getContext('2d');
+
+            const chartData = {
+                labels: @json($chartData['labels']), // Semaine 1, Semaine 2, ...
+                datasets: [{
+                    label: 'Paiements par semaine',
+                    data: @json($chartData['data']), // Nombre de paiements par semaine
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const config = {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            const paymentsChart = new Chart(ctx, config);
+        </script>
+@endif
+@if (Route::is('dashboard.role.entity.home') AND $entity == 'users')
+        <script type="text/javascript">
+            /**
+             * Update role
+             */
+            function changeUserRole(selectElement) {
+                var roleId = selectElement.value;
+                var entityId = 'users'; // Change cela si nécessaire pour d'autres entités
+                var userId = selectElement.getAttribute('data-user-id'); // Assure-toi que l'ID de l'utilisateur est disponible dans le code JavaScript
+
+                // Si la valeur sélectionnée est celle actuelle, ne rien faire
+                if (!roleId || roleId === selectElement.getAttribute('data-user-role-id')) {
+                    return;
+                }
+
+                Swal.fire({
+                    title: "<?= __('miscellaneous.alert.attention.role') ?>",
+                    text: "<?= __('miscellaneous.alert.confirm.role') ?>",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#04471a",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "<?= __('miscellaneous.alert.yes.role') ?>",
+                    cancelButtonText: "<?= __('miscellaneous.cancel') ?>"
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            headers: headers,
+                            type: "POST", // Utilise POST car c'est la méthode de la route
+                            url: `${currentHost}/dashboard/role/${entityId}/${userId}`,
+                            contentType: "application/json",
+                            data: JSON.stringify({ role_id: roleId }),
+                            success: function (response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        title: "<?= __('miscellaneous.alert.perfect') ?>",
+                                        text: response.message,
+                                        icon: "success"
+                                    });
+                                    location.reload();
+                                } else {
+                                    Swal.fire({
+                                        title: "<?= __('miscellaneous.alert.oups') ?>",
+                                        text: response.message,
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire({
+                                    title: "<?= __('miscellaneous.alert.oups') ?>",
+                                    text: "Une erreur est survenue, veuillez réessayer plus tard.",
+                                    icon: "error"
+                                });
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "<?= __('miscellaneous.cancel') ?>",
+                            text: "<?= __('miscellaneous.alert.canceled.role') ?>",
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        </script>
+@endif
         <!--! END: Custom JS !-->
     </body>
 </html>

@@ -28,4 +28,15 @@ class Payment extends Model
     {
         return $this->belongsTo(Cart::class);
     }
+
+    /**
+     * Scope to filter by month and year
+     */
+    public function scopeFilterByMonthAndYear($query, $month = null, $year = null)
+    {
+        $month = $month ?? now()->month; // If month is not provided, use current month
+        $year = $year ?? now()->year;   // If year is not provided, use current year
+
+        return $query->whereYear('created_at', $year)->whereMonth('created_at', $month);
+    }
 }

@@ -850,6 +850,24 @@ class PublicController extends Controller
      */
     public function removeData($entity, $id)
     {
+        if ($entity == 'role') {
+            $role = Role::find($id);
+
+            if (!$role) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_role_404'),
+                ], 404);
+            }
+
+            $role->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_role_success'),
+            ]);
+        }
+
         if ($entity == 'product') {
             $product = Product::find($id);
 

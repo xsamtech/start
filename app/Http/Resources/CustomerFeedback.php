@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product as ModelsProduct;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,10 +20,13 @@ class CustomerFeedback extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $product = !empty($this->for_product_id) ? ModelsProduct::find($this->for_product_id) : null;
+
         return [
             'id' => $this->id,
             'for_user_id' => $this->for_user_id,
             'for_product_id' => $this->for_product_id,
+            'for_product' => $product,
             'rating' => $this->rating,
             'comment' => $this->comment,
             'user' => User::make($this->user),
