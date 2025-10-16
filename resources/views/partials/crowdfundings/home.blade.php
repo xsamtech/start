@@ -146,11 +146,23 @@
 												</div>
 
 				@if (count($project->sheets) > 0)
+					@php
+						$completedSheet = $project->sheets->where('is_sheet_completed', 1)->first();
+					@endphp
+
+					@if ($completedSheet)
 												<div class="panel-body" style="padding-bottom: 8px;">
-													<a href="{{ $project->sheets[0]->file_url }}" target="_blank">
-														<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
+													<a href="{{ $completedSheet->file_url }}" target="_blank">
+														<p style="color: green; margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_completed')</p>
 													</a>
 												</div>
+					@else
+												<div class="panel-body" style="padding-bottom: 8px;">
+													<a href="{{ $project->sheets[0]->file_url }}" target="_blank">
+														<p style="color: green; margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
+													</a>
+												</div>
+					@endif
 				@endif
 
 				@if (request()->has('project'))
@@ -209,13 +221,23 @@
 
 										<div class="panel-body" style="padding-bottom: 8px;">
 			@if (count($project->sheets) > 0)
-											<a href="{{ $project->sheets[0]->file_url }}" target="_blank">
-												<p class="lead"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
-											</a>
-			@else
-											<a href="{{ route('generate_sheet', ['language' => $current_locale, 'user_id' => $current_user->id, 'project_id' => $project->id]) }}">
-												<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_empty')</p>
-											</a>
+				@php
+					$completedSheet = $project->sheets->where('is_sheet_completed', 1)->first();
+				@endphp
+
+				@if ($completedSheet)
+												<div class="panel-body" style="padding-bottom: 8px;">
+													<a href="{{ $completedSheet->file_url }}" target="_blank">
+														<p style="color: green; margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_completed')</p>
+													</a>
+												</div>
+				@else
+												<div class="panel-body" style="padding-bottom: 8px;">
+													<a href="{{ $project->sheets[0]->file_url }}" target="_blank">
+														<p style="color: green; margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
+													</a>
+												</div>
+				@endif
 			@endif
 										</div>
 

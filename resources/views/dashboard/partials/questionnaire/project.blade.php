@@ -28,7 +28,7 @@
                                             <tr>
                                                 <th></th>
                                                 <th>@lang('miscellaneous.admin.project_writing.data.description.label')</th>
-                                                <th>@lang('miscellaneous.admin.project_writing.data.sheet_url')</th>
+                                                <th>@lang('miscellaneous.admin.project_writing.data.sheet_url_completed')</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -37,15 +37,30 @@
 @forelse ($items as $project)
                                             <tr>
                                                 <td>
-                                                    <img src="{{ $project['photos'][0]['file_url'] }}" alt="" width="40">
+                                                    <img src="{{ $project['photos'][0]['file_url'] }}" alt="" width="100">
                                                 </td>
                                                 <td>
                                                     <p class="m-0" style="max-width: 280px; white-space: normal;">{!! Str::limit($project['project_description'], 200, '...') !!}</p>
                                                 </td>
                                                 <td>
+    @if (count($project['sheets']) > 0)
+        @php
+            $completedSheet = null;
+
+            foreach ($project['sheets'] as $sheet) {
+                if ($sheet['is_sheet_completed'] == 1) {
+                    $completedSheet = $sheet;
+
+                    break;  // On s'arrête dès qu'on trouve un fichier complété
+                }
+            }
+        @endphp
+        @if ($completedSheet)
                                                     <p class="m-0" style="max-width: 280px; white-space: normal;">
-                                                        <a href="{{ $project['sheets'][0]['file_url'] }}">{{ getWebURL() . $project['sheets'][0]['file_url'] }}</a>
+                                                        <a href="{{ $completedSheet['file_url'] }}">{{ getWebURL() . $completedSheet['file_url'] }}</a>
                                                     </p>
+        @endif
+    @endif
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('investor.datas', ['id' => $project['id']]) }}" target="_blank">

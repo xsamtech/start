@@ -140,6 +140,7 @@ return [
     'download' => 'Download',
     'upload' => [
         'use_camera' => 'Use camera',
+        'upload_file' => 'Upload file',
         'upload_document' => 'Upload document',
         'upload_image' => 'Upload image (Photo/Video)',
         'upload_images' => 'Upload images (Photo/Video)',
@@ -944,7 +945,11 @@ return [
                 'company_email' => 'Company Email',
                 'company_phone' => 'Company Phone Number',
                 'website_url' => 'Website URL',
-                'sheet_url' => 'URL of the detailed Excel file',
+                'sheet_url_public' => 'Detailed Excel file',
+                'sheet_url_resend' => 'Resend the filled Excel file',
+                'sheet_url' => 'Excel file to complete',
+                'sheet_url_completed' => 'Excel file filled and sent',
+                'sheet_url_not_completed' => 'Unfilled Excel file',
                 'sheet_url_empty' => 'Generate a detailed Excel file',
                 'land_status' => [
                     'title' => 'Land Status',

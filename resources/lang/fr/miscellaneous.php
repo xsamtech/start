@@ -140,6 +140,7 @@ return [
     'download' => 'Télécharger',
     'upload' => [
         'use_camera' => 'Utiliser caméra',
+        'upload_file' => 'Uploader fichier',
         'upload_document' => 'Uploader document',
         'upload_image' => 'Uploader image (Photo/Video)',
         'upload_images' => 'Uploader images (Photo/Video)',
@@ -944,7 +945,11 @@ return [
                 'company_email' => 'E-mail de l’entreprise',
                 'company_phone' => 'N° de tél. de l’entreprise',
                 'website_url' => 'URL du site web',
-                'sheet_url' => 'URL du fichier Excel détaillé',
+                'sheet_url_public' => 'Fichier Excel détaillé',
+                'sheet_url_resend' => 'Renvoyer le fichier Excel rempli',
+                'sheet_url' => 'Fichier Excel à remplir',
+                'sheet_url_completed' => 'Fichier Excel rempli et envoyé',
+                'sheet_url_not_completed' => 'Fichier Excel non rempli',
                 'sheet_url_empty' => 'Générer un fichier Excel détaillé',
                 'land_status' => [
                     'title' => 'Statut foncier',

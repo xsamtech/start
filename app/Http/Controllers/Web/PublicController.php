@@ -769,15 +769,27 @@ class PublicController extends Controller
     public function investorDatas($id)
     {
         $entity_title = __('miscellaneous.admin.investor.details');
-        $selected_project = Project::find($id);
+        // 🔹 1. Charger le projet
+        $project = Project::with([
+            'project_answers' => function ($q) {
+                $q->whereNotNull('answer_content'); // seulement les réponses remplies
+            },
+            'project_answers.project_question.question_part' // on charge la question et sa partie associée
+        ])->findOrFail($id);
+    
+        // 🔹 2. Organiser les réponses par "partie" (QuestionPart)
+        $groupedByPart = $project->project_answers
+            ->filter(fn($a) => !empty(trim($a->answer_content))) // ignorer les réponses vides
+            ->groupBy(fn($a) => optional($a->project_question->question_part)->part_name ?? 'Autres');
 
-        if (is_null($selected_project)) {
-            return redirect('/project-writing')->with('error_message', __('notifications.find_error'));
-        }
+        // Vérifier s'il existe une feuille complète pour ce projet
+        $completedSheet = $project->sheets->where('is_sheet_completed', 1)->first();
 
         return view('investors', [
             'entity_title' => $entity_title,
-            'selected_project' => new ResourcesProject($selected_project),
+            'groupedByPart' => $groupedByPart,
+            'selected_project' => $project,
+            'completedSheet' => $completedSheet,
         ]);
     }
 
@@ -832,12 +844,158 @@ class PublicController extends Controller
             ->filter(fn($a) => !empty(trim($a->answer_content))) // ignorer les réponses vides
             ->groupBy(fn($a) => optional($a->project_question->question_part)->part_name ?? 'Autres');
 
-        // dd((new ResourcesProject($selected_project))->resolve());
+        // Vérifier s'il existe une feuille complète pour ce projet
+        $completedSheet = $project->sheets->where('is_sheet_completed', 1)->first();
+
         return view('crowdfundings', [
             'entity_title' => $entity_title,
             'groupedByPart' => $groupedByPart,
             'selected_project' => $project,
+            'completedSheet' => $completedSheet,
         ]);
+    }
+
+    /**
+     * Display the message about transaction in waiting.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function transactionWaiting()
+    {
+        return view('transaction_message');
+    }
+
+    /**
+     * Display the message about transaction done.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function transactionMessage($order_number)
+    {
+        // Find payment by order number API
+        $payment1 = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . $order_number);
+
+        return view('transaction_message', [
+            'message_content' => __('notifications.transaction_done'),
+            'status_code' => (string) $payment1->data->status,
+            'payment' => $payment1->data,
+        ]);
+    }
+
+    /**
+     * GET: Current user account
+     *
+     * @param $amount
+     * @param $currency
+     * @param $code
+     * @param $cart_id
+     * @return \Illuminate\View\View
+     */
+    public function paid($amount = null, $currency = null, $code, $entity, $entity_id)
+    {
+        if ($entity == 'paid_fund') {
+            $paid_fund = PaidFund::find($entity_id);
+
+            if ($code == '0') {
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'paid_fund' => $paid_fund,
+                    'message_content' => __('notifications.processing_succeed')
+                ]);
+            }
+
+            if ($code == '1') {
+                // Find payment by order number API
+                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
+
+                if ($payment->success) {
+                    // Update payment status API
+                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                }
+
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'paid_fund' => $paid_fund,
+                    'status_code' => $code,
+                    'message_content' => __('notifications.process_canceled')
+                ]);
+            }
+
+            if ($code == '2') {
+                // Find payment by order number API
+                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
+
+                if ($payment->success) {
+                    // Update payment status API
+                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                }
+
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'paid_fund' => $paid_fund,
+                    'status_code' => $code,
+                    'message_content' => __('notifications.process_failed')
+                ]);
+            }
+        }
+
+        if ($entity == 'cart') {
+            $cart = Cart::find($entity_id);
+
+            if ($code == '0') {
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'cart' => $cart,
+                    'message_content' => __('notifications.processing_succeed')
+                ]);
+            }
+
+            if ($code == '1') {
+                // Find payment by order number API
+                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
+
+                if ($payment->success) {
+                    // Update payment status API
+                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                }
+
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'cart' => $cart,
+                    'status_code' => $code,
+                    'message_content' => __('notifications.process_canceled')
+                ]);
+            }
+
+            if ($code == '2') {
+                // Find payment by order number API
+                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
+
+                if ($payment->success) {
+                    // Update payment status API
+                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
+                }
+
+                return view('transaction_message', [
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'status_code' => $code,
+                    'cart' => $cart,
+                    'status_code' => $code,
+                    'message_content' => __('notifications.process_failed')
+                ]);
+            }
+        }
     }
 
     // ==================================== HTTP DELETE METHODS ====================================
@@ -1116,151 +1274,46 @@ class PublicController extends Controller
             ]);
         }
     }
-
-    /**
-     * Display the message about transaction in waiting.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function transactionWaiting()
-    {
-        return view('transaction_message');
-    }
-
-    /**
-     * Display the message about transaction done.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function transactionMessage($order_number)
-    {
-        // Find payment by order number API
-        $payment1 = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . $order_number);
-
-        return view('transaction_message', [
-            'message_content' => __('notifications.transaction_done'),
-            'status_code' => (string) $payment1->data->status,
-            'payment' => $payment1->data,
-        ]);
-    }
-
-    /**
-     * GET: Current user account
-     *
-     * @param $amount
-     * @param $currency
-     * @param $code
-     * @param $cart_id
-     * @return \Illuminate\View\View
-     */
-    public function paid($amount = null, $currency = null, $code, $entity, $entity_id)
-    {
-        if ($entity == 'paid_fund') {
-            $paid_fund = PaidFund::find($entity_id);
-
-            if ($code == '0') {
-                return view('transaction_message', [
-                    'amount' => $amount,
-                    'currency' => $currency,
-                    'status_code' => $code,
-                    'paid_fund' => $paid_fund,
-                    'message_content' => __('notifications.processing_succeed')
-                ]);
-            }
-
-            if ($code == '1') {
-                // Find payment by order number API
-                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
-
-                if ($payment->success) {
-                    // Update payment status API
-                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
-                }
-
-                return view('transaction_message', [
-                    'amount' => $amount,
-                    'currency' => $currency,
-                    'status_code' => $code,
-                    'paid_fund' => $paid_fund,
-                    'status_code' => $code,
-                    'message_content' => __('notifications.process_canceled')
-                ]);
-            }
-
-            if ($code == '2') {
-                // Find payment by order number API
-                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
-
-                if ($payment->success) {
-                    // Update payment status API
-                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
-                }
-
-                return view('transaction_message', [
-                    'amount' => $amount,
-                    'currency' => $currency,
-                    'status_code' => $code,
-                    'paid_fund' => $paid_fund,
-                    'status_code' => $code,
-                    'message_content' => __('notifications.process_failed')
-                ]);
-            }
-        }
-
-        if ($entity == 'cart') {
-            $cart = Cart::find($entity_id);
-
-            if ($code == '0') {
-                return view('transaction_message', [
-                    'amount' => $amount,
-                    'currency' => $currency,
-                    'status_code' => $code,
-                    'cart' => $cart,
-                    'message_content' => __('notifications.processing_succeed')
-                ]);
-            }
-
-            if ($code == '1') {
-                // Find payment by order number API
-                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
-
-                if ($payment->success) {
-                    // Update payment status API
-                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
-                }
-
-                return view('transaction_message', [
-                    'amount' => $amount,
-                    'currency' => $currency,
-                    'status_code' => $code,
-                    'cart' => $cart,
-                    'status_code' => $code,
-                    'message_content' => __('notifications.process_canceled')
-                ]);
-            }
-
-            if ($code == '2') {
-                // Find payment by order number API
-                $payment = $this::$api_client_manager::call('GET', getApiURL() . '/payment/find_by_order_number/' . Session::get('order_number'));
-
-                if ($payment->success) {
-                    // Update payment status API
-                    $this::$api_client_manager::call('PUT', getApiURL() . '/payment/switch_status/' . $payment->data->id . '/2');
-                }
-
-                return view('transaction_message', [
-                    'amount' => $amount,
-                    'currency' => $currency,
-                    'status_code' => $code,
-                    'cart' => $cart,
-                    'status_code' => $code,
-                    'message_content' => __('notifications.process_failed')
-                ]);
-            }
-        }
-    }
-
     // ==================================== HTTP POST METHODS ====================================
+    /**
+     * POST: Run cart payment
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Support\Facades\Redirect
+     */
+    public function sendFile(Request $request)
+    {
+        // Vérifier si un fichier est bien envoyé
+        if ($request->hasFile('sheet_url')) {
+            $file = $request->file('sheet_url');
+            $originalFileName = $file->getClientOriginalName();
+            $file_url =  'sheets/' . $originalFileName;
+
+            // Upload file
+            try {
+                $file->storeAs('sheets', $originalFileName, 'public');
+
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('error_message', __('notifications.create_work_file_500'));
+            }
+
+            // Creating the database record for the file
+            File::create([
+                'file_name' => $request->file_name,
+                'file_url' => '/storage/' . $file_url,
+                'file_type' => 'sheet',
+                'is_sheet_completed' => 1,
+                'project_id' => $request->project_id
+            ]);
+
+            // Retourner un message de succès
+            return redirect()->back()->with('success_message', 'Fichier envoyé et enregistré avec succès.');
+        }
+
+        // En cas d'erreur (pas de fichier)
+        return redirect()->back()->with('error_message', 'Veuillez télécharger un fichier Excel valide.');
+    }
+
     /**
      * POST: Run cart payment
      *

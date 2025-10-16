@@ -27,30 +27,55 @@
                         <div class="col-md-12">
 @if (!empty($current_user))
 							<div class="row">
-	@forelse ($projects as $project)
-								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+	@if (count($projects) > 0)
+		@foreach ($projects as $project)
+								<div class="col-lg-6 col-sm-6 col-xs-12">
 									<div class="panel panel-default">
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-lg-4 col-sm-5 col-xs-12">
-													<img src="{{ count($project->photos) > 0 ? $project->photos[0]->file_url : asset('assets/img/undefined.png') }}" alt="" style="height: 160px; margin-top: 10px; border-radius: 14px; object-fit: cover;" class="img-responsive">
-												</div>
-												<div class="col-lg-8 col-sm-7 col-xs-12">
-													<p style="line-height: 19px; margin-top: 10px; margin-bottom: 1px;">{!! Str::limit($project->projects_description, 200) !!}</p>
-													<a href="{{ route('investor.datas', ['id' => $project->id]) }}" class="small text-primary" style="text-decoration: underline;">@lang('miscellaneous.details') <i class="bi bi-chevron-double-right"></i></a>
-												</div>
-											</div>
+										<div class="panel-heading clearfix" style="display: flex; align-items: center; flex-direction: row;">
+											<img src="{{ $project->user->avatar_url }}" alt="{{ $project->user->firstname . ' ' . $project->user->lastname }}" width="40" style="float: left; border-radius: 50%; margin-right: 10px;">
+											<p style="font-weight: 700; margin: 0;">{{ $project->user->firstname . ' ' . $project->user->lastname }}</p>
+										</div>
+
+			@if (count($project->photos) > 0)
+										<div class="panel-body" style="padding-bottom: 0;">
+											<img src="{{ $project->photos[0]->file_url }}" class="d-block w-100" alt="Image 1" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">
+										</div>
+			@endif
+										<div class="panel-body" style="padding-bottom: 0px;">
+											<p style="margin: 0;">
+												{!! Str::limit($project->project_description, 200) !!}<br class="d-lg-none">
+											</p>
+										</div>
+
+
+			@if (count($project->sheets) > 0)
+				@php
+					$completedSheet = $project->sheets->where('is_sheet_completed', 1)->first();
+				@endphp
+
+				@if ($completedSheet)
+										<div class="panel-body" style="padding-bottom: 8px;">
+											<a href="{{ $completedSheet->file_url }}" target="_blank">
+												<p style="color: green; margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_public')</p>
+											</a>
+										</div>
+				@endif
+			@endif
+
+										<div class="panel-footer clearfix" style="margin: 0;">
+											<a href="{{ route('investor.datas', ['id' => $project->id]) }}" style="float: left; color: #6e9e1a;">@lang('miscellaneous.details') &raquo;</a>
 										</div>
 									</div>
 								</div>
-	@empty
+		@endforeach
+	@else
 								<div class="col-md-12">
 									<div style="display: flex; justify-content: center; align-items: flex-end; height: 140px;">
 										<i class="bi bi-file-text" style="font-size: 10rem"></i>
 									</div>
 									<h3 class="text-center">@lang('miscellaneous.empty_list')</h3>
 								</div><!-- End .col-md-12 -->
-	@endforelse
+	@endif
 							</div>
 @else
 							<div id="flexItemsCenter" class="row">

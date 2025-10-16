@@ -63,20 +63,53 @@
 							</div>
 
 							<div class="panel panel-default">
-								<div class="panel-body" style="padding: 5px 10px;">
-									<p style="margin: 0:">
+								<div class="panel-body" style="padding: 5px 10px 0 10px;">
 @if (count($selected_project->sheets) > 0)
+	@if ($completedSheet)
+									<p style="margin: 0:">
+										<a href="{{ $completedSheet->file_url }}" target="_blank">
+											<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_completed')</p>
+										</a>
+									</p>
+	@else
+									<p>
 										<a href="{{ $selected_project->sheets[0]->file_url }}" target="_blank">
 											<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url')</p>
 										</a>
+									</p>
+
+	@endif
 @else
+									<p style="margin: 0:">
 										<a href="{{ route('generate_sheet', ['language' => $current_locale, 'user_id' => $current_user->id, 'project_id' => $selected_project->id]) }}">
 											<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_empty')</p>
 										</a>
-@endif
 									</p>
+@endif
 								</div>
 							</div>
+@if (count($selected_project->sheets) > 0 && !$completedSheet)
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<p style="margin: 0;">@lang('miscellaneous.admin.project_writing.data.sheet_url_resend')</p>
+								</div>
+
+								<div class="panel-body">
+									<form action="{{ route('send_file') }}" method="POST" enctype="multipart/form-data">
+	@csrf
+										<input type="hidden" name="project_id" value="{{ $selected_project->id }}">
+										<input type="hidden" name="file_name" value="{{ __('miscellaneous.admin.project_writing.data.sheet_url_completed') . __('miscellaneous.colon_after_word') . ' ' . $selected_project->user->firstname . ' ' . $selected_project->user->lastname }}">
+
+										<div class="form-group">
+											<label for="sheet_url">@lang('miscellaneous.upload.upload_file')</label>
+											<input type="file" name="sheet_url" id="sheet_url" required>
+										</div>
+
+										<button type="submit" class="btn btn-sm strt-btn-chocolate-2" style="width: 200px;">@lang('miscellaneous.send')</button>
+									</form>
+								</div>
+							</div>
+@endif
 						</div>
 
 						<div class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
