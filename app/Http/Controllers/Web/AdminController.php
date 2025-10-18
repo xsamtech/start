@@ -358,7 +358,7 @@ class AdminController extends Controller
     public function questionnaire()
     {
         $question_parts = QuestionPart::all();
-        $project_questions = ProjectQuestion::paginate(20)->appends(request()->query());
+        $project_questions = request()->has('query') ? ProjectQuestion::where('question_content->' . request()->get('language'), 'LIKE', '%' . request()->get('query') . '%')->paginate(20)->appends(request()->query()) : ProjectQuestion::paginate(20)->appends(request()->query());
         $project_questions_all = ProjectQuestion::all();
 
         return view('dashboard.questionnaire', [

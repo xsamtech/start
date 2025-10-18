@@ -18,7 +18,17 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="card card-body">
-                                <h5 class="mb-3">@lang('miscellaneous.menu.admin.questionnaire.questions.title')</h5>
+                                <div class="d-sm-flex justify-content-between align-items-center" style="margin-bottom: 16px;">
+                                    <h5 style="margin-right: 50px;">@lang('miscellaneous.menu.admin.questionnaire.questions.title')</h5>
+
+                                    <form class="input-group" method="GET">
+                                        <input type="hidden" name="language" value="{{ $current_locale }}">
+                                        <div class="m-0">
+                                            <input type="text" name="query" class="form-control" id="query" placeholder="@lang('miscellaneous.search_input')">
+                                        </div>
+                                        <button type="submit" class="btn strt-btn-chocolate-3 m-0"><i class="fa-solid fa-search"></i></button>
+                                    </form>
+                                </div>
 
                                 <!-- Data list content -->
                                 <div class="table-responsive">
