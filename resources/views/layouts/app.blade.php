@@ -675,6 +675,27 @@
             </div>
         </div>
 @endif
+@if (Route::is('crowdfunding.datas'))
+    <!-- Modal de mise à jour -->
+    <div class="modal fade" id="editPartModal" tabindex="-1" role="dialog" aria-labelledby="editPartModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary text-white">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <h4 class="modal-title" id="editPartModalLabel">@lang('miscellaneous.update')</h4>
+                </div>
+
+                <div class="modal-body">
+                    <img id="modalLoader" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
+                    <div id="modalFormContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
         <!-- MODALS-->
 
         <div id="wrapper">
@@ -1908,6 +1929,68 @@
 
                 // Initialisation au chargement (pour questions déjà cochées)
                 updateDependentQuestions();
+
+                // Charger le modal de mise à jour d'une partie du questionnaire
+                $(document).on('click', '.open-edit-modal', function () {
+                    const partId = $(this).data('part-id');
+                    const projectId = $(this).data('project-id');
+
+                    $('#modalFormContainer').html('');
+                    $('#modalLoader').show();
+                    $('#editPartModal').modal('show');
+
+                    $.get(`/project/${projectId}/part/${partId}/edit`, function (data) {
+                        $('#modalLoader').hide();
+                        $('#modalFormContainer').html(data);
+
+                        // ✅ Maintenant que le contenu est inséré, on relance le système des questions dépendantes
+                        updateDependentQuestions();
+                    });
+                });
+
+                $('#editPartModal').on('show.bs.modal', function () {
+                    // Recharge les comportements dynamiques
+                    updateDependentQuestions();
+                });
+
+                // Soumission AJAX du formulaire dans le modal
+                $(document).on('submit', '#partUpdateForm', function (e) {
+                    e.preventDefault();
+
+                    const form = $(this);
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: 'POST',
+                        data: form.serialize(),
+                        success: function () {
+                            // Afficher une alerte de succès
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <i class="bi bi-check-circle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.updated_data') }}
+                                                                </div>
+                                                            </div>`);
+
+                            $('#editPartModal').modal('hide');
+                            location.reload(); // pour rafraîchir les réponses affichées
+                        },
+                        error: function () {
+                            $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
+                                                                <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
+                                                                    {{ __('notifications.error_while_processing') }}
+                                                                </div>
+                                                            </div>`);
+                        }
+                    });
+                });
             });
         </script>
     </body>

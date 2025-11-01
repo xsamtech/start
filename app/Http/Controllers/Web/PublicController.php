@@ -776,7 +776,7 @@ class PublicController extends Controller
             },
             'project_answers.project_question.question_part' // on charge la question et sa partie associée
         ])->findOrFail($id);
-    
+
         // 🔹 2. Organiser les réponses par "partie" (QuestionPart)
         $groupedByPart = $project->project_answers
             ->filter(fn($a) => !empty(trim($a->answer_content))) // ignorer les réponses vides
@@ -2580,5 +2580,56 @@ class PublicController extends Controller
     public function updateProject(Request $request, $id)
     {
         // TODO update project
+    }
+
+    /**
+     * GET: Edit answers part form
+     *
+     * @param  int $projectId
+     * @param  int $partId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function editPart($projectId, $partId)
+    {
+        $project = Project::with(['project_answers', 'project_answers.project_question'])->findOrFail($projectId);
+        $part = QuestionPart::with(['project_questions.question_assertions'])->findOrFail($partId);
+
+        // Récupérer les réponses existantes de ce projet pour les questions de cette partie
+        $answersByQuestion = $project->project_answers->whereIn('project_question_id', $part->project_questions->pluck('id'))->keyBy('project_question_id');
+
+        return view('projects.part_form', compact('project', 'part', 'answersByQuestion'));
+    }
+
+    /**
+     * POST: Udpate answers part
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int $projectId
+     * @param  int $partId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updatePart(Request $request, $projectId, $partId)
+    {
+        $project = Project::findOrFail($projectId);
+        $part = QuestionPart::with('project_questions')->findOrFail($partId);
+
+        foreach ($part->questions as $question) {
+            $answerValue = $request->input("answers.{$question->id}");
+
+            if ($answerValue) {
+                // Trouve ou crée une réponse
+                ProjectAnswer::updateOrCreate(
+                    [
+                        'project_id' => $project->id,
+                        'project_question_id' => $question->id,
+                    ],
+                    [
+                        'answer_content' => is_array($answerValue) ? implode(', ', $answerValue) : $answerValue,
+                    ]
+                );
+            }
+        }
+
+        return response()->json(['success' => true]);
     }
 }

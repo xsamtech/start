@@ -47,6 +47,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/change-currency/{currency}', [PublicController::class, 'changeCurrency'])->name('change_currency');
     Route::get('/notifications/badge', [PublicController::class, 'getNotificationBadge'])->name('notifications.badge');
     Route::get('/generate-sheet/{language}/{user_id}/{project_id}', [PublicController::class, 'generateSheet'])->whereNumber(['user_id', 'project_id'])->name('generate_sheet');
+    Route::get('/project/{project}/part/{part}/edit', [PublicController::class, 'editPart'])->name('project.editPart');
+    Route::put('/project/{project}/part/{part}/update', [PublicController::class, 'updatePart'])->name('project.updatePart');
 
     // Products
     Route::post('/products', [PublicController::class, 'addProduct']);

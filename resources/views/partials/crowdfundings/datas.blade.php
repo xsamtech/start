@@ -164,8 +164,13 @@
         $romanIndex = toRoman($loop->iteration); // conversion en chiffre romain
     @endphp
                             <div class="panel">
-                                <div class="panel-heading bg-secondary text-white">
+                                <div class="panel-heading bg-secondary text-white clearfix">
                                     <h3 class="mt-4 mb-0">{{ $romanIndex }}. {{ $partName }}</h3>
+									<button class="btn btn-sm btn-primary pull-right open-edit-modal" 
+										data-part-id="{{ $answers->first()->project_question->question_part->id }}" 
+										data-project-id="{{ $selected_project->id }}">
+										<i class="bi bi-pencil"></i> Modifier cette partie
+									</button>
                                 </div>
 
                                 <div class="panel-body" style="padding-top: 0;">
