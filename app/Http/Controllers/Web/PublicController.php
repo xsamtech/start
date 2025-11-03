@@ -1364,6 +1364,31 @@ class PublicController extends Controller
                 return redirect('/')->with('error_message', __('notifications.find_project_404'));
             }
 
+            // 1️⃣ Trouver le rôle "Investisseur"
+            $role = Role::where('role_name->fr', 'Investisseur')->first();
+
+            if ($role) {
+                // 2️⃣ Récupérer tous les rôles associés à l'utilisateur
+                $userRoleIds = $user->roles->pluck('id');
+
+                // 3️⃣ Mettre tous les rôles existants de l'utilisateur à is_selected = 0
+                if ($userRoleIds->isNotEmpty()) {
+                    $user->roles()->updateExistingPivot($userRoleIds, ['is_selected' => 0]);
+                }
+
+                // 4️⃣ Vérifier si le rôle "Investisseur" est déjà associé à l'utilisateur
+                $hasRole = $user->roles()->where('roles.id', $role->id)->exists();
+
+                if (! $hasRole) {
+                    // 🔹 Si le rôle n'est pas encore lié, on l'attache avec is_selected = 1
+                    $user->roles()->attach($role->id, ['is_selected' => 1]);
+
+                } else {
+                    // 🔹 Si le rôle existe déjà, on le met simplement à is_selected = 1
+                    $user->roles()->updateExistingPivot($role->id, ['is_selected' => 1]);
+                }
+            }
+
             $user->projects()->attach($project->id, [
                 'paid_fund' => $request->paid_fund,
                 'currency' => !empty($request->currency) ? $request->currency : 'USD'
@@ -1412,8 +1437,8 @@ class PublicController extends Controller
             }
 
             if ($request->transaction_type_id == 2) {
-                // $cart = !empty($request->crowdfunding_id) ? $paid_fund_api : $product_api;
-                $cart = $product_api;
+                $cart = !empty($request->paid_fund) ? $paid_fund_api : $product_api;
+                // $cart = $product_api;
 
                 if ($cart->success) {
                     return redirect($cart->data->result_response->url)->with('order_number', $cart->data->result_response->order_number);

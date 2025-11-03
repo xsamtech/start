@@ -84,12 +84,13 @@
 								</div>
 								<div class="panel-body">
 @forelse ($selected_project->users as $user)
-									<div style="display: flex; align-items: center;">
+									<div style="display: flex; align-items: center; margin-bottom: 10px;">
 										<img src="{{ !empty($user->avatar_url) ? $user->avatar_url : asset('assets/img/user.png') }}" alt="{{ $user->firstname . ' ' . $user->lastname }}" width="50" style="border-radius: 50%;">
 										<p style="font-weight: 700; margin: 0 10px;">{{ $user->firstname . ' ' . $user->lastname }}</p>
 									</div>
 @empty
-									<h5 class="text-center">@lang('miscellaneous.empty_list')</h5>
+									<p class="text-center" style="margin: 0;"><i class="bi bi-people" style="font-size: 5rem;"></i></p>
+									<p class="text-center" style="margin: 0;">@lang('miscellaneous.empty_list')</p>
 @endforelse
 								</div>
 							</div>
@@ -176,9 +177,11 @@
                                 <a href="{{ route('investor.home') }}" class="btn btn-secondary">
                                     ← {{ __('miscellaneous.back_list') }}
                                 </a>
+@if (!in_array($current_user->id, $selected_project->users->pluck('id')->toArray()))
 								<button class="btn strt-btn-chocolate-3" style="color: white;" data-toggle="modal" data-target="#financeModal">
 									<i class="bi bi-cash-stack" style="margin-right: 8px;"></i> @lang('miscellaneous.public.agribusiness.finance')
 								</button>
+@endif
                             </div>
 						</div>
 					</div><!-- End .row -->
