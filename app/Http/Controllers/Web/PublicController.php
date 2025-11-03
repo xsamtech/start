@@ -1598,14 +1598,18 @@ class PublicController extends Controller
         }
 
         if ($entity == 'feedback') {
-            $customer_feedback = CustomerFeedback::create([
-                'for_product_id' => $request->for_product_id,
-                'rating' => $request->rating,
+            $current_product = Product::find($request->for_product_id);
+
+            if (!$current_product) {
+                return redirect()->back()->with('error_message', __('miscellaneous.message_sent'));
+            }
+
+            CustomerFeedback::create([
+                'for_product_id' => $current_product->id,
                 'comment' => $request->comment,
                 'user_id' => Auth::id(),
             ]);
 
-            $current_product = Product::find($customer_feedback->for_product_id);
 
             Notification::create([
                 'type' => 'customer_feedback',
@@ -1614,6 +1618,8 @@ class PublicController extends Controller
                 'to_user_id' => $current_product->user_id,
                 'product_id' => $current_product->id
             ]);
+
+            return redirect()->back()->with('success_message', __('miscellaneous.message_sent'));
         }
     }
 

@@ -1,3 +1,4 @@
+{{-- {{ dd($payments) }} --}}
 @extends('layouts.admin', ['page_title' => __('miscellaneous.menu.dashboard')])
 
 @section('admin-content')
@@ -238,7 +239,7 @@
                                                     <td>
                                                         <div class="list-group">
         @forelse ($payment->cart->customer_orders as $order)
-                                                            <a href="{{ route('product.entity.datas', ['entity' => $order->product->id]) }}" class="list-group-item list-group-item-action">
+                                                            <a href="{{ route('product.entity.datas', ['entity' => $order->product->type, 'id' => $order->product->id]) }}" class="list-group-item list-group-item-action">
                                                                 <h3 class="mb-1">{{ $order->product->product_name }}</h3>
                                                                 <p class="m-0 text-muted"><i class="bi bi-person me-2"></i>{{ $order->product->user->firstname . ' ' . $order->product->user->lastname }}</p>
                                                             </a>

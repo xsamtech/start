@@ -1172,6 +1172,7 @@ return [
 
     // ===== PUBLIC PAGES
     'public' => [
+        'report_product' => 'Signaler cet élément',
         'latest_news' => [
             'title' => 'Infos',
             'description' => '',

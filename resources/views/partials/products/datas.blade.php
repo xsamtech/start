@@ -53,12 +53,12 @@
 										<div class="col-md-6 col-sm-12 col-xs-12 product">
 											<div class="lg-margin visible-sm visible-xs"></div><!-- Space -->
 											<h1 class="product-name">{{ $selected_product->product_name }}</h1>
-											<div class="ratings-container">
+											{{-- <div class="ratings-container">
 												<div class="ratings separator">
 													<div class="ratings-result" data-result="70"></div>
 												</div><!-- End .ratings -->
 												<a href="#review" class="rate-this">@lang('miscellaneous.public.add_rating')</a>
-											</div><!-- End .rating-container -->
+											</div><!-- End .rating-container --> --}}
 											<ul class="product-list">
 												<li><span>@lang('miscellaneous.admin.product.data.' . $selected_product->type . '_price')</span>@lang('miscellaneous.colon_after_word') {{ !empty($current_user) ? ($selected_product->price . ' ' . $current_user->readable_currency) : $selected_product->price . ' ' . $selected_product->currency }}</li>
 												<li><span>@lang('miscellaneous.admin.product.data.quantity')</span>@lang('miscellaneous.colon_after_word') {{ $selected_product->quantity }}</li>
@@ -66,21 +66,57 @@
 											</ul>
 											<hr>
 											<div class="product-add clearfix">
-												<div class="custom-quantity-input">
-													<input type="text" name="quantity" value="500" class="input-minimum">
-													<a href="#" onclick="return false;"
-													class="quantity-btn quantity-input-up"><i
-													class="fa fa-angle-up"></i></a>
-											<a href="#" onclick="return false;"
-												class="quantity-btn quantity-input-down"><i
-													class="fa fa-angle-down"></i></a>
-										</div>
-										<button class="btn btn-custom-2">@lang('miscellaneous.public.add_to_cart')</button>
+										{{-- <button class="btn btn-custom-2">@lang('miscellaneous.public.add_to_cart')</button> --}}
+    @if (!empty($current_user))
+        @if ($current_user->hasProductInUnpaidCart($selected_product->id))
+                                                            <p class="btn btn-default disabled" style="margin: -2px;">
+                                                                <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.public.product_is_in_cart')</span>
+                                                            </p>
+        @else
+            @if ($selected_product->quantity > 0)
+                                                            <button class="item-add-btn" data-id="{{ $selected_product->id }}" style="position: relative;">
+                                                                <span id="icon-cart-text-{{ $selected_product->id }}" class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
+                                                                <img id="ajax-loading-{{ $selected_product->id }}" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="@lang('miscellaneous.loading')" width="30" height="30" style="position: absolute; top: 2px; right: 43%; display: none;">
+                                                            </button>
+            @else
+                                                            <p class="btn btn-default disabled" style="margin: -2px;">
+                                                                <span class="text-uppercase">@lang('miscellaneous.public.insufficient_stock')</span>
+                                                            </p>
+            @endif
+        @endif
+    @else
+        @if ($isInCart)  <!-- Vérifie si le produit est dans la session -->
+                                                            <p class="btn btn-default disabled" style="margin: -2px;">
+                                                                <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.public.product_is_in_cart')</span>
+                                                            </p>
+        @else
+                                                            <button class="item-add-btn" data-id="{{ $selected_product['id'] }}" style="position: relative;">
+                                                                <span id="icon-cart-text-{{ $selected_product['id'] }}" class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
+                                                                <img id="ajax-loading-{{ $selected_product['id'] }}" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="@lang('miscellaneous.loading')" width="30" height="30" style="position: absolute; top: 2px; right: 43%; display: none;">
+                                                            </button>
+        @endif
+    @endif
 	@if ($selected_product->user_id == $current_user->id)
-										<button class="btn btn-custom-1" data-toggle="modal" data-target="#updateProductModal">@lang('miscellaneous.update')</button>
+															<button class="btn btn-custom-1" data-toggle="modal" data-target="#updateProductModal">@lang('miscellaneous.update')</button>
 	@endif
-									</div><!-- .product-add -->
-								</div><!-- End .col-md-6 -->
+											</div><!-- .product-add -->
+											<hr>
+
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<h6 style="margin: 0;">@lang('miscellaneous.public.report_product')</h6>
+												</div>
+												<div class="panel-body">
+													<form action="{{ route('product.entity', ['entity' => 'feedback']) }}" method="POST">
+	@csrf
+														<input type="hidden" name="for_product_id" value="{{ $selected_product->id }}">
+														<textarea name="comment" id="comment" class="form-control" placeholder="@lang('miscellaneous.admin.post.data.type.message') ..."></textarea>
+
+														<button class="btn strt-btn-chocolate-3" style="width: 200px; margin-top: 20px;">@lang('miscellaneous.send')</button>
+													</form>
+												</div>
+											</div>
+										</div><!-- End .col-md-6 -->
 
 							</div><!-- End .row -->
 {{-- 
