@@ -75,8 +75,8 @@ class AdminController extends Controller
         $projects = Project::orderByDesc('created_at')->paginate(20)->appends($request->query());
         // Récupérer les paiements filtrés avec leurs paniers
         $payments = $request->has('status') 
-                        ? Payment::with('cart')->where('status', $request->get('status'))->filterByMonthAndYear($month, $year)->orderByDesc('created_at')->paginate(20)->appends($request->query())
-                        : Payment::with('cart')->filterByMonthAndYear($month, $year)->orderByDesc('created_at')->paginate(20)->appends($request->query());
+                        ? Payment::with('cart')->whereNotNull('cart_id')->where('status', $request->get('status'))->filterByMonthAndYear($month, $year)->orderByDesc('created_at')->paginate(20)->appends($request->query())
+                        : Payment::with('cart')->whereNotNull('cart_id')->filterByMonthAndYear($month, $year)->orderByDesc('created_at')->paginate(20)->appends($request->query());
         // Regrouper les paiements par semaine
         $paymentsByWeek = $payments->groupBy(function($payment) {
             return $payment->created_at->format('o-W'); // o-W : Année-Semaine (par exemple 2025-23)
