@@ -614,6 +614,7 @@ return [
             'investors' => [
                 'title' => 'Agribusiness',
                 'ask' => 'Demande d’investissement',
+                'project_investors' => 'Investisseurs du projet',
             ],
             'crowdfunding' => 'Rédaction projet',
         ],

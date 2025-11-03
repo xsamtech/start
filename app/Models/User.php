@@ -68,6 +68,15 @@ class User extends Authenticatable
     }
 
     /**
+     * MANY-TO-MANY
+     * Several projects for several users
+     */
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class)->withTimestamps()->withPivot('paid_fund', 'currency');
+    }
+
+    /**
      * MANY-TO-ONE
      * Several carts for a user
      */
@@ -89,7 +98,7 @@ class User extends Authenticatable
      * MANY-TO-ONE
      * Several projects for a user
      */
-    public function projects(): HasMany
+    public function owned_projects(): HasMany
     {
         return $this->hasMany(Project::class);
     }

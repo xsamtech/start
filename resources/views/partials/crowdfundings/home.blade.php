@@ -19,7 +19,7 @@
 
 						<div class="col-md-12">
 @if (!empty($current_user))
-	@if (count($user_projects) < 3)
+	{{-- @if (count($user_projects) < 3) --}}
 		@if (count($questions) > 0)
 							<div class="row">
 								<div class="col-lg-7 col-sm-8 col-xs-12">
@@ -163,6 +163,12 @@
 													</a>
 												</div>
 					@endif
+				{{-- @else
+												<div class="panel-body" style="padding-bottom: 8px;">
+													<a href="{{ route('generate_sheet', ['language' => $current_locale, 'user_id' => $current_user->id, 'project_id' => $project->id]) }}">
+														<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_empty')</p>
+													</a>
+												</div> --}}
 				@endif
 
 				@if (request()->has('project'))
@@ -199,7 +205,7 @@
 							</div>
 							<h3 class="text-center">@lang('miscellaneous.menu.admin.questionnaire.empty_public_info')</h3>
 		@endif
-	@else
+	{{-- @else
 							<div class="row">
 								<div class="col-lg-12 text-center">
 									<h3 class="h3-responsive" style="font-weight: bold;; margin-bottom: 5px;">@lang('miscellaneous.admin.project_writing.my_projects.title')</h3>
@@ -208,11 +214,10 @@
 		@foreach ($user_projects as $project)
 								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="margin: 0 auto;">
 									<div class="panel panel-default">
-			@if (count($project->photos) > 0)
 										<div class="panel-body" style="padding-bottom: 0;">
-											<img src="{{ $project->photos[0]->file_url }}" class="d-block w-100" alt="Image 1" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">
+											<img src="{{ count($project->photos) > 0 ? $project->photos[0]->file_url : asset('assets/img/undefined.png') }}" class="d-block w-100" alt="Image 1" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">
 										</div>
-			@endif
+
 										<div class="panel-body" style="padding-bottom: 8px;">
 											<p style="margin: 0 0 5px 0;">
 												{!! Str::limit($project->project_description, 200) !!}<br class="d-lg-none">
@@ -251,7 +256,7 @@
 								</div>
 		@endforeach
 							</div>
-	@endif
+	@endif --}}
 @else
 							<div class="row">
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">

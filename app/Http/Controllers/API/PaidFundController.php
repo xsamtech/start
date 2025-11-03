@@ -4,8 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Models\PaidFund;
 use Illuminate\Http\Request;
-use App\Http\Resources\PaidFund as ResourcesPaidFund;
+use App\Http\Resources\Project as ResourcesProject;
 use App\Models\Payment;
+use App\Models\Project;
 use App\Models\User;
 use stdClass;
 
@@ -20,24 +21,24 @@ class PaidFundController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        // Récupérer tous les produits avec leurs crowdfundings
-        $paid_funds = PaidFund::with('crowdfunding')->get();
+    // public function index()
+    // {
+    //     // Récupérer tous les produits avec leurs crowdfundings
+    //     $paid_funds = PaidFund::with('crowdfunding')->get();
 
-        // Regrouper les produits par catégorie
-        $groupedProducts = $paid_funds->groupBy(function ($paid_fund) {
-            return $paid_fund->crowdfunding->description;
-        });
+    //     // Regrouper les produits par catégorie
+    //     $groupedProducts = $paid_funds->groupBy(function ($paid_fund) {
+    //         return $paid_fund->crowdfunding->description;
+    //     });
 
-        // Transformer les données regroupées pour les envoyer dans la réponse
-        // Ici on fait une ressource personnalisée pour chaque crowdfunding, tu peux adapter selon ce que tu veux retourner
-        $groupedPaidFundsResource = $groupedProducts->map(function ($group) {
-            return ResourcesPaidFund::collection($group); // ou créer une nouvelle ressource personnalisée pour chaque groupe
-        });
+    //     // Transformer les données regroupées pour les envoyer dans la réponse
+    //     // Ici on fait une ressource personnalisée pour chaque crowdfunding, tu peux adapter selon ce que tu veux retourner
+    //     $groupedPaidFundsResource = $groupedProducts->map(function ($group) {
+    //         return ResourcesPaidFund::collection($group); // ou créer une nouvelle ressource personnalisée pour chaque groupe
+    //     });
 
-        return $this->handleResponse($groupedPaidFundsResource, __('notifications.find_all_paid_funds_success'));
-    }
+    //     return $this->handleResponse($groupedPaidFundsResource, __('notifications.find_all_paid_funds_success'));
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -83,7 +84,7 @@ class PaidFundController extends BaseController
      * @param  int $user_id
      * @return \Illuminate\Http\Response
      */
-    public function pay(Request $request, $paid_fund_id, $user_id)
+    public function pay(Request $request, $user_id)
     {
         // FlexPay accessing data
         $gateway_mobile = config('services.flexpay.gateway_mobile');
@@ -98,10 +99,10 @@ class PaidFundController extends BaseController
             return $this->handleError(__('notifications.find_user_404'));
         }
 
-        $paid_fund = PaidFund::find($paid_fund_id);
+        $project = Project::find($request->project_id);
 
-        if (is_null($paid_fund)) {
-            return $this->handleError(__('notifications.find_paid_fund_404'));
+        if (is_null($project)) {
+            return $this->handleError(__('notifications.find_project_404'));
         }
 
         // Validations
@@ -111,7 +112,7 @@ class PaidFundController extends BaseController
 
         // If the transaction is via mobile money
         if ($request->transaction_type_id == 1) {
-            $reference_code = 'REF-' . ((string) random_int(10000000, 99999999)) . '-' . $paid_fund->user_id;
+            $reference_code = 'REF-' . ((string) random_int(10000000, 99999999)) . '-' . $user_id;
 
             // Create response by sending request to FlexPay
             $data = array(
@@ -119,8 +120,8 @@ class PaidFundController extends BaseController
                 'type' => 1,
                 'phone' => $request->other_phone,
                 'reference' => $reference_code,
-                'amount' => $paid_fund->convertAmount($current_user->currency),
-                'currency' => $current_user->currency,
+                'amount' => $request->paid_fund,
+                'currency' => $request->currency,
                 'callbackUrl' => getApiURL() . '/payment/store'
             );
             $data = json_encode($data);
@@ -159,13 +160,13 @@ class PaidFundController extends BaseController
                         $payment = Payment::create([
                             'reference' => $reference_code,
                             'order_number' => $jsonRes['orderNumber'],
-                            'amount' => $paid_fund->convertAmount($current_user->currency),
+                            'amount' => $request->paid_fund,
                             'phone' => $request->other_phone,
-                            'currency' => $current_user->currency,
+                            'currency' => $request->currency,
                             'channel' => $request->channel,
                             'type' => $request->transaction_type_id,
                             'status' => 1,
-                            'paid_fund_id' => $paid_fund->id
+                            'project_id' => $project->id
                         ]);
                     }
 
@@ -175,7 +176,7 @@ class PaidFundController extends BaseController
                         'message' => $jsonRes['message'],
                         'order_number' => $jsonRes['orderNumber']
                     ];
-                    $object->paid_fund = new ResourcesPaidFund($paid_fund);
+                    $object->project_id = new ResourcesProject($project);
 
                     return $this->handleResponse($object, __('notifications.create_paid_fund_success'));
                 }
@@ -184,21 +185,21 @@ class PaidFundController extends BaseController
 
         // If the transaction is via bank card
         if ($request->transaction_type_id == 2) {
-            $reference_code = 'REF-' . ((string) random_int(10000000, 99999999)) . '-' . $paid_fund->user_id;
+            $reference_code = 'REF-' . ((string) random_int(10000000, 99999999)) . '-' . $user_id;
 
             // Create response by sending request to FlexPay
             $body = json_encode(array(
                 'authorization' => 'Bearer ' . config('services.flexpay.api_token'),
                 'merchant' => config('services.flexpay.merchant'),
                 'reference' => $reference_code,
-                'amount' => $paid_fund->convertAmount($current_user->currency),
-                'currency' => $current_user->currency,
+                'amount' => $request->paid_fund,
+                'currency' => $request->currency,
                 'description' => __('miscellaneous.bank_transaction_description'),
                 'callback_url' => getApiURL() . '/payment/store',
-                'approve_url' => $request->app_url . '/paid/' . $paid_fund->convertAmount($current_user->currency) . '/' . $current_user->currency . '/0/paid_fund/' . $paid_fund->id,
-                'cancel_url' => $request->app_url . '/paid/' . $paid_fund->convertAmount($current_user->currency) . '/' . $current_user->currency . '/1/paid_fund/' . $paid_fund->id,
-                'decline_url' => $request->app_url . '/paid/' . $paid_fund->convertAmount($current_user->currency) . '/' . $current_user->currency . '/2/paid_fund/' . $paid_fund->id,
-                'home_url' => $request->app_url . '/crowdfunding/' . $paid_fund->crowdfunding_id,
+                'approve_url' => $request->app_url . '/paid/' . $request->paid_fund . '/' . $request->currency . '/0/project/' . $project->id,
+                'cancel_url' => $request->app_url . '/paid/' . $request->paid_fund . '/' . $request->currency . '/1/project/' . $project->id,
+                'decline_url' => $request->app_url . '/paid/' . $request->paid_fund . '/' . $request->currency . '/2/project/' . $project->id,
+                'home_url' => $request->app_url . '/investors/' . $project->id,
             ));
 
             $curl = curl_init($gateway_card);
@@ -229,13 +230,13 @@ class PaidFundController extends BaseController
                         $payment = Payment::create([
                             'reference' => $reference_code,
                             'order_number' => $orderNumber,
-                            'amount' => $paid_fund->convertAmount($current_user->currency),
+                            'amount' => $request->paid_fund,
                             'phone' => $request->other_phone,
-                            'currency' => $current_user->currency,
+                            'currency' => $request->currency,
                             'channel' => $request->channel,
                             'type' => $request->transaction_type_id,
                             'status' => 1,
-                            'paid_fund_id' => $paid_fund->id
+                            'project_id' => $project->id
                         ]);
                     }
 
@@ -246,7 +247,7 @@ class PaidFundController extends BaseController
                         'order_number' => $orderNumber,
                         'url' => $url
                     ];
-                    $object->paid_fund = new ResourcesPaidFund($paid_fund);
+                    $object->paid_fund = new ResourcesProject($project);
 
                     return $this->handleResponse($object, __('notifications.create_paid_fund_success'));
                 }

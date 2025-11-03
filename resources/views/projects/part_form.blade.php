@@ -58,5 +58,8 @@
         </div>
     @endforeach
 
-    <button type="submit" class="btn btn-success">Enregistrer</button>
+    <button type="submit" class="btn strt-btn-chocolate-3" style="width: 250px">
+        <span style="color: #fff;">@lang('miscellaneous.register')</span>
+    </button>
+    <img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
 </form>

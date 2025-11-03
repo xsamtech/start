@@ -790,6 +790,7 @@ class PublicController extends Controller
             'groupedByPart' => $groupedByPart,
             'selected_project' => $project,
             'completedSheet' => $completedSheet,
+            'countries' => showCountries()
         ]);
     }
 
@@ -893,15 +894,15 @@ class PublicController extends Controller
      */
     public function paid($amount = null, $currency = null, $code, $entity, $entity_id)
     {
-        if ($entity == 'paid_fund') {
-            $paid_fund = PaidFund::find($entity_id);
+        if ($entity == 'project') {
+            $project = Project::find($entity_id);
 
             if ($code == '0') {
                 return view('transaction_message', [
                     'amount' => $amount,
                     'currency' => $currency,
                     'status_code' => $code,
-                    'paid_fund' => $paid_fund,
+                    'project' => $project,
                     'message_content' => __('notifications.processing_succeed')
                 ]);
             }
@@ -919,7 +920,7 @@ class PublicController extends Controller
                     'amount' => $amount,
                     'currency' => $currency,
                     'status_code' => $code,
-                    'paid_fund' => $paid_fund,
+                    'project' => $project,
                     'status_code' => $code,
                     'message_content' => __('notifications.process_canceled')
                 ]);
@@ -938,7 +939,7 @@ class PublicController extends Controller
                     'amount' => $amount,
                     'currency' => $currency,
                     'status_code' => $code,
-                    'paid_fund' => $paid_fund,
+                    'project' => $project,
                     'status_code' => $code,
                     'message_content' => __('notifications.process_failed')
                 ]);
@@ -1273,6 +1274,24 @@ class PublicController extends Controller
                 'message' => __('notifications.delete_question_assertion_success'),
             ]);
         }
+
+        if ($entity == 'answer') {
+            $project_answer = ProjectAnswer::find($id);
+
+            if (!$project_answer) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_project_answer_404'),
+                ], 404);
+            }
+
+            $project_answer->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_project_answer_success'),
+            ]);
+        }
     }
     // ==================================== HTTP POST METHODS ====================================
     /**
@@ -1322,8 +1341,6 @@ class PublicController extends Controller
      */
     public function runPay(Request $request)
     {
-        // $paid_fund = null;
-
         if ($request->transaction_type_id == null) {
             return redirect()->back()->with('error_message', __('notifications.transaction_type_error'));
         }
@@ -1334,14 +1351,24 @@ class PublicController extends Controller
             }
         }
 
-        // if (!empty($request->crowdfunding_id)) {
-        //     $paid_fund = PaidFund::create([
-        //         'crowdfunding_id' => $request->crowdfunding_id,
-        //         'user_id' => $request->user_id,
-        //         'amount' => $request->amount,
-        //         'currency' => $request->currency
-        //     ]);
-        // }
+        if (!empty($request->paid_fund)) {
+            $user = User::find($request->user_id);
+
+            if (is_null($user)) {
+                return redirect('/')->with('error_message', __('notifications.find_user_404'));
+            }
+
+            $project = Project::find($request->project_id);
+
+            if (is_null($project)) {
+                return redirect('/')->with('error_message', __('notifications.find_project_404'));
+            }
+
+            $user->projects()->attach($project->id, [
+                'paid_fund' => $request->paid_fund,
+                'currency' => !empty($request->currency) ? $request->currency : 'USD'
+            ]);
+        }
 
         if ($request->transaction_type_id != null) {
             $product_api = $this::$api_client_manager::call('POST', 
@@ -1354,23 +1381,24 @@ class PublicController extends Controller
                                                                 'cart_id' => $request->cart_id,
                                                                 'app_url' => $request->app_url
                                                             ]);
-            // $paid_fund_api = $this::$api_client_manager::call('POST', 
-            //                                                     getApiURL() . '/paid_fund/pay/' . $paid_fund->id . '/' . $request->user_id, 
-            //                                                     null, [
-            //                                                     'transaction_type_id' => $request->transaction_type_id,
-            //                                                     'other_phone' => $request->other_phone_code . $request->other_phone_number,
-            //                                                     'user_id' => $request->user_id,
-            //                                                     'paid_fund_id' => $paid_fund->id,
-            //                                                     'app_url' => $request->app_url
-            //                                                 ]);
+            $paid_fund_api = $this::$api_client_manager::call('POST', 
+                                                            getApiURL() . '/paid_fund/pay/' . $request->user_id, 
+                                                            null, [
+                                                                'transaction_type_id' => $request->transaction_type_id,
+                                                                'project_id' => $request->project_id,
+                                                                'other_phone' => $request->other_phone_code . $request->other_phone_number,
+                                                                'paid_fund' => $request->paid_fund,
+                                                                'currency' => $request->currency,
+                                                                'app_url' => $request->app_url
+                                                            ]);
 
             if ($request->transaction_type_id == 1) {
                 if ($request->other_phone_code == null or $request->other_phone_number == null) {
                     return redirect()->back()->with('error_message', __('validation.custom.phone.incorrect'));
                 }
 
-                // $cart = !empty($request->crowdfunding_id) ? $paid_fund_api : $product_api;
-                $cart = $product_api;
+                $cart = !empty($request->paid_fund) ? $paid_fund_api : $product_api;
+                // $cart = $product_api;
 
                 if ($cart->success) {
                     return redirect()->route('transaction.waiting', [
@@ -1447,7 +1475,7 @@ class PublicController extends Controller
 
                 // Types of extensions for different file types
                 $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-                $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'tif', 'svg', 'heif', 'heic', 'ico'];
                 $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
                 $audio_extensions = ['mp3', 'wav', 'flac'];
 
@@ -1590,7 +1618,7 @@ class PublicController extends Controller
 
             // Types of extensions for different file types
             $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'tif', 'svg', 'heif', 'heic', 'ico'];
             $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
             $audio_extensions = ['mp3', 'wav', 'flac'];
 
@@ -1680,6 +1708,13 @@ class PublicController extends Controller
      */
     public function addProject(Request $request)
     {
+        $user_projects = Project::where('user_id', Auth::id())->get();
+
+        // If current user has already 3 projects, don't register another
+        if (count($user_projects) >= 3) {
+            return redirect()->back()->with('error_message', __('miscellaneous.admin.project_writing.my_projects.info'));
+        }
+
         // 1️⃣ Création ou récupération du projet
         $project = $request->has('project_id') ? Project::findOrFail($request->project_id) : Project::create(['is_shared' => 0, 'user_id' => auth()->id(), 'project_description' => $request->project_description]);
 
@@ -1690,13 +1725,13 @@ class PublicController extends Controller
 
             // Types of extensions for different file types
             $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'tif', 'svg', 'heif', 'heic', 'ico'];
             $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
             $audio_extensions = ['mp3', 'wav', 'flac'];
 
             foreach ($files as $key => $singleFile) {
                 // Checking the file extension
-                $file_extension = $singleFile->getClientOriginalExtension();
+                $file_extension = strtolower($singleFile->getClientOriginalExtension());
 
                 // File type check
                 $custom_uri = '';
@@ -1726,7 +1761,7 @@ class PublicController extends Controller
 
                 // If the extension does not match any valid type
                 if (!$is_valid_type) {
-                    return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
+                    return redirect('/project-writing/?project=' . $project->id . '&step_ref=2')->with('error_message', __('notifications.type_is_not_file'));
                 }
 
                 // Generate a unique path for the file
@@ -1738,7 +1773,7 @@ class PublicController extends Controller
                     $singleFile->storeAs($custom_uri . '/' . $project->id, $filename, 'public');
 
                 } catch (\Throwable $th) {
-                    return response()->json(['status' => 'error', 'message' => __('notifications.create_work_file_500')]);
+                    return redirect('/project-writing/?project=' . $project->id . '&step_ref=2')->with('error_message', __('notifications.create_work_file_500'));
                 }
 
                 // Creating the database record for the file
@@ -1785,7 +1820,7 @@ class PublicController extends Controller
 
         if ($currentPart->is_last_step == 0) {
             $nextPart = QuestionPart::where('id', '>', $currentPart->id)->first();
-    
+
             return redirect('/project-writing/?project=' . $project->id . '&step_ref=' . $nextPart->id)->with('success', __('notifications.update_project_success'));
 
         } else {
@@ -2288,7 +2323,7 @@ class PublicController extends Controller
 
                 // Types of extensions for different file types
                 $video_extensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-                $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'tif', 'svg', 'heif', 'heic', 'ico'];
                 $document_extensions = ['pdf', 'doc', 'docx', 'txt'];
                 $audio_extensions = ['mp3', 'wav', 'flac'];
 
@@ -2613,7 +2648,7 @@ class PublicController extends Controller
         $project = Project::findOrFail($projectId);
         $part = QuestionPart::with('project_questions')->findOrFail($partId);
 
-        foreach ($part->questions as $question) {
+        foreach ($part->project_questions as $question) {
             $answerValue = $request->input("answers.{$question->id}");
 
             if ($answerValue) {

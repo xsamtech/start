@@ -31,7 +31,7 @@ Route::group(['middleware' => ['api', 'localization']], function () {
     // Product
     Route::post('product/purchase/{cart_id}/{user_id}', 'App\Http\Controllers\API\ProductController@purchase')->name('product.api.purchase');
     // PaidFund
-    Route::post('paid_fund/pay/{paid_fund_id}/{user_id}', 'App\Http\Controllers\API\PaidFundController@pay')->name('paid_fund.api.pay');
+    Route::post('paid_fund/pay/{user_id}', 'App\Http\Controllers\API\PaidFundController@pay')->name('paid_fund.api.pay');
     // Payment
     Route::post('payment/store', 'App\Http\Controllers\API\PaymentController@store')->name('payment.api.store');
     Route::get('payment/find_by_phone/{phone_number}', 'App\Http\Controllers\API\PaymentController@findByPhone')->name('payment.api.find_by_phone');

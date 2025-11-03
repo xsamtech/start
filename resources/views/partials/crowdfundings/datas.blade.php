@@ -124,12 +124,14 @@
 	@endforeach
 									</div>
 								</div>
+@else
+								<div class="panel-body" style="padding-bottom: 0;">
+									<img src="{{ asset('assets/img/undefined.png') }}" class="d-block w-100" alt="Image" style="width: 100%; height: 300px; object-fit: cover;">
+								</div>
 @endif
 
 								<div class="panel-body" style="padding-bottom: 0;">
-									<h5 class="mb-1" style="font-weight: 600;">
-										<u>@lang('miscellaneous.admin.project_writing.data.description.label')</u>
-									</h5>
+									<h5 class="mb-1" style="font-weight: 600;">@lang('miscellaneous.admin.project_writing.data.description.label')</h5>
 									<pre style="background: transparent; padding: 5px 0 0 0; border: none; line-height: 16px;">
 {!! $selected_project->project_description !!}
 									</pre>
@@ -137,27 +139,6 @@
 							</div>
 
 
-@php
-    // Petite fonction pour convertir un nombre en chiffre romain
-    function toRoman($num) {
-        $map = [
-            'M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400,
-            'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40,
-            'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1
-        ];
-        $returnValue = '';
-        while ($num > 0) {
-            foreach ($map as $roman => $int) {
-                if ($num >= $int) {
-                    $num -= $int;
-                    $returnValue .= $roman;
-                    break;
-                }
-            }
-        }
-        return $returnValue;
-    }
-@endphp
 @foreach($groupedByPart as $index => $answers)
     @php
         $partName = $index; // la clé du groupBy = nom de la partie
@@ -165,21 +146,24 @@
     @endphp
                             <div class="panel">
                                 <div class="panel-heading bg-secondary text-white clearfix">
-                                    <h3 class="mt-4 mb-0">{{ $romanIndex }}. {{ $partName }}</h3>
-									<button class="btn btn-sm btn-primary pull-right open-edit-modal" 
-										data-part-id="{{ $answers->first()->project_question->question_part->id }}" 
-										data-project-id="{{ $selected_project->id }}">
-										<i class="bi bi-pencil"></i> Modifier cette partie
-									</button>
+                                    <h3 class="mt-4 mb-0">
+										<span style="display: inline-block; margin-right: 1rem;">{{ $romanIndex }}. {{ $partName }}</span>
+										<a style="cursor: pointer;" class="open-edit-modal text-primary" data-part-id="{{ $answers->first()->project_question->question_part->id }}" data-project-id="{{ $selected_project->id }}" title="@lang('miscellaneous.change')">
+											<i class="bi bi-pencil"></i>
+										</a>
+									</h3>
                                 </div>
 
                                 <div class="panel-body" style="padding-top: 0;">
     @foreach($answers as $qIndex => $answer)
-                                    <div class="mb-4">
+                                    <div class="mb-4 clearfix">
                                         <p class="fw-bold">
                                             <strong>{{ $answer->project_question->question_content }}</strong>
                                         </p>
                                         <!--<p class="mb-1 text-muted">{{ __('Réponse :') }}</p>-->
+										<a style="cursor: pointer; background-color: red; padding: 3px 7px;" class="pull-right" title="@lang('miscellaneous.delete')" onclick="event.preventDefault(); performAction('delete', 'answer', 'item-{{ $answer->id }}')">
+											<i class="bi bi-x-lg" style="color: white"></i>
+										</a>
                                         <pre style="background:#f8f9fa; padding:10px; border-radius:5px; white-space:pre-wrap;">
 {{ $answer->answer_content }}
                                         </pre>

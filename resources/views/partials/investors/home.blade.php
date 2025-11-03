@@ -41,12 +41,11 @@
 											<img src="{{ $project->photos[0]->file_url }}" class="d-block w-100" alt="Image 1" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">
 										</div>
 			@endif
-										<div class="panel-body" style="padding-bottom: 0px;">
+										<div class="panel-body">
 											<p style="margin: 0;">
 												{!! Str::limit($project->project_description, 200) !!}<br class="d-lg-none">
 											</p>
 										</div>
-
 
 			@if (count($project->sheets) > 0)
 				@php
@@ -54,7 +53,7 @@
 				@endphp
 
 				@if ($completedSheet)
-										<div class="panel-body" style="padding-bottom: 8px;">
+										<div class="panel-body" style="padding-top: 0; padding-bottom: 8px;">
 											<a href="{{ $completedSheet->file_url }}" target="_blank">
 												<p style="color: green; margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_public')</p>
 											</a>

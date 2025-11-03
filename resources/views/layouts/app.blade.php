@@ -676,25 +676,109 @@
         </div>
 @endif
 @if (Route::is('crowdfunding.datas'))
-    <!-- Modal de mise à jour -->
-    <div class="modal fade" id="editPartModal" tabindex="-1" role="dialog" aria-labelledby="editPartModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-secondary text-white">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <!-- Modal de mise à jour -->
+        <div class="modal fade" id="editPartModal" tabindex="-1" role="dialog" aria-labelledby="editPartModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-secondary text-white">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
 
-                    <h4 class="modal-title" id="editPartModalLabel">@lang('miscellaneous.update')</h4>
-                </div>
+                        <h4 class="modal-title" id="editPartModalLabel">@lang('miscellaneous.update')</h4>
+                    </div>
 
-                <div class="modal-body">
-                    <img id="modalLoader" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
-                    <div id="modalFormContainer"></div>
+                    <div class="modal-body">
+                        <img id="modalLoader" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
+                        <div id="modalFormContainer"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+@endif
+@if (Route::is('investor.datas'))
+        <!-- ### Add product ### -->
+        <div class="modal fade" id="financeModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 5px; border: 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="@lang('miscellaneous.close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body" style="padding-top: 10px;">
+                        <h2 class="text-center" style="font-weight: 700;">@lang('miscellaneous.public.agribusiness.finance')</h2>
+                        <hr>
+
+                        <form action="{{ route('pay') }}" method="POST">
+        @csrf
+                            <input type="hidden" name="app_url" value="{{ getWebURL() }}">
+                            <input type="hidden" name="project_id" value="{{ $selected_project->id }}">
+                            <input type="hidden" name="user_id" value="{{ !empty($current_user) ? $current_user->id : null }}">
+
+                            <div class="row">
+                                <!-- Amount -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="paid_fund">@lang('miscellaneous.amount')</label>
+                                        <input type="number" class="form-control" id="paid_fund" name="paid_fund" required>
+                                    </div>
+                                </div>
+
+                                <!-- Currency -->
+                                <div class="col-md-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="currency">@lang('miscellaneous.currency')</label>
+                                        <select class="form-control" id="currency" name="currency">
+                                            <option class="small" disabled>@lang('miscellaneous.currency')</option>
+                                            <option>USD</option>
+                                            <option>CDF</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div id="paymentMethod">
+                                <p class="lead" style="margin-bottom: 5px;">@lang('miscellaneous.payment_method')</p>
+
+                                <label class="radio-inline" for="mobile_money">
+                                    <img src="{{ asset('assets/img/payment-mobile-money.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')" width="40" style="vertical-align: middle; margin-right: 20px;">
+                                    <input type="radio" name="transaction_type_id" id="mobile_money" value="1" style="position: relative; top: 1px;" checked /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.mobile_money')</span>
+                                </label>
+                                <label class="radio-inline" for="bank_card" style="margin: 0;">
+                                    <img src="{{ asset('assets/img/payment-credit-card.png') }}" alt="@lang('miscellaneous.public.about.subscribe.send_money.bank_card')" width="40" style="vertical-align: middle; margin-right: 20px;">
+                                    <input type="radio" name="transaction_type_id" id="bank_card" value="2" style="position: relative; top: 1px;" /><span class="text-muted" style="display: inline-block; margin-left: 8px;">@lang('miscellaneous.public.about.subscribe.send_money.bank_card')</span>
+                                </label>
+                            </div>
+
+                            <div id="phoneNumberForMoney">
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-0"></div>
+                                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4" style="padding-right: 0!important;">
+                                        <select class="form-control" id="selectCountry" name="other_phone_code">
+                                            <option class="small" selected disabled>@lang('miscellaneous.phone_code')</option>
+        @forelse ($countries as $country)
+            								<option value="{{ ltrim($country['phone'], '+') }}">{{ $country['label'] }}</option>
+        @empty
+        @endforelse
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-6 col-xs-8">
+                                        <input type="text" class="form-control" id="phone_number" name="other_phone_number" placeholder="@lang('miscellaneous.phone_number')">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <button class="btn btn-block strt-btn-green rounded-pill" type="submit">@lang('miscellaneous.send')</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 @endif
         <!-- MODALS-->
 
@@ -1956,6 +2040,8 @@
                 // Soumission AJAX du formulaire dans le modal
                 $(document).on('submit', '#partUpdateForm', function (e) {
                     e.preventDefault();
+                    // Afficher l'animation de chargement
+                    $('#loading-icon').show();
 
                     const form = $(this);
 
@@ -1964,6 +2050,8 @@
                         method: 'POST',
                         data: form.serialize(),
                         success: function () {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
                             // Afficher une alerte de succès
                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
                                                                 <div class="alert alert-success alert-dismissible" role="alert" style="width: 500px;">
@@ -1979,6 +2067,8 @@
                             location.reload(); // pour rafraîchir les réponses affichées
                         },
                         error: function () {
+                            // Cacher l'animation de chargement
+                            $('#loading-icon').hide();
                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
                                                                 <div class="alert alert-danger alert-dismissible" role="alert" style="width: 500px;">
                                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">

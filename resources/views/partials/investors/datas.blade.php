@@ -1,3 +1,4 @@
+
 			<section id="content">
 				<div id="breadcrumb-container">
 					<div class="container">
@@ -62,18 +63,34 @@
 								</div>
 							</div>
 
-							<div class="panel panel-default">
-								<div class="panel-body" style="padding: 5px 10px 0 10px;">
 @if (count($selected_project->sheets) > 0)
 	@if ($completedSheet)
+							<div class="panel panel-default">
+								<div class="panel-body" style="padding: 5px 10px 0 10px;">
 									<p style="margin: 0:">
 										<a href="{{ $completedSheet->file_url }}" target="_blank">
 											<p style="margin-bottom: 0;"><i class="bi bi-file-earmark-text" style="font-size: 2rem; color: green; margin-right: 8px; vertical-align: -3px;"></i>@lang('miscellaneous.admin.project_writing.data.sheet_url_public')</p>
 										</a>
 									</p>
 
+								</div>
+							</div>
 	@endif
 @endif
+
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">@lang('miscellaneous.menu.public.investors.project_investors')</h4>
+								</div>
+								<div class="panel-body">
+@forelse ($selected_project->users as $user)
+									<div style="display: flex; align-items: center;">
+										<img src="{{ !empty($user->avatar_url) ? $user->avatar_url : asset('assets/img/user.png') }}" alt="{{ $user->firstname . ' ' . $user->lastname }}" width="50" style="border-radius: 50%;">
+										<p style="font-weight: 700; margin: 0 10px;">{{ $user->firstname . ' ' . $user->lastname }}</p>
+									</div>
+@empty
+									<h5 class="text-center">@lang('miscellaneous.empty_list')</h5>
+@endforelse
 								</div>
 							</div>
 @if (count($selected_project->sheets) > 0 && !$completedSheet)
@@ -115,9 +132,7 @@
 @endif
 
 								<div class="panel-body" style="padding-bottom: 0;">
-									<h5 class="mb-1" style="font-weight: 600;">
-										<u>@lang('miscellaneous.admin.project_writing.data.description.label')</u>
-									</h5>
+									<h5 class="mb-1" style="font-weight: 600;">@lang('miscellaneous.admin.project_writing.data.description.label')</h5>
 									<pre style="background: transparent; padding: 5px 0 0 0; border: none; line-height: 16px;">
 {!! $selected_project->project_description !!}
 									</pre>
@@ -125,27 +140,6 @@
 							</div>
 
 
-@php
-    // Petite fonction pour convertir un nombre en chiffre romain
-    function toRoman($num) {
-        $map = [
-            'M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400,
-            'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40,
-            'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1
-        ];
-        $returnValue = '';
-        while ($num > 0) {
-            foreach ($map as $roman => $int) {
-                if ($num >= $int) {
-                    $num -= $int;
-                    $returnValue .= $roman;
-                    break;
-                }
-            }
-        }
-        return $returnValue;
-    }
-@endphp
 @foreach($groupedByPart as $index => $answers)
     @php
         $partName = $index; // la clé du groupBy = nom de la partie
@@ -178,10 +172,13 @@
                             </div>
 @endif
 
-                            <div class="mt-4 text-center">
+                            <div class="mt-4 text-center" style="display: flex; justify-content: space-between; align-items: center;">
                                 <a href="{{ route('investor.home') }}" class="btn btn-secondary">
                                     ← {{ __('miscellaneous.back_list') }}
                                 </a>
+								<button class="btn strt-btn-chocolate-3" style="color: white;" data-toggle="modal" data-target="#financeModal">
+									<i class="bi bi-cash-stack" style="margin-right: 8px;"></i> @lang('miscellaneous.public.agribusiness.finance')
+								</button>
                             </div>
 						</div>
 					</div><!-- End .row -->
