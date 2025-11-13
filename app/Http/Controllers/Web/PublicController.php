@@ -1478,6 +1478,13 @@ class PublicController extends Controller
                 ]);
             }
 
+            if ($request->category_id == 3) {
+                if (condition) {
+                    # code...
+                }
+                return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
+            }
+
             $role_seller = Role::where('role_name->fr', 'Vendeur')->first();
             $product = Product::create([
                 'product_name' => $request->product_name,
