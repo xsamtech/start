@@ -129,6 +129,10 @@
                                     @lang('miscellaneous.admin.group.category.data.alias')@lang('miscellaneous.colon_after_word')
                                     <strong>{{ $selected_category->alias }}</strong>
                                 </h5>
+                                <h5 class="my-2 fw-lighter">
+                                    @lang('miscellaneous.admin.group.category.data.min_quantity')@lang('miscellaneous.colon_after_word')
+                                    <strong>{{ $selected_category->min_quantity }}</strong>
+                                </h5>
 @php
     $for_service = null;
 
