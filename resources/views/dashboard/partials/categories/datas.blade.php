@@ -68,6 +68,12 @@
                                             <input type="text" name="alias" class="form-control" id="alias" value="{{ $selected_category->alias }}">
                                         </div>
 
+                                        <!-- Unit quantity -->
+                                        <div class="mb-2">
+                                            <label for="min_quantity" class="form-label fw-bold">@lang('miscellaneous.admin.group.category.data.min_quantity')</label>
+                                            <input type="text" name="min_quantity" class="form-control" id="min_quantity" value="{{ $selected_category->min_quantity }}">
+                                        </div>
+
                                         <!-- For which group -->
                                         <div class="mb-2">
                                             <label for="for_service" class="form-label fw-bold">@lang('miscellaneous.admin.group.category.data.for_which_group')</label>

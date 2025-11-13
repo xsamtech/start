@@ -964,6 +964,7 @@ class AdminController extends Controller
             ],
             'for_service' => $request->for_service,
             'alias' => $request->alias,
+            'min_quantity' => $request->min_quantity,
             'project_sector_id' => $request->project_sector_id,
         ]);
 
@@ -1025,6 +1026,10 @@ class AdminController extends Controller
 
         if ($request->has('alias') AND $request->alias != $category->alias) {
             $category->alias = $request->alias;
+        }
+
+        if ($request->has('min_quantity') AND $request->min_quantity != $category->min_quantity) {
+            $category->min_quantity = $request->min_quantity;
         }
 
         if ($request->has('project_sector_id') AND $request->project_sector_id != $category->project_sector_id) {

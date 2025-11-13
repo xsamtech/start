@@ -845,6 +845,7 @@ return [
                 'data' => [
                     'category_name' => 'Category name',
                     'alias' => 'Alias',
+                    'min_quantity' => 'Unit quantity',
                     'for_which_group' => 'For which group?',
                     'for_projects' => 'For projects',
                     'for_products' => 'For products',
