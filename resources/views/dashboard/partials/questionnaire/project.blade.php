@@ -37,7 +37,7 @@
 @forelse ($items as $project)
                                             <tr>
                                                 <td>
-                                                    <img src="{{ $project['photos'][0]['file_url'] }}" alt="" width="100">
+                                                    <img src="{{ count($project['photos']) > 0 ? $project['photos'][0]['file_url'] : asset('assets/img/undefined.png') }}" alt="" width="100">
                                                 </td>
                                                 <td>
                                                     <p class="m-0" style="max-width: 280px; white-space: normal;">{!! Str::limit($project['project_description'], 200, '...') !!}</p>
