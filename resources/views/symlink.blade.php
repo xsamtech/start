@@ -1,22 +1,21 @@
 <?php
-$targetFolder = $_SERVER['DOCUMENT_ROOT'] . '/storage/app/public';
-$linkFolder = $_SERVER['DOCUMENT_ROOT'] . '/public/storage';
 
-// Vérification de l'existence des répertoires
+$publicPath = $_SERVER['DOCUMENT_ROOT']; // .../httpdocs/public
+$basePath   = dirname($publicPath);      // .../httpdocs
+
+$targetFolder = $basePath . '/storage/app/public';
+$linkFolder   = $publicPath . '/storage';
+
 if (!file_exists($targetFolder)) {
-    echo "Le dossier source n'existe pas: $targetFolder";
-    exit;
+    die("Le dossier source n'existe pas : $targetFolder");
 }
 
-if (!file_exists($linkFolder)) {
-    echo "Le dossier de lien symbolique n'existe pas: $linkFolder";
-    exit;
+if (file_exists($linkFolder)) {
+    die("Le lien existe déjà : $linkFolder");
 }
 
-// Tenter de créer le symlink
-if (!symlink($targetFolder, $linkFolder)) {
-    echo "Erreur lors de la création du symlink: " . error_get_last()['message'];
+if (symlink($targetFolder, $linkFolder)) {
+    echo 'Symlink créé avec succès';
 } else {
-    echo 'Symlink process successfully completed';
+    echo 'Erreur symlink : ' . error_get_last()['message'];
 }
-?>
