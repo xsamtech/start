@@ -808,12 +808,12 @@ class PublicController extends Controller
 
         // Si aucune étape spécifiée → on prend la première
         $currentPart = $stepRef
-            ? QuestionPart::findOrFail($stepRef)
-            : QuestionPart::where('is_first_step', 1)->firstOrFail();
+            ? QuestionPart::find($stepRef)
+            : QuestionPart::where('is_first_step', 1)->first();
 
         // Charger les questions de cette étape
         $questions = ProjectQuestion::with('question_assertions')
-            ->where('question_part_id', $currentPart->id)
+            ->where('question_part_id', $currentPart?->id)
             ->get();
 
         return view('crowdfundings', [
