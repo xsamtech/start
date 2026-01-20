@@ -1507,10 +1507,12 @@ class PublicController extends Controller
                 }
 
                 if (!empty($category->min_quantity)) {
-                    if (empty($request->quantity) OR $request->quantity < $category->min_quantity) {
+                    $minQuantity = $category->min_quantity / 1000;
+
+                    if (empty($request->quantity) OR $request->quantity < $minQuantity) {
                         return response()->json([
                             'status' => 'error',
-                            'message' => __('miscellaneous.admin.product.data.quantity.error', ['quantity' => $category->min_quantity]),
+                            'message' => __('miscellaneous.admin.product.data.quantity.error', ['quantity' => $minQuantity]),
                         ], 400);
                     }
                 }

@@ -260,7 +260,7 @@
                                 <!-- Quantity -->
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
-                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
+                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity.title') (@lang('miscellaneous.admin.product.data.quantity.description'))</label>
                                         <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="500" value="{{ $selected_product->quantity }}" required>
                                     </div>
                                 </div>
@@ -450,7 +450,7 @@
                                 <!-- Quantity -->
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
-                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity')</label>
+                                        <label for="quantity">@lang('miscellaneous.admin.product.data.quantity.title') (@lang('miscellaneous.admin.product.data.quantity.description'))</label>
                                         <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="1" required>
                                     </div>
                                 </div>

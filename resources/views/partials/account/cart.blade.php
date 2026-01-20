@@ -33,7 +33,7 @@
 											<tr>
 												<th class="table-title">@lang('miscellaneous.admin.product.data.product_name', ['entity' => __('miscellaneous.admin.product.entity.product.singular')])</th>
 												<th class="table-title">@lang('miscellaneous.admin.product.data.price')</th>
-												<th class="table-title">@lang('miscellaneous.admin.product.data.quantity')</th>
+												<th class="table-title">@lang('miscellaneous.admin.product.data.quantity.title')</th>
 												<th class="table-title">@lang('miscellaneous.public.subtotal')</th>
 											</tr>
 										</thead>

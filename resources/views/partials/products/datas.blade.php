@@ -61,7 +61,7 @@
 											</div><!-- End .rating-container --> --}}
 											<ul class="product-list">
 												<li><span>@lang('miscellaneous.admin.product.data.' . $selected_product->type . '_price')</span>@lang('miscellaneous.colon_after_word') {{ !empty($current_user) ? ($selected_product->price . ' ' . $current_user->readable_currency) : $selected_product->price . ' ' . $selected_product->currency }}</li>
-												<li><span>@lang('miscellaneous.admin.product.data.quantity')</span>@lang('miscellaneous.colon_after_word') {{ $selected_product->quantity }}</li>
+												<li><span>@lang('miscellaneous.admin.product.data.quantity.title')</span>@lang('miscellaneous.colon_after_word') {{ $selected_product->quantity }}</li>
 												<li><span>@lang('miscellaneous.admin.product.data.product_description')</span> <br>{{ $selected_product->product_description }}</li>
 											</ul>
 											<hr>
