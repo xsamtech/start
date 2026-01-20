@@ -844,8 +844,14 @@ return [
                 'list' => 'Categories list',
                 'data' => [
                     'category_name' => 'Category name',
-                    'alias' => 'Alias',
-                    'min_quantity' => 'Unit quantity',
+                    'alias' => [
+                        'title' => 'Alias',
+                        'description' => 'A word in lowercase. Separate with a hyphen if there is more than one word.',
+                    ],
+                    'min_quantity' => [
+                        'title' => 'Minimum unit quantity (in Kg)',
+                        'description' => 'Minimum quantity a member can sell',
+                    ],
                     'for_which_group' => 'For which group?',
                     'for_projects' => 'For projects',
                     'for_products' => 'For products',

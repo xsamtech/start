@@ -844,8 +844,14 @@ return [
                 'list' => 'Liste des catégories',
                 'data' => [
                     'category_name' => 'Nom de la catégorie',
-                    'alias' => 'Alias',
-                    'min_quantity' => 'Quantité unitaire',
+                    'alias' => [
+                        'title' => 'Alias',
+                        'description' => 'Un mot avec caractères en minuscule. Séparer avec trait d’union s’il y a plus d’un mot.',
+                    ],
+                    'min_quantity' => [
+                        'title' => 'Quantité unitaire minimum (en Kg)',
+                        'description' => 'Quantité minimum qu’un membre peut vendre',
+                    ],
                     'for_which_group' => 'Pour quel groupe ?',
                     'for_projects' => 'Pour les projets',
                     'for_products' => 'Pour les produits',

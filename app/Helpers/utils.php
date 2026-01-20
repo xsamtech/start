@@ -156,28 +156,29 @@ if (!function_exists('addItemsToExplodedArray')) {
 if (!function_exists('getExchangeRate')) {
     function getExchangeRate($baseCurrency, $targetCurrency)
     {
-        // $baseCurrency = $baseCurrency ?? 'USD';
-        // $apiKey = config('services.exchangerate.key');
+        $baseCurrency = $baseCurrency ?? 'USD';
+        $apiKey = config('services.exchangerate.key');
         // ExchangeRate API URL
-        // $url = "https://v6.exchangerate-api.com/v6/{$apiKey}/pair/{$baseCurrency}/{$targetCurrency}";
+        $url = "https://v6.exchangerate-api.com/v6/{$apiKey}/pair/{$baseCurrency}/{$targetCurrency}";
 
         // Create a Guzzle client
-        // $client = new Client();
+        $client = new Client();
 
         // Perform the GET request
-        // $response = $client->get($url);
+        $response = $client->get($url);
 
         // Decode the JSON response
-        // $data = json_decode($response->getBody()->getContents(), true);
+        $data = json_decode($response->getBody()->getContents(), true);
 
         // Check if the answer is valid
-        // if ($data['result'] === 'success') {
-        //     return $data['conversion_rate'];
-        // }
+        if ($data['result'] === 'success') {
+            return $data['conversion_rate'];
+        }
 
-        return ($baseCurrency == 'USD' ? 2885.00 : 0.00035);
+        // return ($baseCurrency == 'USD' ? 2885.00 : 0.00035);
+
         // If the answer is invalid or there is an error
-        // throw new \Exception('Erreur lors de la récupération du taux de change');
+        throw new \Exception('Erreur lors de la récupération du taux de change');
     }
 }
 
