@@ -1496,11 +1496,24 @@ class PublicController extends Controller
                 ]);
             }
 
-            if ($request->category_id == 3) {
-                if (condition) {
-                    # code...
+            if (trim($request->category_id) != null) {
+                $category = Category::find($request->category_id);
+
+                if (!$category) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => __('notifications.find_category_404'),
+                    ], 404);
                 }
-                return response()->json(['status' => 'error', 'message' => __('notifications.type_is_not_file')]);
+
+                if (!empty($category->min_quantity)) {
+                    if (empty($request->quantity) OR $request->quantity < $category->min_quantity) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => __('miscellaneous.admin.product.data.quantity.error', ['quantity' => $category->min_quantity]),
+                        ], 400);
+                    }
+                }
             }
 
             $role_seller = Role::where('role_name->fr', 'Vendeur')->first();

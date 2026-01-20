@@ -751,7 +751,11 @@ return [
             'data' => [
                 'product_name' => 'Nom du :entity',
                 'product_description' => 'Description',
-                'quantity' => 'Quantité',
+                'quantity' => [
+                    'title' => 'Quantité',
+                    'description' => 'Nombre de tonnes',
+                    'error' => 'La quantité ne peut pas être inférieur :quantity tonnes',
+                ],
                 'product_price' => 'Prix (par kilo)',
                 'service_price' => 'Prix',
                 'type' => 'Type',
