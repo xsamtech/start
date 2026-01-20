@@ -1027,6 +1027,24 @@ class PublicController extends Controller
             ]);
         }
 
+        if ($entity == 'category') {
+            $category = Category::find($id);
+
+            if (!$category) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_category_404'),
+                ], 404);
+            }
+
+            $category->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_category_success'),
+            ]);
+        }
+
         if ($entity == 'product') {
             $product = Product::find($id);
 

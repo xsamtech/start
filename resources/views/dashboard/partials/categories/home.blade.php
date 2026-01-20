@@ -50,7 +50,7 @@
                                                     <a href="{{ route('dashboard.category.datas', ['id' => $category['id']]) }}">
                                                         @lang('miscellaneous.details')<i class="feather-chevrons-right ms-1"></i>
                                                     </a><br>
-                                                    <a class="d-inline-block mt-1 rounded-pill text-danger" href="#">
+                                                    <a role="button" class="d-inline-block mt-1 rounded-pill text-danger" onclick="event.preventDefault(); performAction('delete', 'category', 'item-{{ $category['id'] }}')">
                                                         <i class="feather-trash-2 me-2"></i>@lang('miscellaneous.delete')
                                                     </a>
                                                 </td>
