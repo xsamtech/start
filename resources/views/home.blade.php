@@ -257,7 +257,7 @@
                                                 <li>
                                                     <a href="{{ route('discussion.datas', ['id' => $news['id']]) }}">
                                                         <figure class="latest-posts-media-container">
-                                                            <img class="img-responsive" src="{{ $news['photos'][0]['file_url'] ?? getWebURL() . '/template/public/images/blog/post1-small.jpg' }}" alt="lats post" style="width: 100%; height: 120px; object-fit: cover;">
+                                                            <img class="img-responsive" src="{{ count($news['photos']) > 0 ? $news['photos'][0]['file_url'] : getWebURL() . '/template/public/images/blog/post1-small.jpg' }}" alt="lats post" style="width: 100%; height: 120px; object-fit: cover;">
                                                         </figure>
                                                     </a>
                                                     <h4><a href="{{ route('discussion.datas', ['id' => $news['id']]) }}">{{ $news['posts_title'] }}</a></h4>

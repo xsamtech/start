@@ -36,7 +36,7 @@
                                         <tbody>
 @forelse ($items as $product)
                                             <tr>
-                                                <td><img src="{{ $product['photos'][0]['file_url'] }}" alt="" width="40"></td>
+                                                <td><img src="{{ count($product['photos']) > 0 ? $product['photos'][0]['file_url'] : asset('assets/img/undefined.png') }}" alt="" width="40"></td>
                                                 <td>
                                                     <p class="m-0" style="max-width: 280px; white-space: normal;">{{ $product['product_name'] }}</p>
                                                 </td>
