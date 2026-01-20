@@ -962,7 +962,7 @@ class AdminController extends Controller
                 'en' => $request->category_description_en,
                 'fr' => $request->category_description_fr
             ],
-            'for_service' => $request->for_service,
+            'for_service' => $request->for_service == 5 ? 0 : $request->for_service,
             'alias' => $request->alias,
             'min_quantity' => $request->min_quantity,
             'project_sector_id' => $request->project_sector_id,
@@ -1021,7 +1021,7 @@ class AdminController extends Controller
         }
 
         if ($request->has('for_service') AND $request->for_service != $category->for_service) {
-            $category->for_service = $request->for_service;
+            $category->for_service = ($request->for_service == 5 ? 0 : $request->for_service);
         }
 
         if ($request->has('alias') AND $request->alias != $category->alias) {

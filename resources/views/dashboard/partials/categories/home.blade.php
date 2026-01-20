@@ -131,7 +131,7 @@
                                             <label for="for_service" class="form-label fw-bold">@lang('miscellaneous.admin.group.category.data.for_which_group')</label>
                                             <select name="for_service" id="for_service" class="form-select">
                                                 <option value="2">@lang('miscellaneous.admin.group.category.data.for_projects')</option>
-                                                <option value="0" selected>@lang('miscellaneous.admin.group.category.data.for_products')</option>
+                                                <option value="5">@lang('miscellaneous.admin.group.category.data.for_products')</option>
                                                 <option value="1">@lang('miscellaneous.admin.group.category.data.for_services')</option>
                                             </select>
                                         </div>
