@@ -92,7 +92,8 @@
                                         <div class="mb-2 position-relative">
                                             <label for="question_part_id" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</label>
                                             <select name="question_part_id" id="question_part_id" class="form-select">
-                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
+                                                <option class="small" disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
+                                                <option selected></option>
 @foreach ($question_parts as $part)
                                                 <option value="{{ $part['id'] }}">{{ $part['part_name'] }}</option>
 @endforeach
@@ -143,7 +144,8 @@
                                         <div class="mb-2">
                                             <label for="input" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.title')</label>
                                             <select name="input" id="input" class="form-select">
-                                                <option class="small" disabled selected>@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.title')</option>
+                                                <option class="small" disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.title')</option>
+                                                <option selected></option>
                                                 <option value="input_text">@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.input_text')</option>
                                                 <option value="input_number">@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.input_number')</option>
                                                 <option value="input_email">@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.input_email')</option>
@@ -169,7 +171,8 @@
                                         <div class="mb-2">
                                             <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</label>
                                             <select name="belongs_to" id="belongs_to" class="form-select" data-assertions-url="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertions-question', 'id' => 'QUESTION_ID']) }}">
-                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
+                                                <option class="small" disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
+                                                <option selected></option>
 @foreach ($project_questions_all as $question)
                                                 <option value="{{ $question['id'] }}">{{ $question['question_content'] }}</option>
 @endforeach

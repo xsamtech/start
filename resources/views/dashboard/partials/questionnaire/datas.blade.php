@@ -35,7 +35,8 @@
                                         <div class="mb-2 position-relative">
                                             <label for="question_part_id" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</label>
                                             <select name="question_part_id" id="question_part_id" class="form-select">
-                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
+                                                <option class="small" disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.question_part_id')</option>
+                                                <option selected></option>
     @foreach ($question_parts as $part)
                                                 <option value="{{ $part['id'] }}" {{ $selected_entity['question_part_id'] == $part['id'] ? 'selected' : '' }}>{{ $part['part_name'] }}</option>
     @endforeach
@@ -86,7 +87,8 @@
                                         <div class="mb-2">
                                             <label for="input" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.title')</label>
                                             <select name="input" id="input" class="form-select">
-                                                <option class="small" disabled {{ $selected_entity['input'] == null ? 'selected' : '' }}>@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.title')</option>
+                                                <option class="small" disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.title')</option>
+                                                <option {{ $selected_entity['input'] == null ? 'selected' : '' }}></option>
                                                 <option value="input_text" {{ $selected_entity['input'] == 'input_text' ? 'selected' : '' }}>@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.input_text')</option>
                                                 <option value="input_number" {{ $selected_entity['input'] == 'input_number' ? 'selected' : '' }}>@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.input_number')</option>
                                                 <option value="input_email" {{ $selected_entity['input'] == 'input_email' ? 'selected' : '' }}>@lang('miscellaneous.menu.admin.questionnaire.questions.data.input.input_email')</option>
@@ -112,7 +114,8 @@
                                         <div class="mb-2">
                                             <label for="belongs_to" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</label>
                                             <select name="belongs_to" id="belongs_to" class="form-select" data-assertions-url="{{ route('dashboard.questionnaire.entity.datas', ['entity' => 'assertions-question', 'id' => 'QUESTION_ID']) }}">
-                                                <option class="small" disabled {{ $selected_entity['input'] == null ? 'selected' : '' }}>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
+                                                <option class="small" disabled>@lang('miscellaneous.menu.admin.questionnaire.questions.data.belongs_to')</option>
+                                                <option {{ $selected_entity['belongs_to'] == null ? 'selected' : '' }}></option>
     @foreach ($project_questions as $question)
                                                 <option value="{{ $question['id'] }}" {{ $selected_entity['belongs_to'] == $question['id']  ? 'selected' : '' }}>{{ $question['question_content'] }}</option>
     @endforeach
@@ -299,7 +302,8 @@
                                         <div class="mb-2">
                                             <label for="project_question_id" class="form-label fw-bold">@lang('miscellaneous.menu.admin.questionnaire.assertions.data.project_question_id')</label>
                                             <select name="project_question_id" id="project_question_id" class="form-select">
-                                                <option class="small" selected disabled>@lang('miscellaneous.menu.admin.questionnaire.assertions.data.project_question_id')</option>
+                                                <option class="small" disabled>@lang('miscellaneous.menu.admin.questionnaire.assertions.data.project_question_id')</option>
+                                                <option {{ $selected_entity['project_question_id'] == null ? 'selected' : '' }}></option>
     @foreach ($project_questions as $question)
                                                 <option value="{{ $question['id'] }}" {{ $selected_entity['project_question_id'] == $question['id'] ? 'selected' : '' }}>{{ $question['question_content'] }}</option>
     @endforeach

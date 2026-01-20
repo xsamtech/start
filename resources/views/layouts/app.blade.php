@@ -472,6 +472,7 @@
                                     <div class="form-group">
                                         <label for="category_id">@lang('miscellaneous.admin.product.data.category')</label>
                                         <select class="form-control" id="category_id" name="category_id">
+                                            <option selected></option>
         @forelse ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->category_name }}</option>
         @empty
@@ -569,6 +570,7 @@
                                     <div class="form-group">
                                         <label for="category_id">@lang('miscellaneous.admin.product.data.category')</label>
                                         <select class="form-control" id="category_id" name="category_id">
+                                            <option selected></option>
         @forelse ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->category_name }}</option>
         @empty
@@ -639,7 +641,8 @@
                             <div class="form-group">
                                 <label for="for_category_id">@lang('miscellaneous.admin.product.data.category')</label>
                                 <select class="form-control" id="for_category_id" name="for_category_id">
-                                    <option class="small" disabled selected>@lang('miscellaneous.admin.product.data.category')</option>
+                                    <option class="small" disabled>@lang('miscellaneous.admin.product.data.category')</option>
+                                    <option selected></option>
     @forelse ($project_categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
     @empty
