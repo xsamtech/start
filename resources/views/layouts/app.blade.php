@@ -1675,7 +1675,14 @@
 
                             location.reload();
                         },
-                        error: function (error) {
+                        error: function (xhr, error, status_description) {
+                            console.log(xhr.responseJSON);
+                            console.log(xhr.status);
+                            console.log(error);
+                            console.log(status_description);
+
+                            const error_message = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : (xhr.responseText && xhr.responseText.message ? xhr.responseText.message : status_description);
+
                             // Cacher l'animation de chargement
                             $('#loading-icon').hide();
 
@@ -1686,7 +1693,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                     <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                                                                    ${error_message || '{{ __("notifications.error_while_processing") }}'}
                                                                 </div>
                                                             </div>`);
                         }
@@ -1761,7 +1768,14 @@
                                                                 </div>`);
                             }
                         },
-                        error: function (error) {
+                        error: function (xhr, error, status_description) {
+                            console.log(xhr.responseJSON);
+                            console.log(xhr.status);
+                            console.log(error);
+                            console.log(status_description);
+
+                            const error_message = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : (xhr.responseText && xhr.responseText.message ? xhr.responseText.message : status_description);
+
                             // Cacher l'animation de chargement
                             $('#loading-icon').hide();
 
@@ -1772,7 +1786,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                     <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                                                                    ${error_message || '{{ __("notifications.error_while_processing") }}'}
                                                                 </div>
                                                             </div>`);
                         }
@@ -1817,7 +1831,14 @@
 
                             location.reload();
                         },
-                        error: function (error) {
+                        error: function (xhr, error, status_description) {
+                            console.log(xhr.responseJSON);
+                            console.log(xhr.status);
+                            console.log(error);
+                            console.log(status_description);
+
+                            const error_message = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : (xhr.responseText && xhr.responseText.message ? xhr.responseText.message : status_description);
+
                             // Cacher l'animation de chargement
                             $('#loading-icon').hide();
 
@@ -1828,7 +1849,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                     <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                                                                    ${error_message || '{{ __("notifications.error_while_processing") }}'}
                                                                 </div>
                                                             </div>`);
                         }
@@ -1873,7 +1894,14 @@
 
                             location.reload();
                         },
-                        error: function (error) {
+                        error: function (xhr, error, status_description) {
+                            console.log(xhr.responseJSON);
+                            console.log(xhr.status);
+                            console.log(error);
+                            console.log(status_description);
+
+                            const error_message = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : (xhr.responseText && xhr.responseText.message ? xhr.responseText.message : status_description);
+
                             // Cacher l'animation de chargement
                             $('#loading-icon').hide();
 
@@ -1884,7 +1912,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                     <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                                                                    ${error_message || '{{ __("notifications.error_while_processing") }}'}
                                                                 </div>
                                                             </div>`);
                         }
@@ -2070,6 +2098,13 @@
                             location.reload(); // pour rafraîchir les réponses affichées
                         },
                         error: function () {
+                            console.log(xhr.responseJSON);
+                            console.log(xhr.status);
+                            console.log(error);
+                            console.log(status_description);
+
+                            const error_message = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : (xhr.responseText && xhr.responseText.message ? xhr.responseText.message : status_description);
+
                             // Cacher l'animation de chargement
                             $('#loading-icon').hide();
                             $('#ajax-alert-container').html(`<div style="position: fixed; z-index: 9999; width: 100%; display: flex; justify-content: center;">
@@ -2078,7 +2113,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                     <i class="bi bi-exclamation-triangle" style="margin-right: 8px; vertical-align: -2px;"></i>
-                                                                    {{ __('notifications.error_while_processing') }}
+                                                                    ${error_message || '{{ __("notifications.error_while_processing") }}'}
                                                                 </div>
                                                             </div>`);
                         }
