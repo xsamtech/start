@@ -71,7 +71,7 @@
                                         <!-- Unit quantity -->
                                         <div class="mb-2">
                                             <label for="min_quantity" class="form-label fw-bold">@lang('miscellaneous.admin.group.category.data.min_quantity.title')</label>
-                                            <input type="text" name="min_quantity" class="form-control" id="min_quantity" placeholder="@lang('miscellaneous.admin.group.category.data.min_quantity.description')" value="{{ $selected_category->min_quantity }}">
+                                            <input type="number" name="min_quantity" class="form-control" id="min_quantity" placeholder="@lang('miscellaneous.admin.group.category.data.min_quantity.description')" value="{{ $selected_category->min_quantity }}">
                                         </div>
 
                                         <!-- For which group -->
