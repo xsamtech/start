@@ -180,7 +180,7 @@ return [
     'create_customer_order_success' => 'Commande créée',
     'update_customer_order_success' => 'Commande modifiée',
     'delete_customer_order_success' => 'Commande supprimée',
-    'minimum_quantity_error' => 'La quantité minimum à commander est 500 kilos',
+    'minimum_quantity_error' => 'La quantité minimum à commander est 1000 kilos (1 tonne)',
     // Product
     'find_all_products_success' => 'Produits trouvé',
     'find_product_success' => 'Produit trouvé',

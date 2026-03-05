@@ -1,5 +1,5 @@
                                         <li id="userNotifications">
-                                            <a href="{{ route('account.entity', ['entity' => 'notifications']) }}" title="@lang('miscellaneous.menu.notifications')">
+                                            <a href="{{ route('account.entity', ['entity' => 'notifications']) }}" title="@lang('miscellaneous.menu.notifications')" onclick="markAllRead();">
     @if (count($unread_notifications) > 0)
                                                 <i class="bi bi-bell-fill" style="color: #6e9e1a; margin-right: 0.5rem!important;"></i>
                                                 <span class="badge badge-notify">{{ count($unread_notifications) }}</span>

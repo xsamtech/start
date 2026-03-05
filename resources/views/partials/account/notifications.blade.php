@@ -25,7 +25,7 @@
 										<a href="{{ $notif['url'] }}" class="list-group-item list-group-item-action bg-light" style="color: #000;; padding: 10px 5px;">
 											<div id="notificationItem">
 												<p style="margin-bottom: 0;">
-													{!! $notif['text'] !!}
+													<i class="fa-solid fa-circle text-primary"></i> {!! $notif['text'] !!}
 												</p>
 												<small class="text-muted">{{ ucfirst(explicitDate($notif['created_at'])) }}</small>
 											</div>

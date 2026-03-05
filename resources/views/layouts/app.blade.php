@@ -261,7 +261,7 @@
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
                                         <label for="quantity">@lang('miscellaneous.admin.product.data.quantity.title') (@lang('miscellaneous.admin.product.data.quantity.description'))</label>
-                                        <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="500" value="{{ $selected_product->quantity }}" required>
+                                        <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="1000" value="{{ $selected_product->quantity }}" required>
                                     </div>
                                 </div>
 
@@ -1233,6 +1233,24 @@
 
             // Pour arrêter l'intervalle lorsque c'est nécessaire
             clearInterval(notificationIntervalId);
+
+            // Marquer toutes les notifications comme lues
+            const markAllRead = () => {
+                $.ajax({
+                    type: 'GET',
+                    url: `${currentHost}/mark_all_read`,
+                    dataType: 'json',
+                    contentType: 'application/json'
+                    success: function (response) {
+                    }
+                    error: function (xhr, error, status_description) {
+                        console.log(xhr.responseJSON);
+                        console.log(xhr.status);
+                        console.log(error);
+                        console.log(status_description);
+                    }
+                });
+            };
         </script>
 @endif
 @if (Route::is('register') || Route::is('account.entity') && $entity == 'update')
@@ -1934,7 +1952,7 @@
                         url: `${currentHost}/products/add-to-cart/${productId}`,
                         method: 'POST',
                         data: {
-                            quantity: 500,
+                            quantity: 1000,
                             _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         success(response) {

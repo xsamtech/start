@@ -41,6 +41,10 @@ return [
     'color' => 'Couleur',
     'size' => 'Taille',
     'yield' => 'Rendement',
+    'per_ton' => [
+        'abbreviated' => '/Tonne',
+        'complete' => 'par Tonne',
+    ],
     'units_of_measurement' => [
         'title' => 'Choisir une unité de mesure',
         'hectare' => [

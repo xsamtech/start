@@ -219,6 +219,29 @@ class PublicController extends Controller
     }
 
     /**
+     * GET: Mark all user notifications as read
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function markAllRead()
+    {
+        $user_notifications = Notification::where('to_user_id', Auth::user()->id)->get();
+
+        if (!empty($user_notifications)) {
+            foreach ($user_notifications as $notification) {
+                $notification->update([
+                    'is_read' => 1
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => __('notifications.transaction_done'),
+        ]);
+    }
+
+    /**
      * GET: Terms of use page
      * 
      * @return \Illuminate\View\View
@@ -425,7 +448,17 @@ class PublicController extends Controller
         }
 
         if ($entity == 'notifications') {
+            $entity_title = __('miscellaneous.menu.notifications');
             $items = $service->getUserNotifications($current_user->id);
+            $unread_notifications = Notification::where('to_user_id', Auth::user()->id)->get();
+
+            if (!empty($unread_notifications)) {
+                foreach ($unread_notifications as $notification) {
+                    $notification->update([
+                        'is_read' => 1
+                    ]);
+                }
+            }
         }
 
         if ($entity == 'customers') {
@@ -623,7 +656,7 @@ class PublicController extends Controller
             return redirect('/')->with('error_message', __('notifications.find_product_404'));
         }
 
-        $entity_title = $entity == 'product' ? __('miscellaneous.menu.public.products.about_product') : __('miscellaneous.menu.public.products.about_service');
+        $entity_title = $selected_product->type == 'product' ? __('miscellaneous.menu.public.products.products') : __('miscellaneous.menu.public.products.services');
         $categories = $entity == 'product' ? Category::withCount('products')->where('for_service', 0)->get() : Category::withCount('products')->where('for_service', 1)->get();
 
         if ($categories->isEmpty()) {
@@ -2543,7 +2576,7 @@ class PublicController extends Controller
                             break;
 
                         case 'update':
-                            if ($request->quantity < 500) {
+                            if ($request->quantity < 1000) {
                                 return response()->json([
                                     'message' => __('notifications.minimum_quantity_error'),
                                     'newQuantity' => $order->quantity,
@@ -2602,8 +2635,8 @@ class PublicController extends Controller
                             break;
 
                         case 'decrement':
-                            // Check that the quantity in the cart is > 500
-                            if ($cart[$id]['quantity'] <= 500) {
+                            // Check that the quantity in the cart is > 1000
+                            if ($cart[$id]['quantity'] <= 1000) {
                                 return response()->json([
                                     'message' => __('notifications.minimum_quantity_error'),
                                     'newQuantity' => $cart[$id]['quantity'],
@@ -2618,7 +2651,7 @@ class PublicController extends Controller
 
                         case 'update':
                             // Mise à jour de la quantité
-                            if ($request->quantity < 500) {
+                            if ($request->quantity < 1000) {
                                 return response()->json([
                                     'message' => __('notifications.minimum_quantity_error'),
                                     'newQuantity' => $cart[$id]['quantity'],

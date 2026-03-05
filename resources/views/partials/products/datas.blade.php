@@ -4,7 +4,7 @@
 					<div class="container">
 						<ul class="breadcrumb">
 							<li><a href="{{ route('home') }}">@lang('miscellaneous.menu.home')</a></li>
-							<li><a href="{{ route('product.entity', ['entity' => $entity]) }}">{{ $entity_title }}</a></li>
+							<li><a href="{{ route('product.entity', ['entity' => $selected_product?->type]) }}">{{ $entity_title }}</a></li>
 							<li class="active">{{ $selected_product->product_name }}</li>
 						</ul>
 					</div>
@@ -67,6 +67,11 @@
 											<hr>
 											<div class="product-add clearfix">
 										{{-- <button class="btn btn-custom-2">@lang('miscellaneous.public.add_to_cart')</button> --}}
+    @php
+        $cart = session()->get('cart', []);
+        $isInCart = isset($cart[$selected_product->id]);
+    @endphp
+
     @if (!empty($current_user))
         @if ($current_user->hasProductInUnpaidCart($selected_product->id))
                                                             <p class="btn btn-default disabled" style="margin: -2px;">
@@ -96,8 +101,10 @@
                                                             </button>
         @endif
     @endif
-	@if ($selected_product->user_id == $current_user->id)
+	@if (!empty($current_user))
+		@if ($selected_product->user_id == $current_user->id)
 															<button class="btn btn-custom-1" data-toggle="modal" data-target="#updateProductModal">@lang('miscellaneous.update')</button>
+		@endif
 	@endif
 											</div><!-- .product-add -->
 											<hr>

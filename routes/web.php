@@ -7,12 +7,12 @@
 
 use App\Http\Controllers\Web\AdminController;
 use App\Http\Controllers\Web\PublicController;
-use App\Models\QuestionAssertion;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/symlink', [PublicController::class, 'symlink'])->name('symlink');
 Route::post('/search', [PublicController::class, 'search'])->name('search');
+Route::get('/mark_all_read', [PublicController::class, 'markAllRead'])->name('mark_all_read');
 Route::post('/send_file', [PublicController::class, 'sendFile'])->name('send_file');
 Route::get('/cart', [PublicController::class, 'cart'])->name('cart');
 Route::get('/terms_of_use', [PublicController::class, 'termsOfUse'])->name('terms');

@@ -20,24 +20,29 @@ class NotificationService
             ->orderByDesc('created_at')
             ->get();
 
-        $grouped = $this->groupNotifications($unreadNotifications);
+        $groupedUnread = $this->groupNotifications($unreadNotifications);
 
         // === 2. Déjà lues
-        $readNotifications = ReadNotification::where('to_user_id', $user_id)
+        $readNotifications = Notification::where('to_user_id', $user_id)
+            ->where('is_read', 1)
             ->orderByDesc('created_at')
-            ->get()
-            ->map(function ($notif) {
-                return [
-                    'text' => $notif->text_content,
-                    'url' => $notif->redirect_url,
-                    'created_at' => $notif->created_at,
-                    'is_read' => true,
-                ];
-            });
+            ->get();
+        $groupedRead = $this->groupNotifications($readNotifications);
+        // $readNotifications = ReadNotification::where('to_user_id', $user_id)
+        //     ->orderByDesc('created_at')
+        //     ->get()
+        //     ->map(function ($notif) {
+        //         return [
+        //             'text' => $notif->text_content,
+        //             'url' => $notif->redirect_url,
+        //             'created_at' => $notif->created_at,
+        //             'is_read' => true,
+        //         ];
+        //     });
 
         return [
-            'unread' => $grouped,
-            'read' => $readNotifications,
+            'unread' => $groupedUnread,
+            'read' => $groupedRead,
         ];
     }
 

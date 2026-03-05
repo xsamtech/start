@@ -152,8 +152,11 @@
                                                     <div class="panel-body">
                                                         <ul class="category-filter-list jscrollpane">
 @foreach ($categories as $category)
+    @php
+        $products_count = \App\Models\Product::where([['type', 'service'], ['is_shared', 1], ['category_id', $category->id]])->count();
+    @endphp
                                                             <li>
-																<a href="?category_id={{ $category->id }}">{{ $category->category_name }} ({{ $category->products_count }})</a>
+																<a href="?category_id={{ $category->id }}">{{ $category->category_name }} ({{ $products_count }})</a>
 															</li>
 @endforeach
                                                         </ul>

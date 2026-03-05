@@ -261,7 +261,7 @@
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
                                         <label for="quantity">@lang('miscellaneous.admin.product.data.quantity.title')</label>
-                                        <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="500" value="{{ $selected_product->quantity }}" required>
+                                        <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="1000" value="{{ $selected_product->quantity }}" required>
                                     </div>
                                 </div>
 
@@ -2234,7 +2234,7 @@
                         url: `${currentHost}/products/add-to-cart/${productId}`,
                         method: 'POST',
                         data: {
-                            quantity: 500,
+                            quantity: 1000,
                             _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         success(response) {

@@ -391,7 +391,7 @@ class User extends Authenticatable
             $product->decrement('quantity', $quantity);
 
             // 9. Send notification if stock has been emptied after order
-            if ($product->quantity <= 500) {
+            if ($product->quantity <= 1000) {
                 /*
                     NOTIFICATION MANAGEMENT
                 */
@@ -469,8 +469,8 @@ class User extends Authenticatable
                     break;
 
                 case 'decrement':
-                    // Check that the quantity in the cart is > 500
-                    if ($existingOrder->quantity <= 500) {
+                    // Check that the quantity in the cart is > 1000
+                    if ($existingOrder->quantity <= 1000) {
                         throw new \Exception(__('notifications.minimum_quantity_error'));
                     }
 
@@ -483,7 +483,7 @@ class User extends Authenticatable
 
                 case 'update':
                     // Check the new quantity
-                    if ($quantityChange < 500) {
+                    if ($quantityChange < 1000) {
                         throw new \Exception(__('notifications.minimum_quantity_error'));
                     }
 

@@ -80,7 +80,7 @@
                                                             </a>
                                                         </figure>
                                                         <div class="item-price-container">
-                                                            <span class="item-price">{{ !empty($current_user) ? ($product['converted_price'] . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }}</span>
+                                                            <span class="item-price">{{ !empty($current_user) ? ($product['converted_price'] . ' ' . $current_user->readable_currency) : $product['price'] . ' ' . $product['currency'] }} @lang('miscellaneous.per_ton.abbreviated')</span>
                                                         </div><!-- End .item-price-container -->
                                                     </div><!-- End .item-image-wrapper -->
                                                     <div class="item-meta-container">
@@ -152,8 +152,11 @@
                                                     <div class="panel-body">
                                                         <ul class="category-filter-list jscrollpane">
 @foreach ($categories as $category)
+    @php
+        $products_count = \App\Models\Product::where([['type', 'product'], ['is_shared', 1], ['category_id', $category->id]])->count();
+    @endphp
                                                             <li>
-																<a href="?category_id={{ $category->id }}">{{ $category->category_name }} ({{ $category->products_count }})</a>
+																<a href="?category_id={{ $category->id }}">{{ $category->category_name }} ({{ $products_count }})</a>
 															</li>
 @endforeach
                                                         </ul>

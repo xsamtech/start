@@ -61,7 +61,7 @@
 														<a href="#" class="quantity-btn quantity-input-up" onclick="event.preventDefault(); updateProductQuantity('increment', {{ $item['id'] }});">
 															<i class="fa fa-angle-up"></i>
 														</a>
-		@if ($item['quantity'] > 500)
+		@if ($item['quantity'] > 1000)
 														<a href="#" class="quantity-btn quantity-input-down" onclick="event.preventDefault(); updateProductQuantity('decrement', {{ $item['id'] }});">
 															<i class="fa fa-angle-down"></i>
 														</a>

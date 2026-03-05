@@ -41,6 +41,10 @@ return [
     'color' => 'Color',
     'size' => 'Size',
     'yield' => 'Yield',
+    'per_ton' => [
+        'abbreviated' => '/Ton',
+        'complete' => 'per Ton',
+    ],
     'units_of_measurement' => [
         'title' => 'Choose a unit of measurement',
         'hectare' => [

@@ -180,7 +180,7 @@ return [
     'create_customer_order_success' => 'Order created',
     'update_customer_order_success' => 'Order updated',
     'delete_customer_order_success' => 'Order deleted',
-    'minimum_quantity_error' => 'The minimum quantity to order is 500 kilos',
+    'minimum_quantity_error' => 'The minimum quantity to order is 1000 kilos (1 ton)',
     // Product
     'find_all_products_success' => 'Products found',
     'find_product_success' => 'Product found',
