@@ -42,7 +42,7 @@ return [
     'size' => 'Taille',
     'yield' => 'Rendement',
     'per_ton' => [
-        'abbreviated' => '/Tonne',
+        'abbreviated' => '/ Tonne',
         'complete' => 'par Tonne',
     ],
     'units_of_measurement' => [
