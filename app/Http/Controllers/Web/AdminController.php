@@ -351,6 +351,35 @@ class AdminController extends Controller
     }
 
     /**
+     * GET: Category entity datas page
+     *
+     * @param  string $entity
+     * @param  int $id
+     * @return \Illuminate\View\View
+     */
+    public function categoryEntityDatas($entity, $id)
+    {
+        $entity_title = null;
+        $selected_item = null;
+
+        if ($entity == 'project') {
+            $selected_item = Project::find($id);
+            $entity_title = $selected_item?->project_title;
+        }
+
+        if ($entity == 'product' OR $entity == 'service') {
+            $selected_item = Product::find($id);
+            $entity_title = __('miscellaneous.' . $selected_item->type);
+        }
+
+        return view('dashboard.categories', [
+            'entity' => $entity,
+            'entity_title' => $entity_title,
+            'selected_item' => $selected_item,
+        ]);
+    }
+
+    /**
      * GET: Questionnaire page
      *
      * @return \Illuminate\View\View
@@ -1088,30 +1117,35 @@ class AdminController extends Controller
             DB::beginTransaction();
 
             try {
-                // 1. Vérifier si un rôle est déjà sélectionné avec `is_selected = 0`
-                $existingPivot = $user->roles()->wherePivot('is_selected', 0)->first();
+                // 1. Désactiver tous les rôles
+                $user->roles()->updateExistingPivot($user->roles->pluck('id')->toArray(), ['is_selected' => 0]);
 
-                if ($existingPivot) {
-                    // D'abord, on met tous les autres rôles à `is_selected = 0`
-                    $user->roles()->updateExistingPivot($user->roles->pluck('id')->toArray(), ['is_selected' => 0]);
-                    // Puis, si un pivot avec `is_selected = 0` existe, on le met à 1
-                    $user->roles()->updateExistingPivot($existingPivot->id, ['is_selected' => 1]);
+                // 2. Vérifier si le rôle existe déjà
+                $hasRole = $user->roles()->where('roles.id', $roleId)->exists();
+
+                if ($hasRole) {
+                    // 3. Activer le rôle existant
+                    $user->roles()->updateExistingPivot($roleId, ['is_selected' => 1]);
 
                 } else {
-                    // 2. Si aucun pivot avec `is_selected = 0` n'existe, on ajoute un nouveau rôle et on le définit à 1
-                    // D'abord, on met tous les autres rôles à `is_selected = 0`
-                    $user->roles()->updateExistingPivot($user->roles->pluck('id')->toArray(), ['is_selected' => 0]);
-                    // Puis on attache le nouveau rôle avec `is_selected = 1`
+                    // 4. Ajouter le nouveau rôle
                     $user->roles()->attach($roleId, ['is_selected' => 1]);
                 }
 
                 DB::commit();
 
-                return response()->json(['success' => true, 'message' => __('notifications.update_role_success')]);
+                return response()->json([
+                    'success' => true,
+                    'message' => __('notifications.update_role_success')
+                ]);
+
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ], 500);
             }
         }
 

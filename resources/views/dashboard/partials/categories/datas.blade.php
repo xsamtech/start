@@ -4,11 +4,14 @@
                 <div class="page-header">
                     <div class="page-header-left d-flex align-items-center">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">@lang('miscellaneous.admin.group.category.details')</h5>
+                            <h5 class="m-b-10">{{ !empty($selected_category) ? __('miscellaneous.admin.group.category.details') : $selected_item->product_name }}</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard.home') }}">@lang('miscellaneous.menu.home')</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('dashboard.category.home') }}">@lang('miscellaneous.menu.admin.categories.title')</a></li>
+@if (!empty($selected_item))
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.category.entity.datas', ['entity' => $entity, 'id' => $selected_item->id]) }}">{{ $entity_title ?? '------' }}</a></li>
+@endif
                             <li class="breadcrumb-item">@lang('miscellaneous.details')</li>
                         </ul>
                     </div>
@@ -16,6 +19,7 @@
                 <!-- [ page-header ] end -->
                 <!-- [ Main Content ] start -->
                 <div class="main-content">
+@if (!empty($selected_category))
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="card overflow-hidden">
@@ -29,7 +33,7 @@
                                     </div>
 
                                     <form id="editCategoryForm" action="{{ route('dashboard.category.datas', ['id' => $selected_category->id]) }}" method="POST">
-@csrf
+    @csrf
                                         <!-- Category name -->
                                         <div id="profileImageWrapper" style="margin-bottom: 20px;">
                                             <div class="text-center">
@@ -89,9 +93,9 @@
                                             <label for="project_sector_id" class="form-label fw-bold">@lang('miscellaneous.admin.group.category.data.sector')</label>
                                             <select name="project_sector_id" id="project_sector_id" class="form-select">
                                                 <option class="small"{{ empty($selected_category->project_sector_id) ? ' selected' : '' }} disabled>@lang('miscellaneous.admin.group.category.data.sector')</option>
-@foreach ($project_sectors as $sector)
+    @foreach ($project_sectors as $sector)
                                                 <option value="{{ $sector->id }}"{{ !empty($selected_category->project_sector_id) && $selected_category->project_sector_id == $sector->id ? ' selected' : '' }}>{{ $sector->sector_name }}</option>
-@endforeach
+    @endforeach
                                             </select>
                                         </div>
 
@@ -133,23 +137,23 @@
                                     @lang('miscellaneous.admin.group.category.data.min_quantity.title')@lang('miscellaneous.colon_after_word')
                                     <strong>{{ $selected_category->min_quantity }}</strong>
                                 </h5>
-@php
-    $for_service = null;
+    @php
+        $for_service = null;
 
-    switch ($selected_category->for_service) {
-        case 1:
-            $for_service = __('miscellaneous.admin.group.category.data.for_services');
-            break;
-        
-        case 2:
-            $for_service = __('miscellaneous.admin.group.category.data.for_projects');
-            break;
-        
-        default:
-            $for_service = __('miscellaneous.admin.group.category.data.for_services');
-            break;
-    }
-@endphp
+        switch ($selected_category->for_service) {
+            case 1:
+                $for_service = __('miscellaneous.admin.group.category.data.for_services');
+                break;
+            
+            case 2:
+                $for_service = __('miscellaneous.admin.group.category.data.for_projects');
+                break;
+            
+            default:
+                $for_service = __('miscellaneous.admin.group.category.data.for_services');
+                break;
+        }
+    @endphp
                                 <h5 class="m-0 fw-lighter">
                                     @lang('miscellaneous.admin.group.category.data.for_which_group')@lang('miscellaneous.colon_after_word')
                                     <strong>{{ $for_service }}</strong>
@@ -157,6 +161,22 @@
                             </div>
                         </div>
                     </div>
+@else
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="card card-body border shadow-0">
+                                            <h1>{{ $selected_item->product_name }}</h1>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+@endif
                 </div>
                 <!-- [ Main Content ] end -->
             </div>

@@ -16,7 +16,7 @@
 									<h1 class="title">@lang('miscellaneous.public.discussion.title')</h1>
 									<p class="title-desc">@lang('miscellaneous.public.discussion.description')</p>
 								</header>
-@if (!empty($current_user))
+@if (!empty($current_user) && $current_user->status == 'activated')
 								<button class="btn strt-btn-green pb-2" style="float: right; display: flex; align-items: center;" class="btn btn-primary" data-toggle="modal" data-target="#newPostModal">
 									<i class="bi bi-pencil" style="font-size: 2.5rem; color: white"></i> <span class="d-xs-none" style="margin-left: 8px; color: white">@lang('miscellaneous.publish')</span>
 								</button>

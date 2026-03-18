@@ -1,3 +1,22 @@
+@php
+	$status = null;
+
+    if (auth()->check()) {
+        switch (auth()->user()->status) {
+            case 'disabled':
+                $status = 'deactivated';
+                break;
+
+            case 'deleted':
+                $status = 'deleted';
+                break;
+
+            default:
+                $status = 'locked';
+                break;
+        }
+    }
+@endphp
 
 			<section id="content">
 				<div id="breadcrumb-container">
@@ -40,6 +59,13 @@
 @endif
 
 										<h2><a href="{{ route('discussion.datas', ['id' => $selected_post->id]) }}">{{ $selected_post->posts_title }}</a></h2>
+@auth
+	@if ($current_user->id == $selected_post->user_id)
+										<button class="btn btn-danger" style="margin-bottom: 10px;" onclick="event.preventDefault(); performAction('delete', 'post', 'item-{{ $selected_post->id }}')">
+											<i class="bi bi-trash3" style="margin-right: 7px;"></i>@lang('miscellaneous.delete')
+										</button>
+	@endif
+@endauth
 
 										<div class="article-meta-container clearfix">
 											<div class="article-meta-more">
@@ -105,8 +131,9 @@
 @if (!empty($current_user))
 											<h4 class="sub-title">@lang('miscellaneous.public.discussion.leave_comment')</h4>
 
+	@if ($current_user->status == 'activated')
 											<form action="{{ route('discussion.home') }}" id="comment-form">
-	@csrf
+		@csrf
 												<input type="hidden" name="answered_for" value="{{ $selected_post->id }}">
 												<input type="hidden" name="type" value="comment">
 
@@ -122,6 +149,11 @@
 													<img id="loading-icon" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="" width="40" height="40" style="margin-left: 6px; display: none;">
 												</div>
 											</form>
+	@else
+											<p style="margin: 0;">
+												@lang('miscellaneous.account.' . $status . '.title')
+											</p>
+	@endif
 @else
 											<h6 style="margin: 0;">
 												<a href="{{ route('login') }}" style="text-decoration: underline;">@lang('miscellaneous.public.discussion.login_leave_comment')</a>

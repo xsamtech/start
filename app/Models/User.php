@@ -67,6 +67,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class)->withTimestamps()->withPivot('is_selected');
     }
 
+    public function selectedRole()
+    {
+        return $this->belongsToMany(Role::class)->wherePivot('is_selected', 1)->withPivot('is_selected');
+    }
+
     /**
      * MANY-TO-MANY
      * Several projects for several users
@@ -104,6 +109,24 @@ class User extends Authenticatable
     }
 
     /**
+     * MANY-TO-ONE
+     * Several products for a user
+     */
+    public function owned_products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    /**
+     * MANY-TO-ONE
+     * Several posts for a user
+     */
+    public function owned_posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /**
      * Selected role
      */
     public function getSelectedRoleAttribute()
@@ -119,7 +142,7 @@ class User extends Authenticatable
         $selectedRole = $this->selected_role;
 
         // Vérifier si le rôle sélectionné est "admin" en prenant en compte la langue
-        return $selectedRole && $selectedRole->getTranslation('role_name', 'fr') == 'Administrateur'; 
+        return $selectedRole && $selectedRole->getTranslation('role_name', 'fr') == 'Administrateur';
     }
 
     /**
@@ -186,15 +209,16 @@ class User extends Authenticatable
      */
     public function customersWithUnpaidOrders(): HasManyThrough
     {
-        return $this->hasManyThrough(User::class, 
-                                    Cart::class, 
-                                    'user_id', // foreign key in the Cart table
-                                    'id', // foreign key in the User table
-                                    'id', // primary key of the User table
-                                    'user_id' // foreign key in the Cart table
-                                    )->whereHas('carts', function ($query) {
-                                        $query->where('is_paid', 0);  // Check that the cart is not paid
-                                    })->with('carts');  // Adds the baskets for each customer
+        return $this->hasManyThrough(
+            User::class,
+            Cart::class,
+            'user_id', // foreign key in the Cart table
+            'id', // foreign key in the User table
+            'id', // primary key of the User table
+            'user_id' // foreign key in the Cart table
+        )->whereHas('carts', function ($query) {
+            $query->where('is_paid', 0);  // Check that the cart is not paid
+        })->with('carts');  // Adds the baskets for each customer
     }
 
     /**
@@ -235,7 +259,6 @@ class User extends Authenticatable
                 if ($startDate->month <= 6) {
                     $startDate->firstOfYear();
                     $endDate->endOfMonth(6);
-
                 } else {
                     $startDate->firstOfMonth(7);
                     $endDate->endOfMonth(12);
@@ -253,13 +276,13 @@ class User extends Authenticatable
 
         // Récupérer les commandes des produits associés à l'utilisateur dans cette période
         return CustomerOrder::whereHas('product', function ($query) use ($userId) {
-                                    // Si un $userId est passé, on filtre sur ce user_id, sinon on ne filtre pas
-                                    if ($userId) {
-                                        $query->where('user_id', $userId);
-                                    }
-                                })->whereBetween('created_at', [$startDate, $endDate])
-                                ->with(['product', 'product.photos'])  // Charger les produits et leurs photos
-                                ->orderByDesc('customer_orders.created_at')->get();
+            // Si un $userId est passé, on filtre sur ce user_id, sinon on ne filtre pas
+            if ($userId) {
+                $query->where('user_id', $userId);
+            }
+        })->whereBetween('created_at', [$startDate, $endDate])
+            ->with(['product', 'product.photos'])  // Charger les produits et leurs photos
+            ->orderByDesc('customer_orders.created_at')->get();
     }
 
     /**
@@ -325,10 +348,10 @@ class User extends Authenticatable
     public function hasProductInUnpaidCart($productId): bool
     {
         return Cart::where('user_id', $this->id)
-                        ->where('is_paid', 0)
-                        ->whereHas('customer_orders', function ($query) use ($productId) {
-                            $query->where('product_id', $productId);
-                        })->exists();
+            ->where('is_paid', 0)
+            ->whereHas('customer_orders', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
+            })->exists();
     }
 
     /**
@@ -352,8 +375,8 @@ class User extends Authenticatable
 
             // 2. Get existing line (or NULL)
             $existingOrder = CustomerOrder::whereHas('cart', function ($q) {
-                                                $q->where('user_id', $this->id)->where('is_paid', 0);
-                                            })->where('product_id', $productId)->first();
+                $q->where('user_id', $this->id)->where('is_paid', 0);
+            })->where('product_id', $productId)->first();
 
             // 3. Get the product
             $product = Product::findOrFail($productId);
@@ -362,15 +385,16 @@ class User extends Authenticatable
             $totalQuantity = $quantity + ($existingOrder?->quantity ?? 0);
 
             // 5. Stock verification
-            if ($product->quantity < $totalQuantity) {
-                throw new \Exception(__('notifications.insufficient_stock', ['product_name' => $product->product_name, 'quantity' => $product->quantity]));
+            if ($product->type == 'product') {
+                if ($product->quantity < $totalQuantity) {
+                    throw new \Exception(__('notifications.insufficient_stock', ['product_name' => $product->product_name, 'quantity' => $product->quantity]));
+                }
             }
 
             // 6. If the line already exists, we update its quantity
             if ($existingOrder) {
                 $existingOrder->quantity = $totalQuantity;
                 $existingOrder->save();
-
             } else {
                 // 7. Create a new order line
                 $cart = $this->carts()->where('is_paid', 0)->latest()->first();
@@ -391,17 +415,19 @@ class User extends Authenticatable
             $product->decrement('quantity', $quantity);
 
             // 9. Send notification if stock has been emptied after order
-            if ($product->quantity <= 1000) {
-                /*
-                    NOTIFICATION MANAGEMENT
-                */
-                Notification::create([
-                    'type' => 'stock_emptied',
-                    'is_read' => 0,
-                    'from_user_id' => $this->id,
-                    'to_user_id' => $product->user_id,
-                    'product_id' => $product->id
-                ]);
+            if ($product->type == 'product') {
+                if ($product->quantity <= 2) {
+                    /*
+                        NOTIFICATION MANAGEMENT
+                    */
+                    Notification::create([
+                        'type' => 'stock_emptied',
+                        'is_read' => 0,
+                        'from_user_id' => $this->id,
+                        'to_user_id' => $product->user_id,
+                        'product_id' => $product->id
+                    ]);
+                }
             }
 
             return $existingOrder;
@@ -469,8 +495,8 @@ class User extends Authenticatable
                     break;
 
                 case 'decrement':
-                    // Check that the quantity in the cart is > 1000
-                    if ($existingOrder->quantity <= 1000) {
+                    // Check that the quantity in the cart is > 1
+                    if ($existingOrder->quantity <= 1) {
                         throw new \Exception(__('notifications.minimum_quantity_error'));
                     }
 
@@ -483,7 +509,7 @@ class User extends Authenticatable
 
                 case 'update':
                     // Check the new quantity
-                    if ($quantityChange < 1000) {
+                    if ($quantityChange < 1) {
                         throw new \Exception(__('notifications.minimum_quantity_error'));
                     }
 
@@ -501,7 +527,6 @@ class User extends Authenticatable
 
                         // Decrease product stock based on increase
                         $product->decrement('quantity', $stockDifference);
-
                     } else {
                         // If we decrease the order quantity, increase the product stock
                         $product->increment('quantity', abs($stockDifference));

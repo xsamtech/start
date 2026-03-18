@@ -25,6 +25,15 @@ class File extends Model
 
     /**
      * ONE-TO-MANY
+     * One project for several files
+     */
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * ONE-TO-MANY
      * One product for several files
      */
     public function product(): BelongsTo

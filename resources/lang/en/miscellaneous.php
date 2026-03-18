@@ -41,6 +41,9 @@ return [
     'color' => 'Color',
     'size' => 'Size',
     'yield' => 'Yield',
+    'seller' => 'Seller',
+    'product' => 'Product',
+    'service' => 'Service',
     'per_ton' => [
         'abbreviated' => '/ Ton',
         'complete' => 'per Ton',
@@ -639,6 +642,11 @@ return [
             'message' => 'Your account is blocked because you do not respect our terms of use.',
             'deadline' => 'Deadline before unblocking:'
         ],
+        'deleted' => [
+            'title' => 'Account deleted',
+            'message' => 'You have 60 days to reactivate your account. Otherwise, it will be lost forever.',
+            'link' => 'Delete my account'
+        ],
         'personal_infos' => [
             'title' => 'Personal Infos',
             'click_to_change_picture' => 'Cliquez sur l’image pour la modifier',
@@ -753,6 +761,7 @@ return [
             'search' => 'Search a :entity',
             'list' => ':entity list',
             'data' => [
+                'offer_name' => 'offer name',
                 'product_name' => ':entity name',
                 'product_description' => 'Description',
                 'quantity' => [
@@ -760,7 +769,7 @@ return [
                     'description' => 'Number of tonnes',
                     'error' => 'The quantity cannot be less than :quantity tonnes',
                 ],
-                'product_price' => 'Price (per kilo)',
+                'product_price' => 'Price (per tonne)',
                 'service_price' => 'Price',
                 'type' => 'Type',
                 'action' => [

@@ -41,6 +41,9 @@ return [
     'color' => 'Couleur',
     'size' => 'Taille',
     'yield' => 'Rendement',
+    'seller' => 'Vendeur',
+    'product' => 'Produit',
+    'service' => 'Service',
     'per_ton' => [
         'abbreviated' => '/ Tonne',
         'complete' => 'par Tonne',
@@ -632,12 +635,17 @@ return [
             'title' => 'Compte désactivé',
             'link' => 'Désactiver compte',
             'warn' => 'Vous êtes sur le point de désactiver votre compte.',
-            'message' => 'Vous avez désactivé votre compte'
+            'message' => 'Vous avez désactivé votre compte.'
         ],
         'locked' => [
             'title' => 'Compte bloqué',
             'message' => 'Votre compte est bloqué parce que vous ne respectez pas nos conditions d’utilisation.',
             'deadline' => 'Echéance avant le déblocage :'
+        ],
+        'deleted' => [
+            'title' => 'Compte supprimé',
+            'message' => 'Vous avez 60 jours pour réactiver votre compte. Sinon il sera perdu pour toujours.',
+            'link' => 'Supprimer mon compte'
         ],
         'personal_infos' => [
             'title' => 'Infos personnelles',
@@ -753,6 +761,7 @@ return [
             'search' => 'Rechercher un :entity',
             'list' => 'Liste des :entity',
             'data' => [
+                'offer_name' => 'Nom de l\'offre',
                 'product_name' => 'Nom du :entity',
                 'product_description' => 'Description',
                 'quantity' => [
@@ -760,7 +769,7 @@ return [
                     'description' => 'Nombre de tonnes',
                     'error' => 'La quantité ne peut pas être inférieur :quantity tonnes',
                 ],
-                'product_price' => 'Prix (par kilo)',
+                'product_price' => 'Prix (par tonne)',
                 'service_price' => 'Prix',
                 'type' => 'Type',
                 'action' => [

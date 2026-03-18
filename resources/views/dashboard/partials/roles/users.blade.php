@@ -63,7 +63,7 @@
                                                     <p class="m-0" style="max-width: 10rem; white-space: normal;">{{ $user['about_me'] }}</p>
                                                 </td>
                                                 <td>
-                                                    <select id="userRole" class="form-select py-1" data-user-id="{{ $user['id'] }}" data-user-role-id="$user['selected_role']['id']" onchange="changeUserRole(this)">
+                                                    <select class="form-select py-1 userRole" class="form-select py-1" data-user-id="{{ $user['id'] }}" data-user-role-id="{{ $user['selected_role']['id'] }}" onchange="changeUserRole(this)">
                                                         <option class="small" disabled>@lang('miscellaneous.choose_role')</option>
     @forelse ($roles as $role)
                                                         <option value="{{ $role['id'] }}" {{ $role['id'] == $user['selected_role']['id'] ? 'selected' : '' }}>{{ $role['role_name'] }}</option>

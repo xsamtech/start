@@ -24,7 +24,7 @@
 									<table class="table cart-table">
 										<thead>
 											<tr>
-												<th class="table-title">@lang('miscellaneous.admin.product.data.product_name', ['entity' => __('miscellaneous.admin.product.entity.product.singular')])</th>
+												<th class="table-title">@lang('miscellaneous.admin.product.data.offer_name')</th>
 												<th class="table-title">@lang('miscellaneous.admin.product.data.product_price')</th>
 												<th class="table-title">@lang('miscellaneous.admin.product.data.quantity.title')</th>
 												<th class="table-title">@lang('miscellaneous.public.subtotal')</th>
@@ -33,8 +33,24 @@
 
 										<tbody>
 	@foreach ($items as $item)
+		@php
+	        $itemType = null;
+
+			switch ($item['type']) {
+				case 'product':
+					$itemType = __('miscellaneous.product');
+					break;
+				case 'service':
+					$itemType = __('miscellaneous.service');
+					break;
+				default:
+					$itemType = null;
+					break;
+			}
+		@endphp
 											<tr id="item-{{ $item['id'] }}">
-												<td class="item-name-col">
+												<td class="item-name-col" style="position: relative;">
+													<p class="small" style="position: absolute; top: 7px; right: 7px; margin-bottom: 10px;"><span class="badge badge-secondary">{{ $itemType }}</span></p>
 													<figure>
 														<a href="{{ route('product.entity.datas', ['entity' => $item['type'], 'id' => $item['id']]) }}">
 															<img src="{{ count($item['photos']) > 0 ? $item['photos'][0] : getWebURL() . '/template/public/images/products/compare1.jpg' }}" alt="{{ $item['product_name'] }}">
@@ -56,17 +72,19 @@
 													<span class="item-price-special">{{ formatDecimalNumber($item['price'], 3) . ' $' }}</span>
 												</td>
 												<td>
+		@if ($item['type'] == 'product')
 													<div class="custom-quantity-input">
 														<input id="order-quantity-{{ $item['id'] }}" type="text" name="quantity" value="{{ $item['quantity'] }}" onchange="updateProductQuantity('update', {{ $item['id'] }}, this.value)">
 														<a href="#" class="quantity-btn quantity-input-up" onclick="event.preventDefault(); updateProductQuantity('increment', {{ $item['id'] }});">
 															<i class="fa fa-angle-up"></i>
 														</a>
-		@if ($item['quantity'] > 1000)
+			@if ($item['quantity'] > 1)
 														<a href="#" class="quantity-btn quantity-input-down" onclick="event.preventDefault(); updateProductQuantity('decrement', {{ $item['id'] }});">
 															<i class="fa fa-angle-down"></i>
 														</a>
-		@endif
+			@endif
 													</div>
+		@endif
 												</td>
 												<td class="item-total-col">
 													<span class="item-price-special">{{ formatDecimalNumber($cartService->subtotalPrice($item, 'USD')) . ' $' }}</span>

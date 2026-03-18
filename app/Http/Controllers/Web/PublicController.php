@@ -4,32 +4,24 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\ApiClientManager;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Crowdfunding as ResourcesCrowdfunding;
 use App\Http\Resources\Post as ResourcesPost;
-use App\Http\Resources\Product as ResourcesProduct;
-use App\Http\Resources\Project as ResourcesProject;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Cart;
 use App\Models\Category;
-use App\Models\Crowdfunding;
 use App\Models\CustomerFeedback;
 use App\Models\CustomerOrder;
 use App\Models\File;
-use App\Models\MarketSegment;
 use App\Models\Notification;
-use App\Models\PaidFund;
 use App\Models\PasswordReset;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Project;
-use App\Models\ProjectActivity;
 use App\Models\ProjectAnswer;
 use App\Models\ProjectQuestion;
 use App\Models\QuestionAssertion;
 use App\Models\QuestionPart;
 use App\Models\Role;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use App\Services\GoogleDriveService;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
@@ -41,8 +33,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
 use Nette\Utils\Random;
 
 /**
@@ -760,7 +750,7 @@ class PublicController extends Controller
         $investors = Auth::check() ? User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
                                             $query->where('role_name->fr', 'Investisseur');
                                         })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query())
-                                    : User::whereHas('roles', function ($query) {
+                                    : User::whereHas('selectedRole', function ($query) {
                                         $query->where('role_name->fr', 'Investisseur');
                                     })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query());
 
@@ -1060,6 +1050,196 @@ class PublicController extends Controller
             ]);
         }
 
+        if ($entity == 'user') {
+            try {
+                $user = User::find($id);
+
+                if (!$user) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => __('notifications.find_user_404')
+                    ], 404);
+                }
+
+                DB::transaction(function () use ($user) {
+                    $user_cart = $user->unpaidCart;
+                    $user_projects = $user->owned_projects;
+                    $user_products = $user->owned_products;
+                    $user_posts = $user->owned_posts;
+
+                    if ($user_cart) {
+                        $orders = $user_cart->customer_orders()->with('product')->get();
+
+                        foreach ($orders as $order) {
+                            if ($order->product && $order->product->type === 'product') {
+                                $order->product->increment('quantity', $order->quantity);
+                            }
+                        }
+                    }
+
+                    if (!empty($user_projects)) {
+                        foreach ($user_projects as $project) {
+                            $filesToDelete = File::where('project_id', $project->id)->get();
+
+                            if (!empty($filesToDelete)) {
+                                foreach ($filesToDelete as $file) {
+                                    // Delete the file from the file system
+                                    $relativeStoragePath = str_replace('/storage/', '', $file->file_url);
+
+                                    Storage::disk('public')->delete($relativeStoragePath);
+
+                                    // Deletes the row at the database
+                                    $file->delete();
+                                }
+                            }
+
+                            $notifications = Notification::where('project_id', $project->id)->get();
+
+                            if (!empty($notifications)) {
+                                foreach ($notifications as $notification) {
+                                    // Deletes the row at the database
+                                    $notification->delete();
+                                }
+                            }
+
+                            $project->delete();
+                        }
+                    }
+
+                    if (!empty($user_products)) {
+                        foreach ($user_products as $product) {
+                            $filesToDelete = File::where('product_id', $product->id)->get();
+
+                            if (!empty($filesToDelete)) {
+                                foreach ($filesToDelete as $file) {
+                                    // Delete the file from the file system
+                                    $relativeStoragePath = str_replace('/storage/', '', $file->file_url);
+
+                                    Storage::disk('public')->delete($relativeStoragePath);
+
+                                    // Deletes the row at the database
+                                    $file->delete();
+                                }
+                            }
+
+                            $notifications = Notification::where('product_id', $product->id)->get();
+
+                            if (!empty($notifications)) {
+                                foreach ($notifications as $notification) {
+                                    // Deletes the row at the database
+                                    $notification->delete();
+                                }
+                            }
+
+                            $product->delete();
+                        }
+                    }
+
+                    if (!empty($user_posts)) {
+                        foreach ($user_posts as $post) {
+                            $filesToDelete = File::where('post_id', $post->id)->get();
+
+                            if (!empty($filesToDelete)) {
+                                foreach ($filesToDelete as $file) {
+                                    // Delete the file from the file system
+                                    $relativeStoragePath = str_replace('/storage/', '', $file->file_url);
+
+                                    Storage::disk('public')->delete($relativeStoragePath);
+
+                                    // Deletes the row at the database
+                                    $file->delete();
+                                }
+                            }
+
+                            $notifications = Notification::where('post_id', $post->id)->get();
+
+                            if (!empty($notifications)) {
+                                foreach ($notifications as $notification) {
+                                    // Deletes the row at the database
+                                    $notification->delete();
+                                }
+                            }
+
+                            $post->delete();
+                        }
+                    }
+
+                    PasswordReset::where(function ($query) use ($user) {
+                        if ($user->email) {
+                            $query->orWhere('email', $user->email);
+                        }
+
+                        if ($user->phone) {
+                            $query->orWhere('phone', $user->phone);
+                        }
+                    })->delete();
+
+                    $user->delete();
+                });
+
+                return response()->json([
+                    'success' => true,
+                    'message' => __('notifications.delete_user_success'),
+                ]);
+
+            } catch (\Throwable $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.error_while_processing') . ' ' . $e
+                ], 500);
+            }
+        }
+
+        if ($entity == 'post') {
+            $post = Post::find($id);
+
+            if (!$post) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('notifications.find_post_404'),
+                ], 404);
+            }
+
+            $comments = Post::where('answered_for', $post->id)->get();
+
+            if (!empty($comments)) {
+                foreach ($comments as $comment) {
+                    // Deletes the row at the database
+                    $comment->delete();
+                }
+            }
+
+            $notifications = Notification::where('post_id', $post->id)->get();
+
+            if (!empty($notifications)) {
+                foreach ($notifications as $notification) {
+                    // Deletes the row at the database
+                    $notification->delete();
+                }
+            }
+
+            $filesToDelete = File::where('post_id', $post->id)->get();
+
+            if (!empty($filesToDelete)) {
+                foreach ($filesToDelete as $file) {
+                    // Delete the file from the file system
+                    $relativeStoragePath = str_replace('/storage/', '', $file->file_url);
+
+                    Storage::disk('public')->delete($relativeStoragePath);
+
+                    // Deletes the row at the database
+                    $file->delete();
+                }
+            }
+
+            $post->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.delete_post_success'),
+            ]);
+        }
+
         if ($entity == 'category') {
             $category = Category::find($id);
 
@@ -1090,14 +1270,25 @@ class PublicController extends Controller
 
             $filesToDelete = File::where('product_id', $product->id)->get();
 
-            foreach ($filesToDelete as $file) {
-                // Delete the file from the file system
-                $relativeStoragePath = str_replace(getWebURL() . '/storage/', '', $file->file_url);
+            if (!empty($filesToDelete)) {
+                foreach ($filesToDelete as $file) {
+                    // Delete the file from the file system
+                    $relativeStoragePath = str_replace('/storage/', '', $file->file_url);
 
-                Storage::disk('public')->delete($relativeStoragePath);
+                    Storage::disk('public')->delete($relativeStoragePath);
 
-                // Deletes the row at the database
-                $file->delete();
+                    // Deletes the row at the database
+                    $file->delete();
+                }
+            }
+
+            $notifications = Notification::where('product_id', $product->id)->get();
+
+            if (!empty($notifications)) {
+                foreach ($notifications as $notification) {
+                    // Deletes the row at the database
+                    $notification->delete();
+                }
             }
 
             $product->delete();
@@ -1110,90 +1301,98 @@ class PublicController extends Controller
 
         if ($entity == 'order') {
             try {
-                // We start by retrieving the order associated with this ID (for connected users)
                 if (Auth::check()) {
                     // If the user is logged in
-                    $user = User::find(Auth::id());
+                    $user = Auth::user();
 
-                    // Get user's unpaid cart
-                    $cart = $user->unpaidCart()->first();
+                    $result = DB::transaction(function () use ($user, $id) {
+                        // Get user's unpaid cart
+                        $cart = $user->unpaidCart;
 
-                    if (!$cart) {
-                        return response()->json([
-                            'success' => false,
-                            'message' => __('notifications.find_cart_404')
-                        ], 404);
+                        if (!$cart) {
+                            return response()->json([
+                                'success' => false,
+                                'message' => __('notifications.find_cart_404')
+                            ], 404);
+                        }
+
+                        // Find the order to delete from the order ID in the cart
+                        $order = $cart->customer_orders()->with('product')->find($id);
+
+                        if (!$order) {
+                            return response()->json([
+                                'success' => false,
+                                'message' => __('notifications.find_customer_order_404')
+                            ], 404);
+                        }
+
+                        // Restore stock BEFORE delete (plus safe)
+                        if ($order->product && $order->product->type === 'product') {
+                            $order->product->increment('quantity', $order->quantity);
+                        }
+
+                        $order->delete();
+
+                        // Reload orders count without extra heavy load
+                        $remainingOrders = $cart->customer_orders()->count();
+
+                        if ($remainingOrders === 0) {
+                            $cart->delete();
+                        }
+
+                        return [
+                            'inCart' => false,
+                            'isLoggedIn' => true
+                        ];
+                    });
+
+                    if ($result instanceof \Illuminate\Http\JsonResponse) {
+                        return $result;
                     }
 
-                    // Find the order to delete from the order ID in the cart
-                    $existingOrder = $cart->customer_orders()->find($id);
-
-                    if (!$existingOrder) {
-                        return response()->json([
-                            'success' => false,
-                            'message' => __('notifications.find_customer_order_404')
-                        ], 404);
-                    }
-
-                    // Delete order (cart line)
-                    $existingOrder->delete();
-
-                    // Retrieve the associated product to restore stock
-                    $product = $existingOrder->product;
-
-                    // Restore product stock
-                    $product->increment('quantity', $existingOrder->quantity);
-
-                    // Check if the product is still in the user's cart
-                    $inCart = !$cart->customer_orders()->find($id);
-
-                    // If the cart is empty, it is deleted from the database
-                    if ($cart->customer_orders->isEmpty()) {
-                        $cart->delete();
-                    }
-
-                    $isLoggedIn = true;
+                    return response()->json([
+                        'success' => true,
+                        'message' => __('notifications.delete_customer_order_success'),
+                        'inCart' => $result['inCart'],
+                        'isLoggedIn' => $result['isLoggedIn'],
+                    ]);
 
                 } else {
-                    // If the user is not logged in, we work with the cart in the session
+                    // SESSION MODE
                     $cart = session()->get('cart', []);
 
                     // Check if order exists in session (by order ID)
-                    if (isset($cart[$id])) {
-                        // Remove product from session
-                        unset($cart[$id]);
-                        session()->put('cart', $cart);
-
-                        // Check if the cart is empty
-                        if (empty($cart)) {
-                            // If the cart is empty, delete the session
-                            session()->forget('cart');
-                        }
-
-                        $inCart = false;  // The product has been removed from the cart
-
-                    } else {
+                    if (!isset($cart[$id])) {
                         return response()->json([
                             'success' => false,
                             'message' => __('notifications.find_product_404')
                         ], 404);
                     }
 
-                    $isLoggedIn = false;
+                    // Remove product from session
+                    unset($cart[$id]);
+
+                    // If the cart is empty, delete the session
+                    if (empty($cart)) {
+                        session()->forget('cart');
+
+                    } else {
+                        session()->put('cart', $cart);
+                    }
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => __('notifications.delete_customer_order_success'),
+                        'inCart' => false,
+                        'isLoggedIn' => false,
+                    ]);
                 }
 
-                return response()->json([
-                    'success' => true,
-                    'message' => __('notifications.delete_customer_order_success'),
-                    'inCart' => $inCart,
-                    'isLoggedIn' => $isLoggedIn,
-                ]);
-
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 return response()->json([
                     'success' => false,
-                    'message' => $e->getMessage()
-                ], 422);
+                    'message' => __('notifications.error_while_processing') . ' ' . $e
+                ], 500);
             }
         }
 
@@ -1237,6 +1436,15 @@ class PublicController extends Controller
             if (!$files->isEmpty()) {
                 foreach ($files as $file) {
                     $file->delete();
+                }
+            }
+
+            $notifications = Notification::where('project_id', $project->id)->get();
+
+            if (!empty($notifications)) {
+                foreach ($notifications as $notification) {
+                    // Deletes the row at the database
+                    $notification->delete();
                 }
             }
 
@@ -1382,6 +1590,37 @@ class PublicController extends Controller
 
         // En cas d'erreur (pas de fichier)
         return redirect()->back()->with('error_message', 'Veuillez télécharger un fichier Excel valide.');
+    }
+
+    /**
+     * POST: Update user status
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @param int  $id
+     * @return \Illuminate\Support\Facades\Redirect
+     */
+    public function userStatus(Request $request, $id)
+    {
+        $status = $request->input('status');
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->back()->with('error_message', __('notifications.find_user_404'));
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $user->update(['status' => $status]);
+
+            DB::commit();
+
+            return redirect()->back()->with('success_message', __('notifications.update_status_success'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error_message', $e->getMessage());
+        }
     }
 
     /**
@@ -1627,7 +1866,7 @@ class PublicController extends Controller
                     // Creating the database record for the file
                     File::create([
                         'file_name' => trim($fileNames[$key] ?? $filename),
-                        'file_url' => getWebURL() . '/storage/' . $file_url,
+                        'file_url' => '/storage/' . $file_url,
                         'file_type' => $file_type,
                         'product_id' => $product->id
                     ]);
@@ -1653,7 +1892,7 @@ class PublicController extends Controller
             /*
                 NOTIFICATION MANAGEMENT
             */
-            $administrators = User::whereHas('roles', function ($query) {
+            $administrators = User::whereHas('selectedRole', function ($query) {
                                         $query->where('role_name->fr', 'Administrateur');
                                     })->get();
 
@@ -1776,7 +2015,7 @@ class PublicController extends Controller
                 // Creating the database record for the file
                 File::create([
                     'file_name' => trim($fileNames[$key] ?? $filename),
-                    'file_url' => getWebURL() . '/storage/' . $file_url,
+                    'file_url' => '/storage/' . $file_url,
                     'file_type' => $file_type,
                     'post_id' => $post->id
                 ]);
@@ -1883,7 +2122,7 @@ class PublicController extends Controller
                 // Creating the database record for the file
                 File::create([
                     'file_name' => trim($fileNames[$key] ?? $filename),
-                    'file_url' => getWebURL() . '/storage/' . $file_url,
+                    'file_url' => '/storage/' . $file_url,
                     'file_type' => $file_type,
                     'project_id' => $project->id
                 ]);
@@ -1929,7 +2168,7 @@ class PublicController extends Controller
 
         } else {
             // 4️⃣ Notifications (inchangées)
-            $administrators = User::whereHas('roles', fn($q) => $q->where('role_name->fr', 'Administrateur'))->get();
+            $administrators = User::whereHas('selectedRole', fn($q) => $q->where('role_name->fr', 'Administrateur'))->get();
     
             foreach ($administrators as $admin) {
                 Notification::create([
@@ -2372,6 +2611,28 @@ class PublicController extends Controller
             }
 
             if ($inputs['quantity'] != null) {
+                if (trim($inputs['category_id']) != null) {
+                    $category = Category::find($inputs['category_id']);
+
+                    if (!$category) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => __('notifications.find_category_404'),
+                        ], 404);
+                    }
+
+                    if (!empty($category->min_quantity)) {
+                        $minQuantity = $category->min_quantity / 1000;
+
+                        if (empty($inputs['quantity']) OR $inputs['quantity'] < $minQuantity) {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => __('miscellaneous.admin.product.data.quantity.error', ['quantity' => $minQuantity]),
+                            ], 400);
+                        }
+                    }
+                }
+
                 $current_product->update([
                     'quantity' => $inputs['quantity'],
                     'updated_by' => Auth::check() ? Auth::id() : null,
@@ -2481,7 +2742,7 @@ class PublicController extends Controller
                     // Creating the database record for the file
                     File::create([
                         'file_name' => trim($fileNames[$key] ?? $filename),
-                        'file_url' => getWebURL() . '/storage/' . $file_url,
+                        'file_url' => '/storage/' . $file_url,
                         'file_type' => $file_type,
                         'product_id' => $current_product->id
                     ]);
@@ -2576,7 +2837,7 @@ class PublicController extends Controller
                             break;
 
                         case 'update':
-                            if ($request->quantity < 1000) {
+                            if ($request->quantity < 1) {
                                 return response()->json([
                                     'message' => __('notifications.minimum_quantity_error'),
                                     'newQuantity' => $order->quantity,

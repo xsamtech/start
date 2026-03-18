@@ -28,6 +28,7 @@
                                             <tr>
                                                 <th></th>
                                                 <th>@lang('miscellaneous.admin.product.data.product_name', ['entity' => __('miscellaneous.admin.product.entity.product.singular')])</th>
+                                                <th>@lang('miscellaneous.seller')</th>
                                                 <th>@lang('miscellaneous.description')</th>
                                                 <th></th>
                                             </tr>
@@ -41,10 +42,16 @@
                                                     <p class="m-0" style="max-width: 280px; white-space: normal;">{{ $product['product_name'] }}</p>
                                                 </td>
                                                 <td>
+                                                    <img src="{{ $product['user']['avatar_url'] }}" alt="" width="40" class="rounded-circle">
+                                                    <p class="m-0" style="max-width: 280px; white-space: normal;">
+                                                        {{ $product['user']['firstname'] . ' ' . $product['user']['lastname'] }}
+                                                    </p>
+                                                </td>
+                                                <td>
                                                     <p class="m-0" style="max-width: 280px; white-space: normal;">{{ $product['product_description'] }}</p>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('product.entity.datas', ['entity' => $product['type'], 'id' => $product['id']]) }}" target="_blank">
+                                                    <a href="{{ route('dashboard.category.entity.datas', ['entity' => $product['type'], 'id' => $product['id']]) }}">
                                                         @lang('miscellaneous.details')<i class="feather-chevrons-right ms-1"></i>
                                                     </a><br>
     @if ($product['is_shared'] == 0)

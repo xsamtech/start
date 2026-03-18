@@ -20,6 +20,19 @@ class Product extends JsonResource
     public function toArray(Request $request): array
     {
         $current_user = $request->user();
+        $type = null;
+
+        switch ($this->type) {
+            case 'product':
+                $type = __('miscellaneous.product');
+                break;
+            case 'service':
+                $type = __('miscellaneous.service');
+                break;
+            default:
+                $type = null;
+                break;
+        }
 
         return [
             'id' => $this->id,
@@ -29,6 +42,7 @@ class Product extends JsonResource
             'price' => formatDecimalNumber($this->price, 3),
             'currency' => !empty($this->currency) ? ($this->currency == 'USD' ? '$' : 'FC') : null,
             'type' => $this->type,
+            'type_name' => $type,
             'action' => $this->action,
             'is_shared' => $this->is_shared,
             'user' => User::make($this->user),

@@ -261,7 +261,7 @@
                                 <div class="col-md-6 col-xs-6">
                                     <div class="form-group">
                                         <label for="quantity">@lang('miscellaneous.admin.product.data.quantity.title') (@lang('miscellaneous.admin.product.data.quantity.description'))</label>
-                                        <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="1000" value="{{ $selected_product->quantity }}" required>
+                                        <input type="number" class="form-control input-minimum" id="quantity" name="quantity" min="1" value="{{ $selected_product->quantity }}" required>
                                     </div>
                                 </div>
 
@@ -800,7 +800,9 @@
                                         <li>
                                             <a href="{{ route('account.home') }}" title="@lang('miscellaneous.menu.account.title')"><i class="bi bi-person" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.menu.account.title')</span></a>
                                         </li>
-    @include('partials.notifications-badge')
+    @if ($current_user->status == 'activated')
+        @include('partials.notifications-badge')
+    @endif
                                         <li>
                                             <form action="{{ route('logout') }}" method="post">
                                                 <button class="btn btn-link" style="color: #777;"><i class="bi bi-power" style="margin-right: 0.5rem!important;"></i><span class="hide-for-xs">@lang('miscellaneous.logout')</span></button>
@@ -935,7 +937,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12 clearfix">
-                                    <!-- Mani menu -->
+                                    <!-- Main menu -->
                                     <nav id="main-nav">
                                         <div id="responsive-nav">
                                             <div id="responsive-nav-button">
@@ -1024,6 +1026,7 @@
                                         </div><!-- End .dropdown-cart-menu-container -->
 @endsession
 @if (!empty($current_user))
+    @if ($current_user->status == 'activated')
                                         <div class="dropdown-cart-menu-container pull-right">
                                             <div class="btn-group dropdown-cart">
                                                 <button type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
@@ -1033,19 +1036,19 @@
 
                                                 <div class="dropdown-menu dropdown-cart-menu pull-right clearfix" role="menu">
                                                     <p class="dropdown-cart-description">{{ trans_choice('miscellaneous.recently_added_items', count($user_orders)) }}</p>
-    @if (count($user_orders) > 0)
+        @if (count($user_orders) > 0)
                                                     <ul class="dropdown-cart-product-list">
-        @php
-            foreach ($user_orders as $item) {
-                $item->converted_price = formatDecimalNumber($item->convertPriceAtThatTime($current_user->currency), 3);
-                $item->subtotal_price = formatDecimalNumber($item->subtotalPrice($current_user->currency));
-            }
+            @php
+                foreach ($user_orders as $item) {
+                    $item->converted_price = formatDecimalNumber($item->convertPriceAtThatTime($current_user->currency), 3);
+                    $item->subtotal_price = formatDecimalNumber($item->subtotalPrice($current_user->currency));
+                }
 
-            $itemsArray = $user_orders->toArray();
-        @endphp
+                $itemsArray = $user_orders->toArray();
+            @endphp
 
-        @foreach ($itemsArray as $item)
-            @if ($loop->index < 3)
+            @foreach ($itemsArray as $item)
+                @if ($loop->index < 3)
                                                         <li id="item-{{ $item['id'] }}" class="item clearfix">
                                                             <a href="#" title="Delete item" class="delete-item" onclick="event.preventDefault(); performAction('delete', 'order', 'item-{{ $item['id'] }}')">
                                                                 <i class="fa fa-times"></i>
@@ -1069,8 +1072,8 @@
                                                                 </p>
                                                             </div><!-- End .dropdown-cart-details -->
                                                         </li>
-            @endif
-        @endforeach
+                @endif
+            @endforeach
                                                     </ul>
                                                     <ul class="dropdown-cart-total">
                                                         <li><span class="dropdown-cart-total-title">
@@ -1084,15 +1087,16 @@
                                                         </p>
                                                     </div><!-- End .dropdown-cart-action -->
         
-    @else
+        @else
                                                     <div style="display: flex; justify-content: center; align-items: flex-end; height: 100px;">
                                                         <i class="bi bi-cart3" style="font-size: 5rem"></i>
                                                     </div>
                                                     <h5 class="text-center">@lang('miscellaneous.empty_list')</h5>
-    @endif
+        @endif
                                                 </div><!-- End .dropdown-cart -->
                                             </div><!-- End .btn-group -->
                                         </div><!-- End .dropdown-cart-menu-container -->
+    @endif
 @endif
 
                                         <form class="form-inline quick-search-form" role="form" action="{{ route('search') }}">
@@ -1240,7 +1244,7 @@
                     type: 'GET',
                     url: `${currentHost}/mark_all_read`,
                     dataType: 'json',
-                    contentType: 'application/json'
+                    contentType: 'application/json',
                     success: function (response) {
                     }
                     error: function (xhr, error, status_description) {
@@ -1952,7 +1956,7 @@
                         url: `${currentHost}/products/add-to-cart/${productId}`,
                         method: 'POST',
                         data: {
-                            quantity: 1000,
+                            quantity: 1,
                             _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         success(response) {
@@ -1991,7 +1995,7 @@
                             console.log('Produit ajouté');
                         },
                         error(xhr) {
-                            alert(xhr.responseJSON.message || '{{ __('notifications.add_error') }}');
+                            alert(xhr.responseJSON.message || '{{ __("notifications.add_error") }}');
                         }
                     });
                 });

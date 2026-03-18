@@ -16,11 +16,11 @@
                                     <h1 class="title">@lang('miscellaneous.public.agribusiness.title')</h1>
                                     <p class="title-desc">@lang('miscellaneous.public.agribusiness.description')</p>
 								</header>
-@auth
+@if (!empty($current_user) && $current_user->status == 'activated')
 								<a href="{{ route('crowdfunding.home') }}" class="btn strt-btn-chocolate-3 pb-2" style="float: right; display: flex; align-items: center;">
 									<i class="bi bi-plus" style="font-size: 2.5rem; color: white"></i> <span class="d-xs-none" style="margin-left: 8px; color: white">@lang('miscellaneous.write_new')</span>
 								</a>
-@endauth
+@endif
 							</div>
                         </div>
 

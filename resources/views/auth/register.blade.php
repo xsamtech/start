@@ -50,7 +50,7 @@
                                                             <span class="input-icon input-icon-user"></span>
                                                             <span class="input-text">@lang('miscellaneous.firstname') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="firstname" required id="firstname" class="form-control input-lg @error('firstname') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.firstname')">
+                                                        <input type="text" name="firstname" required id="firstname" class="form-control input-lg @error('firstname') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.firstname')" value="{{ old('firstname') }}">
                                                     </div><!-- End .input-group -->
     @error('firstname')
                                                     <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
@@ -62,7 +62,7 @@
                                                             <span class="input-icon input-icon-user"></span>
                                                             <span class="input-text">@lang('miscellaneous.lastname') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="lastname" id="lastname" required class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.lastname')">
+                                                        <input type="text" name="lastname" id="lastname" required class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.lastname')" value="{{ old('lastname') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Surname -->
@@ -71,7 +71,7 @@
                                                             <span class="input-icon input-icon-user"></span>
                                                             <span class="input-text">@lang('miscellaneous.surname')</span>
                                                         </span>
-                                                        <input type="text" name="surname" id="surname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.surname')">
+                                                        <input type="text" name="surname" id="surname" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.surname')" value="{{ old('surname') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Username -->
@@ -80,7 +80,7 @@
                                                             <span class="input-icon input-icon-user"></span>
                                                             <span class="input-text">@lang('miscellaneous.username') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="username" required id="username" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.username')">
+                                                        <input type="text" name="username" required id="username" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.username')" value="{{ old('username') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Birth date -->
@@ -89,7 +89,7 @@
                                                             <span class="input-icon input-icon-region"></span>
                                                             <span class="input-text">@lang('miscellaneous.birth_date.label2') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="birthdate" required id="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.birth_date.label')">
+                                                        <input type="text" name="birthdate" required id="birthdate" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.birth_date.label')" value="{{ old('birthdate') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Nationality -->
@@ -98,7 +98,7 @@
                                                             <span class="input-icon input-icon-country"></span>
                                                             <span class="input-text">@lang('miscellaneous.nationality')</span>
                                                         </span>
-                                                        <input type="text" name="nationality" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.nationality')">
+                                                        <input type="text" name="nationality" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.nationality')" value="{{ old('nationality') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Gender -->
@@ -129,7 +129,7 @@
                                                             <span class="input-icon input-icon-email"></span>
                                                             <span class="input-text">@lang('miscellaneous.email')</span>
                                                         </span>
-                                                        <input type="text" name="email" class="form-control input-lg @error('email') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.email')">
+                                                        <input type="text" name="email" class="form-control input-lg @error('email') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.email')" value="{{ old('email') }}">
                                                     </div><!-- End .input-group -->
     @error('email')
                                                     <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
@@ -141,7 +141,7 @@
                                                             <span class="input-icon input-icon-phone"></span>
                                                             <span class="input-text">@lang('miscellaneous.phone') <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="phone" class="form-control input-lg @error('phone') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.phone_number')">
+                                                        <input type="text" name="phone" class="form-control input-lg @error('phone') is-invalid @enderror" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.phone_number')" value="{{ old('phone') }}">
                                                     </div><!-- End .input-group -->
     @error('phone')
                                                     <p class="text-danger text-right" style="margin-bottom: 5px;">{{ $message }}</p>
@@ -153,7 +153,7 @@
                                                             <span class="input-icon input-icon-address"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.title') 1 <span class="text-danger">&#42;</span></span>
                                                         </span>
-                                                        <input type="text" name="address_1" required id="address_1" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')">
+                                                        <input type="text" name="address_1" required id="address_1" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.title')" value="{{ old('address_1') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Address 2 -->
@@ -162,7 +162,7 @@
                                                             <span class="input-icon input-icon-address"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.title') 2</span>
                                                         </span>
-                                                        <input type="text" name="address_2" id="address_2" class="form-control input-lg" placeholder="@lang('miscellaneous.address.line2')">
+                                                        <input type="text" name="address_2" id="address_2" class="form-control input-lg" placeholder="@lang('miscellaneous.address.line2')" value="{{ old('address_2') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Province -->
@@ -171,7 +171,7 @@
                                                             <span class="input-icon input-icon-address"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.province')</span>
                                                         </span>
-                                                        <input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.province')">
+                                                        <input type="text" name="province" id="province" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.province')" value="{{ old('province') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Territory -->
@@ -180,7 +180,7 @@
                                                             <span class="input-icon input-icon-address"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.territory')</span>
                                                         </span>
-                                                        <input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.territory')">
+                                                        <input type="text" name="territory" id="territory" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.territory')" value="{{ old('territory') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- City -->
@@ -189,7 +189,7 @@
                                                             <span class="input-icon input-icon-city"></span>
                                                             <span class="input-text">@lang('miscellaneous.address.city')</span>
                                                         </span>
-                                                        <input type="text" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')">
+                                                        <input type="text" name="city" id="city" class="form-control input-lg" placeholder="@lang('miscellaneous.ones_you_masculine') @lang('miscellaneous.address.city')" value="{{ old('city') }}">
                                                     </div><!-- End .input-group -->
 
                                                     <!-- Country -->
@@ -223,7 +223,7 @@
                                                                 <span id="charCount" style="font-weight: 600;">300</span>
                                                             </span>
                                                         </span>
-                                                        <textarea name="about_me" id="limitChars" class="form-control" cols="30" rows="4" maxlength="300" placeholder="@lang('miscellaneous.about_user.placeholder')"></textarea>
+                                                        <textarea name="about_me" id="limitChars" class="form-control" cols="30" rows="4" maxlength="300" placeholder="@lang('miscellaneous.about_user.placeholder')">{{ old('about_me') }}</textarea>
                                                     </div><!-- End .input-group -->
 
                                                     <fieldset>

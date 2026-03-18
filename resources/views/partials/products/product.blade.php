@@ -1,3 +1,23 @@
+@php
+	$status = null;
+
+    if (auth()->check()) {
+        switch (auth()->user()->status) {
+            case 'disabled':
+                $status = 'deactivated';
+                break;
+
+            case 'deleted':
+                $status = 'deleted';
+                break;
+
+            default:
+                $status = 'locked';
+                break;
+        }
+    }
+@endphp
+
 
 			<section id="content">
 				<div id="breadcrumb-container">
@@ -78,21 +98,27 @@
                                                 </h3>
                                                 <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
     @if (!empty($current_user))
-        @if ($current_user->hasProductInUnpaidCart($product['id']))
+        @if ($current_user->status == 'activated')
+            @if ($current_user->hasProductInUnpaidCart($product['id']))
                                                     <p class="btn btn-default disabled" style="margin: -2px;">
                                                         <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.public.product_is_in_cart')</span>
                                                     </p>
-        @else
-            @if ($product['quantity'] > 0)
+            @else
+                @if ($product['quantity'] > 0)
                                                     <button class="item-add-btn" data-id="{{ $product['id'] }}" style="position: relative;">
                                                         <span id="icon-cart-text-{{ $product['id'] }}" class="icon-cart-text">@lang('miscellaneous.public.add_to_cart')</span>
                                                         <img id="ajax-loading-{{ $product['id'] }}" src="{{ asset('assets/img/ajax-loading.gif') }}" alt="@lang('miscellaneous.loading')" width="30" height="30" style="position: absolute; top: 2px; right: 43%; display: none;">
                                                     </button>
-            @else
+                @else
                                                     <p class="btn btn-default disabled" style="margin: -2px;">
                                                         <span class="text-uppercase">@lang('miscellaneous.public.insufficient_stock')</span>
                                                     </p>
+                @endif
             @endif
+        @else
+                                                    <p class="btn btn-default disabled" style="margin: -2px;">
+                                                        <span class="text-uppercase" style="font-size: 12px">@lang('miscellaneous.account.' . $status . '.title')</span>
+                                                    </p>
         @endif
     @else
         @if ($isInCart)  <!-- Vérifie si le produit est dans la session -->

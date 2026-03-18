@@ -33,7 +33,7 @@
                                                 <h3 class="fs-13 fw-semibold text-truncate-1-line">{{ trans_choice('miscellaneous.admin.statistics.members.title', $members_req->total()) }}</h3>
                                             </div>
                                         </div>
-                                        <a href="{{ route('dashboard.role.entity.home', ['entity' => 'members']) }}" class="">
+                                        <a href="{{ route('dashboard.role.entity.home', ['entity' => 'users']) }}" class="">
                                             <i class="feather-arrow-right"></i>
                                         </a>
                                     </div>

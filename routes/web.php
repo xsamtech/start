@@ -32,7 +32,7 @@ Route::get('/discussions/{id}', [PublicController::class, 'discussionDatas'])->w
 Route::get('/investors', [PublicController::class, 'investors'])->name('investor.home');
 Route::get('/investors/{id}', [PublicController::class, 'investorDatas'])->whereNumber('id')->name('investor.datas');
 // Crowdfundings
-Route::get('/project-writing', [PublicController::class, 'crowdfunding'])->name('crowdfunding.home');
+Route::get('/project-writing', [PublicController::class, 'crowdfunding'])->name('crowdfunding.home')->middleware('check.status');
 Route::get('/project-writing/{id}', [PublicController::class, 'crowdfundingDatas'])->whereNumber('id')->name('crowdfunding.datas');
 // Payment
 Route::get('/pay', [PublicController::class, 'pay'])->name('pay');
@@ -40,10 +40,21 @@ Route::post('/pay', [PublicController::class, 'runPay']);
 Route::get('/transaction_waiting', [PublicController::class, 'transactionWaiting'])->name('transaction.waiting');
 Route::get('/transaction_message/{orderNumber}', [PublicController::class, 'transactionMessage'])->name('transaction.message');
 Route::get('/paid/{amount}/{currency}/{code}/{entity}/{entity_id}', [PublicController::class, 'paid'])->whereNumber(['amount', 'code', 'cart_id'])->name('paid');
+// Update user status
+Route::post('/user-status/{id}', [PublicController::class, 'userStatus'])->whereNumber('id')->name('user.status');
 // Delete something
 Route::delete('/delete/{entity}/{id}', [PublicController::class, 'removeData'])->whereNumber('id')->name('data.delete');
+// User blocked
+Route::get('/blocked', function () {
+    if (auth()->user()->status === 'blocked' OR auth()->user()->status === 'disabled' OR auth()->user()->status === 'deleted') {
+        return view('blocked');
 
-Route::middleware('auth')->group(function () {
+    } else {
+        return redirect()->route('home');
+    }
+})->name('blocked.page');
+
+Route::middleware(['auth', 'check.status'])->group(function () {
     Route::get('/change-currency/{currency}', [PublicController::class, 'changeCurrency'])->name('change_currency');
     Route::get('/notifications/badge', [PublicController::class, 'getNotificationBadge'])->name('notifications.badge');
     Route::get('/generate-sheet/{language}/{user_id}/{project_id}', [PublicController::class, 'generateSheet'])->whereNumber(['user_id', 'project_id'])->name('generate_sheet');

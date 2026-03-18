@@ -1259,11 +1259,11 @@
              */
             function changeUserRole(selectElement) {
                 var roleId = selectElement.value;
-                var entityId = 'users'; // Change cela si nécessaire pour d'autres entités
-                var userId = selectElement.getAttribute('data-user-id'); // Assure-toi que l'ID de l'utilisateur est disponible dans le code JavaScript
+                var entityId = 'users';
+                var userId = selectElement.getAttribute('data-user-id');
+                var currentRole = selectElement.getAttribute('data-user-role-id');
 
-                // Si la valeur sélectionnée est celle actuelle, ne rien faire
-                if (!roleId || roleId === selectElement.getAttribute('data-user-role-id')) {
+                if (!roleId || roleId === currentRole) {
                     return;
                 }
 
@@ -1280,18 +1280,23 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             headers: headers,
-                            type: "POST", // Utilise POST car c'est la méthode de la route
+                            type: "POST",
                             url: `${currentHost}/dashboard/role/${entityId}/${userId}`,
                             contentType: "application/json",
                             data: JSON.stringify({ role_id: roleId }),
                             success: function (response) {
                                 if (response.success) {
+                                    // mettre à jour le rôle actuel
+                                    selectElement.setAttribute('data-user-role-id', roleId);
+
                                     Swal.fire({
                                         title: "<?= __('miscellaneous.alert.perfect') ?>",
                                         text: response.message,
                                         icon: "success"
+                                    }).then(() => {
+                                        location.reload();
                                     });
-                                    location.reload();
+
                                 } else {
                                     Swal.fire({
                                         title: "<?= __('miscellaneous.alert.oups') ?>",
@@ -1300,7 +1305,7 @@
                                     });
                                 }
                             },
-                            error: function (xhr, status, error) {
+                            error: function () {
                                 Swal.fire({
                                     title: "<?= __('miscellaneous.alert.oups') ?>",
                                     text: "Une erreur est survenue, veuillez réessayer plus tard.",
@@ -1314,6 +1319,9 @@
                             text: "<?= __('miscellaneous.alert.canceled.role') ?>",
                             icon: "error"
                         });
+
+                        // remettre la valeur précédente si annulé
+                        selectElement.value = currentRole;
                     }
                 });
             }

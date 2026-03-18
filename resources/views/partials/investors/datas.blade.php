@@ -1,3 +1,23 @@
+@php
+	$status = null;
+
+    if (auth()->check()) {
+        switch (auth()->user()->status) {
+            case 'disabled':
+                $status = 'deactivated';
+                break;
+
+            case 'deleted':
+                $status = 'deleted';
+                break;
+
+            default:
+                $status = 'locked';
+                break;
+        }
+    }
+@endphp
+
 
 			<section id="content">
 				<div id="breadcrumb-container">
@@ -178,9 +198,15 @@
                                     ← {{ __('miscellaneous.back_list') }}
                                 </a>
 @if (!in_array($current_user->id, $selected_project->users->pluck('id')->toArray()))
+	@if ($current_user->status == 'activated')
 								<button class="btn strt-btn-chocolate-3" style="color: white;" data-toggle="modal" data-target="#financeModal">
 									<i class="bi bi-cash-stack" style="margin-right: 8px;"></i> @lang('miscellaneous.public.agribusiness.finance')
 								</button>
+	@else
+								<button class="btn btn-light">
+									@lang('miscellaneous.account.' . $status . '.title')
+								</button>
+	@endif
 @endif
                             </div>
 						</div>

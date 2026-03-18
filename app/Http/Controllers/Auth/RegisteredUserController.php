@@ -39,15 +39,32 @@ class RegisteredUserController extends Controller
         $random_int_stringified = (string) random_int(1000000, 9999999);
 
         // Validate fields
+        // $request->validate([
+        //     'firstname' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        // ], [
+        //     'firstname.required' => __('validation.required'),
+        //     'email.required' => __('validation.required'),
+        //     'email.email' => __('validation.custom.email.incorrect'),
+        //     'email.unique' => __('validation.custom.email.exists'),
+        //     'password.required' => __('validation.required'),
+        //     'password.confirmed' => __('validation.confirmed'),
+        // ]);
         $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
-            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['nullable', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['nullable', 'string', 'max:20', 'unique:users,phone'],
+            'password' => ['required', 'confirmed'],
         ], [
             'firstname.required' => __('validation.required'),
-            // 'email.required' => __('validation.required'),
-            // 'email.email' => __('validation.custom.email.incorrect'),
-            // 'email.unique' => __('validation.custom.email.exists'),
+
+            'email.email' => __('validation.custom.email.incorrect'),
+            'email.unique' => __('validation.custom.email.exists'),
+
+            // 'phone.required' => __('validation.custom.phone.required'),
+            'phone.unique' => __('validation.custom.phone.exists'),
+
             'password.required' => __('validation.required'),
             'password.confirmed' => __('validation.confirmed'),
         ]);
@@ -114,7 +131,6 @@ class RegisteredUserController extends Controller
                     'fr' => 'Personne qui commande des produits ou des services publiés sur la plateforme.',
                 ]
             ]);
-
         } else {
             $role_member = Role::where('role_name->fr', 'Membre')->first();
         }
