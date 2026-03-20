@@ -30,7 +30,17 @@
 
                                     <div style="margin-top: 25px;">
                                         <h3>{{ $current_user->firstname . ' ' . $current_user->surname . ' ' . $current_user->lastname }}</h3>
-                                        <a href="{{ route('account.entity', ['entity' => 'update']) }}" class="btn strt-btn-chocolate-3" style="width: 100%; color: #fff!important;">@lang('miscellaneous.update')</a>
+                                        <a href="{{ route('account.entity', ['entity' => 'update']) }}" class="btn strt-btn-green" style="width: 100%; margin-bottom: 10px; color: #fff!important;">@lang('miscellaneous.update')</a>
+    									<form action="{{ route('user.status', ['id' => auth()->id()]) }}" method="POST">
+@csrf
+                                            <input type="hidden" name="status" value="disabled">
+                                            <button type="submit" class="btn btn-warning" style="width: 100%; margin-bottom: 10px;">@lang('miscellaneous.account.deactivated.link')</button>
+                                        </form>
+    									<form action="{{ route('user.status', ['id' => auth()->id()]) }}" method="POST">
+@csrf
+                                            <input type="hidden" name="status" value="deleted">
+                                            <button type="submit" class="btn btn-danger" style="width: 100%; margin-bottom: 10px;">@lang('miscellaneous.account.deleted.link')</button>
+                                        </form>
                                     </div>
                                 </div>
 
