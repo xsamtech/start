@@ -200,12 +200,26 @@ class PublicController extends Controller
     public function search(Request $request)
     {
         $query = $request->get('query');
-        $per_page = $request->get('per_page', 15);
         $filters = $request->only(['category_id', 'user_id', 'type', 'action']);
         // Request
-        $products = Product::searchWithFilters($query, $filters, $per_page);
+        $items = Product::searchWithFilters($query, $filters, 15);
 
-        return view('search', ['products' => $products]);
+        if (Auth::check()) {
+            $current_user = User::find(Auth::id());
+
+            // Ajouter la méthode convertPrice au résultat paginé
+            $items->getCollection()->transform(function ($item) use ($current_user) {
+                // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
+                $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
+
+                return $item;
+            });
+        }
+
+        return view('search', [
+            'query' => $query,
+            'items' => $items,
+        ]);
     }
 
     /**

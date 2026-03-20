@@ -4,15 +4,15 @@
                 <div class="page-header">
                     <div class="page-header-left d-flex align-items-center">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">{{ !empty($selected_category) ? __('miscellaneous.admin.group.category.details') : $selected_item->product_name }}</h5>
+                            <h5 class="m-b-10">{{ !empty($selected_category) ? __('miscellaneous.admin.group.category.details') : __('miscellaneous.admin.product.details', ['entity' => $selected_item->type == 'product' ? strtolower(__('miscellaneous.product')) : strtolower(__('miscellaneous.service'))]) }}</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard.home') }}">@lang('miscellaneous.menu.home')</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('dashboard.category.home') }}">@lang('miscellaneous.menu.admin.categories.title')</a></li>
 @if (!empty($selected_item))
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard.category.entity.datas', ['entity' => $entity, 'id' => $selected_item->id]) }}">{{ $entity_title ?? '------' }}</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.category.entity.home', ['entity' => $entity]) }}">{{ $entity_title ?? '------' }}</a></li>
 @endif
-                            <li class="breadcrumb-item">@lang('miscellaneous.details')</li>
+                            <li class="breadcrumb-item">{{ !empty($selected_category) ? $selected_category->category_name : $selected_item->product_name }}</li>
                         </ul>
                     </div>
                 </div>
@@ -166,12 +166,146 @@
                         <div class="col-12">
                             <div class="card card-body">
                                 <div class="row">
-                                    <div class="col-lg-7">
-                                        <div class="card card-body border shadow-0">
+                                    <div class="col-sm-6">
+                                        <div class="card card-body p-lg-4 p-3 border">
+    @if ($selected_item->is_shared == 0)
+                                            <form action="{{ route('product.entity.datas', ['entity' => 'product-sharing', 'id' => $selected_item->id]) }}" method="POST">
+        @csrf
+                                                <input type="hidden" name="is_shared" value="1">
+                                                <button class="btn btn-sm btn-success mb-3 rounded-pill">
+                                                    <i class="bi bi-check-lg me-2 fs-6"></i>@lang('miscellaneous.share')
+                                                </button>
+                                            </form>
+    @else
+                                            <form action="{{ route('product.entity.datas', ['entity' => 'product-sharing', 'id' => $selected_item->id]) }}" method="POST">
+        @csrf
+                                                <input type="hidden" name="is_shared" value="0">
+                                                <button class="btn btn-sm btn-danger mb-3 rounded-pill">
+                                                    <i class="bi bi-x-lg me-2 fs-6"></i>@lang('miscellaneous.unshare')
+                                                </button>
+                                            </form>
+    @endif
+
+    @if (count($selected_item->photos) > 0)
+                                            <div id="productImages" class="carousel slide mb-4" data-bs-ride="carousel">
+                                                <div class="carousel-indicators">
+        @foreach ($selected_item->photos as $photo)
+            @if ($loop->index == 0)
+                                                    <button type="button" data-bs-target="#productImages" data-bs-slide-to="{{ $loop->index }}" class="active" aria-current="true" aria-label="Slide {{ $loop->index }}"></button>
+            @else
+                                                    <button type="button" data-bs-target="#productImages" data-bs-slide-to="{{ $loop->index }}" aria-label="Slide {{ $loop->index }}"></button>
+            @endif
+        @endforeach
+                                                </div>
+                                                <div class="carousel-inner rounded-4 overflow-hidden">
+        @foreach ($selected_item->photos as $photo)
+                                                    <div class="carousel-item{{ $loop->index == 0 ? ' active' : '' }}">
+                                                        <img src="{{ $photo->file_url }}" class="d-block w-100" alt="{{ $selected_item->product_name . $loop->index }}" style="height: 350px; object-fit: cover;">
+                                                    </div>
+        @endforeach
+                                                </div>
+
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#productImages" data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">@lang('pagination.previous')</span>
+                                                </button>
+
+                                                <button class="carousel-control-next" type="button" data-bs-target="#productImages" data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">@lang('pagination.next')</span>
+                                                </button>
+                                            </div>
+    @endif
+
                                             <h1>{{ $selected_item->product_name }}</h1>
+
+                                            <p class="fs-6">{{ $selected_item->product_description }}</p>
+    @if ($selected_item->type == 'product')
+                                            <p class="fs-6 mb-0 mt-1">
+                                                <span style="text-decoration: underline;">@lang('miscellaneous.admin.product.action.title')</span>
+                                                @lang('miscellaneous.colon_after_word') 
+                                                <strong>
+                                                    {{ __('miscellaneous.admin.product.action.' . $selected_item->action) }}
+                                                </strong>
+                                            </p>
+
+                                            <p class="fs-6 mb-0 mt-1">
+                                                <span style="text-decoration: underline;">@lang('miscellaneous.admin.product.data.quantity.title')</span>
+                                                @lang('miscellaneous.colon_after_word') 
+                                                <strong>
+                                                    {{ $selected_item->quantity }} {{ $selected_item->quantity > 1 ? __('miscellaneous.units_of_measurement.tonne.name.plural') : __('miscellaneous.units_of_measurement.tonne.name.singular') }}
+                                                </strong>
+                                            </p>
+    @endif
+    @if ($selected_item->type == 'product')
+                                            <p class="fs-6 mb-0 mt-1">
+                                                <span style="text-decoration: underline;">@lang('miscellaneous.admin.product.data.product_price')</span>
+                                                @lang('miscellaneous.colon_after_word') 
+                                                <strong>
+                                                    {{ formatDecimalNumber($selected_item->price) }} {{ $selected_item->currency }}
+                                                </strong>
+                                            </p>
+    @else
+                                            <p class="fs-6 mb-0 mt-1">
+                                                <span style="text-decoration: underline;">@lang('miscellaneous.admin.product.data.service_price')</span>
+                                                @lang('miscellaneous.colon_after_word') 
+                                                <strong>
+                                                    {{ formatDecimalNumber($selected_item->price) }} {{ $selected_item->currency }}
+                                                </strong>
+                                            </p>
+    @endif
+
+                                            <div class="card card-body mt-4 mb-0 px-lg-3 px-2 border bg-light" style="border-color: #d0d0d0!important">
+                                                <div class="d-flex flex-lg-row flex-column align-items-center">
+                                                    <div>
+                                                        <img src="{{ $selected_item->user->avatar_url }}" alt="{{ $selected_item->user->firstname . ' ' . $selected_item->user->lastname }}" width="120" class="rounded-circle">
+                                                    </div>
+                                                    <div class="ps-sm-3 pt-lg-0 pt-1">
+                                                        <h4>{{ $selected_item->user->firstname . ' ' . $selected_item->user->lastname }}</h4>
+    @if (!empty($selected_item->user->email))
+                                                        <p class="mb-0 text-muted"><i class="bi bi-envelope-fill me-2"></i>{{ $selected_item->user->email }}</p>
+    @endif
+    @if (!empty($selected_item->user->phone))
+                                                        <p class="mt-1 mb-0 text-muted"><i class="bi bi-telephone-fill me-2"></i>{{ $selected_item->user->phone }}</p>
+    @endif
+    @if (!empty($selected_item->user->username))
+                                                        <p class="mt-1 mb-0 text-muted"><i class="bi bi-person-fill me-2"></i>{{ '@' . $selected_item->user->username }}</p>
+    @endif
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-5"></div>
+                                    <div class="col-sm-6">
+                                        <div class="card border overflow-hidden">
+                                            <div class="card-header bg-light">
+                                                <h3 class="m-0">@lang('miscellaneous.admin.product.members_comments')</h3>
+                                            </div>
+    @if (count($selected_item->feedbacks) > 0)
+                                                <ul class="list-group list-group-flush">
+        @foreach ($selected_item->feedbacks as $feedback)
+                                                    <li class="list-group-item px-sm-4 px-3">
+                                                        <div class="d-flex flex-sm-row flex-column">
+                                                            <div class="mb-1">
+                                                                <img src="{{ $feedback->user->avatar_url }}" alt="{{ $feedback->user->firstname . ' ' . $feedback->user->lastname }}" width="60">
+                                                            </div>
+                                                            <div class="ps-sm-3">
+                                                                <h4 class="mb-1 text-primary">{{ $feedback->user->firstname . ' ' . $feedback->user->lastname }}</h4>
+                                                                <p class="small mb-1 text-muted">{{ timeAgo($feedback->created_at) }}</p>
+                                                                <p class="m-0 fw-normal">{!! $feedback->comment !!}</p>
+                                                            </div><!-- End .comment-details -->
+                                                        </div><!-- End .comment -->
+                                                    </li>
+        @endforeach
+                                                </ul>
+    @else
+                                                <div class="d-flex justify-content-center align-items-center flex-column py-4">
+                                                    <p style="margin-bottom: 0;"><i class="far fa-comment fs-1"></i></p>
+                                                    <p class="lead strt-text-chocolate-2 text-center" style="margin-bottom: 0;">@lang('miscellaneous.empty_list')</p>
+                                                </div>
+    @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

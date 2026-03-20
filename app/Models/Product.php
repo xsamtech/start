@@ -253,8 +253,16 @@ class Product extends Model
                     ->when(isset($filters['user_id']), fn($q) => $q->where('user_id', $filters['user_id']))
                     ->when(isset($filters['type']), fn($q) => $q->where('type', $filters['type']))
                     ->when(isset($filters['action']), fn($q) => $q->where('action', $filters['action']))
-                    ->orderBy('price', 'asc')
+                    ->orderBy('created_at', 'asc')
                     ->paginate($perPage);
+    }
+
+    /**
+     * Received feedbacks
+     */
+    public function getFeedbacksAttribute()
+    {
+        return CustomerFeedback::where('for_product_id', $this->id)->orderByDesc('created_at')->get();
     }
 
     /**

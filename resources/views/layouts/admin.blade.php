@@ -359,11 +359,11 @@
                                                 <img src="{{ $user['avatar_url'] }}" alt="{{ $user['firstname'] . ' ' . $user['lastname'] }}" class="img-fluid" />
                                             </div>
                                             <div>
-                                                <a href="{{ route('dashboard.role.entity.datas', ['entity' => 'members', 'id' => $user['id']]) }}" class="font-body fw-bold d-block mb-1">{{ $user['firstname'] . ' ' . $user['lastname'] }}</a>
+                                                <a href="{{ route('dashboard.role.entity.datas', ['entity' => 'users', 'id' => $user['id']]) }}" class="font-body fw-bold d-block mb-1">{{ $user['firstname'] . ' ' . $user['lastname'] }}</a>
                                                 <p class="fs-11 text-muted mb-0">{{ !empty($user['email']) ? $user['email'] : $user['phone'] }}</p>
                                             </div>
                                         </div>
-                                        <a href="{{ route('dashboard.role.entity.datas', ['entity' => 'members', 'id' => $user['id']]) }}" class="avatar-text avatar-md">
+                                        <a href="{{ route('dashboard.role.entity.datas', ['entity' => 'users', 'id' => $user['id']]) }}" class="avatar-text avatar-md">
                                             <i class="feather-chevron-right"></i>
                                         </a>
                                     </div>

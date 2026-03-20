@@ -760,6 +760,7 @@ return [
             'edit' => 'Edit the :entity',
             'search' => 'Search a :entity',
             'list' => ':entity list',
+            'members_comments' => 'Members comments',
             'data' => [
                 'offer_name' => 'offer name',
                 'product_name' => ':entity name',

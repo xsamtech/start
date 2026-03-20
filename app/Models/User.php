@@ -67,10 +67,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class)->withTimestamps()->withPivot('is_selected');
     }
 
-    public function selectedRole()
-    {
-        return $this->belongsToMany(Role::class)->wherePivot('is_selected', 1)->withPivot('is_selected');
-    }
+    // public function selectedRole()
+    // {
+    //     return $this->belongsToMany(Role::class)->wherePivot('is_selected', 1)->withPivot('is_selected');
+    // }
 
     /**
      * MANY-TO-MANY

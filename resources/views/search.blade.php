@@ -18,52 +18,22 @@
     }
 @endphp
 
+@extends('layouts.app', ['page_title' => __('miscellaneous.search') . __('miscellaneous.colon_after_word') . ' « ' . $query . ' »'])
+
+@section('app-content')
+
 			<section id="content">
 				<div id="breadcrumb-container">
 					<div class="container">
 						<ul class="breadcrumb">
 							<li><a href="{{ route('home') }}">@lang('miscellaneous.menu.home')</a></li>
-							<li class="active">{{ $entity_title }}</li>
+							<li class="active">@lang('miscellaneous.search')@lang('miscellaneous.colon_after_word') &laquo; {{ $query }} &raquo;</li>
 						</ul>
 					</div>
 				</div>
 				<div class="container">
 					<div class="row">
-                        <div class="col-md-9 col-sm-8 col-xs-12 main-content">
-                            <div id="category-header" class="category-banner">
-                                <img src="{{ $category->image_url ?? getWebURL() . '/template/public/images/banner.png' }}" alt="Category banner" class="img-responsive" style="height: 300px; object-fit: cover; filter: brightness(50%);">
-                                <div class="category-title">
-                                    <h2>{{ $category->category_name }}</h2>
-                                    <p style="max-width: 90%!important;">{{ $category->category_description }}</p>
-                                </div><!-- End .category-title -->
-                            </div><!-- End #category-header -->
-
-                            <div class="md-margin"></div><!-- space -->
-
-                            <div class="category-toolbar clearfix">
-                                <div class="toolbox-filter clearfix">
-
-                                    <div class="sort-box">
-                                        <span class="separator">@lang('miscellaneous.sort_by')</span>
-                                        <div class="btn-group select-dropdown">
-                                            <button type="button" class="btn select-btn">@lang('miscellaneous.admin.product.action.title')</button>
-                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-angle-down"></i>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="?action=sell">@lang('miscellaneous.admin.product.action.sell')</a></li>
-                                                <li><a href="?action=rent">@lang('miscellaneous.admin.product.action.rent')</a></li>
-                                                <li><a href="?action=distribute">@lang('miscellaneous.admin.product.action.distribute')</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                </div><!-- End .toolbox-filter -->
-                                <div class="toolbox-pagination clearfix">
-									{{ $items->links() }}
-                                </div><!-- End .toolbox-pagination -->
-                            </div><!-- End .category-toolbar -->
-                            <div class="md-margin"></div><!-- .space -->
+                        <div class="col-md-12 col-sm-12 col-xs-12 main-content">
                             <div class="category-item-container">
                                 <div class="row">
 @forelse ($items as $product)
@@ -71,7 +41,7 @@
         $cart = session()->get('cart', []);
         $isInCart = isset($cart[$product['id']]);
     @endphp
-                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-md-3 col-sm-5 col-xs-12">
                                         <div class="item item-hover">
                                             <div class="item-image-wrapper">
                                                 <figure class="item-image-container">
@@ -150,62 +120,9 @@
 
                         </div><!-- End .col-md-9 -->
 
-                        <aside
-                            class="col-md-3 col-sm-4 col-xs-12 sidebar">
-                            <div class="widget">
-                                <div
-                                    class="panel-group custom-accordion sm-accordion"
-                                    id="category-filter">
-                                    <div class="panel">
-                                        <div class="accordion-header">
-                                            <div class="accordion-title"><span>@lang('miscellaneous.menu.admin.categories.title')</span></div><!-- End .accordion-title -->
-                                            <a class="accordion-btn opened" data-toggle="collapse" data-target="#category-list-1"></a>
-                                        </div><!-- End .accordion-header -->
-
-                                        <div id="category-list-1" class="collapse in">
-                                            <div class="panel-body">
-                                                <ul class="category-filter-list jscrollpane">
-@foreach ($categories as $category)
-    @php
-        $products_count = \App\Models\Product::where([['type', 'product'], ['is_shared', 1], ['category_id', $category->id]])->count();
-    @endphp
-                                                    <li>
-														<a href="?category_id={{ $category->id }}">{{ $category->category_name }} ({{ $products_count }})</a>
-													</li>
-@endforeach
-                                                </ul>
-                                            </div><!-- End .panel-body -->
-                                        </div><!-- #collapse -->
-                                    </div><!-- End .panel -->
-
-                                    <div class="panel">
-                                        <div class="accordion-header">
-                                            <div class="accordion-title"><span>@lang('miscellaneous.admin.product.data.product_price')</span></div><!-- End .accordion-title -->
-                                            <a class="accordion-btn opened" data-toggle="collapse" data-target="#category-list-3"></a>
-                                        </div><!-- End .accordion-header -->
-
-                                        <div id="category-list-3" class="collapse in">
-                                            <div class="panel-body">
-                                                <div id="price-range">
-
-                                                </div><!-- End #price-range -->
-                                                <div id="price-range-details">
-                                                    <span class="sm-separator text-capitalize">@lang('miscellaneous.from')</span>
-                                                    <input type="number" id="price-range-low" class="separator">
-                                                    <span class="sm-separator">@lang('miscellaneous.to')</span>
-                                                    <input type="number" id="price-range-high">
-                                                </div>
-                                                <div id="price-range-btns">
-                                                    <a href="#" class="btn btn-custom-2 btn-sm">Ok</a>
-                                                    <a href="#" class="btn btn-custom-2 btn-sm">@lang('miscellaneous.clear')</a>
-                                                </div>
-                                            </div><!-- End .panel-body -->
-                                        </div><!-- #collapse -->
-                                    </div><!-- End .panel -->
-                                </div><!-- .panel-group -->
-                            </div><!-- End .widget -->
-                        </aside><!-- End .col-md-3 -->
 					</div><!-- End .row -->
 				</div><!-- End .container -->
 
 			</section><!-- End #content -->
+
+@endsection

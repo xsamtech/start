@@ -239,7 +239,6 @@ class AdminController extends Controller
         }
 
         if ($entity == 'users') {
-            $entity_title = __('miscellaneous.admin.users.details');
             $user = User::find($id);
 
             if (!$user) {
@@ -247,6 +246,7 @@ class AdminController extends Controller
             }
 
             $selected_entity = (new ResourcesUser($user))->resolve();
+            $entity_title = $selected_entity['firstname'] . ' ' . $selected_entity['lastname'];
         }
 
         return view('dashboard.roles', [
@@ -369,7 +369,7 @@ class AdminController extends Controller
 
         if ($entity == 'product' OR $entity == 'service') {
             $selected_item = Product::find($id);
-            $entity_title = __('miscellaneous.' . $selected_item->type);
+            $entity_title = $selected_item->type == 'product' ? __('miscellaneous.menu.public.products.products') : __('miscellaneous.menu.public.products.services');
         }
 
         return view('dashboard.categories', [

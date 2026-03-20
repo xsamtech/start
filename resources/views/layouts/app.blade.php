@@ -1099,9 +1099,9 @@
     @endif
 @endif
 
-                                        <form class="form-inline quick-search-form" role="form" action="{{ route('search') }}">
+                                        <form class="form-inline quick-search-form" role="form" method="POST" action="{{ route('search') }}">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="@lang('miscellaneous.search_input')">
+                                                <input type="text" class="form-control" placeholder="@lang('miscellaneous.search_input')" name="query">
                                             </div><!-- End .form-inline -->
                                             <button type="submit" id="quick-search" class="btn btn-custom"></button>
                                         </form>
