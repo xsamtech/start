@@ -764,7 +764,7 @@ class PublicController extends Controller
         $investors = Auth::check() ? User::where('id', '<>', Auth::id())->whereHas('roles', function ($query) {
                                             $query->where('role_name->fr', 'Investisseur');
                                         })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query())
-                                    : User::whereHas('selectedRole', function ($query) {
+                                    : User::whereHas('roles', function ($query) {
                                         $query->where('role_name->fr', 'Investisseur');
                                     })->orderByDesc('users.created_at')->paginate(12)->appends(request()->query());
 
@@ -1668,28 +1668,32 @@ class PublicController extends Controller
                 return redirect('/')->with('error_message', __('notifications.find_project_404'));
             }
 
-            // 1️⃣ Trouver le rôle "Investisseur"
+            // 1️⃣ Trouver le rôle "Investisseur" et "Administrateur"
             $role = Role::where('role_name->fr', 'Investisseur')->first();
+            $role_admin = Role::where('role_name->fr', 'Administrateur')->first();
 
-            if ($role) {
+            if ($role && $role_admin) {
                 // 2️⃣ Récupérer tous les rôles associés à l'utilisateur
                 $userRoleIds = $user->roles->pluck('id');
 
-                // 3️⃣ Mettre tous les rôles existants de l'utilisateur à is_selected = 0
-                if ($userRoleIds->isNotEmpty()) {
-                    $user->roles()->updateExistingPivot($userRoleIds, ['is_selected' => 0]);
-                }
+                // 3️⃣ Vérifier d'abord que l'utilisateur n'est PAS administrateur
+                if ($user->selected_role->id != $role_admin->id) {
+                    // 4️⃣ Mettre tous les rôles existants de l'utilisateur à is_selected = 0
+                    if ($userRoleIds->isNotEmpty()) {
+                        $user->roles()->updateExistingPivot($userRoleIds, ['is_selected' => 0]);
+                    }
 
-                // 4️⃣ Vérifier si le rôle "Investisseur" est déjà associé à l'utilisateur
-                $hasRole = $user->roles()->where('roles.id', $role->id)->exists();
+                    // 5️⃣ Vérifier si le rôle "Investisseur" est déjà associé à l'utilisateur
+                    $hasRole = $user->roles()->where('roles.id', $role->id)->exists();
 
-                if (! $hasRole) {
-                    // 🔹 Si le rôle n'est pas encore lié, on l'attache avec is_selected = 1
-                    $user->roles()->attach($role->id, ['is_selected' => 1]);
+                    if (!$hasRole) {
+                        // 🔹 Si le rôle n'est pas encore lié, on l'attache avec is_selected = 1
+                        $user->roles()->attach($role->id, ['is_selected' => 1]);
 
-                } else {
-                    // 🔹 Si le rôle existe déjà, on le met simplement à is_selected = 1
-                    $user->roles()->updateExistingPivot($role->id, ['is_selected' => 1]);
+                    } else {
+                        // 🔹 Si le rôle existe déjà, on le met simplement à is_selected = 1
+                        $user->roles()->updateExistingPivot($role->id, ['is_selected' => 1]);
+                    }
                 }
             }
 
@@ -1804,7 +1808,6 @@ class PublicController extends Controller
                 }
             }
 
-            $role_seller = Role::where('role_name->fr', 'Vendeur')->first();
             $product = Product::create([
                 'product_name' => $request->product_name,
                 'product_description' => $request->product_description,
@@ -1887,27 +1890,33 @@ class PublicController extends Controller
                 }
             }
 
-            // Update user role to "Seller" if he doesn't have that role
-            if ($current_user->selected_role->id != $role_seller->id) {
-                DB::beginTransaction();
+            $role_admin = Role::where('role_name->fr', 'Administrateur')->first();
+            $role_seller = Role::where('role_name->fr', 'Vendeur')->first();
 
-                try {
-                    // 1. Update all other roles for this user and set is_selected to 0
-                    $current_user->roles()->updateExistingPivot($current_user->roles->pluck('id')->toArray(), ['is_selected' => 0]);
-                    // 2. Add the new role and set is_selected to 1
-                    $current_user->roles()->attach($role_seller->id, ['is_selected' => 1]);
+            // Verify that the user is NOT an administrator
+            if ($current_user->selected_role->id != $role_admin->id) {
+                // Update user role to "Seller" if he doesn't have that role
+                if ($current_user->selected_role->id != $role_seller->id) {
+                    DB::beginTransaction();
 
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollBack();
+                    try {
+                        // 1. Update all other roles for this user and set is_selected to 0
+                        $current_user->roles()->updateExistingPivot($current_user->roles->pluck('id')->toArray(), ['is_selected' => 0]);
+                        // 2. Add the new role and set is_selected to 1
+                        $current_user->roles()->attach($role_seller->id, ['is_selected' => 1]);
+
+                        DB::commit();
+                    } catch (\Exception $e) {
+                        DB::rollBack();
+                    }
                 }
             }
 
             /*
                 NOTIFICATION MANAGEMENT
             */
-            $administrators = User::whereHas('selectedRole', function ($query) {
-                                        $query->where('role_name->fr', 'Administrateur');
+            $administrators = User::whereHas('roles', function ($query) {
+                                        $query->where('role_name->fr', 'Administrateur')->where('is_selected', 1);
                                     })->get();
 
             foreach ($administrators as $admin) {
@@ -2182,7 +2191,7 @@ class PublicController extends Controller
 
         } else {
             // 4️⃣ Notifications (inchangées)
-            $administrators = User::whereHas('selectedRole', fn($q) => $q->where('role_name->fr', 'Administrateur'))->get();
+            $administrators = User::whereHas('roles', fn($q) => $q->where('role_name->fr', 'Administrateur')->where('is_selected', 1))->get();
     
             foreach ($administrators as $admin) {
                 Notification::create([

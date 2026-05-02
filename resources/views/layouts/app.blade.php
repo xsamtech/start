@@ -1413,7 +1413,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 headers: headers,
-                                type: "DELETE",
+                                type: "GET",
                                 url: `${currentHost}/delete/${entity}/${entityId}`,
                                 contentType: false,
                                 processData: false,
