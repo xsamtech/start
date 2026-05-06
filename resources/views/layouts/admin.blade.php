@@ -44,6 +44,8 @@
             .preview-thumbnail img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
             .preview-thumbnail .remove-image { position: absolute; top: 0; right: 0; background-color: rgba(255, 0, 0, 0.7); color: white; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 0 5.5px; }
             .preview-thumbnail .remove-image:hover { background-color: rgba(255, 0, 0, 0.3); }
+            /* Autocomplete from search */
+            #autocomplete-results { position: absolute; width: 100%; background: white; z-index: 999; border: 1px solid #ddd; max-height: 300px; overflow-y: auto; }
         </style>
         <!--! END: Custom CSS-->
         <!--! HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries !-->
@@ -322,7 +324,7 @@
                         <a href="javascript:void(0);" class="nxl-head-link me-0" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                             <i class="feather-search"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-start nxl-h-dropdown nxl-search-dropdown">
+                        <div class="dropdown-menu dropdown-menu-start nxl-h-dropdown nxl-search-dropdown" style="min-height: 230px;">
                             <div class="input-group search-form">
                                 <span class="input-group-text">
                                     <i class="feather-search fs-6 text-muted"></i>
@@ -333,6 +335,7 @@
                                 </span>
                             </div>
                             <div class="dropdown-divider mt-0"></div>
+                            <div id="autocomplete-results" style="display:none;"></div>
                             <div class="search-items-wrapper">
                                 <div class="searching-for px-4 py-2">
                                     <p class="fs-11 fw-medium text-muted">@lang('miscellaneous.search_info')</p>
@@ -481,9 +484,9 @@
                             </a>
                         </div>
                         <div class="dropdown nxl-h-item">
-                            <a class="nxl-head-link me-3" data-bs-toggle="dropdown" href="#" role="button" data-bs-auto-close="outside">
+                            <a href="{{ route('dashboard.notifications') }}" class="nxl-head-link me-3" role="button" data-bs-auto-close="outside">
                                 <i class="feather-bell"></i>
-                                <span class="badge bg-danger nxl-h-badge"></span>
+                                <span class="badge bg-danger nxl-h-badge">{{ count($unread_notifications) > 0 ? count($unread_notifications) : '' }}</span>
                             </a>
                             {{-- <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-notifications-menu">
                                 <div class="d-flex justify-content-between align-items-center notifications-head">
@@ -803,6 +806,62 @@
             });
 
             $(function () {
+                const $input = $('.search-input-field');
+                const $clearBtn = $('.btn-close');
+                const $defaultWrapper = $('.search-items-wrapper');
+                const $resultsWrapper = $('#autocomplete-results');
+
+                let timeout = null;
+
+                // cacher le bouton X au départ
+                $clearBtn.hide();
+
+                $input.on('input', function () {
+                    const value = $(this).val().trim();
+
+                    // ✅ bouton X
+                    $clearBtn.toggle(value.length > 0);
+
+                    // ✅ champ vide → reset
+                    if (value.length === 0) {
+                        $resultsWrapper.hide().html('');
+                        $defaultWrapper.show();
+
+                        return;
+                    }
+
+                    // ✅ switch affichage
+                    $defaultWrapper.hide();
+                    $resultsWrapper.show();
+
+                    // ✅ debounce
+                    clearTimeout(timeout);
+
+                    timeout = setTimeout(() => {
+                        $.ajax({
+                            url: `${currentHost}/search`,
+                            method: 'GET',
+                            data: {
+                                query: value,
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function (response) {
+                                $resultsWrapper.html(response);
+                            },
+                            error: function () {
+                                $resultsWrapper.html('<div class="px-4 py-2 text-danger">Erreur...</div>');
+                            }
+                        });
+                    }, 300);
+                });
+
+                // ✅ bouton clear (X)
+                $clearBtn.on('click', function () {
+                    $input.val('');
+                    $input.trigger('input');
+                    $input.focus();
+                });
+
                 /* On check, show/hide some blocs */
                 // OFFER TYPE
                 $('#donationType .form-check-input').each(function () {

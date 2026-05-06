@@ -65,7 +65,10 @@
                                                         {{ $product['product_name'] }}
                                                     </a>
                                                 </h3>
-                                                <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
+                                                <p style="font-weight: 700; margin: 0 0 10px 0;">
+                                                    <div class="badge badge-primary" style="padding-top: 5px;">{{ __('miscellaneous.' . $product['type']) }}</div>
+                                                </p>
+                                                <div id="product-{{ $product['id'] }}" class="item-action" style="height: 40px; overflow: hidden;">
     @if (!empty($current_user))
         @if ($current_user->status == 'activated')
             @if ($current_user->hasProductInUnpaidCart($product['id']))

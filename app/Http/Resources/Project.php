@@ -21,6 +21,7 @@ class Project extends JsonResource
     {
         return [
             'id' => $this->id,
+            'project_title' => $this->project_title,
             'project_description' => $this->project_description,
             'is_shared' => $this->is_shared,
             'user' => User::make($this->user),

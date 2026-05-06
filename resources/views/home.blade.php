@@ -131,7 +131,7 @@
                                                                 {{ $product['product_name'] }}
                                                             </a>
                                                         </h3>
-                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
+                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 40px; overflow: hidden;">
         @if (!empty($current_user))
             @if ($current_user->status == 'activated')
                 @if ($current_user->hasProductInUnpaidCart($product['id']))
@@ -226,7 +226,7 @@
                                                                 {{ $product['product_name'] }}
                                                             </a>
                                                         </h3>
-                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
+                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 40px; overflow: hidden;">
                                                             <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}" class="btn strt-btn-chocolate-3">
                                                                 @lang('miscellaneous.details')
                                                             </a>

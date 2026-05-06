@@ -1099,7 +1099,7 @@
     @endif
 @endif
 
-                                        <form class="form-inline quick-search-form" role="form" method="POST" action="{{ route('search') }}">
+                                        <form class="form-inline quick-search-form" role="form" method="GET" action="{{ route('search') }}">
                                             <div class="form-group">
                                                 <input type="text" class="form-control" placeholder="@lang('miscellaneous.search_input')" name="query">
                                             </div><!-- End .form-inline -->

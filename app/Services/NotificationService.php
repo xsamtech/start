@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 
 class NotificationService
@@ -125,12 +126,17 @@ class NotificationService
 
     private function generateUrl($type, $notif): string|null
     {
+        /** @var User $user */
+        $user = Auth::user();
+
         return match ($type) {
             'stock_emptied',
             'product_shared',
             'product_blocked',
             'product_published',
-            'customer_feedback' => route('product.entity.datas', ['entity' => $notif->product->type, 'id' => $notif->product_id]),
+            'customer_feedback' => $user->isAdmin() 
+                                    ? route('dashboard.category.entity.datas', ['entity' => $notif->product->type, 'id' => $notif->product_id]) 
+                                    : route('product.entity.datas', ['entity' => $notif->product->type, 'id' => $notif->product_id]),
 
             'project_published',
             'project_shared',

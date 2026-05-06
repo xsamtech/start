@@ -94,7 +94,7 @@
                                                                 {{ $product['product_name'] }}
                                                             </a>
                                                         </h3>
-                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
+                                                        <div id="product-{{ $product['id'] }}" class="item-action" style="height: 40px; overflow: hidden;">
                                                             <a href="{{ route('product.entity.datas', ['entity' => 'product', 'id' => $product['id']]) }}" class="btn strt-btn-chocolate-3">
                                                                 @lang('miscellaneous.details')
                                                             </a>

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/symlink', [PublicController::class, 'symlink'])->name('symlink');
-Route::post('/search', [PublicController::class, 'search'])->name('search');
+Route::get('/search', [PublicController::class, 'search'])->name('search');
 Route::get('/mark_all_read', [PublicController::class, 'markAllRead'])->name('mark_all_read');
 Route::post('/send_file', [PublicController::class, 'sendFile'])->name('send_file');
 Route::get('/cart', [PublicController::class, 'cart'])->name('cart');
@@ -71,6 +71,8 @@ Route::middleware(['auth', 'check.status'])->group(function () {
     Route::post('/project-writing/{id}', [PublicController::class, 'updateProject'])->whereNumber('id');
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.home');
+    // Notifications
+    Route::get('/dashboard/notifications', [AdminController::class, 'notifications'])->name('dashboard.notifications');
     // Roles
     Route::get('/dashboard/role', [AdminController::class, 'role'])->name('dashboard.role.home');
     Route::post('/dashboard/role', [AdminController::class, 'addRole']);

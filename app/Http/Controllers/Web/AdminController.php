@@ -13,6 +13,7 @@ use App\Http\Resources\Role as ResourcesRole;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Category;
 use App\Models\CustomerFeedback;
+use App\Models\Notification;
 use App\Models\PasswordReset;
 use App\Models\Payment;
 use App\Models\Product;
@@ -23,6 +24,7 @@ use App\Models\QuestionAssertion;
 use App\Models\QuestionPart;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -151,6 +153,30 @@ class AdminController extends Controller
             'chartData' => $chartData,
             'statistics' => $statistics,
             'totalAmount' => $totalAmount,
+        ]);
+    }
+
+    /**
+     * GET: Notifications page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function notifications(NotificationService $service)
+    {
+        $current_user = User::find(Auth::id());
+        $items = $service->getUserNotifications($current_user->id);
+        $unread_notifications = Notification::where('to_user_id', Auth::user()->id)->get();
+
+        if (!empty($unread_notifications)) {
+            foreach ($unread_notifications as $notification) {
+                $notification->update([
+                    'is_read' => 1
+                ]);
+            }
+        }
+
+        return view('dashboard.notifications', [
+            'items' => $items
         ]);
     }
 

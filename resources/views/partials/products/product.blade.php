@@ -95,7 +95,7 @@
                                                         {{ $product['product_name'] }}
                                                     </a>
                                                 </h3>
-                                                <div id="product-{{ $product['id'] }}" class="item-action" style="height: 64px; overflow: hidden;">
+                                                <div id="product-{{ $product['id'] }}" class="item-action" style="height: 40px; overflow: hidden;">
     @if (!empty($current_user))
         @if ($current_user->status == 'activated')
             @if ($current_user->hasProductInUnpaidCart($product['id']))

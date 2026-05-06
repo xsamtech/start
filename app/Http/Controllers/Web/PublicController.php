@@ -201,21 +201,33 @@ class PublicController extends Controller
     {
         $query = $request->get('query');
         $filters = $request->only(['category_id', 'user_id', 'type', 'action']);
-        // Request
-        $items = Product::searchWithFilters($query, $filters, 15);
 
+        /** @var User $user */
+        $user = Auth::user();
+        $isPublic = !Auth::check() || !$user->isAdmin();
+
+        // 🔍 Recherche avec condition dynamique
+        $items = Product::searchWithFilters($query, $filters, 15, $isPublic);
+
+        // 👤 Conversion de devise si connecté
         if (Auth::check()) {
             $current_user = User::find(Auth::id());
 
-            // Ajouter la méthode convertPrice au résultat paginé
             $items->getCollection()->transform(function ($item) use ($current_user) {
-                // Ajouter la méthode convertPrice() avec la devise de l'utilisateur
-                $item->converted_price = $item->convertPrice($current_user->currency); // Devise de l'utilisateur
-
+                $item->converted_price = $item->convertPrice($current_user->currency);
+                $item->user_currency = $current_user->currency;
                 return $item;
             });
         }
 
+        // ⚡ CAS AJAX → autocomplete
+        if ($request->ajax()) {
+            return view('partials.autocomplete', [
+                'items' => $items
+            ]);
+        }
+
+        // 📄 CAS NORMAL → page complète
         return view('search', [
             'query' => $query,
             'items' => $items,

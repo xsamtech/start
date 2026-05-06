@@ -244,14 +244,21 @@ class Product extends Model
      * @param  int  $perPage
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function searchWithFilters($data, array $filters, $perPage = 15)
+    // public static function searchWithFilters($data, $perPage = 15, $isPublic = false)
+    public static function searchWithFilters($data, array $filters, $perPage = 15, $isPublic = false)
     {
         return self::query()
-                    ->where('quantity', '>', 0)
-                    ->when(isset($data), fn($q) => $q->where('product_name', 'LIKE', '%' . $data))
+                    ->where(function ($q) {
+                        $q->where(function ($q2) {
+                            $q2->where('type', 'product')->where('quantity', '>', 0);
+                        })->orWhere('type', 'service'); 
+                    })
+                    ->when($isPublic, fn($q) => $q->where('is_shared', 1))
+                    ->when(isset($data), fn($q) => $q->where('product_name', 'LIKE', '%' . $data . '%'))
                     ->when(isset($filters['category_id']), fn($q) => $q->where('category_id', $filters['category_id']))
                     ->when(isset($filters['user_id']), fn($q) => $q->where('user_id', $filters['user_id']))
                     ->when(isset($filters['type']), fn($q) => $q->where('type', $filters['type']))
+                    // ->when(isset($filters['type']) && in_array($filters['type'], ['product', 'service']), fn($q) => $q->where('type', $filters['type']))
                     ->when(isset($filters['action']), fn($q) => $q->where('action', $filters['action']))
                     ->orderBy('created_at', 'asc')
                     ->paginate($perPage);

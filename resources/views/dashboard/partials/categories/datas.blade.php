@@ -255,6 +255,14 @@
                                             </p>
     @endif
 
+                                            <p class="fs-6 mb-0 mt-1">
+                                                <span style="text-decoration: underline;">@lang('miscellaneous.admin.product.data.category')</span>
+                                                @lang('miscellaneous.colon_after_word') 
+                                                <strong>
+                                                    {{ $selected_item->category->category_name }}
+                                                </strong>
+                                            </p>
+
                                             <div class="card card-body mt-4 mb-0 px-lg-3 px-2 border bg-light" style="border-color: #d0d0d0!important">
                                                 <div class="d-flex flex-lg-row flex-column align-items-center">
                                                     <div>
