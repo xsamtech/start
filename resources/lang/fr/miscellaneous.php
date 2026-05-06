@@ -942,6 +942,7 @@ return [
 
         // Project writing
         'project_writing' => [
+            'title' => 'Titre du projet',
             'details' => 'Détails du projet',
             'link' => 'Gérer les projets',
             'add' => 'Rédiger un projet',

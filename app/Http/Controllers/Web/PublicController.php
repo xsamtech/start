@@ -2094,7 +2094,7 @@ class PublicController extends Controller
         }
 
         // 1️⃣ Création ou récupération du projet
-        $project = $request->has('project_id') ? Project::findOrFail($request->project_id) : Project::create(['is_shared' => 0, 'user_id' => auth()->id(), 'project_description' => $request->project_description]);
+        $project = $request->has('project_id') ? Project::findOrFail($request->project_id) : Project::create(['is_shared' => 0, 'user_id' => auth()->id(), 'project_title' => $request->project_title, 'project_description' => $request->project_description]);
 
         // If image files exist
         if ($request->hasFile('files_urls')) {

@@ -42,6 +42,7 @@
 										</div>
 			@endif
 										<div class="panel-body">
+											<h5 style="margin-bottom: 5px; font-weight: 800;">{!! $selected_project->project_title !!}</h5>
 											<p style="margin: 0;">
 												{!! Str::limit($project->project_description, 200) !!}<br class="d-lg-none">
 											</p>

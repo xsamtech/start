@@ -34,6 +34,10 @@
 
 												<div id="image-preview-container"></div> <!-- Conteneur pour les vignettes -->
 
+												<div class="form-group">
+													<label>@lang('miscellaneous.admin.project_writing.title')</label>
+													<input type="text" name="project_title" class="form-control" placeholder="@lang('miscellaneous.admin.project_writing.title')">
+												</div>
 												<div class="input-group textarea-container" style="z-index: 3; margin-top: 10px; margin-bottom: 0;">
 													<span class="input-group-addon clearfix">
 														<span style="float: left;">

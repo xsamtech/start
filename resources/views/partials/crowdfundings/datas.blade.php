@@ -114,6 +114,9 @@
 
 						<div class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
 							<div class="panel panel-default mt-4">
+								<div class="panel-heading">
+									<h3 style="margin: 0; font-weight: 800;">{!! $selected_project->project_title !!}</h3>
+								</div>
 @if (count($selected_project->photos) > 0)
 								<div class="panel-body" style="padding-bottom: 0;">
 									<div class="my-carousel" style="border-radius: 10px; overflow: hidden;">
