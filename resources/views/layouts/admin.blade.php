@@ -689,24 +689,26 @@
                     var entityId = parseInt(entity_id.split('-')[1]);
 
                     Swal.fire({
-                        title: '{{ __("miscellaneous.alert.attention.delete") }}',
-                        text: '{{ __("miscellaneous.alert.confirm.delete") }}',
-                        icon: 'warning',
+                        title: "<?= __('miscellaneous.alert.attention.delete') ?>",
+                        text: "<?= __('miscellaneous.alert.confirm.delete') ?>",
+                        icon: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: '#04471a',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: '{{ __("miscellaneous.alert.yes.delete") }}',
-                        cancelButtonText: '{{ __("miscellaneous.cancel") }}'
+                        confirmButtonColor: "#04471a",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "<?= __('miscellaneous.alert.yes.delete') ?>",
+                        cancelButtonText: "<?= __('miscellaneous.cancel') ?>"
 
                     }).then(function (result) {
                         if (result.isConfirmed) {
                             $.ajax({
-                                headers: headers,
-                                type: 'DELETE',
-                                url: `${currentHost}/delete/${entity}/${entityId}`,
-                                contentType: false,
-                                processData: false,
-                                data: JSON.stringify({ "entity" : entity, "id" : entityId }),
+                                type: 'POST',
+                                url: `${currentHost}/remove/${entity}/${entityId}`,
+                                data: {
+                                    _method: 'DELETE',
+                                    entity: entity,
+                                    id: entityId,
+                                    _token: '{{ csrf_token() }}'
+                                },
                                 success: function (result) {
                                     if (!result.success) {
                                         Swal.fire({
@@ -714,13 +716,13 @@
                                             text: result.message,
                                             icon: 'error'
                                         });
-
                                     } else {
                                         Swal.fire({
                                             title: '{{ __("miscellaneous.alert.perfect") }}',
                                             text: result.message,
                                             icon: 'success'
                                         });
+
                                         location.reload();
                                     }
                                 },
@@ -731,11 +733,17 @@
                                     console.log(status_description);
                                 }
                             });
-
                         } else {
                             Swal.fire({
-                                title: '{{ __("miscellaneous.cancel") }}',
-                                text: '{{ __("miscellaneous.alert.canceled.delete") }}',
+                                title: "<?= __('miscellaneous.cancel') ?>",
+                                text: "<?= __('miscellaneous.alert.canceled.delete') ?>",
+                                icon: "error"
+                            });
+
+                            // Show an alert error
+                            Swal.fire({
+                                title: "<?= __('notifications.error_while_processing') ?>",
+                                text: xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : (xhr.responseText && xhr.responseText.message ? xhr.responseText.message : status_description),
                                 icon: 'error'
                             });
                         }

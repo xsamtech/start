@@ -43,7 +43,7 @@ Route::get('/paid/{amount}/{currency}/{code}/{entity}/{entity_id}', [PublicContr
 // Update user status
 Route::post('/user-status/{id}', [PublicController::class, 'userStatus'])->whereNumber('id')->name('user.status');
 // Delete something
-Route::get('/delete/{entity}/{id}', [PublicController::class, 'removeData'])->whereNumber('id')->name('data.delete');
+Route::match(['post', 'delete'], '/remove/{entity}/{id}', [PublicController::class, 'removeData'])->whereNumber('id')->name('data.delete');
 // User blocked
 Route::get('/blocked', function () {
     if (auth()->user()->status === 'blocked' OR auth()->user()->status === 'disabled' OR auth()->user()->status === 'deleted') {
